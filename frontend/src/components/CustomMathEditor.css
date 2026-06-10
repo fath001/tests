@@ -1,0 +1,676 @@
+/* ============================================================
+   Custom Math & Chemistry Editor  —  Purple Dark Theme
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+.cme-wrapper {
+  display: flex;
+  flex-direction: column;
+  border: none;
+  border-radius: 4px;
+  overflow: visible;
+  background: transparent;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ── Tab Bar ─────────────────────────────────────────────── */
+.cme-tabs {
+  display: flex;
+  background: #1a1a2e;
+  padding: 4px 12px 0 12px;
+  gap: 2px;
+  border-bottom: 1px solid #2a2a45;
+}
+
+.cme-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid #3a3a5c;
+  border-bottom: none;
+  background: #13131f;
+  color: #a0a0c0;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.cme-tab:hover {
+  background: #1f1f35;
+  color: #e8e8ff;
+}
+
+.cme-tab.active {
+  background: #1a1a2e;
+  color: #c4b5fd;
+  border-color: #3a3a5c;
+  border-bottom-color: #1a1a2e;
+  margin-bottom: -1px;
+  z-index: 2;
+}
+
+.cme-tab svg {
+  width: 14px;
+  height: 14px;
+  opacity: 0.9;
+}
+
+/* ── Symbol Toolbar ──────────────────────────────────────── */
+.cme-toolbar {
+  background: linear-gradient(180deg, #dbe4ea 0%, #c7d3dc 100%);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  border-bottom: 1px solid #92a6b4;
+}
+
+.cme-toolbar-groups {
+  display: flex;
+  flex-wrap: wrap;
+  background: linear-gradient(180deg, #8ea3b0 0%, #758d9c 100%);
+  padding: 6px 6px 0 6px;
+  gap: 2px;
+  border-bottom: 1px solid #8fa1ae;
+}
+
+.cme-group-tab {
+  background: linear-gradient(180deg, #7d93a0 0%, #637b8a 100%);
+  border: 1px solid #6f8795;
+  border-bottom: none;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  min-width: 54px;
+  padding: 0 8px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #f5f9fc;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 1;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+.cme-tab-icon {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 0.8;
+  letter-spacing: 0.02em;
+  color: inherit;
+}
+
+.cme-tab-icon.compact {
+  flex-direction: row;
+  gap: 2px;
+  line-height: 1;
+}
+
+.cme-tab-icon-top,
+.cme-tab-icon-bottom {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.cme-tab-icon-bottom {
+  font-size: 8px;
+  opacity: 0.96;
+  margin-top: 1px;
+}
+
+.cme-tab-icon.compact .cme-tab-icon-top {
+  font-size: 11px;
+}
+
+.cme-group-tab:hover {
+  background: linear-gradient(180deg, #8ca1ad 0%, #6e8694 100%);
+  color: #ffffff;
+}
+
+.cme-group-tab.active {
+  background: linear-gradient(180deg, #f3d6d9 0%, #dba8ad 100%);
+  color: #ffffff;
+  border-color: #d79ba2;
+  z-index: 2;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38);
+}
+
+.cme-toolbar-items {
+  background: linear-gradient(180deg, #edf2f6 0%, #dfe8ef 100%);
+  border: 1px solid #9aadb9;
+  border-radius: 0 0 4px 4px;
+  margin: 0 6px 6px;
+  padding: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  gap: 2px;
+  overflow: hidden;
+  width: calc(100% - 12px);
+  box-sizing: border-box;
+  min-height: 70px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.cme-toolbar-items::-webkit-scrollbar { height: 5px; }
+.cme-toolbar-items::-webkit-scrollbar-track { background: transparent; }
+.cme-toolbar-items::-webkit-scrollbar-thumb { background: #3a3a5c; border-radius: 3px; }
+.cme-toolbar-items::-webkit-scrollbar-thumb:hover { background: #8b5cf6; }
+
+.cme-symbol-subgroup {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: repeat(2, auto);
+  gap: 2px;
+  padding: 0 4px;
+  border-right: 1px solid #b9c7d0;
+  flex-shrink: 0;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  margin: 1px 0;
+}
+
+.cme-symbol-subgroup:last-child { border-right: none; }
+
+/* ── Symbol Buttons ── */
+.cme-btn {
+  min-width: 24px;
+  height: 24px;
+  padding: 0 3px;
+  border: 1px solid #c5d0d8;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #ffffff 0%, #edf3f7 100%);
+  color: #22343d;
+  font-size: 11px;
+  font-family: "Latin Modern Math", "STIX Two Math", "Times New Roman", serif;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, transform 0.12s;
+  white-space: nowrap;
+  line-height: 1;
+  user-select: none;
+  box-sizing: border-box;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.cme-btn:hover {
+  background: linear-gradient(180deg, #ffffff 0%, #e6eef5 100%);
+  border-color: #8daab7;
+  box-shadow: 0 0 0 1px rgba(147, 167, 178, 0.28);
+}
+
+.cme-btn:active {
+  transform: translateY(1px);
+  background: linear-gradient(180deg, #dff0ea 0%, #c5e7db 100%);
+  border-color: #5ea98a;
+}
+
+.cme-btn.template {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  color: #334750;
+}
+
+.cme-btn.chem-element {
+  font-weight: bold;
+  font-size: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #2c7040;
+}
+
+.cme-btn.green-template {
+  color: #2c8a43;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.cme-btn.soft-tool {
+  color: #7e92a1;
+}
+
+.cme-btn.format-tool {
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cme-btn.color-tool {
+  color: #f39c12;
+}
+
+.cme-btn.omega-tool {
+  color: #7f57b6;
+}
+
+.cme-btn.text-tool {
+  color: #9462b0;
+  letter-spacing: 0.04em;
+}
+
+.cme-btn.chem-element:hover { border-color: #75b189; }
+
+.cme-btn.chem-arrow,
+.cme-btn.chem-state {
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #334750;
+}
+
+.cme-btn.chem-arrow:hover,
+.cme-btn.chem-state:hover { border-color: #8daab7; }
+
+.cme-sep {
+  width: 1px;
+  height: 20px;
+  background: #2a2a45;
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* ── MathLive Container ───────────────────────────────────── */
+.cme-mathfield-container {
+  background: #ffffff;
+  border: 1px solid #97aab7;
+  border-radius: 2px;
+  margin: 0 8px 8px;
+  flex: 1;
+  min-height: 152px;
+  overflow: auto;
+  display: block;
+  box-sizing: border-box;
+  position: relative;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.cme-mathfield-container::-webkit-scrollbar { width: 8px; height: 8px; }
+.cme-mathfield-container::-webkit-scrollbar-track { background: #edf2f6; }
+.cme-mathfield-container::-webkit-scrollbar-thumb { background: #9baebb; border-radius: 4px; }
+.cme-mathfield-container::-webkit-scrollbar-thumb:hover { background: #7f98a7; }
+
+math-field.cme-mathfield::-webkit-scrollbar { width: 8px; height: 8px; }
+math-field.cme-mathfield::-webkit-scrollbar-track { background: #edf2f6; }
+math-field.cme-mathfield::-webkit-scrollbar-thumb { background: #9baebb; border-radius: 4px; }
+math-field.cme-mathfield::-webkit-scrollbar-thumb:hover { background: #7f98a7; }
+
+math-field.cme-mathfield {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  height: max-content;
+  min-height: 100%;
+  padding: 10px 12px;
+  font-size: 18px;
+  outline: none;
+  border: none;
+  background: transparent;
+  box-sizing: border-box;
+  cursor: text;
+
+  --hue: 270;
+  --primary-color: #2f6f4c;
+  --caret-color: #2f8a57;
+  --selection-background-color: rgba(81, 153, 112, 0.18);
+  --selection-color: #1d2c35;
+  --contains-highlight-background-color: transparent;
+  --smart-fence-color: #2f8a57;
+  --text-font-family: "Times New Roman", Times, serif;
+  --highlight-inactive-color: transparent;
+  --text-highlight-background-color: transparent;
+
+  color: #243740;
+}
+
+math-field.cme-mathfield:focus-within { background: transparent; }
+
+math-field.cme-mathfield::part(container) { min-height: 40px; align-items: center; }
+math-field.cme-mathfield::part(virtual-keyboard-toggle),
+math-field.cme-mathfield::part(menu-toggle) { display: none; }
+
+/* ── Footer ──────────────────────────────────────────────── */
+.cme-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: #1a1a2e;
+  border-top: 1px solid #2a2a45;
+  font-size: 11px;
+  color: #5a5a80;
+  gap: 8px;
+}
+
+.cme-mode-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-weight: bold;
+  font-size: 10px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.cme-mode-badge.math { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; }
+.cme-mode-badge.chem { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+
+.cme-hint { font-size: 10px; color: #3a3a5c; }
+
+/* ── Main Input Box ──────────────────────────────────────── */
+.Input-question-box { padding: 0; background: transparent; width: 100%; }
+
+math-field.cme-main-mathfield {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px;
+  border: 1px solid #3a3a5c;
+  border-radius: 10px;
+  font-size: 16px;
+  font-family: Inter, sans-serif;
+  box-sizing: border-box;
+  outline: none;
+  background: #1a1a2e;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: text;
+  color: #e8e8ff;
+}
+
+math-field.cme-main-mathfield:focus-within {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+  background: #1f1f35;
+}
+
+math-field.cme-main-mathfield::part(virtual-keyboard-toggle),
+math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
+
+.ck-math-widget math-field::part(virtual-keyboard-toggle),
+.ck-math-widget math-field::part(menu-toggle),
+.question-preview math-field::part(virtual-keyboard-toggle),
+.question-preview math-field::part(menu-toggle) { display: none; }
+
+/* ── Popup ───────────────────────────────────────────────── */
+.cme-editor-popup {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: min(720px, calc(100vw - 24px));
+  height: 384px;
+  background: #f1f4f7;
+  border: 1px solid #879dab;
+  border-radius: 3px;
+  box-shadow: 0 14px 36px rgba(11, 24, 34, 0.34);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  animation: slideUp 0.2s ease-out;
+}
+
+.cme-editor-popup.maximized {
+  top: 24px;
+  right: 24px;
+  bottom: 24px;
+  left: 24px;
+  width: auto;
+  height: auto;
+}
+
+.cme-editor-popup.minimized {
+  width: 420px;
+  height: auto;
+}
+
+.cme-editor-popup.minimized .cme-toolbar,
+.cme-editor-popup.minimized .cme-mathfield-container,
+.cme-editor-popup.minimized .cme-popup-footer {
+  display: none;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cme-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: linear-gradient(180deg, #7f97a6 0%, #718997 100%);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 12px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  min-height: 30px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #6b8391;
+}
+
+.cme-popup-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cme-popup-close {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.92);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 1;
+  transition: color 0.15s, background 0.15s;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.cme-popup-close:hover { color: #fff; }
+
+.cme-popup-close::before {
+  content: none;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-right: 8px;
+  font-family: monospace;
+}
+
+.cme-popup-window-btn,
+.cme-popup-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+.cme-popup-window-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.cme-popup-window-btn:hover,
+.cme-popup-close:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.cme-popup-footer {
+  padding: 8px;
+  background: #f1f4f7;
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  box-sizing: border-box;
+  border-top: 1px solid #c6d1d8;
+}
+
+.cme-insert-btn {
+  background: linear-gradient(180deg, #8da2b0 0%, #7690a0 100%);
+  color: #ffffff;
+  border: 1px solid #7a92a1;
+  min-width: 100px;
+  padding: 7px 18px;
+  border-radius: 3px;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.cme-insert-btn:hover { filter: brightness(1.05); }
+
+.cme-cancel-btn {
+  background: linear-gradient(180deg, #fefefe 0%, #e9eef2 100%);
+  color: #1c2c34;
+  border: 1px solid #93a6b3;
+  min-width: 100px;
+  padding: 7px 18px;
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.cme-cancel-btn:hover {
+  background: linear-gradient(180deg, #ffffff 0%, #edf2f5 100%);
+  border-color: #7d95a3;
+  color: #102028;
+}
+
+@media (max-width: 640px) {
+  .cme-editor-popup {
+    width: auto;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    height: min(384px, calc(100vh - 24px));
+  }
+
+  .cme-group-tab { padding: 0 6px; font-size: 9px; }
+  .cme-toolbar-items { min-height: 84px; }
+  .cme-insert-btn,
+  .cme-cancel-btn {
+    min-width: 88px;
+    padding: 6px 14px;
+  }
+}
+
+/* ── Matrix Selector ─────────────────────────────────────── */
+.cme-matrix-selector {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #0f0f1a;
+  border-bottom: 1px solid #2a2a45;
+}
+
+.cme-matrix-label { font-size: 13px; font-weight: 600; color: #c4b5fd; margin-bottom: 8px; user-select: none; }
+
+.cme-matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 20px);
+  grid-template-rows: repeat(10, 20px);
+  gap: 2px;
+  justify-content: center;
+}
+
+.cme-matrix-cell { width: 20px; height: 20px; border: 1px solid #2a2a45; border-radius: 2px; background: #13131f; cursor: pointer; transition: background 0.1s, border-color 0.1s; }
+.cme-matrix-cell.selected { background: #8b5cf6; border-color: #7c3aed; }
+
+/* ── Matrix Hover ────────────────────────────────────────── */
+.cme-matrix-btn-wrapper { position: relative; display: inline-block; }
+
+.cme-matrix-hover-popover {
+  position: fixed;
+  transform: translateX(-50%);
+  margin-top: 6px;
+  background: #13131f;
+  border: 1px solid #3a3a5c;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  padding: 8px;
+  z-index: 10005;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.cme-matrix-hover-title { font-size: 10px; font-weight: 700; color: #a0a0c0; text-align: center; white-space: nowrap; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.cme-matrix-hover-grid { display: flex; flex-direction: column; gap: 0; background: #0f0f1a; padding: 0; border-radius: 2px; border: 1px solid #2a2a45; }
+.cme-matrix-hover-row { display: flex; gap: 0; }
+.cme-matrix-hover-cell { width: 12px; height: 12px; border: 1px solid #2a2a45; border-radius: 0; background: #13131f; cursor: pointer; transition: background-color 0.1s, border-color 0.1s; }
+.cme-matrix-hover-cell:hover { background-color: rgba(139, 92, 246, 0.2); border-color: #8b5cf6; }
+.cme-matrix-hover-cell.selected { background-color: #8b5cf6; border-color: #7c3aed; }
+
+.cme-matrix-hover-footer { display: flex; align-items: center; gap: 6px; flex: 1; width: 100%; border-top: 1px solid #2a2a45; padding-top: 0px; margin-top: 0px; }
+
+.cme-matrix-counter { display: flex; align-items: center; gap: 4px; font-size: 20px; font-weight: 900; color: #c4b5fd; }
+.cme-counter-val { min-width: 20px; text-align: center; background: #1a1a2e; border-radius: 2px; padding: 1px 4px; font-family: monospace; font-size: 20px; font-weight: 600; color: #e8e8ff; border: 1px solid #3a3a5c; }
+
+.cme-counter-btns { display: flex; flex-direction: column; gap: 1px; }
+.cme-counter-btns button { background: #1f1f35; border: none; border-radius: 1px; color: #a0a0c0; font-size: 10px; width: 16px; height: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0; transition: background 0.1s; }
+.cme-counter-btns button:hover { background: #2a2a45; color: #8b5cf6; }
+
+.cme-matrix-insert-btn { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #ffffff; border: none; padding: 2px 6px; border-radius: 2px; font-weight: bold; font-size: 9px; cursor: pointer; transition: opacity 0.15s; text-transform: uppercase; margin-left: auto; }
+.cme-matrix-insert-btn:hover { opacity: 0.85; }
+
+/* ── CKEditor specific ── */
+.cme-matrix-hover-popover.ck-only { width: 101px; height: 120px; box-sizing: border-box; padding: 6px; overflow: hidden; gap: 4px; display: flex; flex-direction: column; align-items: stretch; }
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-grid { width: 100%; display: flex; flex-direction: column; padding: 0; gap: 0; border: 1px solid #3a3a5c; border-radius: 2px; overflow: hidden; }
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-row { width: 100%; display: flex; gap: 0; }
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-cell { flex: 1; height: 12px; border: 0.5px solid #2a2a45; border-radius: 0; }
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-footer { border-top: 1px solid #2a2a45; padding-top: 4px; margin-top: auto; justify-content: space-around; gap: 4px; }
+.cme-matrix-hover-popover.ck-only .cme-matrix-counter { gap: 2px; font-size: 12px; }
+.cme-matrix-hover-popover.ck-only .cme-counter-val { min-width: 10px; font-size: 12px; padding: 0 2px; }
+.cme-matrix-hover-popover.ck-only .cme-counter-btns button { width: 10px; height: 7px; font-size: 5px; }
+
+.cme-btn.active,
+.cme-select.active {
+  background: linear-gradient(180deg, #e3f4ec 0%, #cae7d9 100%) !important;
+  border-color: #56a17e !important;
+  color: #1f593f !important;
+  box-shadow: 0 0 0 2px rgba(86, 161, 126, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.92) !important;
+}
