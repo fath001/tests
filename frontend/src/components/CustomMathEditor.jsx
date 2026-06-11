@@ -448,6 +448,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
     const popupMf = popupMfRef.current;
     if (!popupMf || !isEditorOpen) return;
     popupMf.defaultMode = mode === "chem" ? "text" : "math";
+    popupMf.letterShapeStyle = "upright";
     requestAnimationFrame(() => popupMf.focus());
   }, [mode, isEditorOpen]);
 
@@ -739,6 +740,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
             <math-field
               ref={popupMfRef}
               class="cme-mathfield"
+              letter-shape-style="upright"
               tabIndex={0}
               math-virtual-keyboard-policy="manual"
               placeholder={

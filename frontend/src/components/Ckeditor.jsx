@@ -169,12 +169,14 @@ const MATH_GROUPS = [
       { label: '÷', insert: '\\div' },
       { label: '±', insert: '\\pm' },
 
-      { type: 'sep', cols: 2 },
-      // 4. Comparison & Relation Operators (3 cols)
+      { type: 'sep', cols: 4 },
+      // 4. Comparison & Relation Operators (4 cols)
       { label: '≥', insert: '\\geq' },
       { label: '≤', insert: '\\leq' },
-      { label: '∈', insert: '\\in' },
+      { label: '∩', insert: '\\cap' },
+      { label: '∪', insert: '\\cup' },
       { label: '≠', insert: '\\neq' },
+      { label: '∈', insert: '\\in' },
       { label: '≈', insert: '\\approx' },
       { label: '∞', insert: '\\infty' },
 
@@ -271,14 +273,50 @@ const MATH_GROUPS = [
       { label: '→', insert: '\\rightarrow' }, { label: '←', insert: '\\leftarrow' },
       { label: '↔', insert: '\\leftrightarrow' }, { label: '⇒', insert: '\\Rightarrow' },
       { label: '⇐', insert: '\\Leftarrow' }, { label: '⇔', insert: '\\Leftrightarrow' },
-      { label: '⇄', insert: '\\rightleftarrows' }, { label: '⇌', insert: '\\rightleftharpoons' },
-      { label: '↑', insert: '\\uparrow' }, { label: '↓', insert: '\\downarrow' },
-      { label: '↗', insert: '\\nearrow' }, { label: '↘', insert: '\\searrow' },
-      { label: '⟵', insert: '\\longleftarrow' }, { label: '⟶', insert: '\\longrightarrow' },
-      { label: '⟷', insert: '\\longleftrightarrow' },
-      { label: '⎯⎯>', insert: '\\xrightarrow{#0}' },
-      { label: '<⎯⎯', insert: '\\xleftarrow{#0}' },
-      { label: '<⎯⎯>', insert: '\\xleftrightarrow{#0}' },
+
+      { type: 'sep', cols: 3 },
+      { label: '⟶', insert: '\\longrightarrow' }, { label: '⟵', insert: '\\longleftarrow' },
+      { label: '⟷', insert: '\\longleftrightarrow' }, { label: '⟹', insert: '\\Longrightarrow' },
+      { label: '⟸', insert: '\\Longleftarrow' }, { label: '⟺', insert: '\\Longleftrightarrow' },
+
+      { type: 'sep', cols: 3 },
+      { label: 'A→', insert: '\\xrightarrow{#0}', title: 'Arrow with label above' },
+      { label: 'A←', insert: '\\xleftarrow{#0}', title: 'Left arrow with label above' },
+      { label: 'A↔', insert: '\\xleftrightarrow{#0}', title: 'Two-way arrow with label above' },
+      { label: 'A⇒', insert: '\\xRightarrow{#0}', title: 'Double arrow with label above' },
+      { label: 'A⇐', insert: '\\xLeftarrow{#0}', title: 'Double left arrow with label above' },
+      { label: 'A⇔', insert: '\\xLeftrightarrow{#0}', title: 'Double two-way arrow with label above' },
+
+      { type: 'sep', cols: 3 },
+      { label: '→A', insert: '\\xrightarrow[#?]{}', title: 'Arrow with label below' },
+      { label: '⇔A', insert: '\\xLeftrightarrow[#?]{}', title: 'Double arrow with label below' },
+      { label: 'A→B', insert: '\\xrightarrow[#?]{#0}', title: 'Arrow with labels above and below' },
+
+      { type: 'sep', cols: 3 },
+      { label: 'Rxn→', insert: '\\xrightarrow{reaction}', title: 'Reaction arrow' },
+      { label: 'Eq⇌', insert: '\\xrightleftharpoons', title: 'Extensible equilibrium arrow' },
+      { label: '⇌', insert: '\\rightleftharpoons', title: 'Equilibrium harpoons' },
+      { label: '⇋', insert: '\\leftrightharpoons', title: 'Reverse equilibrium harpoons' },
+      { label: '⇀', insert: '\\rightharpoonup', title: 'Right harpoon' },
+      { label: '↼', insert: '\\leftharpoonup', title: 'Left harpoon' },
+
+      { type: 'sep', cols: 3 },
+      { label: '⋮', insert: '\\vdots', title: 'Vertical ellipsis' },
+      { label: '⋰', insert: '⋰', title: 'Up-right diagonal ellipsis' },
+      { label: '…', insert: '\\ldots', title: 'Horizontal ellipsis' },
+      { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis' },
+      { label: '⋯', insert: '\\cdots', title: 'Midline ellipsis' },
+
+      { type: 'sep', cols: 3 },
+      { label: '-', insert: '-', title: 'Short dash' },
+      { label: '–', insert: '–', title: 'Dash' },
+      { label: '—', insert: '—', title: 'Long dash' },
+
+      { type: 'sep', cols: 2 },
+      { label: 'x⇀', insert: '\\overrightharpoon{#0}', title: 'Vector accent' },
+      { label: 'x→', insert: '\\overrightarrow{#0}', title: 'Arrow accent' },
+      { label: 'x↔', insert: '\\overleftrightarrow{#0}', title: 'Left-right arrow accent' },
+      { label: 'x̄', insert: '\\overline{#0}', title: 'Bar accent' },
     ]
   },
   {
@@ -409,51 +447,128 @@ const MATH_GROUPS = [
   },
 ];
 
+const RELATIONS_TAB_ITEMS = [
+  { label: '+', insert: '+' },
+  { label: '×', insert: '\\times' },
+  { label: '·', insert: '\\cdot' },
+  { label: '−', insert: '-' },
+  { label: '÷', insert: '\\div' },
+  { label: '/', insert: '/' },
+  { label: '±', insert: '\\pm' },
+  { label: '*', insert: '\\ast' },
+  { label: '°', insert: '\\circ' },
+
+  { type: 'sep', cols: 5 },
+  { label: 'π', insert: '\\pi' },
+  { label: '∂', insert: '\\partial' },
+  { label: '°', insert: '\\circ' },
+  { label: '∞', insert: '\\infty' },
+  { label: 'Δ', insert: '\\Delta' },
+  { label: '′', insert: '\\prime' },
+  { label: '∅', insert: '\\emptyset' },
+  { label: '∇', insert: '\\nabla' },
+  { label: '″', insert: '\\prime\\prime' },
+
+  { type: 'sep', cols: 3 },
+  { label: '=', insert: '=' },
+  { label: '≡', insert: '\\equiv' },
+  { label: '~', insert: '\\sim' },
+  { label: '≈', insert: '\\approx' },
+  { label: '≃', insert: '\\simeq' },
+  { label: '≅', insert: '\\cong' },
+
+  { type: 'sep', cols: 3 },
+  { label: '>', insert: '>' },
+  { label: '<', insert: '<' },
+  { label: '≥', insert: '\\geq' },
+  { label: '≤', insert: '\\leq' },
+  { label: '≫', insert: '\\gg' },
+  { label: '≪', insert: '\\ll' },
+
+  { type: 'sep', cols: 3 },
+  { label: '∈', insert: '\\in' },
+  { label: '∋', insert: '\\ni' },
+  { label: '∪', insert: '\\cup' },
+  { label: '∩', insert: '\\cap' },
+  { label: '⊂', insert: '\\subset' },
+  { label: '⊃', insert: '\\supset' },
+
+  { type: 'sep', cols: 3 },
+  { label: '∧', insert: '\\land' },
+  { label: '∨', insert: '\\lor' },
+  { label: '¬', insert: '\\neg' },
+  { label: '∀', insert: '\\forall' },
+  { label: '∃', insert: '\\exists' },
+  { label: '∄', insert: '\\nexists' },
+
+  { type: 'sep', cols: 2 },
+  { label: '∠', insert: '\\angle' },
+  { label: '∥', insert: '\\parallel' },
+  { label: '⊥', insert: '\\perp' },
+
+  { type: 'sep', cols: 3 },
+  { label: '□', insert: '\\square' },
+  { label: '⊕', insert: '\\oplus' },
+  { label: '△', insert: '\\triangle' },
+  { label: '⊗', insert: '\\otimes' },
+  { label: '○', insert: '\\bigcirc' },
+  { label: '⊙', insert: '\\odot' },
+];
+
 const ORDERED_MATH_GROUPS = [
   {
     id: 'roots-main',
     label: <TabIcon top="√□" bottom="□/□" />,
     items: [
+      // GROUP 1 - Fractions & Roots (cols: 2)
       { label: '□/□', insert: '\\frac{#0}{#?}', title: 'Fraction', cls: 'green-template' },
       { label: '√', insert: '\\sqrt{#0}', title: 'Square Root', cls: 'green-template' },
       { label: '□/⧸□', insert: '{#0}/{#?}', title: 'Bevelled Fraction', cls: 'green-template' },
       { label: 'ⁿ√□', insert: '\\sqrt[#?]{#0}', title: 'Root', cls: 'green-template' },
-      { label: '□┐', insert: '#0^{#?}', title: 'Superscript', cls: 'green-template' },
-      { label: '□└', insert: '#0_{#?}', title: 'Subscript', cls: 'green-template' },
       { type: 'sep', cols: 2 },
+      // GROUP 2a - Brackets (cols: 2)
       { label: '()', insert: '\\left(#0\\right)', title: 'Parentheses', cls: 'green-template' },
       { label: '[]', insert: '\\left[#0\\right]', title: 'Square Brackets', cls: 'green-template' },
       { label: '||', insert: '\\left|#0\\right|', title: 'Absolute Value', cls: 'green-template' },
       { label: '{}', insert: '\\left\\{#0\\right\\}', title: 'Curly Braces', cls: 'green-template' },
-      { type: 'sep', cols: 2 },
+      { type: 'sep', cols: 1 },
+      // GROUP 2b - Super/Subscript (cols: 1)
+      { label: '□┐', insert: '#0^{#?}', title: 'Superscript', cls: 'green-template' },
+      { label: '□└', insert: '#0_{#?}', title: 'Subscript', cls: 'green-template' },
+      { type: 'sep', cols: 3 },
+      // GROUP 3 - Operators (cols: 3)
       { label: '+', insert: '+' },
       { label: '−', insert: '-' },
       { label: '×', insert: '\\times' },
       { label: '÷', insert: '\\div' },
       { label: '/', insert: '/' },
       { label: '±', insert: '\\pm' },
-      { type: 'sep', cols: 2 },
+      { type: 'sep', cols: 3 },
+      // GROUP 4 - Relations (cols: 4)
       { label: '≥', insert: '\\geq' },
-      { label: '≤', insert: '\\leq' },
       { label: '=', insert: '=' },
+      { label: '∩', insert: '\\cap' },
+      { label: '⊂', insert: '\\subset' },
+      { label: '≤', insert: '\\leq' },
       { label: '≠', insert: '\\neq' },
       { label: '∈', insert: '\\in' },
       { label: '∪', insert: '\\cup' },
-      { label: '∩', insert: '\\cap' },
-      { label: '⊂', insert: '\\subset' },
-      { type: 'sep', cols: 2 },
+      { type: 'sep', cols: 4 },
+      // GROUP 5 - Symbols (cols: 2)
       { label: '∅', insert: '\\emptyset' },
       { label: '∞', insert: '\\infty' },
       { label: 'π', insert: '\\pi' },
       { label: 'ℕ', insert: '\\mathbb{N}' },
       { type: 'sep', cols: 2 },
+      // GROUP 6 - Clipboard (cols: 3)
       { label: '✂', action: 'CUT', title: 'Cut Formula', cls: 'soft-tool' },
       { label: '⧉', action: 'COPY', title: 'Copy Formula', cls: 'soft-tool' },
       { label: '⎘', action: 'PASTE', title: 'Paste Formula', cls: 'soft-tool' },
       { label: '↶', action: 'UNDO', title: 'Undo', cls: 'soft-tool' },
       { label: '↷', action: 'REDO', title: 'Redo', cls: 'soft-tool' },
       { label: '⌫', action: 'CLEAR', title: 'Clear Formula', cls: 'soft-tool' },
-      { type: 'sep', cols: 2 },
+      { type: 'sep', cols: 3 },
+      // GROUP 7 - Formatting (cols: 3)
       { label: 'B', action: 'BOLD', cls: 'template format-tool', title: 'Bold' },
       { label: '1b', action: 'ITALIC', cls: 'format-tool', title: 'Italic' },
       { label: 'BI', action: 'BOLD_ITALIC', cls: 'format-tool', title: 'Bold Italic' },
@@ -465,6 +580,7 @@ const ORDERED_MATH_GROUPS = [
   {
     id: 'relations',
     ...MATH_GROUPS[1],
+    items: RELATIONS_TAB_ITEMS,
     label: <TabIcon top="∈∞" compact />,
   },
   {
@@ -474,8 +590,62 @@ const ORDERED_MATH_GROUPS = [
   },
   {
     id: 'greek',
-    ...MATH_GROUPS[8],
     label: <TabIcon top="α Ω" compact />,
+    items: [
+      { category: 'Lowercase Greek Letters', label: 'α', insert: '\\alpha' },
+      { category: 'Lowercase Greek Letters', label: 'β', insert: '\\beta' },
+      { category: 'Lowercase Greek Letters', label: 'γ', insert: '\\gamma' },
+      { category: 'Lowercase Greek Letters', label: 'δ', insert: '\\delta' },
+      { category: 'Lowercase Greek Letters', label: 'ε', insert: '\\epsilon' },
+      { category: 'Lowercase Greek Letters', label: 'ζ', insert: '\\zeta' },
+      { category: 'Lowercase Greek Letters', label: 'η', insert: '\\eta' },
+      { category: 'Lowercase Greek Letters', label: 'θ', insert: '\\theta' },
+      { category: 'Lowercase Greek Letters', label: 'ϑ', insert: '\\vartheta' },
+      { category: 'Lowercase Greek Letters', label: 'ι', insert: '\\iota' },
+      { category: 'Lowercase Greek Letters', label: 'κ', insert: '\\kappa' },
+      { category: 'Lowercase Greek Letters', label: 'λ', insert: '\\lambda' },
+      { category: 'Lowercase Greek Letters', label: 'μ', insert: '\\mu' },
+      { category: 'Lowercase Greek Letters', label: 'ν', insert: '\\nu' },
+      { category: 'Lowercase Greek Letters', label: 'ξ', insert: '\\xi' },
+      { category: 'Lowercase Greek Letters', label: 'ο', insert: 'ο' },
+      { category: 'Lowercase Greek Letters', label: 'π', insert: '\\pi' },
+      { category: 'Lowercase Greek Letters', label: 'ϖ', insert: '\\varpi' },
+      { category: 'Lowercase Greek Letters', label: 'ρ', insert: '\\rho' },
+      { category: 'Lowercase Greek Letters', label: 'ς', insert: '\\varsigma' },
+      { category: 'Lowercase Greek Letters', label: 'σ', insert: '\\sigma' },
+      { category: 'Lowercase Greek Letters', label: 'τ', insert: '\\tau' },
+      { category: 'Lowercase Greek Letters', label: 'υ', insert: '\\upsilon' },
+      { category: 'Lowercase Greek Letters', label: 'φ', insert: '\\phi' },
+      { category: 'Lowercase Greek Letters', label: 'ϕ', insert: '\\varphi' },
+      { category: 'Lowercase Greek Letters', label: 'χ', insert: '\\chi' },
+      { category: 'Lowercase Greek Letters', label: 'ψ', insert: '\\psi' },
+      { category: 'Lowercase Greek Letters', label: 'ω', insert: '\\omega' },
+
+      { category: 'Uppercase Greek Letters', label: 'Ν', insert: 'Ν' },
+      { category: 'Uppercase Greek Letters', label: 'Ζ', insert: 'Ζ' },
+      { category: 'Uppercase Greek Letters', label: 'Θ', insert: '\\Theta' },
+      { category: 'Uppercase Greek Letters', label: 'Ξ', insert: '\\Xi' },
+      { category: 'Uppercase Greek Letters', label: 'Ρ', insert: 'Ρ' },
+      { category: 'Uppercase Greek Letters', label: 'Π', insert: '\\Pi' },
+
+      { category: 'Fraktur / Gothic Symbols', label: 'ℜ', insert: '\\Re' },
+      { category: 'Fraktur / Gothic Symbols', label: '𝔄', insert: '\\mathfrak{A}' },
+      { category: 'Fraktur / Gothic Symbols', label: 'ℑ', insert: '\\Im' },
+      { category: 'Fraktur / Gothic Symbols', label: '𝔉', insert: '\\mathfrak{F}' },
+      { category: 'Fraktur / Gothic Symbols', label: 'ℭ', insert: '\\mathfrak{C}' },
+      { category: 'Fraktur / Gothic Symbols', label: '𝔅', insert: '\\mathfrak{B}' },
+
+      { category: 'Hebrew Mathematical Symbols', label: 'ℵ', insert: '\\aleph' },
+      { category: 'Hebrew Mathematical Symbols', label: 'ℶ', insert: '\\beth' },
+      { category: 'Hebrew Mathematical Symbols', label: 'ℷ', insert: '\\gimel' },
+
+      { category: 'Blackboard Bold / Number Sets', label: 'ℍ', insert: '\\mathbb{H}' },
+      { category: 'Blackboard Bold / Number Sets', label: 'ℂ', insert: '\\mathbb{C}' },
+      { category: 'Blackboard Bold / Number Sets', label: 'ℕ', insert: '\\mathbb{N}' },
+      { category: 'Blackboard Bold / Number Sets', label: '𝕆', insert: '\\mathbb{O}' },
+      { category: 'Blackboard Bold / Number Sets', label: '𝔽', insert: '\\mathbb{F}' },
+      { category: 'Blackboard Bold / Number Sets', label: '𝕊', insert: '\\mathbb{S}' },
+    ],
   },
   {
     id: 'matrix',
@@ -669,6 +839,16 @@ function TabIcon({ top, bottom = '', compact = false }) {
   );
 }
 
+function ArrowTemplateIcon({ arrow, above = '', below = '' }) {
+  return (
+    <span className="cme-arrow-template-preview" aria-hidden="true">
+      {above ? <span className="cme-arrow-template-text">{above}</span> : null}
+      <span className="cme-arrow-template-arrow">{arrow}</span>
+      {below ? <span className="cme-arrow-template-text">{below}</span> : null}
+    </span>
+  );
+}
+
 /* ══════════════════════════════════════════════════════════
    CKEditor inline widget plugin for MathLive rendering
    Uses createRawElement so CKEditor won't touch the DOM inside
@@ -729,6 +909,7 @@ class MathInlinePlugin extends Plugin {
             mf.setAttribute('read-only', '');
             mf.setAttribute('math-virtual-keyboard-policy', 'manual');
             mf.setAttribute('tabindex', '-1');
+            mf.setAttribute('letter-shape-style', 'upright');
             mf.style.display = 'inline-block';
             mf.style.width = 'auto';
             mf.style.maxWidth = '100%';
@@ -934,6 +1115,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
   const [windowMode, setWindowMode] = useState('normal');
   const [activeToolbarItem, setActiveToolbarItem] = useState(null);
   const groups = mode === 'math' ? ORDERED_MATH_GROUPS : CHEM_GROUPS;
+  const activeGroupConfig = groups[activeGroup] || {};
 
   const [activeStyles, setActiveStyles] = useState({
     bold: false,
@@ -1002,6 +1184,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
     const mf = popupMfRef.current;
     if (!mf) return;
     mf.defaultMode = mode === 'chem' ? 'text' : 'math';
+    mf.letterShapeStyle = 'upright';
 
     // Pre-fill with existing value when editing
     const prefill = () => {
@@ -1186,13 +1369,71 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
           ))}
         </div>
 
-        <div className="cme-toolbar-items">
+        <div className={`cme-toolbar-items${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}`}>
           {(() => {
-            const activeItems = groups[activeGroup]?.items || [];
+            const activeItems = activeGroupConfig.items || [];
+
+            if (activeGroupConfig.id === 'greek') {
+              const groupedGreekItems = activeItems.reduce((acc, item) => {
+                const category = item.category || 'Greek Letters';
+                if (!acc[category]) acc[category] = [];
+                acc[category].push(item);
+                return acc;
+              }, {});
+              const greekLayouts = {
+                'Lowercase Greek Letters': 10,
+                'Uppercase Greek Letters': 2,
+                'Fraktur / Gothic Symbols': 2,
+                'Hebrew Mathematical Symbols': 1,
+                'Blackboard Bold / Number Sets': 2,
+              };
+
+              return (
+                <div className="cme-greek-panel">
+                  {Object.entries(groupedGreekItems).map(([category, items]) => {
+                    const cols = greekLayouts[category] || 2;
+
+                    return (
+                      <section
+                        key={category}
+                        className="cme-symbol-subgroup cme-greek-subgroup"
+                        style={{
+                          gridTemplateColumns: `repeat(${cols}, auto)`,
+                          gridTemplateRows: `repeat(${Math.ceil(items.length / cols)}, auto)`,
+                        }}
+                      >
+                        {items.map((item, i) => {
+                          const currentGroup = activeGroupConfig;
+                          const groupKey = currentGroup.id || currentGroup.label || activeGroup;
+                          const buttonKey = `${groupKey}-${category}-${i}-${item.insert || item.action || item.label}`;
+                          const isTouchedButton = activeToolbarItem === buttonKey;
+
+                          return (
+                            <button
+                              key={buttonKey}
+                              type="button"
+                              className={`cme-btn cme-greek-btn${item.cls ? ` ${item.cls}` : ''}${isTouchedButton ? ' active' : ''}`}
+                              title={item.title || item.insert}
+                              onMouseDown={(e) => {
+                                e.preventDefault();
+                                setActiveToolbarItem(buttonKey);
+                                insertAtCursor(item.insert);
+                              }}
+                            >
+                              {item.label}
+                            </button>
+                          );
+                        })}
+                      </section>
+                    );
+                  })}
+                </div>
+              );
+            }
 
             // Subgroups support: split by { type: 'sep' }
             const hasSep = activeItems.some(item => item.type === 'sep');
-            const subgroups = [];
+            let subgroups = [];
 
             if (hasSep) {
               let currentSub = { cols: 2, items: [] };
@@ -1224,10 +1465,13 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
               <div
                 key={chunkIndex}
                 className="cme-symbol-subgroup"
-                style={{ gridTemplateColumns: `repeat(${subgroup.cols}, auto)` }}
+                style={{
+                  gridTemplateColumns: `repeat(${subgroup.cols}, auto)`,
+                  gridTemplateRows: `repeat(${Math.ceil(subgroup.items.length / subgroup.cols)}, auto)`
+                }}
               >
                 {subgroup.items.map((item, i) => {
-                  const currentGroup = groups[activeGroup];
+                  const currentGroup = activeGroupConfig;
                   const groupKey = currentGroup.id || currentGroup.label || activeGroup;
                   const buttonKey = `${groupKey}-${chunkIndex * 4 + i}-${item.insert || item.action || item.label}`;
                   if (item.type === 'dropdown') {
@@ -1436,6 +1680,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
         <math-field
           ref={popupMfRef}
           class="cme-mathfield"
+          letter-shape-style="upright"
           tabIndex={0}
           math-virtual-keyboard-policy="manual"
           placeholder={mode === 'math' ? '' : ''}

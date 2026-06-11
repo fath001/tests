@@ -61,6 +61,7 @@ function QuestionPreview({ value = "" }) {
 function createPreviewMathField(latex) {
   const mf = document.createElement("math-field");
   mf.setAttribute("read-only", "");
+  mf.setAttribute("letter-shape-style", "upright");
   mf.setAttribute(
     "style",
     [

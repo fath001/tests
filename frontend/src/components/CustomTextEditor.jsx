@@ -187,6 +187,7 @@ function createMathFieldNode(latex) {
   mf.setAttribute("read-only", "");
   mf.setAttribute("math-virtual-keyboard-policy", "manual");
   mf.setAttribute("tabindex", "-1");
+  mf.setAttribute("letter-shape-style", "upright");
 
   const setLatex = () => {
     if (mf.setValue) mf.setValue(latex, { silenceNotifications: true });
