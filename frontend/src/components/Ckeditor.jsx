@@ -774,35 +774,41 @@ const CHEM_GROUPS = [
     items: ['Na', 'Mg', 'Al', 'Si', 'P', 'S', 'Cl', 'Ar', 'K', 'Ca'].map(el => ({ label: el, insert: el, cls: 'chem-element' }))
   },
   {
-    label: 'Fe-Zn', isChem: true,
-    items: ['Fe', 'Cu', 'Zn', 'Mn', 'Cr', 'Ni', 'Co', 'Ag', 'Au', 'Hg', 'Pb', 'Sn', 'Br', 'I', 'Ba', 'Pt', 'Xe'].map(el => ({ label: el, insert: el, cls: 'chem-element' }))
-  },
-  {
-    label: '→⇌', isChem: true, items: [
+    label: 'Fe-Zn →⇌', isChem: true, items: [
+      ...['Fe', 'Cu', 'Zn', 'Mn'].map(el => ({ label: el, insert: el, cls: 'chem-element' })),
+      { type: 'sep', cols: 2 },
+      ...['Cr', 'Ni', 'Co', 'Ag'].map(el => ({ label: el, insert: el, cls: 'chem-element' })),
+      { type: 'sep', cols: 2 },
+      ...['Au', 'Hg', 'Pb', 'Sn'].map(el => ({ label: el, insert: el, cls: 'chem-element' })),
+      { type: 'sep', cols: 2 },
+      ...['Br', 'I', 'Ba', 'Pt'].map(el => ({ label: el, insert: el, cls: 'chem-element' })),
+      { type: 'sep', cols: 2 },
+      { label: 'Xe', insert: 'Xe', cls: 'chem-element' },
+      { type: 'sep', cols: 5 },
       { label: '→', insert: '->', cls: 'chem-arrow' }, { label: '⇌', insert: '<=>', cls: 'chem-arrow' },
-      { label: '←', insert: '<-', cls: 'chem-arrow' }, { label: '⇄', insert: '<->', cls: 'chem-arrow' },
-      { label: '↑', insert: '^', cls: 'chem-arrow' }, { label: '↓', insert: 'v', cls: 'chem-arrow' },
-      { label: '+', insert: ' + ', cls: 'chem-arrow' },
-      { label: '→(Δ)', insert: '->[\\Delta]', cls: 'chem-arrow' },
-      { label: '→(aq)', insert: '->[aq]', cls: 'chem-arrow' },
+      { label: '←', insert: '<-', cls: 'chem-arrow' }, { label: '⇄', insert: '<->', cls: 'chem-arrow' }, { label: '↑', insert: '^', cls: 'chem-arrow' },
+      { type: 'sep', cols: 4 },
+      { label: '↓', insert: 'v', cls: 'chem-arrow' }, { label: '+', insert: ' + ', cls: 'chem-arrow' },
+      { label: '→(Δ)', insert: '->[\\Delta]', cls: 'chem-arrow' }, { label: '→(aq)', insert: '->[aq]', cls: 'chem-arrow' },
     ]
   },
   {
-    label: '(s)(l)', isChem: true, items: [
+    label: '(s)(l) ⁺/⁻', isChem: true, items: [
       { label: '(s)', insert: '(s)', cls: 'chem-state' }, { label: '(l)', insert: '(l)', cls: 'chem-state' },
       { label: '(g)', insert: '(g)', cls: 'chem-state' }, { label: '(aq)', insert: '(aq)', cls: 'chem-state' },
+      { type: 'sep', cols: 2 },
       { label: '(conc)', insert: '(conc)', cls: 'chem-state' },
       { label: '(dil)', insert: '(dil)', cls: 'chem-state' }, { label: '(ppt)', insert: '(ppt)', cls: 'chem-state' },
-    ]
-  },
-  {
-    label: '⁺/⁻', isChem: true, items: [
+      { type: 'sep', cols: 2 },
       { label: '⁺', insert: '^{+}', cls: 'chem-element' }, { label: '⁻', insert: '^{-}', cls: 'chem-element' },
       { label: '²⁺', insert: '^{2+}', cls: 'chem-element' }, { label: '²⁻', insert: '^{2-}', cls: 'chem-element' },
+      { type: 'sep', cols: 2 },
       { label: '³⁺', insert: '^{3+}', cls: 'chem-element' }, { label: '³⁻', insert: '^{3-}', cls: 'chem-element' },
       { label: '₂', insert: '2', cls: 'chem-element' }, { label: '₃', insert: '3', cls: 'chem-element' },
+      { type: 'sep', cols: 2 },
       { label: '₄', insert: '4', cls: 'chem-element' }, { label: '₅', insert: '5', cls: 'chem-element' },
       { label: '₆', insert: '6', cls: 'chem-element' }, { label: '₇', insert: '7', cls: 'chem-element' },
+      { type: 'sep', cols: 3 },
       { label: '₈', insert: '8', cls: 'chem-element' }, { label: 'ₓ', insert: 'x', cls: 'chem-element' },
       { label: 'ₙ', insert: 'n', cls: 'chem-element' },
     ]

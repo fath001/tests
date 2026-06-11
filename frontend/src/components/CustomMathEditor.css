@@ -283,10 +283,11 @@
 }
 
 .cme-btn.chem-element {
-  font-weight: bold;
-  font-size: 10px;
+  font-weight: 700;
+  font-size: 11px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #2c7040;
+  letter-spacing: 0.01em;
 }
 
 .cme-btn.green-template {
@@ -323,9 +324,11 @@
 
 .cme-btn.chem-arrow,
 .cme-btn.chem-state {
+  font-weight: 700;
   font-size: 12px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #334750;
+  letter-spacing: 0.01em;
 }
 
 .cme-btn.chem-arrow:hover,
