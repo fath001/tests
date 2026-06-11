@@ -278,23 +278,17 @@ const MATH_GROUPS = [
       { label: '⟶', insert: '\\longrightarrow' }, { label: '⟵', insert: '\\longleftarrow' },
       { label: '⟷', insert: '\\longleftrightarrow' }, { label: '⟹', insert: '\\Longrightarrow' },
       { label: '⟸', insert: '\\Longleftarrow' }, { label: '⟺', insert: '\\Longleftrightarrow' },
+      { label: '↤', insert: '\\mapsfrom' }, { label: '↦', insert: '\\mapsto' },
 
       { type: 'sep', cols: 3 },
-      { label: 'A→', insert: '\\xrightarrow{#0}', title: 'Arrow with label above' },
-      { label: 'A←', insert: '\\xleftarrow{#0}', title: 'Left arrow with label above' },
-      { label: 'A↔', insert: '\\xleftrightarrow{#0}', title: 'Two-way arrow with label above' },
-      { label: 'A⇒', insert: '\\xRightarrow{#0}', title: 'Double arrow with label above' },
-      { label: 'A⇐', insert: '\\xLeftarrow{#0}', title: 'Double left arrow with label above' },
-      { label: 'A⇔', insert: '\\xLeftrightarrow{#0}', title: 'Double two-way arrow with label above' },
+      { label: 'A→', insert: '\\xrightarrow{#0}', title: 'Arrow with label above', icon: 'arrow-label-right-above' },
+      { label: 'A←', insert: '\\xleftarrow{#0}', title: 'Left arrow with label above', icon: 'arrow-label-left-above' },
+      { label: '→A', insert: '\\xrightarrow[#?]{}', title: 'Arrow with label below', icon: 'arrow-label-right-below' },
+      { label: 'A→B', insert: '\\xrightarrow[#?]{#0}', title: 'Arrow with labels above and below', icon: 'arrow-label-right-above-below' },
+      { label: '←A', insert: '\\xleftarrow[#?]{}', title: 'Left arrow with label below', icon: 'arrow-label-left-below' },
+      { label: 'A←B', insert: '\\xleftarrow[#?]{#0}', title: 'Left arrow with labels above and below', icon: 'arrow-label-left-above-below' },
 
       { type: 'sep', cols: 3 },
-      { label: '→A', insert: '\\xrightarrow[#?]{}', title: 'Arrow with label below' },
-      { label: '⇔A', insert: '\\xLeftrightarrow[#?]{}', title: 'Double arrow with label below' },
-      { label: 'A→B', insert: '\\xrightarrow[#?]{#0}', title: 'Arrow with labels above and below' },
-
-      { type: 'sep', cols: 3 },
-      { label: 'Rxn→', insert: '\\xrightarrow{reaction}', title: 'Reaction arrow' },
-      { label: 'Eq⇌', insert: '\\xrightleftharpoons', title: 'Extensible equilibrium arrow' },
       { label: '⇌', insert: '\\rightleftharpoons', title: 'Equilibrium harpoons' },
       { label: '⇋', insert: '\\leftrightharpoons', title: 'Reverse equilibrium harpoons' },
       { label: '⇀', insert: '\\rightharpoonup', title: 'Right harpoon' },
@@ -313,10 +307,10 @@ const MATH_GROUPS = [
       { label: '—', insert: '—', title: 'Long dash' },
 
       { type: 'sep', cols: 2 },
-      { label: 'x⇀', insert: '\\overrightharpoon{#0}', title: 'Vector accent' },
-      { label: 'x→', insert: '\\overrightarrow{#0}', title: 'Arrow accent' },
-      { label: 'x↔', insert: '\\overleftrightarrow{#0}', title: 'Left-right arrow accent' },
-      { label: 'x̄', insert: '\\overline{#0}', title: 'Bar accent' },
+      { label: 'x⇀', insert: '\\overrightharpoon{#0}', title: 'Vector accent', icon: 'accent-harpoon-right' },
+      { label: 'x→', insert: '\\overrightarrow{#0}', title: 'Arrow accent', icon: 'accent-arrow-right' },
+      { label: 'x↔', insert: '\\overleftrightarrow{#0}', title: 'Left-right arrow accent', icon: 'accent-arrow-both' },
+      { label: 'x̄', insert: '\\overline{#0}', title: 'Bar accent', icon: 'accent-bar' },
     ]
   },
   {
@@ -324,8 +318,8 @@ const MATH_GROUPS = [
       { label: '∫', insert: '\\int' }, { label: '∬', insert: '\\iint' },
       { label: '∭', insert: '\\iiint' }, { label: '∮', insert: '\\oint' },
       { label: '∯', insert: '\\oiint' }, { label: '∰', insert: '\\oiiint' },
-      { label: '∫dx', insert: '\\int #0 \\, d#?' },
-      { label: '∫ₐᵇ', insert: '\\int_{#?}^{#?} #0 \\, d#?' },
+      { label: '∫dx', insert: '\\int #0 \\, d#?', icon: 'integral-with-differential' },
+      { label: '∫ₐᵇ', insert: '\\int_{#?}^{#?} #0 \\, d#?', icon: 'integral-with-limits-differential' },
       { label: '∫∫dA', insert: '\\iint_{#?} #0 \\, dA' },
       { label: '∮C', insert: '\\oint_{#?} #0 \\, d#?' },
       { label: '∫∫∫dV', insert: '\\iiint_{#?} #0 \\, dV' },
@@ -456,18 +450,18 @@ const RELATIONS_TAB_ITEMS = [
   { label: '/', insert: '/' },
   { label: '±', insert: '\\pm' },
   { label: '*', insert: '\\ast' },
-  { label: '°', insert: '\\circ' },
+  { label: '°', insert: '\\degree' },
 
   { type: 'sep', cols: 5 },
   { label: 'π', insert: '\\pi' },
   { label: '∂', insert: '\\partial' },
-  { label: '°', insert: '\\circ' },
+  { label: '°', insert: '\\degree' },
   { label: '∞', insert: '\\infty' },
   { label: 'Δ', insert: '\\Delta' },
-  { label: '′', insert: '\\prime' },
+  { label: '′', insert: "'" },
   { label: '∅', insert: '\\emptyset' },
   { label: '∇', insert: '\\nabla' },
-  { label: '″', insert: '\\prime\\prime' },
+  { label: '″', insert: "''" },
 
   { type: 'sep', cols: 3 },
   { label: '=', insert: '=' },
@@ -521,20 +515,20 @@ const ORDERED_MATH_GROUPS = [
     label: <TabIcon top="√□" bottom="□/□" />,
     items: [
       // GROUP 1 - Fractions & Roots (cols: 2)
-      { label: '□/□', insert: '\\frac{#0}{#?}', title: 'Fraction', cls: 'green-template' },
-      { label: '√', insert: '\\sqrt{#0}', title: 'Square Root', cls: 'green-template' },
-      { label: '□/⧸□', insert: '{#0}/{#?}', title: 'Bevelled Fraction', cls: 'green-template' },
-      { label: 'ⁿ√□', insert: '\\sqrt[#?]{#0}', title: 'Root', cls: 'green-template' },
+      { label: '□/□', insert: '\\frac{#0}{#?}', title: 'Fraction', cls: 'green-template', icon: 'stacked-fraction' },
+      { label: '√□', insert: '\\sqrt{#0}', title: 'Square Root', cls: 'green-template', icon: 'square-root-template' },
+      { label: '□/□', insert: '{#0}/{#?}', title: 'Bevelled Fraction', cls: 'green-template' },
+      { label: '□√□', insert: '\\sqrt[#?]{#0}', title: 'Root', cls: 'green-template', icon: 'nth-root-template' },
       { type: 'sep', cols: 2 },
       // GROUP 2a - Brackets (cols: 2)
-      { label: '()', insert: '\\left(#0\\right)', title: 'Parentheses', cls: 'green-template' },
-      { label: '[]', insert: '\\left[#0\\right]', title: 'Square Brackets', cls: 'green-template' },
-      { label: '||', insert: '\\left|#0\\right|', title: 'Absolute Value', cls: 'green-template' },
-      { label: '{}', insert: '\\left\\{#0\\right\\}', title: 'Curly Braces', cls: 'green-template' },
+      { label: '(□)', insert: '\\left(#0\\right)', title: 'Parentheses', cls: 'green-template' },
+      { label: '[□]', insert: '\\left[#0\\right]', title: 'Square Brackets', cls: 'green-template' },
+      { label: '|□|', insert: '\\left|#0\\right|', title: 'Absolute Value', cls: 'green-template' },
+      { label: '{□}', insert: '\\left\\{#0\\right\\}', title: 'Curly Braces', cls: 'green-template' },
       { type: 'sep', cols: 1 },
       // GROUP 2b - Super/Subscript (cols: 1)
-      { label: '□┐', insert: '#0^{#?}', title: 'Superscript', cls: 'green-template' },
-      { label: '□└', insert: '#0_{#?}', title: 'Subscript', cls: 'green-template' },
+      { label: '□^□', insert: '#0^{#?}', title: 'Superscript', cls: 'green-template', icon: 'superscript-template' },
+      { label: '□_□', insert: '#0_{#?}', title: 'Subscript', cls: 'green-template', icon: 'subscript-template' },
       { type: 'sep', cols: 3 },
       // GROUP 3 - Operators (cols: 3)
       { label: '+', insert: '+' },
@@ -661,19 +655,19 @@ const ORDERED_MATH_GROUPS = [
     id: 'brackets',
     label: <TabIcon top="( )[ ]" compact />,
     items: [
-      { label: '()', insert: '\\left(#0\\right)' },
-      { label: '[]', insert: '\\left[#0\\right]' },
-      { label: '{}', insert: '\\left\\{#0\\right\\}' },
-      { label: '⟨⟩', insert: '\\left\\langle #0 \\right\\rangle' },
-      { label: '||', insert: '\\left|#0\\right|' },
-      { label: '⌊⌋', insert: '\\left\\lfloor #0 \\right\\rfloor' },
-      { label: '⌈⌉', insert: '\\left\\lceil #0 \\right\\rceil' },
-      { label: '( ]', insert: '\\left(#0\\right]' },
-      { label: '[ )', insert: '\\left[#0\\right)' },
-      { label: '‖ ‖', insert: '\\left\\| #0 \\right\\|' },
-      { label: '{a,b}', insert: '\\left\\{ #0, #? \\right\\}' },
-      { label: '[a,b]', insert: '\\left[#0, #?\\right]' },
-      { label: '(a,b)', insert: '\\left(#0, #?\\right)' },
+      { label: '(□)', insert: '\\left(#0\\right)' },
+      { label: '[□]', insert: '\\left[#0\\right]' },
+      { label: '{□}', insert: '\\left\\{#0\\right\\}' },
+      { label: '⟨□⟩', insert: '\\left\\langle #0 \\right\\rangle' },
+      { label: '|□|', insert: '\\left|#0\\right|' },
+      { label: '⌊□⌋', insert: '\\left\\lfloor #0 \\right\\rfloor' },
+      { label: '⌈□⌉', insert: '\\left\\lceil #0 \\right\\rceil' },
+      { label: '(□]', insert: '\\left(#0\\right]' },
+      { label: '[□)', insert: '\\left[#0\\right)' },
+      { label: '‖□‖', insert: '\\left\\| #0 \\right\\|' },
+      { label: '{□ □}', insert: '\\left\\{ #0, #? \\right\\}' },
+      { label: '[□ □]', insert: '\\left[#0, #?\\right]' },
+      { label: '(□ □)', insert: '\\left(#0, #?\\right)' },
     ],
   },
   {
@@ -718,8 +712,8 @@ const ORDERED_MATH_GROUPS = [
       { label: '∮', insert: '\\oint' },
       { label: '∯', insert: '\\oiint' },
       { label: '∰', insert: '\\oiiint' },
-      { label: '∫dx', insert: '\\int #0 \\, d#?' },
-      { label: '∫ₐᵇ', insert: '\\int_{#?}^{#?} #0 \\, d#?' },
+      { label: '∫dx', insert: '\\int #0 \\, d#?', icon: 'integral-with-differential' },
+      { label: '∫ₐᵇ', insert: '\\int_{#?}^{#?} #0 \\, d#?', icon: 'integral-with-limits-differential' },
       { label: '∬dA', insert: '\\iint_{#?} #0 \\, dA' },
       { label: 'F(b)-F(a)', insert: '\\left[#0\\right]_{#?}^{#?}' },
       { label: 'd/dx', insert: '\\frac{d}{dx}' },
@@ -1012,6 +1006,413 @@ const MATH_ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 2
 
 const CHEM_ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><text x="12" y="16" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor" font-family="system-ui, sans-serif">C</text><text x="6" y="8" font-size="4" font-weight="bold" fill="currentColor" font-family="system-ui, sans-serif">6</text></svg>';
 
+const COLOR_SWATCHES = [
+  { label: 'Black', value: '#000000' },
+  { label: 'Dim Gray', value: '#696969' },
+  { label: 'Gray', value: '#808080' },
+  { label: 'Dark Gray', value: '#a9a9a9' },
+  { label: 'Silver', value: '#c0c0c0' },
+  { label: 'White', value: '#ffffff' },
+  { label: 'Red', value: '#ff0000' },
+  { label: 'Orange', value: '#ffa500' },
+  { label: 'Yellow', value: '#ffff00' },
+  { label: 'Lime', value: '#00ff00' },
+  { label: 'Cyan', value: '#00ffff' },
+  { label: 'Blue', value: '#0000ff' },
+  { label: 'Purple', value: '#800080' },
+  { label: 'Magenta', value: '#ff00ff' },
+  { label: 'Pink', value: '#ffc0cb' },
+  { label: 'Brown', value: '#a52a2a' },
+  { label: 'Maroon', value: '#800000' },
+  { label: 'Olive', value: '#808000' },
+  { label: 'Green', value: '#008000' },
+  { label: 'Teal', value: '#008080' },
+  { label: 'Navy', value: '#000080' },
+  { label: 'Indigo', value: '#4b0082' },
+  { label: 'Violet', value: '#ee82ee' },
+  { label: 'Gold', value: '#ffd700' },
+];
+
+function normalizeCssColor(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  if (raw === 'none') return 'none';
+  if (typeof document === 'undefined') return raw.toLowerCase();
+
+  const probe = document.createElement('span');
+  probe.style.color = '';
+  probe.style.color = raw;
+  if (!probe.style.color) return '';
+
+  probe.style.position = 'absolute';
+  probe.style.opacity = '0';
+  probe.style.pointerEvents = 'none';
+  document.body.appendChild(probe);
+  const resolved = window.getComputedStyle(probe).color;
+  probe.remove();
+
+  const rgbMatch = resolved.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+  if (!rgbMatch) return resolved.toLowerCase();
+
+  return `#${[rgbMatch[1], rgbMatch[2], rgbMatch[3]]
+    .map((part) => Number(part).toString(16).padStart(2, '0'))
+    .join('')}`;
+}
+
+function renderToolbarItemLabel(item) {
+  if (item.icon === 'stacked-fraction') {
+    return (
+      <span className="cme-fraction-icon cme-fraction-stack" aria-hidden="true">
+        <svg
+          className="cme-fraction-svg"
+          viewBox="0 0 24 24"
+          focusable="false"
+          aria-hidden="true"
+        >
+          <rect x="7.5" y="2.5" width="9" height="6" rx="0.5" />
+          <line x1="5.5" y1="12" x2="18.5" y2="12" />
+          <rect x="7.5" y="15.5" width="9" height="6" rx="0.5" />
+        </svg>
+      </span>
+    );
+  }
+
+  if (
+    item.icon === 'arrow-label-right-above' ||
+    item.icon === 'arrow-label-left-above' ||
+    item.icon === 'arrow-label-both-above' ||
+    item.icon === 'arrow-label-right-below' ||
+    item.icon === 'arrow-label-left-below' ||
+    item.icon === 'arrow-label-both-below' ||
+    item.icon === 'arrow-label-right-above-below' ||
+    item.icon === 'arrow-label-left-above-below'
+  ) {
+    const arrowLayouts = {
+      'arrow-label-right-above': {
+        direction: 'right',
+        arrowY: 11.25,
+        topBox: { x: 6.5, y: 1.55, width: 4.8, height: 5.7 }
+      },
+      'arrow-label-left-above': {
+        direction: 'left',
+        arrowY: 11.25,
+        topBox: { x: 6.5, y: 1.55, width: 4.8, height: 5.7 }
+      },
+      'arrow-label-both-above': {
+        direction: 'both',
+        arrowY: 11.25,
+        topBox: { x: 6.5, y: 1.55, width: 4.8, height: 5.7 }
+      },
+      'arrow-label-right-below': {
+        direction: 'right',
+        arrowY: 6.7,
+        bottomBox: { x: 6.5, y: 10.35, width: 4.8, height: 5.7 }
+      },
+      'arrow-label-left-below': {
+        direction: 'left',
+        arrowY: 6.7,
+        bottomBox: { x: 6.5, y: 10.35, width: 4.8, height: 5.7 }
+      },
+      'arrow-label-both-below': {
+        direction: 'both',
+        arrowY: 6.7,
+        bottomBox: { x: 6.5, y: 10.35, width: 4.8, height: 5.7 }
+      },
+      'arrow-label-right-above-below': {
+        direction: 'right',
+        arrowY: 8.55,
+        topBox: { x: 6.5, y: 1.3, width: 4.8, height: 4.9 },
+        bottomBox: { x: 6.5, y: 11.7, width: 4.8, height: 4.9 }
+      },
+      'arrow-label-left-above-below': {
+        direction: 'left',
+        arrowY: 8.55,
+        topBox: { x: 6.5, y: 1.3, width: 4.8, height: 4.9 },
+        bottomBox: { x: 6.5, y: 11.7, width: 4.8, height: 4.9 }
+      }
+    };
+    const layout = arrowLayouts[item.icon];
+    const { direction, arrowY, topBox, bottomBox } = layout;
+    const arrowGraphic =
+      direction === 'left'
+        ? <path d={`M5.1 ${arrowY - 1.55}L2.55 ${arrowY}L5.1 ${arrowY + 1.55}M2.95 ${arrowY}H14.9`} />
+        : direction === 'both'
+          ? <path d={`M5.1 ${arrowY - 1.55}L2.55 ${arrowY}L5.1 ${arrowY + 1.55}M2.95 ${arrowY}H15.05M12.5 ${arrowY - 1.55}L15.05 ${arrowY}L12.5 ${arrowY + 1.55}`} />
+          : <path d={`M12.5 ${arrowY - 1.55}L15.05 ${arrowY}L12.5 ${arrowY + 1.55}M2.95 ${arrowY}H14.65`} />;
+
+    return (
+      <span className="cme-arrow-label-icon" aria-hidden="true">
+        <svg
+          className="cme-arrow-label-svg"
+          viewBox="0 0 18 18"
+          focusable="false"
+          aria-hidden="true"
+        >
+          {topBox ? <rect {...topBox} rx="0.45" /> : null}
+          {arrowGraphic}
+          {bottomBox ? <rect {...bottomBox} rx="0.45" /> : null}
+        </svg>
+      </span>
+    );
+  }
+
+  if (
+    item.icon === 'integral-with-differential' ||
+    item.icon === 'integral-with-limits-differential'
+  ) {
+    const hasLimits = item.icon === 'integral-with-limits-differential';
+
+    return (
+      <span className="cme-integral-template-icon" aria-hidden="true">
+        <svg
+          className="cme-integral-template-svg"
+          viewBox="0 0 18 18"
+          focusable="false"
+          aria-hidden="true"
+        >
+          {hasLimits ? (
+            <>
+              <rect x="1.55" y="1.75" width="1.85" height="2.7" rx="0.2" className="cme-integral-template-box" />
+              <rect x="2.95" y="13.1" width="1.85" height="2.7" rx="0.2" className="cme-integral-template-box" />
+            </>
+          ) : (
+            <rect x="2.55" y="13.1" width="1.85" height="2.7" rx="0.2" className="cme-integral-template-box" />
+          )}
+          <path d="M6.05 14.72C5.8 10 7.55 4.5 9.95 3.42C11.02 2.95 11.75 3.18 12.17 4.12C12.52 4.9 12.5 5.98 12.18 7.28" />
+          <rect x="10.85" y="1.75" width="1.85" height="2.7" rx="0.2" className="cme-integral-template-box" />
+          <text x="11" y="14.25" className="cme-integral-template-text">d</text>
+          <rect x="14.05" y="12.05" width="1.85" height="2.7" rx="0.2" className="cme-integral-template-box" />
+        </svg>
+      </span>
+    );
+  }
+
+  if (
+    item.insert === 'matrix' ||
+    item.insert === 'bmatrix' ||
+    item.insert === 'pmatrix' ||
+    item.insert === 'vmatrix'
+  ) {
+    const matrixType = item.insert;
+    const cells = matrixType === 'matrix'
+      ? [
+          [2.3, 3.1], [7.1, 3.1], [11.9, 3.1],
+          [2.3, 7.25], [7.1, 7.25], [11.9, 7.25],
+          [2.3, 11.4], [7.1, 11.4], [11.9, 11.4],
+        ]
+      : [
+          [5.3, 2.95], [10.1, 2.95],
+          [5.3, 7.1], [10.1, 7.1],
+          [5.3, 11.25], [10.1, 11.25],
+        ];
+
+    let frame;
+    if (matrixType === 'bmatrix') {
+      frame = (
+        <path d="M3 1.8H1.95V15.85H3M12.95 1.8H14V15.85H12.95" />
+      );
+    } else if (matrixType === 'pmatrix') {
+      frame = (
+        <path d="M3.15 1.8C1.85 3.05 1.35 4.75 1.35 8.85C1.35 12.95 1.85 14.65 3.15 15.85M12.85 1.8C14.15 3.05 14.65 4.75 14.65 8.85C14.65 12.95 14.15 14.65 12.85 15.85" />
+      );
+    } else if (matrixType === 'vmatrix') {
+      frame = (
+        <path d="M2.6 1.9V15.75M13.4 1.9V15.75" />
+      );
+    }
+
+    return (
+      <span className="cme-matrix-icon" aria-hidden="true">
+        <svg
+          className="cme-matrix-svg"
+          viewBox="0 0 16 18"
+          focusable="false"
+          aria-hidden="true"
+        >
+          {frame}
+          {cells.map(([x, y], index) => (
+            <rect
+              key={`${matrixType}-${index}`}
+              x={x}
+              y={y}
+              width="2.35"
+              height="2.9"
+              rx="0.28"
+              className="cme-matrix-svg-cell"
+            />
+          ))}
+        </svg>
+      </span>
+    );
+  }
+
+  const matrixTemplateLayouts = {
+    '\\begin{matrix} #? & #? & #? \\end{matrix}': {
+      frame: 'none',
+      cells: [[2.15, 7.05], [6.85, 7.05], [11.55, 7.05]]
+    },
+    '\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}': {
+      frame: 'brackets',
+      cells: [[7.05, 3.25], [7.05, 10.2]]
+    },
+    '\\begin{bmatrix} #? & #? \\end{bmatrix}': {
+      frame: 'brackets',
+      cells: [[4.85, 7.05], [9.25, 7.05]]
+    },
+    '\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}': {
+      frame: 'parentheses',
+      cells: [[7.05, 3.25], [7.05, 10.2]]
+    },
+    '\\begin{pmatrix} #? & #? \\end{pmatrix}': {
+      frame: 'parentheses',
+      cells: [[4.85, 7.05], [9.25, 7.05]]
+    },
+    '\\begin{bmatrix} #? \\\\ #? \\\\ #? \\end{bmatrix}': {
+      frame: 'brackets',
+      cells: [[7.05, 1.9], [7.05, 7.05], [7.05, 12.2]]
+    },
+    '\\begin{pmatrix} #? \\\\ #? \\\\ #? \\end{pmatrix}': {
+      frame: 'parentheses',
+      cells: [[7.05, 1.9], [7.05, 7.05], [7.05, 12.2]]
+    }
+  };
+  const matrixTemplateLayout = matrixTemplateLayouts[item.insert];
+  if (matrixTemplateLayout) {
+    let frame;
+
+    if (matrixTemplateLayout.frame === 'brackets') {
+      frame = (
+        <path d="M2.7 1.4H1.75V16.1H2.7M13.3 1.4H14.25V16.1H13.3" />
+      );
+    } else if (matrixTemplateLayout.frame === 'parentheses') {
+      frame = (
+        <path d="M3 1.4C1.95 2.7 1.55 4.65 1.55 8.75C1.55 12.85 1.95 14.8 3 16.1M13 1.4C14.05 2.7 14.45 4.65 14.45 8.75C14.45 12.85 14.05 14.8 13 16.1" />
+      );
+    }
+
+    return (
+      <span className="cme-matrix-template-icon" aria-hidden="true">
+        <svg
+          className="cme-matrix-template-svg"
+          viewBox="0 0 16 18"
+          focusable="false"
+          aria-hidden="true"
+        >
+          {frame}
+          {matrixTemplateLayout.cells.map(([x, y], index) => (
+            <rect
+              key={`matrix-template-${index}`}
+              x={x}
+              y={y}
+              width="2.35"
+              height="3"
+              rx="0.28"
+              className="cme-matrix-svg-cell"
+            />
+          ))}
+        </svg>
+      </span>
+    );
+  }
+
+  if (item.icon === 'superscript-template' || item.icon === 'subscript-template') {
+    const isSuperscript = item.icon === 'superscript-template';
+
+    return (
+      <span className="cme-script-icon" aria-hidden="true">
+        <svg
+          className="cme-script-svg"
+          viewBox="0 0 18 18"
+          focusable="false"
+          aria-hidden="true"
+        >
+          {isSuperscript ? (
+            <>
+              <rect x="3" y="7" width="6" height="8" rx="0.5" />
+              <rect x="10" y="3" width="5" height="7" rx="0.5" />
+            </>
+          ) : (
+            <>
+              <rect x="3" y="3" width="6" height="8" rx="0.5" />
+              <rect x="10" y="8" width="5" height="7" rx="0.5" />
+            </>
+          )}
+        </svg>
+      </span>
+    );
+  }
+
+  if (item.icon === 'square-root-template' || item.icon === 'nth-root-template') {
+    const isNthRoot = item.icon === 'nth-root-template';
+
+    return (
+      <span className="cme-root-icon" aria-hidden="true">
+        <svg
+          className="cme-root-svg"
+          viewBox="0 0 18 16"
+          focusable="false"
+          aria-hidden="true"
+        >
+          {isNthRoot ? (
+            <rect
+              x="2.1"
+              y="1.8"
+              width="2.6"
+              height="3.4"
+              rx="0.35"
+              className="cme-root-svg-box cme-root-svg-box--small"
+            />
+          ) : null}
+          <path d="M1.8 9.6H3.8L5.5 13.8L8 3.4H15.5" />
+          <rect
+            x="9.6"
+            y="4.3"
+            width="4.2"
+            height="7"
+            rx="0.4"
+            className="cme-root-svg-box"
+          />
+        </svg>
+      </span>
+    );
+  }
+
+  if (
+    item.icon === 'accent-harpoon-right' ||
+    item.icon === 'accent-arrow-right' ||
+    item.icon === 'accent-arrow-both' ||
+    item.icon === 'accent-bar'
+  ) {
+    let accentGraphic;
+
+    if (item.icon === 'accent-bar') {
+      accentGraphic = <line x1="3.5" y1="4.5" x2="14.5" y2="4.5" />;
+    } else if (item.icon === 'accent-arrow-both') {
+      accentGraphic = <path d="M5 5.5L3.3 3.9M5 5.5L3.3 7.1M3.5 5.5H14.5M13 3.9L14.7 5.5L13 7.1" />;
+    } else if (item.icon === 'accent-harpoon-right') {
+      accentGraphic = <path d="M3.5 5.5H14M11.8 3.9H14.7V6.8" />;
+    } else {
+      accentGraphic = <path d="M3.5 5.5H14.2M11.8 3.9L14.7 5.5L11.8 7.1" />;
+    }
+
+    return (
+      <span className="cme-accent-icon" aria-hidden="true">
+        <svg
+          className="cme-accent-svg"
+          viewBox="0 0 18 18"
+          focusable="false"
+          aria-hidden="true"
+        >
+          {accentGraphic}
+          <rect x="6.4" y="8.6" width="5.2" height="7" rx="0.45" className="cme-accent-svg-box" />
+        </svg>
+      </span>
+    );
+  }
+
+  return item.label;
+}
+
 function makeToolbarPlugin(onOpenPopup) {
   return class MathChemToolbarPlugin extends Plugin {
     init() {
@@ -1066,6 +1467,10 @@ function MatrixHoverGrid({ matrixType, x, y, onSelect, onMouseEnter, onMouseLeav
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
+      <div className="cme-matrix-hover-title-wrap">
+        <div className="cme-matrix-hover-title">{labelMap[matrixType] || 'Matrix'}</div>
+        <div className="cme-matrix-hover-subtitle">{hoverGrid.r} × {hoverGrid.c}</div>
+      </div>
       <div className="cme-matrix-hover-grid">
         {Array.from({ length: 6 }).map((_, rIndex) => (
           <div key={rIndex} className="cme-matrix-hover-row">
@@ -1089,19 +1494,19 @@ function MatrixHoverGrid({ matrixType, x, y, onSelect, onMouseEnter, onMouseLeav
       </div>
       <div className="cme-matrix-hover-footer">
         <div className="cme-matrix-counter">
-          <span>R</span>
+          <span className="cme-counter-label">R</span>
           <span className="cme-counter-val">{hoverGrid.r}</span>
           <div className="cme-counter-btns">
-            <button type="button" onClick={() => setHoverGrid(prev => ({ ...prev, r: Math.min(10, prev.r + 1) }))}>▲</button>
-            <button type="button" onClick={() => setHoverGrid(prev => ({ ...prev, r: Math.max(1, prev.r - 1) }))}>▼</button>
+            <button type="button" onClick={() => setHoverGrid(prev => ({ ...prev, r: Math.min(10, prev.r + 1) }))}>+</button>
+            <button type="button" onClick={() => setHoverGrid(prev => ({ ...prev, r: Math.max(1, prev.r - 1) }))}>-</button>
           </div>
         </div>
         <div className="cme-matrix-counter">
-          <span>C</span>
+          <span className="cme-counter-label">C</span>
           <span className="cme-counter-val">{hoverGrid.c}</span>
           <div className="cme-counter-btns">
-            <button type="button" onClick={() => setHoverGrid(prev => ({ ...prev, c: Math.min(10, prev.c + 1) }))}>▲</button>
-            <button type="button" onClick={() => setHoverGrid(prev => ({ ...prev, c: Math.max(1, prev.c - 1) }))}>▼</button>
+            <button type="button" onClick={() => setHoverGrid(prev => ({ ...prev, c: Math.min(10, prev.c + 1) }))}>+</button>
+            <button type="button" onClick={() => setHoverGrid(prev => ({ ...prev, c: Math.max(1, prev.c - 1) }))}>-</button>
           </div>
         </div>
       </div>
@@ -1120,11 +1525,23 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
   const [showColorPicker, setShowColorPicker] = useState(null); // { x, y } or null
   const [windowMode, setWindowMode] = useState('normal');
   const [activeToolbarItem, setActiveToolbarItem] = useState(null);
+  const [customColorInput, setCustomColorInput] = useState('');
+  const [customColorError, setCustomColorError] = useState('');
   const groups = mode === 'math' ? ORDERED_MATH_GROUPS : CHEM_GROUPS;
+  const isMathMode = mode === 'math';
   const activeGroupConfig = groups[activeGroup] || {};
+  const colorSwatches = useMemo(
+    () => COLOR_SWATCHES.map((swatch) => ({
+      ...swatch,
+      normalized: normalizeCssColor(swatch.value) || swatch.value.toLowerCase(),
+    })),
+    []
+  );
 
   const [activeStyles, setActiveStyles] = useState({
     bold: false,
+    italic: false,
+    boldItalic: false,
     color: 'none',
     fontFamily: 'none',
     fontSize: 'auto'
@@ -1134,9 +1551,16 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
     const mf = popupMfRef.current;
     if (!mf || typeof mf.queryStyle !== 'function') return;
     try {
+      const boldItalic = mf.queryStyle({ variantStyle: 'bolditalic' }) === 'all';
       const bold = (
+        boldItalic ||
         mf.queryStyle({ fontSeries: 'b' }) === 'all' ||
         mf.queryStyle({ variantStyle: 'bold' }) === 'all'
+      );
+      const italic = (
+        boldItalic ||
+        mf.queryStyle({ fontShape: 'it' }) === 'all' ||
+        mf.queryStyle({ variantStyle: 'italic' }) === 'all'
       );
 
       const currentFont = ['roman', 'sans-serif', 'monospace'].find(
@@ -1147,17 +1571,25 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
         (sz) => mf.queryStyle({ fontSize: sz }) === 'all'
       ) || 'auto';
 
-      const currentColor = [
-        'black', 'dimgray', 'gray', 'darkgray', 'silver', 'white',
-        'red', 'orange', 'yellow', 'lime', 'cyan', 'blue',
-        'purple', 'magenta', 'pink', 'brown', 'maroon', 'olive',
-        'green', 'teal', 'navy', 'indigo', 'violet', 'gold'
-      ].find(
-        (c) => mf.queryStyle({ color: c }) === 'all'
-      ) || 'none';
+      const customCandidate = normalizeCssColor(customColorInput);
+      const colorCandidates = [
+        ...new Set(
+          colorSwatches
+            .flatMap((swatch) => [swatch.normalized, swatch.value])
+            .concat(activeStyles.color !== 'none' ? [activeStyles.color] : [])
+            .concat(customCandidate ? [customCandidate, customColorInput.trim()] : [])
+            .filter(Boolean)
+        ),
+      ];
+      const currentColorMatch = colorCandidates.find(
+        (candidate) => mf.queryStyle({ color: candidate }) === 'all'
+      );
+      const currentColor = currentColorMatch ? normalizeCssColor(currentColorMatch) || currentColorMatch : 'none';
 
       setActiveStyles({
         bold,
+        italic,
+        boldItalic,
         fontFamily: currentFont,
         fontSize: String(currentSize),
         color: currentColor,
@@ -1165,7 +1597,71 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
     } catch (e) {
       console.warn("Failed to query active styles:", e);
     }
+  }, [activeStyles.color, colorSwatches, customColorInput]);
+
+  const applyCurrentTypingStyles = useCallback((styleState) => {
+    const mf = popupMfRef.current;
+    if (!mf || typeof mf.applyStyle !== 'function') return;
+
+    const nextBold = Boolean(styleState.bold);
+    const nextItalic = Boolean(styleState.italic);
+    const nextVariantStyle = nextBold && nextItalic
+      ? 'bolditalic'
+      : nextBold
+        ? 'bold'
+        : nextItalic
+          ? 'italic'
+          : 'up';
+
+    mf.applyStyle({
+      variantStyle: nextVariantStyle,
+      fontSeries: nextBold ? 'b' : 'm',
+      fontShape: nextItalic ? 'it' : 'n',
+    });
+
+    mf.applyStyle({ color: styleState.color === 'none' ? 'none' : styleState.color });
+    if (styleState.fontFamily !== 'none') {
+      mf.applyStyle({ fontFamily: styleState.fontFamily });
+    }
+    if (styleState.fontSize !== 'auto') {
+      const fontSize = parseInt(styleState.fontSize, 10);
+      mf.applyStyle({ fontSize, size: fontSize });
+    }
   }, []);
+
+  const setTypingVariant = useCallback((nextBold, nextItalic) => {
+    const mf = popupMfRef.current;
+    if (!mf) return;
+
+    mf.focus();
+    applyCurrentTypingStyles({
+      ...activeStyles,
+      bold: nextBold,
+      italic: nextItalic,
+      boldItalic: nextBold && nextItalic,
+    });
+    requestAnimationFrame(updateActiveStyles);
+  }, [activeStyles, applyCurrentTypingStyles, updateActiveStyles]);
+
+  const applyTextColor = useCallback((value) => {
+    const mf = popupMfRef.current;
+    if (!mf || typeof mf.applyStyle !== 'function') return false;
+
+    const normalized = value === 'none' ? 'none' : normalizeCssColor(value);
+    if (value !== 'none' && !normalized) {
+      setCustomColorError('Enter a valid hex code or CSS color name.');
+      return false;
+    }
+
+    const nextColor = value === 'none' ? 'none' : normalized;
+    mf.focus();
+    mf.applyStyle({ color: nextColor });
+    setActiveStyles((prev) => ({ ...prev, color: nextColor }));
+    setCustomColorInput(nextColor === 'none' ? '' : nextColor);
+    setCustomColorError('');
+    requestAnimationFrame(updateActiveStyles);
+    return true;
+  }, [updateActiveStyles]);
 
 
   useEffect(() => {
@@ -1226,33 +1722,14 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
         mf.executeCommand(['insert', '\\\\']);
         // Re-apply active styles on new line
         setTimeout(() => {
-          if (typeof mf.applyStyle === 'function') {
-            if (activeStyles.bold) {
-              mf.applyStyle({
-                variantStyle: 'bold',
-                fontSeries: 'b'
-              });
-            }
-            if (activeStyles.color !== 'none') {
-              mf.applyStyle({ color: activeStyles.color });
-            }
-            if (activeStyles.fontFamily !== 'none') {
-              mf.applyStyle({ fontFamily: activeStyles.fontFamily });
-            }
-            if (activeStyles.fontSize !== 'auto') {
-              mf.applyStyle({
-                fontSize: parseInt(activeStyles.fontSize, 10),
-                size: parseInt(activeStyles.fontSize, 10)
-              });
-            }
-            updateActiveStyles();
-          }
+          applyCurrentTypingStyles(activeStyles);
+          updateActiveStyles();
         }, 10);
       }
     };
     mf.addEventListener('keydown', handleKeyDown);
     return () => mf.removeEventListener('keydown', handleKeyDown);
-  }, [mode, activeStyles, updateActiveStyles]);
+  }, [mode, activeStyles, applyCurrentTypingStyles, updateActiveStyles]);
 
 
 
@@ -1375,7 +1852,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
           ))}
         </div>
 
-        <div className={`cme-toolbar-items${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}`}>
+        <div className={`cme-toolbar-items${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${isMathMode ? ' cme-toolbar-items--math-compact' : ''}`}>
           {(() => {
             const activeItems = activeGroupConfig.items || [];
 
@@ -1402,7 +1879,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                     return (
                       <section
                         key={category}
-                        className="cme-symbol-subgroup cme-greek-subgroup"
+                        className={`cme-symbol-subgroup cme-greek-subgroup${isMathMode ? ' cme-symbol-subgroup--compact' : ''}`}
                         style={{
                           gridTemplateColumns: `repeat(${cols}, auto)`,
                           gridTemplateRows: `repeat(${Math.ceil(items.length / cols)}, auto)`,
@@ -1418,7 +1895,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                             <button
                               key={buttonKey}
                               type="button"
-                              className={`cme-btn cme-greek-btn${item.cls ? ` ${item.cls}` : ''}${isTouchedButton ? ' active' : ''}`}
+                              className={`cme-btn cme-greek-btn${isMathMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${isTouchedButton ? ' active' : ''}`}
                               title={item.title || item.insert}
                               onMouseDown={(e) => {
                                 e.preventDefault();
@@ -1470,7 +1947,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
             return subgroups.map((subgroup, chunkIndex) => (
               <div
                 key={chunkIndex}
-                className="cme-symbol-subgroup"
+                className={`cme-symbol-subgroup${isMathMode ? ' cme-symbol-subgroup--compact' : ''}`}
                 style={{
                   gridTemplateColumns: `repeat(${subgroup.cols}, auto)`,
                   gridTemplateRows: `repeat(${Math.ceil(subgroup.items.length / subgroup.cols)}, auto)`
@@ -1553,7 +2030,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                       >
                         <button
                           type="button"
-                          className={`cme-btn template${item.cls ? ` ${item.cls}` : ''}${activeToolbarItem === buttonKey || activeMatrix?.type === item.insert ? ' active' : ''}`}
+                        className={`cme-btn template${isMathMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${activeToolbarItem === buttonKey || activeMatrix?.type === item.insert ? ' active' : ''}`}
                           title={item.insert}
                           onMouseDown={(e) => {
                             e.preventDefault();
@@ -1571,24 +2048,28 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                             }
                           }}
                         >
-                          {item.label}
+                          {renderToolbarItemLabel(item)}
                         </button>
                       </div>
                     );
                   }
 
                   const isBoldBtn = item.action === 'BOLD';
+                  const isItalicBtn = item.action === 'ITALIC';
+                  const isBoldItalicBtn = item.action === 'BOLD_ITALIC';
                   const isColorBtn = item.action === 'TEXT_COLOR';
                   const isBtnActive =
-                    (isBoldBtn && activeStyles.bold) ||
-                    (isColorBtn && activeStyles.color !== 'none' && activeStyles.color !== 'black') ||
+                    (isBoldBtn && activeStyles.bold && !activeStyles.italic) ||
+                    (isItalicBtn && activeStyles.italic && !activeStyles.bold) ||
+                    (isBoldItalicBtn && activeStyles.boldItalic) ||
+                    (isColorBtn && activeStyles.color !== 'none') ||
                     activeToolbarItem === buttonKey;
 
                   return (
                     <button
                       key={`${groupKey}-${chunkIndex * 4 + i}`}
                       type="button"
-                      className={`cme-btn${currentGroup.isTemplate ? ' template' : ''}${item.cls ? ` ${item.cls}` : ''}${isBtnActive ? ' active' : ''}`}
+                      className={`cme-btn${currentGroup.isTemplate ? ' template' : ''}${isMathMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${isBtnActive ? ' active' : ''}`}
                       title={item.title || item.insert}
                       onMouseDown={(e) => {
                         e.preventDefault();
@@ -1599,18 +2080,14 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                           setShowSpecialChars({ x: rect.left, y: rect.bottom + 4 });
                         } else if (item.action === 'TEXT_COLOR') {
                           const rect = e.currentTarget.getBoundingClientRect();
+                          setCustomColorInput(activeStyles.color !== 'none' ? activeStyles.color : '');
+                          setCustomColorError('');
                           setShowColorPicker({ x: rect.left, y: rect.bottom + 4 });
                         } else if (item.action === 'BOLD') {
-                          if (mf && typeof mf.applyStyle === 'function') {
-                            mf.focus();
-                            mf.applyStyle({
-                              variantStyle: activeStyles.bold ? '' : 'bold',
-                              fontSeries: activeStyles.bold ? 'auto' : 'b'
-                            });
-                            updateActiveStyles();
-                          }
+                          setTypingVariant(!activeStyles.bold, activeStyles.italic);
                         } else if (item.action === 'BOLD_ITALIC') {
-                          insertAtCursor('\\boldsymbol{\\mathit{#0}}');
+                          const shouldEnableBoth = !activeStyles.boldItalic;
+                          setTypingVariant(shouldEnableBoth, shouldEnableBoth);
                         } else if (item.action === 'CUT') {
                           const latex = mf ? (mf.getValue ? mf.getValue() : mf.value || '') : '';
                           if (latex && navigator.clipboard?.writeText) {
@@ -1644,7 +2121,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                         } else if (item.action === 'TILDE') {
                           insertAtCursor('\\widetilde{#0}');
                         } else if (item.action === 'ITALIC') {
-                          insertAtCursor('\\mathit{#0}');
+                          setTypingVariant(activeStyles.bold, !activeStyles.italic);
                         } else if (item.action === 'TEXT') {
                           insertAtCursor('\\text{#0}');
                         } else if (item.action === 'UNDO') {
@@ -1665,7 +2142,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                         }
                       }}
                     >
-                      {item.label}
+                      {renderToolbarItemLabel(item)}
                     </button>
                   );
                 })}
@@ -1735,44 +2212,194 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
           className="cme-color-picker-popup"
           style={{
             position: 'fixed',
-            left: Math.min(showColorPicker.x, window.innerWidth - 160) + 'px',
-            top: Math.min(showColorPicker.y, window.innerHeight - 100) + 'px',
-            zIndex: 100000, background: '#fff', border: '1px solid #ccc', padding: '6px', display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '4px', borderRadius: '4px', boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+            left: Math.min(showColorPicker.x, window.innerWidth - 260) + 'px',
+            top: Math.min(showColorPicker.y, window.innerHeight - 235) + 'px',
+            zIndex: 100000,
+            width: '244px',
+            background: 'linear-gradient(180deg, #ffffff 0%, #f6fafc 100%)',
+            border: '1px solid #c8d4dc',
+            padding: '12px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            borderRadius: '10px',
+            boxShadow: '0 16px 28px rgba(15, 23, 42, 0.18), 0 2px 6px rgba(15, 23, 42, 0.08)'
           }}
         >
-          {[
-            'black', 'dimgray', 'gray', 'darkgray', 'silver', 'white',
-            'red', 'orange', 'yellow', 'lime', 'cyan', 'blue',
-            'purple', 'magenta', 'pink', 'brown', 'maroon', 'olive',
-            'green', 'teal', 'navy', 'indigo', 'violet', 'gold'
-          ].map(c => {
-            const isColorSelected = activeStyles.color === c || (c === 'black' && (activeStyles.color === 'none' || !activeStyles.color));
-            return (
-              <div
-                key={c}
-                title={c}
-                style={{
-                  width: '16px',
-                  height: '16px',
-                  backgroundColor: c,
-                  cursor: 'pointer',
-                  border: isColorSelected ? '2px solid #e6c229' : '1px solid #000',
-                  boxSizing: 'border-box'
-                }}
-                onMouseDown={(e) => {
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '10px'
+            }}
+          >
+            <div>
+              <div style={{ fontSize: '12px', fontWeight: 700, color: '#1f2f37', lineHeight: 1.1 }}>
+                Text Color
+              </div>
+              <div style={{ fontSize: '10px', color: '#667b88', marginTop: '2px' }}>
+                Pick a swatch or enter a custom value
+              </div>
+            </div>
+            <div
+              style={{
+                width: '28px',
+                height: '28px',
+                borderRadius: '8px',
+                border: '1px solid #b8c8d2',
+                background: activeStyles.color === 'none'
+                  ? 'linear-gradient(135deg, #ffffff 0%, #eef3f7 100%)'
+                  : (normalizeCssColor(customColorInput) || activeStyles.color),
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.8)'
+              }}
+              title={activeStyles.color === 'none' ? 'No color selected' : activeStyles.color}
+            />
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(6, 1fr)',
+              gap: '6px',
+              padding: '8px',
+              border: '1px solid #d7e1e8',
+              borderRadius: '8px',
+              background: 'rgba(255,255,255,0.78)'
+            }}
+          >
+            {colorSwatches.map((swatch) => {
+              const isColorSelected = activeStyles.color === swatch.normalized;
+              return (
+                <div
+                  key={swatch.normalized}
+                  title={swatch.label}
+                  style={{
+                    width: '22px',
+                    height: '22px',
+                    backgroundColor: swatch.value,
+                    cursor: 'pointer',
+                    border: isColorSelected ? '2px solid #d6a528' : '1px solid rgba(31, 47, 55, 0.22)',
+                    borderRadius: '6px',
+                    boxSizing: 'border-box',
+                    boxShadow: isColorSelected
+                      ? '0 0 0 2px rgba(214, 165, 40, 0.16)'
+                      : 'inset 0 1px 0 rgba(255,255,255,0.6)'
+                  }}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (applyTextColor(swatch.normalized)) {
+                      setShowColorPicker(null);
+                    }
+                  }}
+                />
+              );
+            })}
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '6px'
+            }}
+          >
+            <div style={{ fontSize: '10px', fontWeight: 700, color: '#5f7481', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+              Custom Value
+            </div>
+            <input
+              type="text"
+              value={customColorInput}
+              placeholder="#2c8a43 or tomato"
+              style={{
+                width: '100%',
+                minWidth: 0,
+                height: '32px',
+                border: `1px solid ${customColorError ? '#dc2626' : '#b7c7d1'}`,
+                borderRadius: '8px',
+                padding: '0 10px',
+                fontSize: '12px',
+                color: '#22343d',
+                background: '#fff',
+                boxSizing: 'border-box',
+                outline: 'none'
+              }}
+              onChange={(e) => {
+                setCustomColorInput(e.target.value);
+                if (customColorError) setCustomColorError('');
+              }}
+              onMouseDown={(e) => e.stopPropagation()}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
                   e.preventDefault();
                   e.stopPropagation();
-                  const mf = popupMfRef.current;
-                  if (mf && typeof mf.applyStyle === 'function') {
-                    mf.focus();
-                    mf.applyStyle({ color: c === 'black' ? 'none' : c });
-                    updateActiveStyles();
+                  if (applyTextColor(customColorInput)) {
+                    setShowColorPicker(null);
                   }
+                }
+              }}
+            />
+          </div>
+
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button
+              type="button"
+              style={{
+                flex: 1,
+                border: '1px solid #7a92a1',
+                borderRadius: '8px',
+                background: 'linear-gradient(180deg, #8ea3b0 0%, #738d9d 100%)',
+                color: '#fff',
+                fontSize: '11px',
+                fontWeight: 600,
+                height: '30px',
+                minWidth: 0,
+                padding: '0 10px',
+                cursor: 'pointer'
+              }}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (applyTextColor(customColorInput)) {
                   setShowColorPicker(null);
-                }}
-              />
-            );
-          })}
+                }
+              }}
+            >
+              Apply Color
+            </button>
+            <button
+              type="button"
+              style={{
+                width: '32px',
+                minWidth: '32px',
+                border: '1px solid #c4d0d8',
+                borderRadius: '8px',
+                background: '#ffffff',
+                color: '#647987',
+                fontSize: '12px',
+                fontWeight: 700,
+                height: '30px',
+                padding: 0,
+                cursor: 'pointer'
+              }}
+              title="Clear color"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                applyTextColor('none');
+                setShowColorPicker(null);
+              }}
+            >
+              ×
+            </button>
+          </div>
+
+          {customColorError ? (
+            <div style={{ fontSize: '10px', color: '#b91c1c', lineHeight: 1.2, marginTop: '-2px' }}>
+              {customColorError}
+            </div>
+          ) : null}
         </div>,
         document.body
       )}

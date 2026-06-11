@@ -193,6 +193,11 @@
   padding: 5px;
 }
 
+.cme-toolbar-items--math-compact {
+  padding: 5px;
+  gap: 2px;
+}
+
 .cme-toolbar-items::-webkit-scrollbar { height: 5px; }
 .cme-toolbar-items::-webkit-scrollbar-track { background: transparent; }
 .cme-toolbar-items::-webkit-scrollbar-thumb { background: #3a3a5c; border-radius: 3px; }
@@ -200,8 +205,10 @@
 
 .cme-symbol-subgroup {
   display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: auto;
   grid-template-columns: repeat(2, auto);
-  grid-template-rows: repeat(2, auto);
+  grid-template-rows: repeat(2, auto) !important;
   gap: 2px;
   padding: 0 4px;
   border-right: 1px solid #b9c7d0;
@@ -213,6 +220,12 @@
 }  
 
 .cme-symbol-subgroup:last-child { border-right: none; }
+
+.cme-symbol-subgroup--compact {
+  gap: 2px;
+  padding: 0 3px;
+  margin: 0;
+}
 
 .cme-greek-panel {
   display: inline-flex;
@@ -320,6 +333,14 @@
   letter-spacing: 0.04em;
 }
 
+.cme-btn--compact {
+  min-width: 19px;
+  height: 24px;
+  padding: 0 2px;
+  font-size: 10.5px;
+  border-radius: 3px;
+}
+
 .cme-btn.chem-element:hover { border-color: #75b189; }
 
 .cme-btn.chem-arrow,
@@ -333,6 +354,269 @@
 
 .cme-btn.chem-arrow:hover,
 .cme-btn.chem-state:hover { border-color: #8daab7; }
+
+.cme-fraction-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  letter-spacing: 0.01em;
+}
+
+.cme-fraction-icon.cme-fraction-stack {
+  width: 16px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.cme-fraction-svg {
+  display: block;
+  width: 16px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.cme-fraction-svg rect,
+.cme-fraction-svg line {
+  stroke: #2c8a43;
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: square;
+}
+
+.cme-arrow-label-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.cme-arrow-label-svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.cme-arrow-label-svg rect {
+  stroke: #2c8a43;
+  stroke-width: 1.7;
+  fill: none;
+}
+
+.cme-arrow-label-svg line,
+.cme-arrow-label-svg path {
+  stroke: #22343d;
+  stroke-width: 1.7;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cme-integral-template-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cme-integral-template-svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.cme-integral-template-svg path {
+  stroke: #22343d;
+  stroke-width: 1.15;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cme-integral-template-text {
+  fill: #22343d;
+  font-size: 6.4px;
+  font-weight: 600;
+  font-family: "Cambria Math", "Times New Roman", serif;
+}
+
+.cme-integral-template-box {
+  stroke: #2c8a43;
+  stroke-width: 1.02;
+  fill: none;
+}
+
+.cme-matrix-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 18px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cme-matrix-svg {
+  display: block;
+  width: 16px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.cme-matrix-svg path {
+  stroke: #22343d;
+  stroke-width: 1.25;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cme-matrix-svg-cell {
+  stroke: #2c8a43;
+  stroke-width: 1.05;
+  fill: none;
+}
+
+.cme-matrix-template-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 18px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cme-matrix-template-svg {
+  display: block;
+  width: 16px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.cme-matrix-template-svg path {
+  stroke: #22343d;
+  stroke-width: 1.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cme-script-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 18px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cme-script-svg {
+  display: block;
+  width: 16px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.cme-script-svg rect {
+  stroke: #2c8a43;
+  stroke-width: 1.6;
+  fill: none;
+}
+
+.cme-root-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cme-root-svg {
+  display: block;
+  width: 15px;
+  height: 14px;
+  overflow: hidden;
+}
+
+.cme-root-svg path {
+  stroke: #22343d;
+  stroke-width: 1.15;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cme-root-svg-box {
+  stroke: #2c8a43;
+  stroke-width: 1.1;
+  fill: none;
+}
+
+.cme-root-svg-box--small {
+  stroke-width: 1;
+  opacity: 0.95;
+}
+
+.cme-accent-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 18px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cme-accent-svg {
+  display: block;
+  width: 16px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.cme-accent-svg line,
+.cme-accent-svg path {
+  stroke: #22343d;
+  stroke-width: 1.3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cme-accent-svg-box {
+  stroke: #2c8a43;
+  stroke-width: 1.2;
+  fill: none;
+}
+
+.cme-fraction-mathfield-icon {
+  width: 26px;
+  height: 24px;
+  font-size: 10px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cme-fraction-mathfield-icon::part(mf)
+{
+  padding: 0;
+}
+
 
 .cme-sep {
   width: 1px;
@@ -677,48 +961,107 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   position: fixed;
   transform: translateX(-50%);
   margin-top: 6px;
-  background: #13131f;
-  border: 1px solid #3a3a5c;
-  border-radius: 6px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(180deg, #f7fafc 0%, #edf3f6 100%);
+  border: 1px solid #9eb0bc;
+  border-radius: 8px;
+  box-shadow: 0 14px 28px rgba(11, 24, 34, 0.2);
   padding: 8px;
   z-index: 10005;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 6px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
-.cme-matrix-hover-title { font-size: 10px; font-weight: 700; color: #a0a0c0; text-align: center; white-space: nowrap; letter-spacing: 0.05em; text-transform: uppercase; }
+.cme-matrix-hover-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
 
-.cme-matrix-hover-grid { display: flex; flex-direction: column; gap: 0; background: #0f0f1a; padding: 0; border-radius: 2px; border: 1px solid #2a2a45; }
+.cme-matrix-hover-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #304652;
+  text-align: left;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cme-matrix-hover-subtitle {
+  min-width: 32px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(86, 161, 126, 0.12);
+  border: 1px solid rgba(86, 161, 126, 0.25);
+  color: #1f593f;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.cme-matrix-hover-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: #ffffff;
+  padding: 0;
+  border-radius: 4px;
+  border: 1px solid #b8c8d2;
+  overflow: hidden;
+}
 .cme-matrix-hover-row { display: flex; gap: 0; }
-.cme-matrix-hover-cell { width: 12px; height: 12px; border: 1px solid #2a2a45; border-radius: 0; background: #13131f; cursor: pointer; transition: background-color 0.1s, border-color 0.1s; }
-.cme-matrix-hover-cell:hover { background-color: rgba(139, 92, 246, 0.2); border-color: #8b5cf6; }
-.cme-matrix-hover-cell.selected { background-color: #8b5cf6; border-color: #7c3aed; }
+.cme-matrix-hover-cell {
+  width: 12px;
+  height: 12px;
+  border: 1px solid #d7e1e8;
+  border-radius: 0;
+  background: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+}
+.cme-matrix-hover-cell:hover {
+  background-color: #eef7f1;
+  border-color: #78aa8e;
+}
+.cme-matrix-hover-cell.selected {
+  background: linear-gradient(180deg, #dff2e8 0%, #cce8d8 100%);
+  border-color: #56a17e;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
 
-.cme-matrix-hover-footer { display: flex; align-items: center; gap: 6px; flex: 1; width: 100%; border-top: 1px solid #2a2a45; padding-top: 0px; margin-top: 0px; }
+.cme-matrix-hover-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+  border-top: 1px solid #c7d4db;
+  padding-top: 6px;
+  margin-top: 0;
+}
 
-.cme-matrix-counter { display: flex; align-items: center; gap: 4px; font-size: 20px; font-weight: 900; color: #c4b5fd; }
-.cme-counter-val { min-width: 20px; text-align: center; background: #1a1a2e; border-radius: 2px; padding: 1px 4px; font-family: monospace; font-size: 20px; font-weight: 600; color: #e8e8ff; border: 1px solid #3a3a5c; }
+.cme-matrix-counter { display: flex; align-items: center; gap: 4px; }
+.cme-counter-label { font-size: 10px; font-weight: 700; color: #5c7482; }
+.cme-counter-val { min-width: 18px; text-align: center; background: #ffffff; border-radius: 4px; padding: 2px 4px; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 11px; font-weight: 700; color: #21363f; border: 1px solid #b8c8d2; }
 
 .cme-counter-btns { display: flex; flex-direction: column; gap: 1px; }
-.cme-counter-btns button { background: #1f1f35; border: none; border-radius: 1px; color: #a0a0c0; font-size: 10px; width: 16px; height: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0; transition: background 0.1s; }
-.cme-counter-btns button:hover { background: #2a2a45; color: #8b5cf6; }
-
-.cme-matrix-insert-btn { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #ffffff; border: none; padding: 2px 6px; border-radius: 2px; font-weight: bold; font-size: 9px; cursor: pointer; transition: opacity 0.15s; text-transform: uppercase; margin-left: auto; }
-.cme-matrix-insert-btn:hover { opacity: 0.85; }
+.cme-counter-btns button { background: linear-gradient(180deg, #ffffff 0%, #e9eef2 100%); border: 1px solid #b8c8d2; border-radius: 3px; color: #47606d; font-size: 10px; font-weight: 700; width: 16px; height: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0; transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease; }
+.cme-counter-btns button:hover { background: linear-gradient(180deg, #f7fcf9 0%, #e2f1e8 100%); border-color: #7faa93; color: #1f593f; }
 
 /* ── CKEditor specific ── */
-.cme-matrix-hover-popover.ck-only { width: 101px; height: 120px; box-sizing: border-box; padding: 6px; overflow: hidden; gap: 4px; display: flex; flex-direction: column; align-items: stretch; }
-.cme-matrix-hover-popover.ck-only .cme-matrix-hover-grid { width: 100%; display: flex; flex-direction: column; padding: 0; gap: 0; border: 1px solid #3a3a5c; border-radius: 2px; overflow: hidden; }
+.cme-matrix-hover-popover.ck-only { width: 136px; min-height: 146px; box-sizing: border-box; padding: 8px; overflow: hidden; gap: 6px; display: flex; flex-direction: column; align-items: stretch; }
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-grid { width: 100%; display: flex; flex-direction: column; padding: 0; gap: 0; border-radius: 4px; overflow: hidden; }
 .cme-matrix-hover-popover.ck-only .cme-matrix-hover-row { width: 100%; display: flex; gap: 0; }
-.cme-matrix-hover-popover.ck-only .cme-matrix-hover-cell { flex: 1; height: 12px; border: 0.5px solid #2a2a45; border-radius: 0; }
-.cme-matrix-hover-popover.ck-only .cme-matrix-hover-footer { border-top: 1px solid #2a2a45; padding-top: 4px; margin-top: auto; justify-content: space-around; gap: 4px; }
-.cme-matrix-hover-popover.ck-only .cme-matrix-counter { gap: 2px; font-size: 12px; }
-.cme-matrix-hover-popover.ck-only .cme-counter-val { min-width: 10px; font-size: 12px; padding: 0 2px; }
-.cme-matrix-hover-popover.ck-only .cme-counter-btns button { width: 10px; height: 7px; font-size: 5px; }
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-cell { flex: 1; height: 14px; border-radius: 0; }
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-footer { margin-top: auto; gap: 8px; }
+.cme-matrix-hover-popover.ck-only .cme-matrix-counter { gap: 3px; }
+.cme-matrix-hover-popover.ck-only .cme-counter-val { min-width: 16px; font-size: 10px; padding: 1px 3px; }
+.cme-matrix-hover-popover.ck-only .cme-counter-btns button { width: 15px; height: 11px; font-size: 9px; }
 
 .cme-btn.active,
 .cme-select.active {
