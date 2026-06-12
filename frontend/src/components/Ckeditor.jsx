@@ -232,21 +232,20 @@ const MATH_GROUPS = [
   },
   {
     label: '□/□', isTemplate: true, items: [
-      { label: 'a/b', insert: '\\frac{#0}{#?}' }, { label: 'xⁿ', insert: '#0^{#?}' },
-      { label: 'xₙ', insert: '#0_{#?}' }, { label: '√x', insert: '\\sqrt{#0}' },
-      { label: 'ⁿ√x', insert: '\\sqrt[#?]{#0}' }, { label: '()', insert: '\\left(#0\\right)' },
-      { label: '[]', insert: '\\left[#0\\right]' }, { label: '{}', insert: '\\left\\{#0\\right\\}' },
-      { label: '⟨⟩', insert: '\\left\\langle #0 \\right\\rangle' }, { label: '|x|', insert: '\\left|#0\\right|' },
-      { label: 'x̅', insert: '\\overline{#0}' }, { label: 'x̲', insert: '\\underline{#0}' },
-      { label: '□!', insert: '{#0}!' }, { label: 'mod', insert: '#0 \\pmod{#?}' },
-      { label: 'lim', insert: '\\lim_{#?}' }, { label: '∫dx', insert: '\\int_{#?}^{#?}' },
-      { label: '∑', insert: '\\sum_{#?}^{#?}' }, { label: 'vec', insert: '\\vec{#0}' },
-      { label: 'hat', insert: '\\hat{#0}' }, { label: 'bar', insert: '\\bar{#0}' },
-      { label: '(a/b)', insert: '\\left(\\frac{#0}{#?}\\right)' },
-      { label: '[a/b]', insert: '\\left[\\frac{#0}{#?}\\right]' },
-      { label: '{a/b}', insert: '\\left\\{\\frac{#0}{#?}\\right\\}' },
-      { label: 'xᵃ/ᵇ', insert: '#0^{\\frac{#?}{#?}}' },
-      { label: 'xₐᵇ', insert: '#0_{#?}^{#?}' },
+      { label: 'a/b', insert: '\\frac{#0}{#?}', title: 'Fraction', icon: 'fraction-template-image' }, { label: 'xⁿ', insert: '#0^{#?}', title: 'Superscript', icon: 'superscript-template-image' },
+      { label: 'xₙ', insert: '#0_{#?}', title: 'Subscript', icon: 'subscript-template-image' }, { label: '√x', insert: '\\sqrt{#0}', title: 'Square Root', icon: 'sqrt-template-image' },
+      { label: 'ⁿ√x', insert: '\\sqrt[#?]{#0}', title: 'Nth Root', icon: 'nth-root-template-image' }, { label: '(□)', insert: '\\left(#0\\right)' },
+      { label: '[□]', insert: '\\left[#0\\right]' }, { label: '{□}', insert: '\\left\\{#0\\right\\}' },
+      { label: '⟨□⟩', insert: '\\left\\langle #0 \\right\\rangle' }, { label: '|□|', insert: '\\left|#0\\right|' },
+      { label: 'x̅', insert: '\\overline{#0}', title: 'Overline', icon: 'overline-template-image' }, { label: 'x̲', insert: '\\underline{#0}', title: 'Underline', icon: 'underline-template-image' },
+      { label: '□!', insert: '{#0}!' }, { label: '□(mod□)', insert: '#0 \\pmod{#?}' },
+      { label: 'lim', insert: '\\lim_{#?}', title: 'Limit', icon: 'limit-template-image' }, { label: '∫dx', insert: '\\int_{#?}^{#?}', title: 'Integral with Limits', icon: 'integral-limits-template-image' },
+      { label: '∑', insert: '\\sum_{#?}^{#?}', title: 'Summation with Limits', icon: 'summation-template-image' }, { label: 'vec', insert: '\\vec{#0}', title: 'Vector', icon: 'vector-template-image' },
+      { label: '(a/b)', insert: '\\left(\\frac{#0}{#?}\\right)', title: 'Fraction in Parentheses', icon: 'paren-fraction-template-image' },
+      { label: '[a/b]', insert: '\\left[\\frac{#0}{#?}\\right]', title: 'Fraction in Brackets', icon: 'bracket-fraction-template-image' },
+      { label: '{a/b}', insert: '\\left\\{\\frac{#0}{#?}\\right\\}', title: 'Fraction in Braces', icon: 'brace-fraction-template-image' },
+      { label: 'xᵃ/ᵇ', insert: '#0^{\\frac{#?}{#?}}', title: 'Fraction Exponent', icon: 'fraction-exponent-template-image' },
+      { label: 'xₐᵇ', insert: '#0_{#?}^{#?}', title: 'Subscript and Superscript', icon: 'subsup-template-image' },
     ]
   },
   {
@@ -320,13 +319,13 @@ const MATH_GROUPS = [
       { label: '∯', insert: '\\oiint' }, { label: '∰', insert: '\\oiiint' },
       { label: '∫dx', insert: '\\int #0 \\, d#?', icon: 'integral-with-differential' },
       { label: '∫ₐᵇ', insert: '\\int_{#?}^{#?} #0 \\, d#?', icon: 'integral-with-limits-differential' },
-      { label: '∫∫dA', insert: '\\iint_{#?} #0 \\, dA' },
+      { label: '∫∫dA', insert: '\\iint_{#?} #0 \\, dA', title: 'Double Integral with Area Element', icon: 'double-integral-area-template-image' },
       { label: '∮C', insert: '\\oint_{#?} #0 \\, d#?' },
       { label: '∫∫∫dV', insert: '\\iiint_{#?} #0 \\, dV' },
       { label: '∫_C', insert: '\\int_{C} #0 \\, d#?' },
       { label: '∮_C', insert: '\\oint_{C} #0 \\, d#?' },
       { label: '∫∫_D', insert: '\\iint_{D} #0 \\, dA' },
-      { label: 'F(b)-F(a)', insert: '\\left[#0\\right]_{#?}^{#?}' },
+      { label: 'F(b)-F(a)', insert: '\\left[#0\\right]_{#?}^{#?}', title: 'Evaluated Expression', icon: 'evaluated-expression-template-image' },
       { label: 'u-sub', insert: '\\int #0 \\, du' },
     ]
   },
@@ -362,9 +361,9 @@ const MATH_GROUPS = [
       { label: 'log₁₀(x)', insert: '\\log_{10}\\left(#0\\right)' },
       { label: 'ln(x)', insert: '\\ln\\left(#0\\right)' },
       { label: 'log|x|', insert: '\\log\\left|#0\\right|' },
-      { label: 'eˣ', insert: 'e^{#0}' }, { label: 'eⁱˣ', insert: 'e^{i #0}' },
+      { label: 'eˣ', insert: 'e^{#0}', title: 'e to the Power', icon: 'exp-e-template-image' }, { label: 'eⁱˣ', insert: 'e^{i #0}' },
       { label: '10ˣ', insert: '10^{#0}' }, { label: '2ˣ', insert: '2^{#0}' },
-      { label: 'aˣ', insert: '#?^{#0}' },
+      { label: 'aˣ', insert: '#?^{#0}', title: 'Base to the Power', icon: 'exp-generic-template-image' },
       { label: 'log(ab)', insert: '\\log\\left(#0 \\cdot #?\\right)' },
       { label: 'log(a/b)', insert: '\\log\\left(\\frac{#0}{#?}\\right)' },
       { label: 'log(aⁿ)', insert: '\\log\\left(#0^{#?}\\right)' },
@@ -442,6 +441,8 @@ const MATH_GROUPS = [
 ];
 
 const RELATIONS_TAB_ITEMS = [
+  { label: 'cancel', insert: '\\cancel{#0}', title: 'Negate / Cross Out', icon: 'negate-template-image' },
+  { type: 'sep', cols: 1 },
   { label: '+', insert: '+' },
   { label: '×', insert: '\\times' },
   { label: '·', insert: '\\cdot' },
@@ -569,6 +570,8 @@ const ORDERED_MATH_GROUPS = [
       { label: 'Ω', action: 'SPECIAL_CHARS', cls: 'format-tool omega-tool', title: 'Greek Letters' },
       { label: 'T', action: 'TEXT', cls: 'format-tool text-tool', title: 'Regular Text' },
       { label: 'A', action: 'TEXT_COLOR', cls: 'format-tool color-tool', title: 'Text Color' },
+      { type: 'sep', cols: 1 },
+      { label: 'RTL', action: 'TOGGLE_RTL', cls: 'format-tool rtl-tool', title: 'Right-to-Left Input', icon: 'rtl-input-template-image' },
     ],
   },
   {
@@ -714,20 +717,20 @@ const ORDERED_MATH_GROUPS = [
       { label: '∰', insert: '\\oiiint' },
       { label: '∫dx', insert: '\\int #0 \\, d#?', icon: 'integral-with-differential' },
       { label: '∫ₐᵇ', insert: '\\int_{#?}^{#?} #0 \\, d#?', icon: 'integral-with-limits-differential' },
-      { label: '∬dA', insert: '\\iint_{#?} #0 \\, dA' },
-      { label: 'F(b)-F(a)', insert: '\\left[#0\\right]_{#?}^{#?}' },
+      { label: '∬dA', insert: '\\iint_{#?} #0 \\, dA', title: 'Double Integral with Area Element', icon: 'double-integral-area-template-image' },
+      { label: 'F(b)-F(a)', insert: '\\left[#0\\right]_{#?}^{#?}', title: 'Evaluated Expression', icon: 'evaluated-expression-template-image' },
       { label: 'd/dx', insert: '\\frac{d}{dx}' },
       { label: 'dy/dx', insert: '\\frac{dy}{dx}' },
       { label: 'd²y/dx²', insert: '\\frac{d^{2}y}{dx^{2}}' },
       { label: '∂/∂x', insert: '\\frac{\\partial}{\\partial x}' },
-      { label: '∂f/∂x', insert: '\\frac{\\partial #0}{\\partial x}' },
-      { label: '∇f', insert: '\\nabla #0' },
-      { label: '∇²f', insert: '\\nabla^{2} #0' },
+      { label: '∂□/∂x', insert: '\\frac{\\partial #0}{\\partial x}' },
+      { label: '∇□', insert: '\\nabla #0' },
+      { label: '∇²□', insert: '\\nabla^{2} #0' },
       { label: 'lim', insert: '\\lim_{#?}' },
       { label: 'log', insert: '\\log' },
       { label: 'ln', insert: '\\ln' },
-      { label: 'eˣ', insert: 'e^{#0}' },
-      { label: 'aˣ', insert: '#?^{#0}' },
+      { label: 'eˣ', insert: 'e^{#0}', title: 'e to the Power', icon: 'exp-e-template-image' },
+      { label: 'aˣ', insert: '#?^{#0}', title: 'Base to the Power', icon: 'exp-generic-template-image' },
       { label: 'sin', insert: '\\sin' },
       { label: 'cos', insert: '\\cos' },
       { label: 'tan', insert: '\\tan' },
@@ -739,21 +742,15 @@ const ORDERED_MATH_GROUPS = [
     id: 'format',
     label: <TabIcon top="↺" compact />,
     items: [
-      { label: 'B', action: 'BOLD', cls: 'template', title: 'Bold' },
-      { label: 'A', action: 'TEXT_COLOR', title: 'Text Color' },
-      { label: 'Ω', action: 'SPECIAL_CHARS', title: 'Insert Special Character' },
-      { label: 'T₁', insert: '#0_{#?}', title: 'Subscript' },
-      { label: 'T¹', insert: '#0^{#?}', title: 'Superscript' },
-      { type: 'sep', cols: 1 },
       { type: 'dropdown', label: 'Font...', width: '92px' },
       { type: 'dropdown', label: 'Size', width: '72px' },
       { type: 'sep', cols: 2 },
-      { label: 'sin(x)', insert: '\\sin\\left(#0\\right)' },
-      { label: 'cos(x)', insert: '\\cos\\left(#0\\right)' },
-      { label: 'tan(x)', insert: '\\tan\\left(#0\\right)' },
+      { label: 'sin(□)', insert: '\\sin\\left(#0\\right)' },
+      { label: 'cos(□)', insert: '\\cos\\left(#0\\right)' },
+      { label: 'tan(□)', insert: '\\tan\\left(#0\\right)' },
       { label: 'log₁₀', insert: '\\log_{10}' },
       { label: 'log₂', insert: '\\log_{2}' },
-      { label: 'ln(x)', insert: '\\ln\\left(#0\\right)' },
+      { label: 'ln(□)', insert: '\\ln\\left(#0\\right)' },
     ],
   },
 ];
@@ -794,17 +791,17 @@ const CHEM_GROUPS = [
       { label: '(conc)', insert: '(conc)', cls: 'chem-state' },
       { label: '(dil)', insert: '(dil)', cls: 'chem-state' }, { label: '(ppt)', insert: '(ppt)', cls: 'chem-state' },
       { type: 'sep', cols: 2 },
-      { label: '⁺', insert: '^{+}', cls: 'chem-element' }, { label: '⁻', insert: '^{-}', cls: 'chem-element' },
+      { label: '✚', insert: '^{+}', cls: 'chem-element' }, { label: '━', insert: '^{-}', cls: 'chem-element' },
       { label: '²⁺', insert: '^{2+}', cls: 'chem-element' }, { label: '²⁻', insert: '^{2-}', cls: 'chem-element' },
       { type: 'sep', cols: 2 },
       { label: '³⁺', insert: '^{3+}', cls: 'chem-element' }, { label: '³⁻', insert: '^{3-}', cls: 'chem-element' },
-      { label: '₂', insert: '2', cls: 'chem-element' }, { label: '₃', insert: '3', cls: 'chem-element' },
+      { label: '2', insert: '2', cls: 'chem-element' }, { label: '3', insert: '3', cls: 'chem-element' },
       { type: 'sep', cols: 2 },
-      { label: '₄', insert: '4', cls: 'chem-element' }, { label: '₅', insert: '5', cls: 'chem-element' },
-      { label: '₆', insert: '6', cls: 'chem-element' }, { label: '₇', insert: '7', cls: 'chem-element' },
+      { label: '4', insert: '4', cls: 'chem-element' }, { label: '5', insert: '5', cls: 'chem-element' },
+      { label: '6', insert: '6', cls: 'chem-element' }, { label: '7', insert: '7', cls: 'chem-element' },
       { type: 'sep', cols: 3 },
-      { label: '₈', insert: '8', cls: 'chem-element' }, { label: 'ₓ', insert: 'x', cls: 'chem-element' },
-      { label: 'ₙ', insert: 'n', cls: 'chem-element' },
+      { label: '8', insert: '8', cls: 'chem-element' }, { label: 'x', insert: 'x', cls: 'chem-element' },
+      { label: 'n', insert: 'n', cls: 'chem-element' },
     ]
   },
   {
@@ -1059,7 +1056,223 @@ function normalizeCssColor(value) {
     .join('')}`;
 }
 
-function renderToolbarItemLabel(item) {
+function makeToolbarIconImage(svg) {
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
+
+const TOOLBAR_ICON_IMAGES = {
+  'fraction-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <rect x="5.1" y="1.8" width="7.8" height="4.8" rx="0.6" fill="none" stroke="#2c8a43" stroke-width="1.5"/>
+      <line x1="3.2" y1="9" x2="14.8" y2="9" stroke="#2c8a43" stroke-width="1.6" stroke-linecap="square"/>
+      <rect x="5.1" y="11.4" width="7.8" height="4.8" rx="0.6" fill="none" stroke="#2c8a43" stroke-width="1.5"/>
+    </svg>
+  `),
+  'superscript-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <rect x="3.1" y="7.3" width="6.5" height="7.4" rx="0.6" fill="none" stroke="#2c8a43" stroke-width="1.5"/>
+      <rect x="10.3" y="3.2" width="4.6" height="5.6" rx="0.6" fill="none" stroke="#2c8a43" stroke-width="1.5"/>
+    </svg>
+  `),
+  'sqrt-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <path d="M1.9 10.3H3.9L5.6 14.1L8.1 4.3H15.4" fill="none" stroke="#2c8a43" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="9.7" y="5.1" width="4.4" height="6.6" rx="0.55" fill="none" stroke="#2c8a43" stroke-width="1.4"/>
+    </svg>
+  `),
+  'subscript-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <rect x="3.1" y="3.2" width="6.5" height="7.4" rx="0.6" fill="none" stroke="#2c8a43" stroke-width="1.5"/>
+      <rect x="10.3" y="9.2" width="4.6" height="5.6" rx="0.6" fill="none" stroke="#2c8a43" stroke-width="1.5"/>
+    </svg>
+  `),
+  'nth-root-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <rect x="1.8" y="2.1" width="2.7" height="3.3" rx="0.35" fill="none" stroke="#2c8a43" stroke-width="1.15"/>
+      <path d="M2 10.3H4L5.7 14.1L8.2 4.3H15.5" fill="none" stroke="#2c8a43" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="9.8" y="5.1" width="4.3" height="6.6" rx="0.55" fill="none" stroke="#2c8a43" stroke-width="1.4"/>
+    </svg>
+  `),
+  'overline-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <line x1="4" y1="3.4" x2="14" y2="3.4" stroke="#2c8a43" stroke-width="1.6" stroke-linecap="round"/>
+      <rect x="4.6" y="5.6" width="8.8" height="9.4" rx="1.1" fill="none" stroke="#56646d" stroke-width="1.2"/>
+    </svg>
+  `),
+  'underline-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <rect x="4.6" y="3" width="8.8" height="9.4" rx="1.1" fill="none" stroke="#56646d" stroke-width="1.2"/>
+      <line x1="4" y1="14.6" x2="14" y2="14.6" stroke="#2c8a43" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+  `),
+  'limit-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <text x="9" y="8.1" text-anchor="middle" fill="#2f3b43" font-size="6.4" font-weight="500" font-family="Cambria Math, Times New Roman, serif">lim</text>
+      <rect x="6.7" y="10.1" width="4.6" height="5.2" rx="0.55" fill="none" stroke="#2c8a43" stroke-width="1.2"/>
+    </svg>
+  `),
+  'integral-with-differential': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <text x="0.95" y="13.85" font-size="14.6" font-family="Cambria Math, STIX Two Math, Times New Roman, serif" font-weight="700" fill="#37474f">∫</text>
+      <rect x="6.55" y="6.15" width="3.05" height="3.05" rx="0.48" fill="none" stroke="#4a5559" stroke-width="1.15"/>
+      <text x="10.55" y="8.95" font-size="4.95" font-family="Arial, Helvetica, sans-serif" font-weight="700" fill="#37474f">d</text>
+      <rect x="13.15" y="6.15" width="3.05" height="3.05" rx="0.48" fill="none" stroke="#4a5559" stroke-width="1.15"/>
+    </svg>
+  `),
+  'integral-with-limits-differential': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <text x="0.85" y="14.05" font-size="14.4" font-family="Cambria Math, STIX Two Math, Times New Roman, serif" font-weight="700" fill="#37474f">∫</text>
+      <rect x="5.15" y="1.15" width="2.45" height="2.45" rx="0.42" fill="none" stroke="#4a5559" stroke-width="1.15"/>
+      <rect x="2.15" y="13.1" width="2.45" height="2.45" rx="0.42" fill="none" stroke="#4a5559" stroke-width="1.15"/>
+      <rect x="8.45" y="6.95" width="3.45" height="3.45" rx="0.55" fill="none" stroke="#4a5559" stroke-width="1.2"/>
+      <text x="12.45" y="9.85" font-size="5.15" font-family="Arial, Helvetica, sans-serif" font-weight="700" fill="#37474f">d</text>
+      <rect x="14.15" y="6.95" width="2.9" height="3.45" rx="0.5" fill="none" stroke="#4a5559" stroke-width="1.2"/>
+    </svg>
+  `),
+  'integral-limits-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <path d="M6.2 15.5C5.7 10.7 7 4.7 9.1 3.1C9.9 2.5 10.8 2.6 11.2 3.4C11.55 4.05 11.45 5.05 11.05 6.15" fill="none" stroke="#2f3b43" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="11.7" y="2.2" width="3.2" height="3.2" rx="0.4" fill="none" stroke="#2c8a43" stroke-width="1.1"/>
+      <rect x="10.2" y="12.3" width="3.2" height="3.2" rx="0.4" fill="none" stroke="#2c8a43" stroke-width="1.1"/>
+    </svg>
+  `),
+  'vector-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <path d="M5.2 4.3H12.7" fill="none" stroke="#2c8a43" stroke-width="1.35" stroke-linecap="round"/>
+      <path d="M10.9 2.95L12.95 4.3L10.9 5.65" fill="none" stroke="#2c8a43" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="4.6" y="6.4" width="8.8" height="9" rx="1.1" fill="none" stroke="#56646d" stroke-width="1.2"/>
+    </svg>
+  `),
+  'summation-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <rect x="1.9" y="2.2" width="3.1" height="3.1" rx="0.4" fill="none" stroke="#2c8a43" stroke-width="1.1"/>
+      <path d="M12.9 3.1H6.55L10.25 8.85L6.45 14.8H13.1" fill="none" stroke="#2f3b43" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="1.9" y="12.7" width="3.1" height="3.1" rx="0.4" fill="none" stroke="#2c8a43" stroke-width="1.1"/>
+    </svg>
+  `),
+  'paren-fraction-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <path d="M4.55 2.5C3.15 3.85 2.5 5.8 2.5 9C2.5 12.2 3.15 14.15 4.55 15.5" fill="none" stroke="#2f3b43" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M13.45 2.5C14.85 3.85 15.5 5.8 15.5 9C15.5 12.2 14.85 14.15 13.45 15.5" fill="none" stroke="#2f3b43" stroke-width="1.2" stroke-linecap="round"/>
+      <rect x="6.65" y="3.2" width="4.7" height="4.1" rx="0.5" fill="none" stroke="#2c8a43" stroke-width="1.1"/>
+      <line x1="6.15" y1="9" x2="11.85" y2="9" stroke="#2c8a43" stroke-width="1.2" stroke-linecap="round"/>
+      <rect x="6.65" y="10.7" width="4.7" height="4.1" rx="0.5" fill="none" stroke="#2c8a43" stroke-width="1.1"/>
+    </svg>
+  `),
+  'brace-fraction-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <path d="M5.15 2.55C3.9 2.55 3.2 3.3 3.2 4.55V6.15C3.2 6.9 2.85 7.35 2.25 7.7C2.85 8.05 3.2 8.5 3.2 9.25V10.85C3.2 12.1 3.9 12.85 5.15 12.85" fill="none" stroke="#2f3b43" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12.85 2.55C14.1 2.55 14.8 3.3 14.8 4.55V6.15C14.8 6.9 15.15 7.35 15.75 7.7C15.15 8.05 14.8 8.5 14.8 9.25V10.85C14.8 12.1 14.1 12.85 12.85 12.85" fill="none" stroke="#2f3b43" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="6.45" y="3.2" width="4.1" height="4.1" rx="0.5" fill="none" stroke="#2c8a43" stroke-width="1.1"/>
+      <line x1="6.05" y1="9" x2="10.95" y2="9" stroke="#2c8a43" stroke-width="1.2" stroke-linecap="round"/>
+      <rect x="6.45" y="10.7" width="4.1" height="4.1" rx="0.5" fill="none" stroke="#2c8a43" stroke-width="1.1"/>
+    </svg>
+  `),
+  'bracket-fraction-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <path d="M4.65 2.6H2.95V15.4H4.65" fill="none" stroke="#2f3b43" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M13.35 2.6H15.05V15.4H13.35" fill="none" stroke="#2f3b43" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="6.55" y="3.2" width="4.9" height="4.1" rx="0.5" fill="none" stroke="#2c8a43" stroke-width="1.1"/>
+      <line x1="6.05" y1="9" x2="11.95" y2="9" stroke="#2c8a43" stroke-width="1.2" stroke-linecap="round"/>
+      <rect x="6.55" y="10.7" width="4.9" height="4.1" rx="0.5" fill="none" stroke="#2c8a43" stroke-width="1.1"/>
+    </svg>
+  `),
+  'subsup-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <rect x="2.9" y="5.7" width="6.1" height="8.2" rx="0.75" fill="none" stroke="#56646d" stroke-width="1.2"/>
+      <rect x="10.5" y="2.35" width="4.05" height="4.15" rx="0.5" fill="none" stroke="#2c8a43" stroke-width="1.1"/>
+      <rect x="10.5" y="10.2" width="4.05" height="4.15" rx="0.5" fill="none" stroke="#2c8a43" stroke-width="1.1"/>
+    </svg>
+  `),
+  'fraction-exponent-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <rect x="2.6" y="7.2" width="5.8" height="7.6" rx="0.75" fill="none" stroke="#56646d" stroke-width="1.2"/>
+      <rect x="10.25" y="2.75" width="3.35" height="2.7" rx="0.4" fill="none" stroke="#2c8a43" stroke-width="1.05"/>
+      <line x1="9.8" y1="8.05" x2="14.15" y2="8.05" stroke="#2c8a43" stroke-width="1.1" stroke-linecap="round"/>
+      <rect x="10.25" y="10.1" width="3.35" height="2.7" rx="0.4" fill="none" stroke="#2c8a43" stroke-width="1.05"/>
+    </svg>
+  `),
+  'double-integral-area-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <text x="0.7" y="13.55" font-size="11.1" font-family="Cambria Math, STIX Two Math, Times New Roman, serif" font-weight="700" fill="#263238">∫∫</text>
+      <rect x="10.85" y="2.05" width="3.45" height="3.45" rx="0.55" fill="none" stroke="#465257" stroke-width="1.2"/>
+      <rect x="8.05" y="12.05" width="3.1" height="3.1" rx="0.5" fill="none" stroke="#465257" stroke-width="1.2"/>
+      <text x="10.95" y="9.75" font-size="5.45" font-family="Arial, Helvetica, sans-serif" font-weight="700" fill="#263238">dA</text>
+    </svg>
+  `),
+  'exp-e-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <text x="4.95" y="12.85" fill="#2f3b43" font-size="7.6" font-weight="700" font-family="Cambria Math, Times New Roman, serif">e</text>
+      <rect x="10.15" y="2.95" width="3.6" height="3.35" rx="0.42" fill="none" stroke="#2c8a43" stroke-width="1.05"/>
+    </svg>
+  `),
+  'exp-generic-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <rect x="3.15" y="8.15" width="5.35" height="5.45" rx="0.55" fill="none" stroke="#56646d" stroke-width="1.15"/>
+      <rect x="10.2" y="3.05" width="3.75" height="3.55" rx="0.45" fill="none" stroke="#2c8a43" stroke-width="1.05"/>
+    </svg>
+  `),
+  'evaluated-expression-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <path d="M4.45 2.7H2.9V15.3H4.45" fill="none" stroke="#2f3b43" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="5.8" y="5.55" width="4.55" height="7.2" rx="0.6" fill="none" stroke="#56646d" stroke-width="1.1"/>
+      <rect x="11.95" y="2.95" width="2.8" height="3.05" rx="0.38" fill="none" stroke="#2c8a43" stroke-width="1"/>
+      <rect x="11.95" y="11.95" width="2.8" height="3.05" rx="0.38" fill="none" stroke="#2c8a43" stroke-width="1"/>
+    </svg>
+  `),
+  'rtl-input-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <text x="10.9" y="8.6" text-anchor="middle" fill="#2f3b43" font-size="6.9" font-weight="700" font-family="Tahoma, Arial, sans-serif">س</text>
+      <rect x="11.85" y="3.1" width="3.2" height="3.2" rx="0.45" fill="none" stroke="#2c8a43" stroke-width="1.1"/>
+      <path d="M13.9 13.1H4.55M6.2 11.45L4.55 13.1L6.2 14.75" fill="none" stroke="#2c8a43" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  `),
+  'negate-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <rect x="6.2" y="3.05" width="4.35" height="10.35" rx="0.55" fill="none" stroke="#2c8a43" stroke-width="1.15"/>
+      <path d="M5.1 14.7L11.85 2.6" fill="none" stroke="#2f3b43" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  `),
+};
+
+function renderToolbarItemLabel(item, context = {}) {
+  if (
+    item.icon === 'fraction-template-image' ||
+    item.icon === 'superscript-template-image' ||
+    item.icon === 'sqrt-template-image' ||
+    item.icon === 'subscript-template-image' ||
+    item.icon === 'nth-root-template-image' ||
+    item.icon === 'overline-template-image' ||
+    item.icon === 'underline-template-image' ||
+    item.icon === 'limit-template-image' ||
+    item.icon === 'integral-limits-template-image' ||
+    item.icon === 'vector-template-image' ||
+    item.icon === 'summation-template-image' ||
+    item.icon === 'paren-fraction-template-image' ||
+    item.icon === 'brace-fraction-template-image' ||
+    item.icon === 'bracket-fraction-template-image' ||
+    item.icon === 'subsup-template-image' ||
+    item.icon === 'fraction-exponent-template-image' ||
+    item.icon === 'double-integral-area-template-image' ||
+    item.icon === 'exp-e-template-image' ||
+    item.icon === 'exp-generic-template-image' ||
+    item.icon === 'evaluated-expression-template-image' ||
+    item.icon === 'rtl-input-template-image' ||
+    item.icon === 'negate-template-image' ||
+    item.icon === 'integral-with-differential' ||
+    item.icon === 'integral-with-limits-differential'
+  ) {
+    return (
+      <span className="cme-toolbar-icon-image-wrapper" aria-hidden="true">
+        <img
+          className="cme-toolbar-icon-image"
+          src={TOOLBAR_ICON_IMAGES[item.icon]}
+          alt=""
+        />
+      </span>
+    );
+  }
+
   if (item.icon === 'stacked-fraction') {
     return (
       <span className="cme-fraction-icon cme-fraction-stack" aria-hidden="true">
@@ -1151,37 +1364,6 @@ function renderToolbarItemLabel(item) {
           {topBox ? <rect {...topBox} rx="0.45" /> : null}
           {arrowGraphic}
           {bottomBox ? <rect {...bottomBox} rx="0.45" /> : null}
-        </svg>
-      </span>
-    );
-  }
-
-  if (
-    item.icon === 'integral-with-differential' ||
-    item.icon === 'integral-with-limits-differential'
-  ) {
-    const hasLimits = item.icon === 'integral-with-limits-differential';
-
-    return (
-      <span className="cme-integral-template-icon" aria-hidden="true">
-        <svg
-          className="cme-integral-template-svg"
-          viewBox="0 0 18 18"
-          focusable="false"
-          aria-hidden="true"
-        >
-          {hasLimits ? (
-            <>
-              <rect x="1.55" y="1.75" width="1.85" height="2.7" rx="0.2" className="cme-integral-template-box" />
-              <rect x="2.95" y="13.1" width="1.85" height="2.7" rx="0.2" className="cme-integral-template-box" />
-            </>
-          ) : (
-            <rect x="2.55" y="13.1" width="1.85" height="2.7" rx="0.2" className="cme-integral-template-box" />
-          )}
-          <path d="M6.05 14.72C5.8 10 7.55 4.5 9.95 3.42C11.02 2.95 11.75 3.18 12.17 4.12C12.52 4.9 12.5 5.98 12.18 7.28" />
-          <rect x="10.85" y="1.75" width="1.85" height="2.7" rx="0.2" className="cme-integral-template-box" />
-          <text x="11" y="14.25" className="cme-integral-template-text">d</text>
-          <rect x="14.05" y="12.05" width="1.85" height="2.7" rx="0.2" className="cme-integral-template-box" />
         </svg>
       </span>
     );
@@ -1410,6 +1592,72 @@ function renderToolbarItemLabel(item) {
     );
   }
 
+  if (context.isMathMode || context.isChemMode) {
+    const classNames = ['cme-toolbar-glyph'];
+    const itemClassName = item.cls || '';
+    const isRootsMain = context.groupId === 'roots-main';
+    const isRelations = context.groupId === 'relations';
+    const isGreek = context.groupId === 'greek';
+    const isChemMode = Boolean(context.isChemMode);
+    const labelLength = String(item.label || '').length;
+
+    if (isChemMode) {
+      const isChemScriptLabel = /^(?:[⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ⁿⁱ₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₒₓᵢⱼₙ])+$/u.test(String(item.label || ''));
+      classNames.push('cme-toolbar-glyph--chem');
+      const isChemChargeLabel = /^(?:[+-]|[²³][⁺⁻])$/u.test(String(item.label || ''));
+      if (itemClassName.includes('chem-element')) {
+        classNames.push('cme-toolbar-glyph--chem-element');
+      }
+      if (itemClassName.includes('chem-arrow')) {
+        classNames.push('cme-toolbar-glyph--chem-arrow');
+      }
+      if (itemClassName.includes('chem-state')) {
+        classNames.push('cme-toolbar-glyph--chem-state');
+      }
+      if (isChemScriptLabel) {
+        classNames.push('cme-toolbar-glyph--chem-script');
+      }
+      if (isChemChargeLabel) {
+        classNames.push('cme-toolbar-glyph--chem-charge');
+      }
+    } else {
+      if (isRootsMain) {
+        classNames.push('cme-toolbar-glyph--roots-main');
+      }
+      if (isRelations) {
+        classNames.push('cme-toolbar-glyph--relations');
+      }
+      if (!isRootsMain && !isRelations) {
+        classNames.push('cme-toolbar-glyph--math');
+      }
+      if (isGreek) {
+        classNames.push('cme-toolbar-glyph--greek');
+      }
+    }
+
+    if (itemClassName.includes('green-template')) {
+      classNames.push('cme-toolbar-glyph--template');
+    }
+    if (itemClassName.includes('soft-tool')) {
+      classNames.push('cme-toolbar-glyph--tool');
+    }
+    if (itemClassName.includes('format-tool')) {
+      classNames.push('cme-toolbar-glyph--format');
+    }
+    if (labelLength >= 4) {
+      classNames.push('cme-toolbar-glyph--wide');
+    }
+    if (labelLength >= 8) {
+      classNames.push('cme-toolbar-glyph--very-wide');
+    }
+
+    return (
+      <span className={classNames.join(' ')} aria-hidden="true">
+        {item.label}
+      </span>
+    );
+  }
+
   return item.label;
 }
 
@@ -1525,6 +1773,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
   const [showColorPicker, setShowColorPicker] = useState(null); // { x, y } or null
   const [windowMode, setWindowMode] = useState('normal');
   const [activeToolbarItem, setActiveToolbarItem] = useState(null);
+  const [isRtlInput, setIsRtlInput] = useState(false);
   const [customColorInput, setCustomColorInput] = useState('');
   const [customColorError, setCustomColorError] = useState('');
   const groups = mode === 'math' ? ORDERED_MATH_GROUPS : CHEM_GROUPS;
@@ -1546,6 +1795,17 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
     fontFamily: 'none',
     fontSize: 'auto'
   });
+
+  useEffect(() => {
+    const mf = popupMfRef.current;
+    if (!mf) return;
+
+    const nextDir = isRtlInput ? 'rtl' : 'ltr';
+    mf.setAttribute('dir', nextDir);
+    mf.style.direction = nextDir;
+    mf.style.textAlign = isRtlInput ? 'right' : 'left';
+    mf.style.unicodeBidi = isRtlInput ? 'plaintext' : 'normal';
+  }, [isRtlInput]);
 
   const updateActiveStyles = useCallback(() => {
     const mf = popupMfRef.current;
@@ -1713,23 +1973,85 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
   useEffect(() => {
     const mf = popupMfRef.current;
     if (!mf) return;
+
+    const readValue = () => (mf.getValue ? mf.getValue() : mf.value || '');
+    const moveCaretToStart = () => {
+      try {
+        if (typeof mf.executeCommand === 'function') {
+          const commands = ['moveToMathFieldStart', 'moveToMathfieldStart', 'moveToStart'];
+          for (const command of commands) {
+            try {
+              mf.executeCommand(command);
+              return;
+            } catch {}
+          }
+        }
+      } catch {}
+
+      try {
+        if (typeof mf.setSelectionRange === 'function') {
+          mf.setSelectionRange(0, 0);
+        }
+      } catch {}
+    };
+
+    const writeValue = (nextValue) => {
+      if (typeof mf.setValue === 'function') {
+        mf.setValue(nextValue);
+      } else {
+        mf.value = nextValue;
+      }
+      requestAnimationFrame(() => {
+        mf.focus?.();
+        moveCaretToStart();
+        updateActiveStyles();
+      });
+    };
+
     const handleKeyDown = (e) => {
       if (e.key === ' ') {
         e.preventDefault();
-        mf.executeCommand(['insert', '\\, ']);
+        if (isRtlInput) {
+          writeValue(`\\, ${readValue()}`);
+        } else {
+          mf.executeCommand(['insert', '\\, ']);
+        }
+        return;
       } else if (e.key === 'Enter') {
         e.preventDefault();
-        mf.executeCommand(['insert', '\\\\']);
+        if (isRtlInput) {
+          writeValue(`\\\\${readValue()}`);
+        } else {
+          mf.executeCommand(['insert', '\\\\']);
+        }
         // Re-apply active styles on new line
         setTimeout(() => {
           applyCurrentTypingStyles(activeStyles);
           updateActiveStyles();
         }, 10);
+        return;
+      }
+
+      if (isRtlInput && e.key === 'Backspace') {
+        e.preventDefault();
+        writeValue(readValue().slice(1));
+        return;
+      }
+
+      const isPlainTypingKey =
+        e.key.length === 1 &&
+        !e.ctrlKey &&
+        !e.metaKey &&
+        !e.altKey;
+
+      if (isRtlInput && isPlainTypingKey) {
+        e.preventDefault();
+        writeValue(`${e.key}${readValue()}`);
       }
     };
     mf.addEventListener('keydown', handleKeyDown);
     return () => mf.removeEventListener('keydown', handleKeyDown);
-  }, [mode, activeStyles, applyCurrentTypingStyles, updateActiveStyles]);
+  }, [mode, activeStyles, applyCurrentTypingStyles, updateActiveStyles, isRtlInput]);
 
 
 
@@ -1903,7 +2225,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                                 insertAtCursor(item.insert);
                               }}
                             >
-                              {item.label}
+                              {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode: !isMathMode })}
                             </button>
                           );
                         })}
@@ -2048,7 +2370,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                             }
                           }}
                         >
-                          {renderToolbarItemLabel(item)}
+                          {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode: !isMathMode })}
                         </button>
                       </div>
                     );
@@ -2058,12 +2380,14 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                   const isItalicBtn = item.action === 'ITALIC';
                   const isBoldItalicBtn = item.action === 'BOLD_ITALIC';
                   const isColorBtn = item.action === 'TEXT_COLOR';
+                  const isRtlBtn = item.action === 'TOGGLE_RTL';
                   const isBtnActive =
                     (isBoldBtn && activeStyles.bold && !activeStyles.italic) ||
                     (isItalicBtn && activeStyles.italic && !activeStyles.bold) ||
                     (isBoldItalicBtn && activeStyles.boldItalic) ||
+                    (isRtlBtn && isRtlInput) ||
                     (isColorBtn && activeStyles.color !== 'none') ||
-                    activeToolbarItem === buttonKey;
+                    (!isRtlBtn && activeToolbarItem === buttonKey);
 
                   return (
                     <button
@@ -2083,6 +2407,9 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                           setCustomColorInput(activeStyles.color !== 'none' ? activeStyles.color : '');
                           setCustomColorError('');
                           setShowColorPicker({ x: rect.left, y: rect.bottom + 4 });
+                        } else if (item.action === 'TOGGLE_RTL') {
+                          setIsRtlInput((prev) => !prev);
+                          requestAnimationFrame(() => popupMfRef.current?.focus?.());
                         } else if (item.action === 'BOLD') {
                           setTypingVariant(!activeStyles.bold, activeStyles.italic);
                         } else if (item.action === 'BOLD_ITALIC') {
@@ -2142,7 +2469,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                         }
                       }}
                     >
-                      {renderToolbarItemLabel(item)}
+                      {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode: !isMathMode })}
                     </button>
                   );
                 })}
@@ -2153,7 +2480,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
       </div>
 
       <div
-        className="cme-mathfield-container"
+        className={`cme-mathfield-container${isRtlInput ? ' cme-mathfield-container--rtl' : ''}`}
         onMouseDown={(e) => {
           if (popupMfRef.current && (e.target === popupMfRef.current || popupMfRef.current.contains(e.target))) return;
           e.preventDefault();
@@ -2162,7 +2489,8 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
       >
         <math-field
           ref={popupMfRef}
-          class="cme-mathfield"
+          class={`cme-mathfield${isRtlInput ? ' cme-mathfield--rtl' : ''}`}
+          dir={isRtlInput ? 'rtl' : 'ltr'}
           letter-shape-style="upright"
           tabIndex={0}
           math-virtual-keyboard-policy="manual"
@@ -2525,7 +2853,7 @@ function latexToPlainText(latex) {
 /* ══════════════════════════════════════════════════════════
    Main CkEditor component
 ══════════════════════════════════════════════════════════ */
-function CkEditor({ value, onChange }) {
+function CkEditor({ value, onChange, className = '' }) {
   const editorRef = useRef(null);
   const popupOpenRef = useRef(false);
   const [popup, setPopup] = useState(null);        // 'math' | 'chem' | null
@@ -2646,7 +2974,7 @@ function CkEditor({ value, onChange }) {
   }, []);
 
   return (
-    <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <div className={`ck-editor-shell ${className}`.trim()}>
       <style>{`
         .ck-powered-by { display: none !important; }
         .ck-math-widget {
@@ -2676,13 +3004,13 @@ function CkEditor({ value, onChange }) {
       `}</style>
 
       {/* Insert Options Bar */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '2px 4px' }}>
-        <label style={{ display: 'inline-flex', flexDirection: 'row', alignItems: 'center', gap: '8px', cursor: 'pointer', userSelect: 'none', width: 'auto', fontSize: '13px', color: 'var(--text)', fontWeight: 600 }}>
+      <div className="ck-editor-meta">
+        <label className="ck-editor-mode-toggle">
           <input
+            className="ck-editor-mode-checkbox"
             type="checkbox"
             checked={insertAsUnicode}
             onChange={(e) => setInsertAsUnicode(e.target.checked)}
-            style={{ width: '16px', minHeight: '16px', cursor: 'pointer', margin: 0 }}
           />
           <span>Insert as plain text instead of LaTeX formatting</span>
         </label>

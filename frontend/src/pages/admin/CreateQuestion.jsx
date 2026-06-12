@@ -371,7 +371,7 @@ export default function CreateQuestion() {
             <div className="admin-form-block">
               <span className="admin-block-label">Question Prompt</span>
               <div className="admin-editor-wrap">
-                <CkEditor value={question} onChange={setQuestion} />
+                <CkEditor className="admin-ck-editor" value={question} onChange={setQuestion} />
               </div>
             </div>
 

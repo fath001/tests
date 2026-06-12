@@ -984,6 +984,184 @@ select option {
   border-radius: 18px;
   padding: 18px;
   background: rgba(255, 255, 255, 0.02);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.admin-editor-wrap .ck-editor-shell {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-editor-wrap .ck-editor-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-editor-wrap .ck-editor-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: auto;
+  color: #b8bac9;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin-editor-wrap .ck-editor-mode-checkbox {
+  width: 16px;
+  min-height: 16px;
+  margin: 0;
+  accent-color: var(--admin);
+  cursor: pointer;
+}
+
+.admin-editor-wrap .ck.ck-editor {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.22);
+}
+
+.admin-editor-wrap .ck.ck-toolbar {
+  gap: 8px;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 14px;
+  background:
+    linear-gradient(135deg, rgba(192, 132, 252, 0.14), rgba(109, 40, 217, 0.16));
+}
+
+.admin-editor-wrap .ck.ck-toolbar .ck-toolbar__separator {
+  margin: 0 2px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.admin-editor-wrap .ck.ck-button,
+.admin-editor-wrap .ck.ck-dropdown .ck-button {
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: #c8c9d7;
+  box-shadow: none;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.admin-editor-wrap .ck.ck-button:not(.ck-disabled):hover,
+.admin-editor-wrap .ck.ck-dropdown .ck-button:not(.ck-disabled):hover {
+  border-color: rgba(192, 132, 252, 0.24);
+  background: rgba(192, 132, 252, 0.12);
+  color: #f5efff;
+}
+
+.admin-editor-wrap .ck.ck-button.ck-on,
+.admin-editor-wrap .ck.ck-button.ck-on:not(.ck-disabled):hover,
+.admin-editor-wrap .ck.ck-dropdown.ck-open > .ck-button {
+  border-color: rgba(192, 132, 252, 0.38);
+  background: rgba(192, 132, 252, 0.18);
+  color: #f7f2ff;
+}
+
+.admin-editor-wrap .ck.ck-button .ck-icon,
+.admin-editor-wrap .ck.ck-dropdown .ck-button .ck-icon {
+  color: currentColor;
+}
+
+.admin-editor-wrap .ck.ck-editor__main > .ck-editor__editable {
+  min-height: 260px;
+  border: 0;
+  background: var(--input-bg);
+  color: #f2f2f8;
+  padding: 22px 24px;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.admin-editor-wrap .ck.ck-editor__main > .ck-editor__editable.ck-focused {
+  box-shadow: inset 0 0 0 1px rgba(192, 132, 252, 0.34);
+}
+
+.admin-editor-wrap .ck.ck-editor__main > .ck-editor__editable > .ck-placeholder::before {
+  color: #7f8296;
+}
+
+.admin-editor-wrap .ck.ck-editor__main > .ck-editor__editable a {
+  color: #d8b4fe;
+}
+
+.admin-editor-wrap .ck.ck-editor__main > .ck-editor__editable ul,
+.admin-editor-wrap .ck.ck-editor__main > .ck-editor__editable ol {
+  padding-left: 1.5rem;
+}
+
+.admin-editor-wrap .ck.ck-editor__main > .ck-editor__editable li::marker {
+  color: #c084fc;
+}
+
+.admin-editor-wrap .ck.ck-editor__main > .ck-editor__editable .table table,
+.admin-editor-wrap .ck.ck-editor__main > .ck-editor__editable table {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.admin-editor-wrap .ck.ck-editor__main > .ck-editor__editable table td,
+.admin-editor-wrap .ck.ck-editor__main > .ck-editor__editable table th {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.admin-editor-wrap .ck.ck-balloon-panel,
+.admin-editor-wrap .ck.ck-dropdown__panel,
+.admin-editor-wrap .ck.ck-reset_all .ck.ck-list,
+.admin-editor-wrap .ck.ck-input,
+.admin-editor-wrap .ck.ck-labeled-field-view > .ck.ck-input {
+  color: #e9e9f5;
+}
+
+.admin-editor-wrap .ck.ck-balloon-panel,
+.admin-editor-wrap .ck.ck-dropdown__panel {
+  border: 1px solid rgba(192, 132, 252, 0.22);
+  border-radius: 14px;
+  background: #141420;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.38);
+}
+
+.admin-editor-wrap .ck.ck-dropdown__panel .ck-list,
+.admin-editor-wrap .ck.ck-balloon-panel .ck-list {
+  background: transparent;
+}
+
+.admin-editor-wrap .ck.ck-list .ck-button {
+  border-radius: 10px;
+  color: #d6d7e3;
+}
+
+.admin-editor-wrap .ck.ck-list .ck-button:not(.ck-disabled):hover,
+.admin-editor-wrap .ck.ck-list .ck-button.ck-on {
+  background: rgba(192, 132, 252, 0.14);
+  color: #fbf8ff;
+}
+
+.admin-editor-wrap .ck.ck-input,
+.admin-editor-wrap .ck.ck-labeled-field-view > .ck.ck-input,
+.admin-editor-wrap .ck.ck-toolbar .ck.ck-input {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: #0f0f18;
+  color: #f3f3fa;
+}
+
+.admin-editor-wrap .ck.ck-input:focus,
+.admin-editor-wrap .ck.ck-labeled-field-view > .ck.ck-input:focus {
+  border-color: rgba(192, 132, 252, 0.48);
+  box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.12);
+}
+
+.admin-editor-wrap .ck.ck-labeled-field-view .ck.ck-labeled-field-view__status,
+.admin-editor-wrap .ck.ck-labeled-field-view .ck.ck-label {
+  color: #9fa2b7;
 }
 
 .admin-option-list {
