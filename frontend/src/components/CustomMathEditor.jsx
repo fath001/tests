@@ -29,6 +29,110 @@ function serializeChemValue(value = "") {
   return normalized ? `\\ce{${normalized}}` : "";
 }
 
+function makeToolbarIconImage(svg) {
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
+
+const TOOLBAR_ICON_IMAGES = {
+  "integral-template-image": makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <text x="1.45" y="13.55" font-size="13.8" font-family="Cambria Math, STIX Two Math, Times New Roman, serif" font-weight="700" fill="#37474f">∫</text>
+      <rect x="7.25" y="5.65" width="4.15" height="4.15" rx="0.55" fill="none" stroke="#4a5559" stroke-width="1.2"/>
+    </svg>
+  `),
+  "definite-integral-template-image": makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <text x="0.95" y="14.05" font-size="14.2" font-family="Cambria Math, STIX Two Math, Times New Roman, serif" font-weight="700" fill="#37474f">∫</text>
+      <rect x="5.1" y="1.2" width="2.55" height="2.55" rx="0.42" fill="none" stroke="#4a5559" stroke-width="1.15"/>
+      <rect x="2.1" y="13.15" width="2.55" height="2.55" rx="0.42" fill="none" stroke="#4a5559" stroke-width="1.15"/>
+      <rect x="8.45" y="6.15" width="3.8" height="3.8" rx="0.58" fill="none" stroke="#4a5559" stroke-width="1.2"/>
+    </svg>
+  `),
+  "integral-with-differential-template-image": makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <text x="0.95" y="13.85" font-size="14.6" font-family="Cambria Math, STIX Two Math, Times New Roman, serif" font-weight="700" fill="#37474f">∫</text>
+      <rect x="6.55" y="6.15" width="3.05" height="3.05" rx="0.48" fill="none" stroke="#4a5559" stroke-width="1.15"/>
+      <text x="10.55" y="8.95" font-size="4.95" font-family="Arial, Helvetica, sans-serif" font-weight="700" fill="#37474f">d</text>
+      <rect x="13.15" y="6.15" width="3.05" height="3.05" rx="0.48" fill="none" stroke="#4a5559" stroke-width="1.15"/>
+    </svg>
+  `),
+  "definite-integral-with-differential-template-image": makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <text x="0.85" y="14.05" font-size="14.4" font-family="Cambria Math, STIX Two Math, Times New Roman, serif" font-weight="700" fill="#37474f">∫</text>
+      <rect x="5.15" y="1.15" width="2.45" height="2.45" rx="0.42" fill="none" stroke="#4a5559" stroke-width="1.15"/>
+      <rect x="2.15" y="13.1" width="2.45" height="2.45" rx="0.42" fill="none" stroke="#4a5559" stroke-width="1.15"/>
+      <rect x="8.45" y="6.95" width="3.45" height="3.45" rx="0.55" fill="none" stroke="#4a5559" stroke-width="1.2"/>
+      <text x="12.45" y="9.85" font-size="5.15" font-family="Arial, Helvetica, sans-serif" font-weight="700" fill="#37474f">d</text>
+      <rect x="14.15" y="6.95" width="2.9" height="3.45" rx="0.5" fill="none" stroke="#4a5559" stroke-width="1.2"/>
+    </svg>
+  `),
+  "derivative-first-template-image": makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="2" y="16" font-size="11" font-family="Cambria Math, Times New Roman, serif" font-weight="700" fill="#37474f">d</text>
+      <line x1="5.5" y1="8" x2="5.5" y2="16" stroke="#4a5559" stroke-width="1.2"/>
+      <text x="7" y="16" font-size="11" font-family="Cambria Math, Times New Roman, serif" font-weight="700" fill="#37474f">dx</text>
+    </svg>
+  `),
+  "derivative-second-template-image": makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="2" y="16" font-size="11" font-family="Cambria Math, Times New Roman, serif" font-weight="700" fill="#37474f">d</text>
+      <text x="6.5" y="10" font-size="8" font-family="Cambria Math, Times New Roman, serif" font-weight="700" fill="#37474f">2</text>
+      <line x1="9" y1="8" x2="9" y2="16" stroke="#4a5559" stroke-width="1.2"/>
+      <text x="10.5" y="16" font-size="11" font-family="Cambria Math, Times New Roman, serif" font-weight="700" fill="#37474f">dx</text>
+      <text x="14.5" y="19" font-size="8" font-family="Cambria Math, Times New Roman, serif" font-weight="700" fill="#37474f">2</text>
+    </svg>
+  `),
+  "partial-derivative-first-template-image": makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="2" y="16" font-size="12" font-family="Cambria Math, STIX Two Math, Times New Roman, serif" font-weight="700" fill="#37474f">∂</text>
+      <line x1="6.5" y1="8" x2="6.5" y2="16" stroke="#4a5559" stroke-width="1.2"/>
+      <text x="8" y="16" font-size="11" font-family="Cambria Math, Times New Roman, serif" font-weight="700" fill="#37474f">∂x</text>
+    </svg>
+  `),
+  "partial-derivative-second-template-image": makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="2" y="16" font-size="12" font-family="Cambria Math, STIX Two Math, Times New Roman, serif" font-weight="700" fill="#37474f">∂</text>
+      <text x="7" y="10" font-size="8" font-family="Cambria Math, Times New Roman, serif" font-weight="700" fill="#37474f">2</text>
+      <line x1="9.5" y1="8" x2="9.5" y2="16" stroke="#4a5559" stroke-width="1.2"/>
+      <text x="11" y="16" font-size="11" font-family="Cambria Math, Times New Roman, serif" font-weight="700" fill="#37474f">∂x</text>
+      <text x="15.5" y="19" font-size="8" font-family="Cambria Math, Times New Roman, serif" font-weight="700" fill="#37474f">2</text>
+    </svg>
+  `),
+  "slash-operator-template-image": makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <path d="M8 4L16 20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+  `),
+  "setminus-operator-template-image": makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <path d="M16 4L8 20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+  `),
+  "minus-plus-operator-template-image": makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <line x1="7" y1="8" x2="17" y2="8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="7" y1="16" x2="17" y2="16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="12" y1="11" x2="12" y2="21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+  `),
+};
+
+function renderToolbarItemLabel(item) {
+  if (item.icon && TOOLBAR_ICON_IMAGES[item.icon]) {
+    return (
+      <span className="cme-toolbar-icon-image-wrapper" aria-hidden="true">
+        <img
+          className="cme-toolbar-icon-image"
+          src={TOOLBAR_ICON_IMAGES[item.icon]}
+          alt=""
+        />
+      </span>
+    );
+  }
+
+  return item.label;
+}
+
 /* ─────────────────────────────────────────────────────────────
    Symbol / Template definitions
 ───────────────────────────────────────────────────────────── */
@@ -67,6 +171,9 @@ const MATH_GROUPS = [
       { label: "±", insert: "\\pm" },
       { label: "×", insert: "\\times" },
       { label: "÷", insert: "\\div" },
+      { label: "\\", insert: "\\backslash", title: "Slash", icon: "slash-operator-template-image" },
+      { label: "﹨", insert: "﹨", title: "Reverse Solidus" },
+      { label: "∓", insert: "\\mp", title: "Minus or Plus", icon: "minus-plus-operator-template-image" },
       { label: "≠", insert: "\\neq" },
       { label: "≤", insert: "\\leq" },
       { label: "≥", insert: "\\geq" },
@@ -142,13 +249,15 @@ const MATH_GROUPS = [
     label: "∫",
     isTemplate: true,
     items: [
+      { label: "∫□", insert: "\\int #0", title: "Integral Template", icon: "integral-template-image", cls: "integral-hero-template" },
+      { label: "∫ₐᵇ", insert: "\\int_{#?}^{#?} #0", title: "Definite Integral Template", icon: "definite-integral-template-image", cls: "integral-hero-template" },
+      { label: "∫dx", insert: "\\int #0 \\, d#?", title: "Integral with Differential", icon: "integral-with-differential-template-image", cls: "integral-hero-template" },
+      { label: "∫ₐᵇdx", insert: "\\int_{#?}^{#?} #0 \\, d#?", title: "Definite Integral with Differential", icon: "definite-integral-with-differential-template-image", cls: "integral-hero-template" },
       { label: "∫", insert: "\\int" },
       { label: "∬", insert: "\\iint" },
       { label: "∭", insert: "\\iiint" },
       { label: "∮", insert: "\\oint" },
       { label: "∯", insert: "\\oiint" },
-      { label: "∫dx", insert: "\\int #0 \\, d#?" },
-      { label: "∫ₐᵇ", insert: "\\int_{#?}^{#?} #0 \\, d#?" },
       { label: "∫∫dA", insert: "\\iint_{#?} #0 \\, dA" },
       { label: "∮C", insert: "\\oint_{#?} #0 \\, d#?" },
       { label: "∫∫∫dV", insert: "\\iiint_{#?} #0 \\, dV" },
@@ -160,11 +269,13 @@ const MATH_GROUPS = [
     label: "d/dx",
     isTemplate: true,
     items: [
-      { label: "d/dx", insert: "\\frac{d}{dx}" },
+      { label: "d/dx", insert: "\\frac{d}{dx}", icon: "derivative-first-template-image", cls: "derivative-hero-template" },
+      { label: "d²/dx²", insert: "\\frac{d^{2}}{dx^{2}}", icon: "derivative-second-template-image", cls: "derivative-hero-template" },
+      { label: "∂/∂x", insert: "\\frac{\\partial}{\\partial x}", icon: "partial-derivative-first-template-image", cls: "derivative-hero-template" },
+      { label: "∂²/∂x²", insert: "\\frac{\\partial^{2}}{\\partial x^{2}}", icon: "partial-derivative-second-template-image", cls: "derivative-hero-template" },
       { label: "dy/dx", insert: "\\frac{dy}{dx}" },
       { label: "d²y/dx²", insert: "\\frac{d^{2}y}{dx^{2}}" },
       { label: "dⁿy/dxⁿ", insert: "\\frac{d^{#?}#0}{dx^{#?}}" },
-      { label: "∂/∂x", insert: "\\frac{\\partial}{\\partial x}" },
       { label: "∂f/∂x", insert: "\\frac{\\partial #0}{\\partial x}" },
       { label: "∂²f/∂x²", insert: "\\frac{\\partial^{2} #0}{\\partial x^{2}}" },
       { label: "∂²f/∂x∂y", insert: "\\frac{\\partial^{2} #0}{\\partial x \\partial y}" },
@@ -212,7 +323,7 @@ const MATH_GROUPS = [
       { label: "Ω", title: "Insert Special Character", action: "SPECIAL_CHARS" },
       { label: "⊆", insert: "\\subseteq" },
       { label: "⊇", insert: "\\supseteq" },
-      { label: "∖", insert: "\\setminus" },
+      { label: "﹨", insert: "﹨" },
       { label: "∩", insert: "\\cap" },
       { label: "∪", insert: "\\cup" },
       { label: "∅", insert: "\\emptyset" },
@@ -573,6 +684,16 @@ export default function CustomMathEditor({ value = "", onChange }) {
   };
 
   const groups = mode === "math" ? MATH_GROUPS : CHEM_GROUPS;
+  const activeGroupIndex = mode === "math" ? activeMathGroup : activeChemGroup;
+  const activeGroup = groups[activeGroupIndex] || {};
+  const isIntegralHeroTab =
+    mode === "math" &&
+    Array.isArray(activeGroup.items) &&
+    activeGroup.items.some((item) => item.cls === "integral-hero-template");
+  const isDerivativeHeroTab =
+    mode === "math" &&
+    Array.isArray(activeGroup.items) &&
+    activeGroup.items.some((item) => item.cls === "derivative-hero-template");
 
   return (
     <div className="cme-wrapper">
@@ -643,9 +764,8 @@ export default function CustomMathEditor({ value = "", onChange }) {
               })}
             </div>
             
-            <div className="cme-toolbar-items">
+            <div className={`cme-toolbar-items${(isIntegralHeroTab || isDerivativeHeroTab) ? " cme-toolbar-items--integral-templates" : ""}`}>
               {(() => {
-                const activeGroupIndex = mode === "math" ? activeMathGroup : activeChemGroup;
                 const activeItems = groups[activeGroupIndex]?.items || [];
                 const size = 4;
                 const chunks = [];
@@ -687,7 +807,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
                                 }
                               }}
                             >
-                              {item.label}
+                              {renderToolbarItemLabel(item)}
                             </button>
                           </div>
                         );
@@ -710,7 +830,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
                             }
                           }}
                         >
-                          {item.label}
+                          {renderToolbarItemLabel(item)}
                         </button>
                       );
                     })}

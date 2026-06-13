@@ -58,6 +58,17 @@ function getLatexFromWidgetDom(widgetEl) {
   return '';
 }
 
+function getMathDirectionFromWidgetDom(widgetEl) {
+  if (!widgetEl) return 'ltr';
+
+  const dataDir = widgetEl.getAttribute('data-dir');
+  if (dataDir === 'rtl' || dataDir === 'ltr') return dataDir;
+
+  const mf = widgetEl.querySelector('math-field');
+  const mathFieldDir = mf?.getAttribute('dir') || mf?.style?.direction;
+  return mathFieldDir === 'rtl' ? 'rtl' : 'ltr';
+}
+
 function isModelElementLive(editor, modelElement) {
   if (!editor || !modelElement) return false;
   try {
@@ -114,6 +125,11 @@ function triggerWidgetEdit(editor, modelElement, latex, widgetEl) {
     resolvedModel?.getAttribute('latex') ||
     latex ||
     getLatexFromWidgetDom(widgetEl);
+  const resolvedDirection =
+    resolvedModel?.getAttribute('dir') === 'rtl' ||
+    getMathDirectionFromWidgetDom(widgetEl) === 'rtl'
+      ? 'rtl'
+      : 'ltr';
 
   if (!resolvedLatex) return;
 
@@ -124,7 +140,7 @@ function triggerWidgetEdit(editor, modelElement, latex, widgetEl) {
   }
 
   const handler = editor.mathWidgetClickHandler || window.__ckMathWidgetClickHandler;
-  handler?.(resolvedModel, resolvedLatex);
+  handler?.(resolvedModel, resolvedLatex, resolvedDirection);
 }
 
 function bindWidgetClickTarget(editor, container) {
@@ -212,6 +228,7 @@ const MATH_GROUPS = [
     label: '±×÷', items: [
       { label: '±', insert: '\\pm' }, { label: '∓', insert: '\\mp' },
       { label: '×', insert: '\\times' }, { label: '÷', insert: '\\div' },
+      { label: '\\', insert: '\\backslash' }, { label: '﹨', insert: '﹨' },
       { label: '≠', insert: '\\neq' }, { label: '≤', insert: '\\leq' },
       { label: '≥', insert: '\\geq' }, { label: '≈', insert: '\\approx' },
       { label: '≅', insert: '\\cong' }, { label: '∝', insert: '\\propto' },
@@ -272,8 +289,7 @@ const MATH_GROUPS = [
       { label: '→', insert: '\\rightarrow' }, { label: '←', insert: '\\leftarrow' },
       { label: '↔', insert: '\\leftrightarrow' }, { label: '⇒', insert: '\\Rightarrow' },
       { label: '⇐', insert: '\\Leftarrow' }, { label: '⇔', insert: '\\Leftrightarrow' },
-
-      { type: 'sep', cols: 3 },
+      { label: '|', action: 'ARROW_PICKER', title: 'More Arrows', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool' },
       { label: '⟶', insert: '\\longrightarrow' }, { label: '⟵', insert: '\\longleftarrow' },
       { label: '⟷', insert: '\\longleftrightarrow' }, { label: '⟹', insert: '\\Longrightarrow' },
       { label: '⟸', insert: '\\Longleftarrow' }, { label: '⟺', insert: '\\Longleftrightarrow' },
@@ -286,6 +302,7 @@ const MATH_GROUPS = [
       { label: 'A→B', insert: '\\xrightarrow[#?]{#0}', title: 'Arrow with labels above and below', icon: 'arrow-label-right-above-below' },
       { label: '←A', insert: '\\xleftarrow[#?]{}', title: 'Left arrow with label below', icon: 'arrow-label-left-below' },
       { label: 'A←B', insert: '\\xleftarrow[#?]{#0}', title: 'Left arrow with labels above and below', icon: 'arrow-label-left-above-below' },
+      { label: '|', action: 'ARROW_LABEL_PICKER', title: 'More Labelled Arrows', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool arrow-label-picker-tool' },
 
       { type: 'sep', cols: 3 },
       { label: '⇌', insert: '\\rightleftharpoons', title: 'Equilibrium harpoons' },
@@ -396,7 +413,7 @@ const MATH_GROUPS = [
     label: '∈∪∩', items: [
       { label: 'Ω', title: 'Insert Special Character', action: 'SPECIAL_CHARS' },
       { label: '⊆', insert: '\\subseteq' }, { label: '⊇', insert: '\\supseteq' },
-      { label: '∖', insert: '\\setminus' }, { label: '∩', insert: '\\cap' },
+      { label: '﹨', insert: '﹨' }, { label: '∩', insert: '\\cap' },
       { label: '∪', insert: '\\cup' }, { label: '∅', insert: '\\emptyset' },
       { label: '□⊂□', insert: '#? \\subset #?' }, { label: '□⊆□', insert: '#? \\subseteq #?' },
       { label: '□∈□', insert: '#? \\in #?' }, { label: '□∉□', insert: '#? \\notin #?' },
@@ -452,6 +469,9 @@ const RELATIONS_TAB_ITEMS = [
   { label: '±', insert: '\\pm' },
   { label: '*', insert: '\\ast' },
   { label: '°', insert: '\\degree' },
+  { label: '\\', insert: '\\backslash', title: 'Slash', icon: 'slash-operator-template-image' },
+  { label: '﹨', insert: '﹨', title: 'Reverse Solidus' },
+  { label: '∓', insert: '\\mp', title: 'Minus or Plus', icon: 'minus-plus-operator-template-image' },
 
   { type: 'sep', cols: 5 },
   { label: 'π', insert: '\\pi' },
@@ -459,10 +479,13 @@ const RELATIONS_TAB_ITEMS = [
   { label: '°', insert: '\\degree' },
   { label: '∞', insert: '\\infty' },
   { label: 'Δ', insert: '\\Delta' },
-  { label: '′', insert: "'" },
+  { label: '′', insert: "'", cls: 'prime-symbol-tool' },
   { label: '∅', insert: '\\emptyset' },
   { label: '∇', insert: '\\nabla' },
-  { label: '″', insert: "''" },
+  { label: '″', insert: "''", cls: 'prime-symbol-tool' },
+  { label: '‴', insert: "'''", cls: 'prime-symbol-tool' },
+  { label: '⁗', insert: "''''", cls: 'prime-symbol-tool' },
+  { label: '‵', insert: '‵', cls: 'prime-symbol-tool', title: 'Reversed Prime' },
 
   { type: 'sep', cols: 3 },
   { label: '=', insert: '=' },
@@ -471,14 +494,25 @@ const RELATIONS_TAB_ITEMS = [
   { label: '≈', insert: '\\approx' },
   { label: '≃', insert: '\\simeq' },
   { label: '≅', insert: '\\cong' },
+  { label: '≠', insert: '\\neq', title: 'Not Equal', icon: 'not-equal-template-image' },
+  { label: '≉', insert: '\\not\\approx', title: 'Not Approximately Equal', icon: 'not-approx-equal-template-image' },
+  { label: '≁', insert: '\\nsim', title: 'Not Similar', icon: 'not-similar-template-image' },
+  { label: '≢', insert: '\\not\\equiv', title: 'Not Identical', icon: 'not-identical-template-image' },
 
   { type: 'sep', cols: 3 },
   { label: '>', insert: '>' },
   { label: '<', insert: '<' },
   { label: '≥', insert: '\\geq' },
   { label: '≤', insert: '\\leq' },
-  { label: '≫', insert: '\\gg' },
-  { label: '≪', insert: '\\ll' },
+  { label: '≫', insert: '\\gg', title: 'Much Greater Than', icon: 'much-greater-than-template-image' },
+  { label: '≪', insert: '\\ll', title: 'Much Less Than', icon: 'much-less-than-template-image' },
+  { label: '≨', insert: '\\lneqq', title: 'Less Than But Not Equal', icon: 'less-than-not-equal-template-image' },
+  { label: '≻', insert: '\\succ', title: 'Succeeds', icon: 'succeeds-template-image' },
+  { label: '≩', insert: '\\gneqq', title: 'Greater Than But Not Equal', icon: 'greater-than-not-equal-template-image' },
+  { label: '∝', insert: '\\propto', title: 'Proportional To', icon: 'proportional-to-template-image' },
+  { label: '⊲', insert: '\\lhd', title: 'Normal Subgroup', icon: 'normal-subgroup-template-image' },
+  { label: '≺', insert: '\\prec', title: 'Precedes', icon: 'precedes-template-image' },
+  { label: '▷', insert: '\\rhd', title: 'Contains Normal Subgroup', icon: 'contains-normal-subgroup-template-image' },
 
   { type: 'sep', cols: 3 },
   { label: '∈', insert: '\\in' },
@@ -487,6 +521,16 @@ const RELATIONS_TAB_ITEMS = [
   { label: '∩', insert: '\\cap' },
   { label: '⊂', insert: '\\subset' },
   { label: '⊃', insert: '\\supset' },
+  { label: '∉', insert: '\\notin', title: 'Not Element Of', icon: 'not-element-of-template-image' },
+  { label: '∌', insert: '\\not\\ni', title: 'Not Contains Member', icon: 'not-contains-member-template-image' },
+  { label: '⊆', insert: '\\subseteq', title: 'Subset Equal', icon: 'subset-equal-template-image' },
+  { label: '⊇', insert: '\\supseteq', title: 'Superset Equal', icon: 'superset-equal-template-image' },
+  { label: '⊏', insert: '\\sqsubset', title: 'Square Subset', icon: 'square-subset-template-image' },
+  { label: '⊐', insert: '\\sqsupset', title: 'Square Superset', icon: 'square-superset-template-image' },
+  { label: '⊑', insert: '\\sqsubseteq', title: 'Square Subset Equal', icon: 'square-subset-equal-template-image' },
+  { label: '⊒', insert: '\\sqsupseteq', title: 'Square Superset Equal', icon: 'square-superset-equal-template-image' },
+  { label: '⊓', insert: '\\sqcap', title: 'Square Cap', icon: 'square-cap-template-image' },
+  { label: '⊔', insert: '\\sqcup', title: 'Square Cup', icon: 'square-cup-template-image' },
 
   { type: 'sep', cols: 3 },
   { label: '∧', insert: '\\land' },
@@ -495,19 +539,164 @@ const RELATIONS_TAB_ITEMS = [
   { label: '∀', insert: '\\forall' },
   { label: '∃', insert: '\\exists' },
   { label: '∄', insert: '\\nexists' },
+  { label: '∴', insert: '\\therefore', title: 'Therefore', icon: 'therefore-template-image' },
+  { label: '∵', insert: '\\because', title: 'Because', icon: 'because-template-image' },
 
   { type: 'sep', cols: 2 },
   { label: '∠', insert: '\\angle' },
   { label: '∥', insert: '\\parallel' },
   { label: '⊥', insert: '\\perp' },
+  { label: '∦', insert: '\\nparallel', title: 'Not Parallel', icon: 'not-parallel-template-image' },
+  { label: '∡', insert: '\\measuredangle', title: 'Measured Angle', icon: 'measured-angle-template-image' },
+  { label: '∢', insert: '\\sphericalangle', title: 'Spherical Angle', icon: 'spherical-angle-template-image' },
+  { label: '⋄', insert: '\\diamond', title: 'Diamond', icon: 'diamond-template-image' },
 
   { type: 'sep', cols: 3 },
   { label: '□', insert: '\\square' },
-  { label: '⊕', insert: '\\oplus' },
   { label: '△', insert: '\\triangle' },
-  { label: '⊗', insert: '\\otimes' },
   { label: '○', insert: '\\bigcirc' },
+  { label: '▭', insert: '▭', title: 'Rectangle', icon: 'rectangle-template-image' },
+  { label: '▱', insert: '\\parallelogram', title: 'Parallelogram', icon: 'parallelogram-template-image' },
+  { type: 'sep', cols: 3 },
+  { label: '⊕', insert: '\\oplus' },
+  { label: '⊗', insert: '\\otimes' },
   { label: '⊙', insert: '\\odot' },
+  { label: '⊖', insert: '\\ominus', title: 'Circled Minus', icon: 'circled-minus-template-image' },
+  { label: '⊛', insert: '\\circledast', title: 'Circled Asterisk', icon: 'circled-asterisk-template-image' },
+  { label: '⊘', insert: '\\oslash', title: 'Circled Divide', icon: 'circled-divide-template-image' },
+  { label: '•', insert: '^{\\bullet}', title: 'Raised Bullet', icon: 'raised-bullet-template-image' },
+];
+
+const ARROW_PICKER_ITEMS = [
+  { type: '↗', insert: '\\nearrow', title: 'North East Arrow' },
+  { type: '↘', insert: '\\searrow', title: 'South East Arrow' },
+  { type: '↖', insert: '\\nwarrow', title: 'North West Arrow' },
+  { type: '↙', insert: '\\swarrow', title: 'South West Arrow' },
+  { type: '←', insert: '\\leftarrow', title: 'Left Arrow' },
+  { type: '→', insert: '\\rightarrow', title: 'Right Arrow' },
+  { type: '↤', insert: '\\mapsfrom', title: 'Maps From' },
+  { type: '↦', insert: '\\mapsto', title: 'Maps To' },
+  { type: '↑', insert: '\\uparrow', title: 'Up Arrow' },
+  { type: '↓', insert: '\\downarrow', title: 'Down Arrow' },
+  { type: '⇑', insert: '\\Uparrow', title: 'Double Up Arrow' },
+  { type: '⇓', insert: '\\Downarrow', title: 'Double Down Arrow' },
+  { type: '⇐', insert: '\\Leftarrow', title: 'Double Left Arrow' },
+  { type: '⇒', insert: '\\Rightarrow', title: 'Double Right Arrow' },
+  { type: '⟵', insert: '\\longleftarrow', title: 'Long Left Arrow' },
+  { type: '⟶', insert: '\\longrightarrow', title: 'Long Right Arrow' },
+  { type: '↕', insert: '\\updownarrow', title: 'Up Down Arrow' },
+  { type: '⇕', insert: '\\Updownarrow', title: 'Double Up Down Arrow' },
+  { type: '↔', insert: '\\leftrightarrow', title: 'Left Right Arrow' },
+  { type: '⇔', insert: '\\Leftrightarrow', title: 'Double Left Right Arrow' },
+  { type: '⟷', insert: '\\longleftrightarrow', title: 'Long Left Right Arrow' },
+  { type: '⟸', insert: '\\Longleftarrow', title: 'Long Double Left Arrow' },
+  { type: '⟹', insert: '\\Longrightarrow', title: 'Long Double Right Arrow' },
+  { type: '⟺', insert: '\\Longleftrightarrow', title: 'Long Double Left Right Arrow' },
+];
+
+const ARROW_LABEL_PICKER_ITEMS = [
+  {
+    insert: '\\xleftrightarrow{#0}',
+    title: 'Left Right Arrow with Label Above',
+    icon: 'arrow-label-both-above',
+  },
+  {
+    insert: '\\xleftrightarrow[#?]{}',
+    title: 'Left Right Arrow with Label Below',
+    icon: 'arrow-label-both-below',
+  },
+  {
+    insert: '\\xleftrightarrow[#?]{#0}',
+    title: 'Left Right Arrow with Labels Above and Below',
+    icon: 'arrow-label-both-above-below',
+  },
+  {
+    insert: '\\xrightleftharpoons{#0}',
+    title: 'Equilibrium Harpoons with Label Above',
+    icon: 'harpoon-label-right-left-above',
+  },
+  {
+    insert: '\\xrightleftharpoons[#?]{}',
+    title: 'Equilibrium Harpoons with Label Below',
+    icon: 'harpoon-label-right-left-below',
+  },
+  {
+    insert: '\\xrightleftharpoons[#?]{#0}',
+    title: 'Equilibrium Harpoons with Labels Above and Below',
+    icon: 'harpoon-label-right-left-above-below',
+  },
+  {
+    insert: '\\xleftrightharpoons[#?]{#0}',
+    title: 'Reverse Equilibrium Harpoons with Labels Above and Below',
+    icon: 'harpoon-label-left-right-above-below',
+  },
+  {
+    insert: '\\xRightleftharpoons[#?]{#0}',
+    title: 'Bar Harpoons with Labels Above and Below',
+    icon: 'bar-harpoon-label-right-left-above-below',
+  },
+  {
+    insert: '\\xRightleftharpoons{#0}',
+    title: 'Bar Harpoons with Label Above',
+    icon: 'bar-harpoon-label-right-left-above',
+  },
+  {
+    insert: '\\xRightleftharpoons[#?]{}',
+    title: 'Bar Harpoons with Label Below',
+    icon: 'bar-harpoon-label-right-left-below',
+  },
+  {
+    insert: '\\xLeftrightharpoons[#?]{#0}',
+    title: 'Reverse Bar Harpoons with Labels Above and Below',
+    icon: 'bar-harpoon-label-left-right-above-below',
+  },
+  {
+    insert: '\\overset{#0}{\\rightleftarrows}',
+    title: 'Right Left Arrows with Label Above',
+    icon: 'bar-arrow-label-right-left-above',
+  },
+  {
+    insert: '\\overset{#0}{\\underset{#?}{\\rightleftarrows}}',
+    title: 'Right Left Arrows with Labels Above and Below',
+    icon: 'bar-arrow-label-right-left-above-below',
+  },
+  {
+    insert: '\\xleftrightarrows{#0}',
+    title: 'Left Right Arrows with Label Above',
+    icon: 'bar-arrow-label-left-right-above',
+  },
+  {
+    insert: '\\xleftrightarrows[#?]{#0}',
+    title: 'Left Right Arrows with Labels Above and Below',
+    icon: 'bar-arrow-label-left-right-above-below',
+  },
+];
+
+const GREEK_ITALIC_UPPERCASE_ITEMS = [
+  { label: 'Α', insert: '\\mathit{Α}', title: 'Italic Alpha' },
+  { label: 'Β', insert: '\\mathit{Β}', title: 'Italic Beta' },
+  { label: 'Γ', insert: '\\varGamma', title: 'Italic Gamma' },
+  { label: 'Δ', insert: '\\varDelta', title: 'Italic Delta' },
+  { label: 'Ε', insert: '\\mathit{Ε}', title: 'Italic Epsilon' },
+  { label: 'Ζ', insert: '\\mathit{Ζ}', title: 'Italic Zeta' },
+  { label: 'Η', insert: '\\mathit{Η}', title: 'Italic Eta' },
+  { label: 'Θ', insert: '\\varTheta', title: 'Italic Theta' },
+  { label: 'Ι', insert: '\\mathit{Ι}', title: 'Italic Iota' },
+  { label: 'Κ', insert: '\\mathit{Κ}', title: 'Italic Kappa' },
+  { label: 'Λ', insert: '\\varLambda', title: 'Italic Lambda' },
+  { label: 'Μ', insert: '\\mathit{Μ}', title: 'Italic Mu' },
+  { label: 'Ν', insert: '\\mathit{Ν}', title: 'Italic Nu' },
+  { label: 'Ξ', insert: '\\varXi', title: 'Italic Xi' },
+  { label: 'Ο', insert: '\\mathit{Ο}', title: 'Italic Omicron' },
+  { label: 'Π', insert: '\\varPi', title: 'Italic Pi' },
+  { label: 'Ρ', insert: '\\mathit{Ρ}', title: 'Italic Rho' },
+  { label: 'Σ', insert: '\\varSigma', title: 'Italic Sigma' },
+  { label: 'Τ', insert: '\\mathit{Τ}', title: 'Italic Tau' },
+  { label: 'Υ', insert: '\\varUpsilon', title: 'Italic Upsilon' },
+  { label: 'Φ', insert: '\\varPhi', title: 'Italic Phi' },
+  { label: 'Χ', insert: '\\mathit{Χ}', title: 'Italic Chi' },
+  { label: 'Ψ', insert: '\\varPsi', title: 'Italic Psi' },
+  { label: 'Ω', insert: '\\varOmega', title: 'Italic Omega' },
 ];
 
 const ORDERED_MATH_GROUPS = [
@@ -617,20 +806,21 @@ const ORDERED_MATH_GROUPS = [
       { category: 'Lowercase Greek Letters', label: 'χ', insert: '\\chi' },
       { category: 'Lowercase Greek Letters', label: 'ψ', insert: '\\psi' },
       { category: 'Lowercase Greek Letters', label: 'ω', insert: '\\omega' },
+      { category: 'Lowercase Greek Letters', label: '|', action: 'GREEK_ITALIC_PICKER', title: 'Italic Uppercase Greek', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool greek-italic-picker-tool' },
 
-      { category: 'Uppercase Greek Letters', label: 'Ν', insert: 'Ν' },
-      { category: 'Uppercase Greek Letters', label: 'Ζ', insert: 'Ζ' },
-      { category: 'Uppercase Greek Letters', label: 'Θ', insert: '\\Theta' },
-      { category: 'Uppercase Greek Letters', label: 'Ξ', insert: '\\Xi' },
-      { category: 'Uppercase Greek Letters', label: 'Ρ', insert: 'Ρ' },
-      { category: 'Uppercase Greek Letters', label: 'Π', insert: '\\Pi' },
+      { category: 'Uppercase Greek Letters', label: 'ℕ', insert: '\\mathbb{N}' },
+      { category: 'Uppercase Greek Letters', label: 'ℤ', insert: '\\mathbb{Z}' },
+      { category: 'Uppercase Greek Letters', label: 'ℚ', insert: '\\mathbb{Q}' },
+      { category: 'Uppercase Greek Letters', label: 'ℂ', insert: '\\mathbb{C}' },
+      { category: 'Uppercase Greek Letters', label: 'ℝ', insert: '\\mathbb{R}' },
+      { category: 'Uppercase Greek Letters', label: 'ℙ', insert: '\\mathbb{P}' },
 
-      { category: 'Fraktur / Gothic Symbols', label: 'ℜ', insert: '\\Re' },
       { category: 'Fraktur / Gothic Symbols', label: '𝔄', insert: '\\mathfrak{A}' },
-      { category: 'Fraktur / Gothic Symbols', label: 'ℑ', insert: '\\Im' },
-      { category: 'Fraktur / Gothic Symbols', label: '𝔉', insert: '\\mathfrak{F}' },
-      { category: 'Fraktur / Gothic Symbols', label: 'ℭ', insert: '\\mathfrak{C}' },
+      { category: 'Fraktur / Gothic Symbols', label: '𝒜', insert: '\\mathscr{A}' },
       { category: 'Fraktur / Gothic Symbols', label: '𝔅', insert: '\\mathfrak{B}' },
+      { category: 'Fraktur / Gothic Symbols', label: 'ℬ', insert: '\\\mathscr{B}' },
+      { category: 'Fraktur / Gothic Symbols', label: 'ℭ', insert: '\\mathfrak{C}' },
+      { category: 'Fraktur / Gothic Symbols', label: '𝒞', insert: '\\mathscr{C}' },
 
       { category: 'Hebrew Mathematical Symbols', label: 'ℵ', insert: '\\aleph' },
       { category: 'Hebrew Mathematical Symbols', label: 'ℶ', insert: '\\beth' },
@@ -688,7 +878,7 @@ const ORDERED_MATH_GROUPS = [
       { label: '∈', insert: '\\in' },
       { label: '∉', insert: '\\notin' },
       { label: '∅', insert: '\\emptyset' },
-      { label: '∖', insert: '\\setminus' },
+      { label: '﹨', insert: '﹨' },
       { label: '∀', insert: '\\forall' },
       { label: '∃', insert: '\\exists' },
       { label: '¬', insert: '\\neg' },
@@ -867,7 +1057,7 @@ class MathInlinePlugin extends Plugin {
       isInline: true,
       isObject: true,
       allowWhere: '$text',
-      allowAttributes: ['latex'],
+      allowAttributes: ['latex', 'dir'],
     });
 
     // Allow mathInline in all text-containing elements
@@ -883,6 +1073,7 @@ class MathInlinePlugin extends Plugin {
       model: 'mathInline',
       view: (modelElement, { writer }) => {
         const latex = modelElement.getAttribute('latex') || '';
+        const dir = modelElement.getAttribute('dir') === 'rtl' ? 'rtl' : 'ltr';
         const widgetId = 'math-' + Math.random().toString(36).substr(2, 9);
 
         // Save mapping to bypass domConverter later
@@ -893,6 +1084,8 @@ class MathInlinePlugin extends Plugin {
           contenteditable: 'false',
           'data-math-id': widgetId,
           'data-latex': latex,
+          'data-dir': dir,
+          dir,
         });
 
         const rawElement = writer.createRawElement(
@@ -907,6 +1100,7 @@ class MathInlinePlugin extends Plugin {
             mf.setAttribute('math-virtual-keyboard-policy', 'manual');
             mf.setAttribute('tabindex', '-1');
             mf.setAttribute('letter-shape-style', 'upright');
+            mf.setAttribute('dir', dir);
             mf.style.display = 'inline-block';
             mf.style.width = 'auto';
             mf.style.maxWidth = '100%';
@@ -919,6 +1113,10 @@ class MathInlinePlugin extends Plugin {
             mf.style.padding = '0 2px';
             mf.style.margin = '0';
             mf.style.pointerEvents = 'none';
+            mf.style.direction = dir;
+            mf.style.textAlign = dir === 'rtl' ? 'right' : 'left';
+            mf.style.unicodeBidi = dir === 'rtl' ? 'plaintext' : 'normal';
+            mf.style.color = '#ffffff';
 
             const setLatex = () => {
               if (mf.setValue) mf.setValue(latex, { silenceNotifications: true });
@@ -971,9 +1169,12 @@ class MathInlinePlugin extends Plugin {
       model: 'mathInline',
       view: (modelElement, { writer }) => {
         const latex = modelElement.getAttribute('latex') || '';
+        const dir = modelElement.getAttribute('dir') === 'rtl' ? 'rtl' : 'ltr';
         const span = writer.createContainerElement('span', {
           class: 'math-tex',
           'data-latex': latex,
+          'data-dir': dir,
+          dir,
           style: 'display:inline;',
         });
         writer.insert(writer.createPositionAt(span, 0), writer.createText(latex));
@@ -989,7 +1190,12 @@ class MathInlinePlugin extends Plugin {
       },
       model: (viewElement, { writer }) => {
         const latex = viewElement.getAttribute('data-latex') || '';
-        return writer.createElement('mathInline', { latex });
+        const dir =
+          viewElement.getAttribute('data-dir') === 'rtl' ||
+          viewElement.getAttribute('dir') === 'rtl'
+            ? 'rtl'
+            : 'ltr';
+        return writer.createElement('mathInline', { latex, dir });
       },
     });
   }
@@ -1233,35 +1439,248 @@ const TOOLBAR_ICON_IMAGES = {
       <path d="M5.1 14.7L11.85 2.6" fill="none" stroke="#2f3b43" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   `),
+  'slash-operator-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <path d="M8 4L16 20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+  `),
+  'setminus-operator-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <path d="M16 4L8 20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+  `),
+  'minus-plus-operator-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <line x1="7" y1="8" x2="17" y2="8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="7" y1="16" x2="17" y2="16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="12" y1="11" x2="12" y2="21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+  `),
+  'not-equal-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <line x1="6" y1="9" x2="18" y2="9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="6" y1="15" x2="18" y2="15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="16" y1="5" x2="8" y2="19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    </svg>
+  `),
+  'not-approx-equal-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <path d="M6 8C8 6 10 10 12 8C14 6 16 10 18 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M6 14C8 12 10 16 12 14C14 12 16 16 18 14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="16" y1="5" x2="8" y2="19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    </svg>
+  `),
+  'not-similar-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <path d="M6 12C8 10 10 14 12 12C14 10 16 14 18 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="16" y1="5" x2="8" y2="19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    </svg>
+  `),
+  'not-identical-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <line x1="6" y1="7" x2="18" y2="7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="6" y1="12" x2="18" y2="12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="6" y1="17" x2="18" y2="17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="16" y1="4" x2="8" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    </svg>
+  `),
+  'less-than-not-equal-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor" font-family="Cambria Math, STIX Two Math, Times New Roman">≨</text>
+    </svg>
+  `),
+  'much-greater-than-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">≫</text>
+    </svg>
+  `),
+  'succeeds-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">≻</text>
+    </svg>
+  `),
+  'greater-than-not-equal-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor" font-family="Cambria Math, STIX Two Math, Times New Roman">≩</text>
+    </svg>
+  `),
+  'proportional-to-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">∝</text>
+    </svg>
+  `),
+  'normal-subgroup-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">⊲</text>
+    </svg>
+  `),
+  'much-less-than-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">≪</text>
+    </svg>
+  `),
+  'precedes-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">≺</text>
+    </svg>
+  `),
+  'contains-normal-subgroup-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">▷</text>
+    </svg>
+  `),
+  'not-element-of-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">∉</text>
+    </svg>
+  `),
+  'not-contains-member-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">∌</text>
+    </svg>
+  `),
+  'subset-equal-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">⊆</text>
+    </svg>
+  `),
+  'superset-equal-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">⊇</text>
+    </svg>
+  `),
+  'square-subset-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">⊏</text>
+    </svg>
+  `),
+  'square-superset-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">⊐</text>
+    </svg>
+  `),
+  'square-subset-equal-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">⊑</text>
+    </svg>
+  `),
+  'square-superset-equal-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">⊒</text>
+    </svg>
+  `),
+  'square-cap-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">⊓</text>
+    </svg>
+  `),
+  'square-cup-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="20" fill="currentColor">⊔</text>
+    </svg>
+  `),
+  'therefore-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <circle cx="12" cy="6" r="1.8" />
+      <circle cx="7" cy="16" r="1.8" />
+      <circle cx="17" cy="16" r="1.8" />
+    </svg>
+  `),
+  'because-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <circle cx="7" cy="8" r="1.8" />
+      <circle cx="17" cy="8" r="1.8" />
+      <circle cx="12" cy="18" r="1.8" />
+    </svg>
+  `),
+  'not-parallel-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <line x1="8" y1="3" x2="8" y2="21" stroke="currentColor" stroke-width="2.2" />
+      <line x1="16" y1="3" x2="16" y2="21" stroke="currentColor" stroke-width="2.2" />
+      <line x1="18" y1="4" x2="6" y2="20" stroke="currentColor" stroke-width="2.2" />
+    </svg>
+  `),
+  'measured-angle-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text
+        x="12"
+        y="17"
+        text-anchor="middle"
+        font-size="20"
+        fill="currentColor"
+        font-family="Cambria Math, STIX Two Math, Times New Roman"
+      >
+        ∡
+      </text>
+    </svg>
+  `),
+  'spherical-angle-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text
+        x="12"
+        y="17"
+        text-anchor="middle"
+        font-size="20"
+        fill="currentColor"
+        font-family="Cambria Math, STIX Two Math, Times New Roman"
+      >
+        ∢
+      </text>
+    </svg>
+  `),
+  'diamond-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <path d="M12 3L18 12L12 21L6 12Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />
+    </svg>
+  `),
+  'rectangle-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <rect x="4" y="7" width="16" height="10" stroke="currentColor" stroke-width="2.2" />
+    </svg>
+  `),
+  'parallelogram-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <path d="M8 5H18L16 19H6L8 5Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />
+    </svg>
+  `),
+  'circled-minus-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.2" />
+      <line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+    </svg>
+  `),
+  'circled-asterisk-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.2" />
+      <line x1="12" y1="7" x2="12" y2="17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+      <line x1="7" y1="12" x2="17" y2="12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+      <line x1="8.5" y1="8.5" x2="15.5" y2="15.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+      <line x1="15.5" y1="8.5" x2="8.5" y2="15.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+    </svg>
+  `),
+  'circled-divide-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.2" />
+      <rect x="10.9" y="5.8" width="2.2" height="2.2" fill="currentColor" />
+      <rect x="7.2" y="10.9" width="9.6" height="2.2" fill="currentColor" />
+      <rect x="10.9" y="16" width="2.2" height="2.2" fill="currentColor" />
+    </svg>
+  `),
+  'raised-bullet-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="8" r="3" fill="currentColor" />
+    </svg>
+  `),
+  'vertical-line-picker-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <rect x="8.6" y="2.5" width="4.3" height="18.5" rx="1.4" fill="#89a5b6" />
+      <path d="M12.8 15L17 18.1L12.8 21.2Z" fill="#ffffff" />
+    </svg>
+  `),
 };
 
 function renderToolbarItemLabel(item, context = {}) {
-  if (
-    item.icon === 'fraction-template-image' ||
-    item.icon === 'superscript-template-image' ||
-    item.icon === 'sqrt-template-image' ||
-    item.icon === 'subscript-template-image' ||
-    item.icon === 'nth-root-template-image' ||
-    item.icon === 'overline-template-image' ||
-    item.icon === 'underline-template-image' ||
-    item.icon === 'limit-template-image' ||
-    item.icon === 'integral-limits-template-image' ||
-    item.icon === 'vector-template-image' ||
-    item.icon === 'summation-template-image' ||
-    item.icon === 'paren-fraction-template-image' ||
-    item.icon === 'brace-fraction-template-image' ||
-    item.icon === 'bracket-fraction-template-image' ||
-    item.icon === 'subsup-template-image' ||
-    item.icon === 'fraction-exponent-template-image' ||
-    item.icon === 'double-integral-area-template-image' ||
-    item.icon === 'exp-e-template-image' ||
-    item.icon === 'exp-generic-template-image' ||
-    item.icon === 'evaluated-expression-template-image' ||
-    item.icon === 'rtl-input-template-image' ||
-    item.icon === 'negate-template-image' ||
-    item.icon === 'integral-with-differential' ||
-    item.icon === 'integral-with-limits-differential'
-  ) {
+  if (item.icon && TOOLBAR_ICON_IMAGES[item.icon]) {
     return (
       <span className="cme-toolbar-icon-image-wrapper" aria-hidden="true">
         <img
@@ -1297,8 +1716,21 @@ function renderToolbarItemLabel(item, context = {}) {
     item.icon === 'arrow-label-right-below' ||
     item.icon === 'arrow-label-left-below' ||
     item.icon === 'arrow-label-both-below' ||
+    item.icon === 'arrow-label-both-above-below' ||
     item.icon === 'arrow-label-right-above-below' ||
-    item.icon === 'arrow-label-left-above-below'
+    item.icon === 'arrow-label-left-above-below' ||
+    item.icon === 'harpoon-label-right-left-above' ||
+    item.icon === 'harpoon-label-right-left-below' ||
+    item.icon === 'harpoon-label-right-left-above-below' ||
+    item.icon === 'harpoon-label-left-right-above-below' ||
+    item.icon === 'bar-harpoon-label-right-left-above-below' ||
+    item.icon === 'bar-harpoon-label-right-left-above' ||
+    item.icon === 'bar-harpoon-label-right-left-below' ||
+    item.icon === 'bar-harpoon-label-left-right-above-below' ||
+    item.icon === 'bar-arrow-label-right-left-above' ||
+    item.icon === 'bar-arrow-label-right-left-above-below' ||
+    item.icon === 'bar-arrow-label-left-right-above' ||
+    item.icon === 'bar-arrow-label-left-right-above-below'
   ) {
     const arrowLayouts = {
       'arrow-label-right-above': {
@@ -1331,6 +1763,12 @@ function renderToolbarItemLabel(item, context = {}) {
         arrowY: 6.7,
         bottomBox: { x: 6.5, y: 10.35, width: 4.8, height: 5.7 }
       },
+      'arrow-label-both-above-below': {
+        direction: 'both',
+        arrowY: 8.55,
+        topBox: { x: 6.5, y: 1.3, width: 4.8, height: 4.9 },
+        bottomBox: { x: 6.5, y: 11.7, width: 4.8, height: 4.9 }
+      },
       'arrow-label-right-above-below': {
         direction: 'right',
         arrowY: 8.55,
@@ -1339,6 +1777,72 @@ function renderToolbarItemLabel(item, context = {}) {
       },
       'arrow-label-left-above-below': {
         direction: 'left',
+        arrowY: 8.55,
+        topBox: { x: 6.5, y: 1.3, width: 4.8, height: 4.9 },
+        bottomBox: { x: 6.5, y: 11.7, width: 4.8, height: 4.9 }
+      },
+      'harpoon-label-right-left-above': {
+        direction: 'harpoon-rl',
+        arrowY: 11.15,
+        topBox: { x: 6.5, y: 1.55, width: 4.8, height: 5.7 }
+      },
+      'harpoon-label-right-left-below': {
+        direction: 'harpoon-rl',
+        arrowY: 6.6,
+        bottomBox: { x: 6.5, y: 10.35, width: 4.8, height: 5.7 }
+      },
+      'harpoon-label-right-left-above-below': {
+        direction: 'harpoon-rl',
+        arrowY: 8.55,
+        topBox: { x: 6.5, y: 1.3, width: 4.8, height: 4.9 },
+        bottomBox: { x: 6.5, y: 11.7, width: 4.8, height: 4.9 }
+      },
+      'harpoon-label-left-right-above-below': {
+        direction: 'harpoon-lr',
+        arrowY: 8.55,
+        topBox: { x: 6.5, y: 1.3, width: 4.8, height: 4.9 },
+        bottomBox: { x: 6.5, y: 11.7, width: 4.8, height: 4.9 }
+      },
+      'bar-harpoon-label-right-left-above-below': {
+        direction: 'bar-harpoon-rl',
+        arrowY: 8.55,
+        topBox: { x: 6.5, y: 1.3, width: 4.8, height: 4.9 },
+        bottomBox: { x: 6.5, y: 11.7, width: 4.8, height: 4.9 }
+      },
+      'bar-harpoon-label-right-left-above': {
+        direction: 'bar-harpoon-rl',
+        arrowY: 11.15,
+        topBox: { x: 6.5, y: 1.55, width: 4.8, height: 5.7 }
+      },
+      'bar-harpoon-label-right-left-below': {
+        direction: 'bar-harpoon-rl',
+        arrowY: 6.6,
+        bottomBox: { x: 6.5, y: 10.35, width: 4.8, height: 5.7 }
+      },
+      'bar-harpoon-label-left-right-above-below': {
+        direction: 'bar-harpoon-lr',
+        arrowY: 8.55,
+        topBox: { x: 6.5, y: 1.3, width: 4.8, height: 4.9 },
+        bottomBox: { x: 6.5, y: 11.7, width: 4.8, height: 4.9 }
+      },
+      'bar-arrow-label-right-left-above': {
+        direction: 'bar-arrow-rl',
+        arrowY: 11.15,
+        topBox: { x: 6.5, y: 1.55, width: 4.8, height: 5.7 }
+      },
+      'bar-arrow-label-right-left-above-below': {
+        direction: 'bar-arrow-rl',
+        arrowY: 8.55,
+        topBox: { x: 6.5, y: 1.3, width: 4.8, height: 4.9 },
+        bottomBox: { x: 6.5, y: 11.7, width: 4.8, height: 4.9 }
+      },
+      'bar-arrow-label-left-right-above': {
+        direction: 'bar-arrow-lr',
+        arrowY: 11.15,
+        topBox: { x: 6.5, y: 1.55, width: 4.8, height: 5.7 }
+      },
+      'bar-arrow-label-left-right-above-below': {
+        direction: 'bar-arrow-lr',
         arrowY: 8.55,
         topBox: { x: 6.5, y: 1.3, width: 4.8, height: 4.9 },
         bottomBox: { x: 6.5, y: 11.7, width: 4.8, height: 4.9 }
@@ -1351,6 +1855,54 @@ function renderToolbarItemLabel(item, context = {}) {
         ? <path d={`M5.1 ${arrowY - 1.55}L2.55 ${arrowY}L5.1 ${arrowY + 1.55}M2.95 ${arrowY}H14.9`} />
         : direction === 'both'
           ? <path d={`M5.1 ${arrowY - 1.55}L2.55 ${arrowY}L5.1 ${arrowY + 1.55}M2.95 ${arrowY}H15.05M12.5 ${arrowY - 1.55}L15.05 ${arrowY}L12.5 ${arrowY + 1.55}`} />
+          : direction === 'harpoon-rl'
+            ? (
+              <>
+                <path d={`M3.1 ${arrowY - 1.95}H14.35M12.05 ${arrowY - 3.15}L14.55 ${arrowY - 1.95}L12.05 ${arrowY - 0.75}`} />
+                <path d={`M14.45 ${arrowY + 1.65}H3.2M5.45 ${arrowY + 0.45}L2.95 ${arrowY + 1.65}L5.45 ${arrowY + 2.85}`} />
+              </>
+            )
+            : direction === 'harpoon-lr'
+              ? (
+                <>
+                  <path d={`M14.45 ${arrowY - 1.95}H3.2M5.45 ${arrowY - 3.15}L2.95 ${arrowY - 1.95}L5.45 ${arrowY - 0.75}`} />
+                  <path d={`M3.1 ${arrowY + 1.65}H14.35M12.05 ${arrowY + 0.45}L14.55 ${arrowY + 1.65}L12.05 ${arrowY + 2.85}`} />
+                </>
+              )
+              : direction === 'bar-harpoon-rl'
+                ? (
+                  <>
+                    <path d={`M4.3 ${arrowY - 1.95}H14.1M11.8 ${arrowY - 3.15}L14.3 ${arrowY - 1.95}L11.8 ${arrowY - 0.75}`} />
+                    <path d={`M14.2 ${arrowY + 1.65}H4.1M6.35 ${arrowY + 0.45}L3.85 ${arrowY + 1.65}L6.35 ${arrowY + 2.85}`} />
+                    <line x1="2.95" y1={arrowY - 1.95} x2="4.15" y2={arrowY - 1.95} />
+                    <line x1="14.2" y1={arrowY + 1.65} x2="15.3" y2={arrowY + 1.65} />
+                  </>
+                )
+                : direction === 'bar-harpoon-lr'
+                ? (
+                    <>
+                      <path d={`M14.2 ${arrowY - 1.95}H4.1M6.35 ${arrowY - 3.15}L3.85 ${arrowY - 1.95}L6.35 ${arrowY - 0.75}`} />
+                      <path d={`M4.3 ${arrowY + 1.65}H14.1M11.8 ${arrowY + 0.45}L14.3 ${arrowY + 1.65}L11.8 ${arrowY + 2.85}`} />
+                      <line x1="14.2" y1={arrowY - 1.95} x2="15.3" y2={arrowY - 1.95} />
+                      <line x1="2.95" y1={arrowY + 1.65} x2="4.15" y2={arrowY + 1.65} />
+                    </>
+                  )
+                  : direction === 'bar-arrow-rl'
+                    ? (
+                      <>
+                        <path d={`M4.2 ${arrowY - 1.95}H14.05M11.75 ${arrowY - 3.15}L14.25 ${arrowY - 1.95}L11.75 ${arrowY - 0.75}`} />
+                        <path d={`M14.15 ${arrowY + 1.65}H4.25M6.55 ${arrowY + 0.45}L4.05 ${arrowY + 1.65}L6.55 ${arrowY + 2.85}`} />
+                        <line x1="4.05" y1={arrowY + 1.65} x2="14.15" y2={arrowY + 1.65} />
+                      </>
+                    )
+                    : direction === 'bar-arrow-lr'
+                      ? (
+                        <>
+                          <path d={`M14.15 ${arrowY - 1.95}H4.25M6.55 ${arrowY - 3.15}L4.05 ${arrowY - 1.95}L6.55 ${arrowY - 0.75}`} />
+                          <path d={`M4.2 ${arrowY + 1.65}H14.05M11.75 ${arrowY + 0.45}L14.25 ${arrowY + 1.65}L11.75 ${arrowY + 2.85}`} />
+                          <line x1="4.05" y1={arrowY - 1.95} x2="14.15" y2={arrowY - 1.95} />
+                        </>
+                      )
           : <path d={`M12.5 ${arrowY - 1.55}L15.05 ${arrowY}L12.5 ${arrowY + 1.55}M2.95 ${arrowY}H14.65`} />;
 
     return (
@@ -1661,6 +2213,286 @@ function renderToolbarItemLabel(item, context = {}) {
   return item.label;
 }
 
+function ArrowGlyphIcon({ type, size = 24 }) {
+  const icons = {
+    '↗': (
+      <>
+        <path d="M5 19L19 5" />
+        <path d="M12 5H19V12" />
+      </>
+    ),
+    '↘': (
+      <>
+        <path d="M5 5L19 19" />
+        <path d="M12 19H19V12" />
+      </>
+    ),
+    '↖': (
+      <>
+        <path d="M19 19L5 5" />
+        <path d="M12 5H5V12" />
+      </>
+    ),
+    '↙': (
+      <>
+        <path d="M19 5L5 19" />
+        <path d="M12 19H5V12" />
+      </>
+    ),
+    '←': (
+      <>
+        <path d="M20 12H6" />
+        <path d="M11 7L6 12L11 17" />
+      </>
+    ),
+    '→': (
+      <>
+        <path d="M4 12H18" />
+        <path d="M13 7L18 12L13 17" />
+      </>
+    ),
+    '↑': (
+      <>
+        <path d="M12 20V6" />
+        <path d="M7 11L12 6L17 11" />
+      </>
+    ),
+    '↓': (
+      <>
+        <path d="M12 4V18" />
+        <path d="M7 13L12 18L17 13" />
+      </>
+    ),
+    '↔': (
+      <>
+        <path d="M4 12H20" />
+        <path d="M9 7L4 12L9 17" />
+        <path d="M15 7L20 12L15 17" />
+      </>
+    ),
+    '↕': (
+      <>
+        <path d="M12 4V20" />
+        <path d="M7 9L12 4L17 9" />
+        <path d="M7 15L12 20L17 15" />
+      </>
+    ),
+    '⇐': (
+      <>
+        <path d="M20 10H6M20 14H6" />
+        <path d="M11 6L6 12L11 18" />
+      </>
+    ),
+    '⇒': (
+      <>
+        <path d="M4 10H18M4 14H18" />
+        <path d="M13 6L18 12L13 18" />
+      </>
+    ),
+    '⇑': (
+      <>
+        <path d="M10 20V6M14 20V6" />
+        <path d="M6 11L12 5L18 11" />
+      </>
+    ),
+    '⇓': (
+      <>
+        <path d="M10 4V18M14 4V18" />
+        <path d="M6 13L12 19L18 13" />
+      </>
+    ),
+    '⇔': (
+      <>
+        <path d="M4 10H20M4 14H20" />
+        <path d="M9 6L4 12L9 18" />
+        <path d="M15 6L20 12L15 18" />
+      </>
+    ),
+    '⇕': (
+      <>
+        <path d="M10 4V20M14 4V20" />
+        <path d="M6 9L12 3L18 9" />
+        <path d="M6 15L12 21L18 15" />
+      </>
+    ),
+    '⟵': (
+      <>
+        <path d="M21 12H5.5" />
+        <path d="M10.8 7L5.5 12L10.8 17" />
+      </>
+    ),
+    '⟶': (
+      <>
+        <path d="M3 12H18.5" />
+        <path d="M13.2 7L18.5 12L13.2 17" />
+      </>
+    ),
+    '⟷': (
+      <>
+        <path d="M3 12H21" />
+        <path d="M8 7L3 12L8 17" />
+        <path d="M16 7L21 12L16 17" />
+      </>
+    ),
+    '⟸': (
+      <>
+        <path d="M21 10H5.5M21 14H5.5" />
+        <path d="M10.8 6L5.5 12L10.8 18" />
+      </>
+    ),
+    '⟹': (
+      <>
+        <path d="M3 10H18.5M3 14H18.5" />
+        <path d="M13.2 6L18.5 12L13.2 18" />
+      </>
+    ),
+    '⟺': (
+      <>
+        <path d="M3 10H21M3 14H21" />
+        <path d="M8 6L3 12L8 18" />
+        <path d="M16 6L21 12L16 18" />
+      </>
+    ),
+    '↤': (
+      <>
+        <path d="M20 12H8" />
+        <path d="M8 7L3 12L8 17" />
+        <path d="M20 6V18" />
+      </>
+    ),
+    '↦': (
+      <>
+        <path d="M4 12H16" />
+        <path d="M16 7L21 12L16 17" />
+        <path d="M4 6V18" />
+      </>
+    ),
+  };
+
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {icons[type]}
+    </svg>
+  );
+}
+
+function ArrowPickerPopover({ position, onInsert }) {
+  const left = Math.min(Math.max(position.x - 6, 8), window.innerWidth - 348);
+  const top = Math.min(position.y + 2, window.innerHeight - 148);
+
+  return (
+    <div
+      className="cme-arrow-picker-popup"
+      style={{
+        position: 'fixed',
+        left: `${left}px`,
+        top: `${top}px`,
+        zIndex: 100000,
+      }}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
+      <div className="cme-arrow-picker-grid">
+        {ARROW_PICKER_ITEMS.map((item) => (
+          <button
+            key={item.type}
+            type="button"
+            className="cme-arrow-picker-btn"
+            title={item.title}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              onInsert(item.insert);
+            }}
+          >
+            <ArrowGlyphIcon type={item.type} />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ArrowLabelPickerPopover({ position, onInsert }) {
+  const left = Math.min(Math.max(position.x - 8, 8), window.innerWidth - 196);
+  const top = Math.min(position.y + 2, window.innerHeight - 86);
+
+  return (
+    <div
+      className="cme-arrow-label-picker-popup"
+      style={{
+        position: 'fixed',
+        left: `${left}px`,
+        top: `${top}px`,
+        zIndex: 100000,
+      }}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
+      <div className="cme-arrow-label-picker-grid">
+        {ARROW_LABEL_PICKER_ITEMS.map((item) => (
+          <button
+            key={item.insert}
+            type="button"
+            className="cme-arrow-label-picker-btn"
+            title={item.title}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              onInsert(item.insert);
+            }}
+          >
+            {renderToolbarItemLabel(item, { groupId: 'arrows', isMathMode: true, isChemMode: false })}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function GreekItalicPickerPopover({ position, onInsert }) {
+  const left = Math.min(Math.max(position.x - 8, 8), window.innerWidth - 356);
+  const top = Math.min(position.y + 2, window.innerHeight - 148);
+
+  return (
+    <div
+      className="cme-greek-italic-picker-popup"
+      style={{
+        position: 'fixed',
+        left: `${left}px`,
+        top: `${top}px`,
+        zIndex: 100000,
+      }}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
+      <div className="cme-greek-italic-picker-grid">
+        {GREEK_ITALIC_UPPERCASE_ITEMS.map((item) => (
+          <button
+            key={item.label}
+            type="button"
+            className="cme-greek-italic-picker-btn"
+            title={item.title}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              onInsert(item.insert);
+            }}
+          >
+            <span className="cme-greek-italic-picker-glyph" aria-hidden="true">
+              {item.label}
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function makeToolbarPlugin(onOpenPopup) {
   return class MathChemToolbarPlugin extends Plugin {
     init() {
@@ -1765,15 +2597,18 @@ function MatrixHoverGrid({ matrixType, x, y, onSelect, onMouseEnter, onMouseLeav
 /* ══════════════════════════════════════════════════════════
    MathChemPopup — same as CustomMathEditor popup
    ══════════════════════════════════════════════════════════ */
-function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
+function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection = 'ltr', isEditing }) {
   const popupMfRef = useRef(null);
   const [activeGroup, setActiveGroup] = useState(0);
   const [activeMatrix, setActiveMatrix] = useState(null); // { type, x, y }
   const [showSpecialChars, setShowSpecialChars] = useState(null); // { x, y } or null
+  const [showArrowPicker, setShowArrowPicker] = useState(null); // { x, y } or null
+  const [showArrowLabelPicker, setShowArrowLabelPicker] = useState(null); // { x, y } or null
+  const [showGreekItalicPicker, setShowGreekItalicPicker] = useState(null); // { x, y } or null
   const [showColorPicker, setShowColorPicker] = useState(null); // { x, y } or null
   const [windowMode, setWindowMode] = useState('normal');
   const [activeToolbarItem, setActiveToolbarItem] = useState(null);
-  const [isRtlInput, setIsRtlInput] = useState(false);
+  const [isRtlInput, setIsRtlInput] = useState(initialDirection === 'rtl');
   const [customColorInput, setCustomColorInput] = useState('');
   const [customColorError, setCustomColorError] = useState('');
   const groups = mode === 'math' ? ORDERED_MATH_GROUPS : CHEM_GROUPS;
@@ -1925,13 +2760,22 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
 
 
   useEffect(() => {
-    if (!activeMatrix && !showColorPicker) return;
+    if (!activeMatrix && !showColorPicker && !showArrowPicker && !showArrowLabelPicker && !showGreekItalicPicker) return;
     const handleOutsideClick = (e) => {
       if (!e.target.closest('.cme-matrix-hover-popover') && !e.target.closest('.cme-matrix-btn-wrapper')) {
         setActiveMatrix(null);
       }
       if (!e.target.closest('.cme-color-picker-popup') && !e.target.closest('[title="Text Color"]')) {
         setShowColorPicker(null);
+      }
+      if (!e.target.closest('.cme-arrow-picker-popup') && !e.target.closest('.arrow-picker-tool')) {
+        setShowArrowPicker(null);
+      }
+      if (!e.target.closest('.cme-arrow-label-picker-popup') && !e.target.closest('.arrow-label-picker-tool')) {
+        setShowArrowLabelPicker(null);
+      }
+      if (!e.target.closest('.cme-greek-italic-picker-popup') && !e.target.closest('.greek-italic-picker-tool')) {
+        setShowGreekItalicPicker(null);
       }
     };
     window.addEventListener('mousedown', handleOutsideClick, true);
@@ -1940,7 +2784,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
       window.removeEventListener('mousedown', handleOutsideClick, true);
       window.removeEventListener('pointerdown', handleOutsideClick, true);
     };
-  }, [activeMatrix, showColorPicker]);
+  }, [activeMatrix, showColorPicker, showArrowPicker, showArrowLabelPicker, showGreekItalicPicker]);
 
   useEffect(() => {
     const mf = popupMfRef.current;
@@ -2117,7 +2961,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
       return;
     }
     if (mode === 'chem') latex = serializeChemValue(latex);
-    onInsert(latex);
+    onInsert(latex, { direction: isRtlInput ? 'rtl' : 'ltr' });
     if (mf.setValue) mf.setValue(''); else mf.value = '';
     setActiveToolbarItem(null);
     onClose();
@@ -2211,7 +3055,10 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                           const currentGroup = activeGroupConfig;
                           const groupKey = currentGroup.id || currentGroup.label || activeGroup;
                           const buttonKey = `${groupKey}-${category}-${i}-${item.insert || item.action || item.label}`;
-                          const isTouchedButton = activeToolbarItem === buttonKey;
+                          const isGreekItalicPickerBtn = item.action === 'GREEK_ITALIC_PICKER';
+                          const isTouchedButton = isGreekItalicPickerBtn
+                            ? !!showGreekItalicPicker
+                            : activeToolbarItem === buttonKey;
 
                           return (
                             <button
@@ -2222,6 +3069,17 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                               onMouseDown={(e) => {
                                 e.preventDefault();
                                 setActiveToolbarItem(buttonKey);
+                                if (item.action === 'GREEK_ITALIC_PICKER') {
+                                  const rect = e.currentTarget.getBoundingClientRect();
+                                  setShowArrowPicker(null);
+                                  setShowArrowLabelPicker(null);
+                                  setShowColorPicker(null);
+                                  setShowSpecialChars(null);
+                                  setShowGreekItalicPicker((prev) => (
+                                    prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                                  ));
+                                  return;
+                                }
                                 insertAtCursor(item.insert);
                               }}
                             >
@@ -2381,11 +3239,15 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                   const isBoldItalicBtn = item.action === 'BOLD_ITALIC';
                   const isColorBtn = item.action === 'TEXT_COLOR';
                   const isRtlBtn = item.action === 'TOGGLE_RTL';
+                  const isArrowPickerBtn = item.action === 'ARROW_PICKER';
+                  const isArrowLabelPickerBtn = item.action === 'ARROW_LABEL_PICKER';
                   const isBtnActive =
                     (isBoldBtn && activeStyles.bold && !activeStyles.italic) ||
                     (isItalicBtn && activeStyles.italic && !activeStyles.bold) ||
                     (isBoldItalicBtn && activeStyles.boldItalic) ||
                     (isRtlBtn && isRtlInput) ||
+                    (isArrowPickerBtn && !!showArrowPicker) ||
+                    (isArrowLabelPickerBtn && !!showArrowLabelPicker) ||
                     (isColorBtn && activeStyles.color !== 'none') ||
                     (!isRtlBtn && activeToolbarItem === buttonKey);
 
@@ -2401,9 +3263,30 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
                         const mf = popupMfRef.current;
                         if (item.action === 'SPECIAL_CHARS') {
                           const rect = e.currentTarget.getBoundingClientRect();
+                          setShowArrowPicker(null);
+                          setShowArrowLabelPicker(null);
+                          setShowColorPicker(null);
                           setShowSpecialChars({ x: rect.left, y: rect.bottom + 4 });
+                        } else if (item.action === 'ARROW_PICKER') {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setShowSpecialChars(null);
+                          setShowArrowLabelPicker(null);
+                          setShowColorPicker(null);
+                          setShowArrowPicker((prev) => (
+                            prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                          ));
+                        } else if (item.action === 'ARROW_LABEL_PICKER') {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setShowSpecialChars(null);
+                          setShowArrowPicker(null);
+                          setShowColorPicker(null);
+                          setShowArrowLabelPicker((prev) => (
+                            prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                          ));
                         } else if (item.action === 'TEXT_COLOR') {
                           const rect = e.currentTarget.getBoundingClientRect();
+                          setShowArrowPicker(null);
+                          setShowArrowLabelPicker(null);
                           setCustomColorInput(activeStyles.color !== 'none' ? activeStyles.color : '');
                           setCustomColorError('');
                           setShowColorPicker({ x: rect.left, y: rect.bottom + 4 });
@@ -2530,6 +3413,39 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, isEditing }) {
           onInsert={(char) => {
             insertAtCursor(char);
             setShowSpecialChars(null);
+          }}
+        />,
+        document.body
+      )}
+
+      {showArrowPicker && createPortal(
+        <ArrowPickerPopover
+          position={showArrowPicker}
+          onInsert={(latex) => {
+            insertAtCursor(latex);
+            setShowArrowPicker(null);
+          }}
+        />,
+        document.body
+      )}
+
+      {showArrowLabelPicker && createPortal(
+        <ArrowLabelPickerPopover
+          position={showArrowLabelPicker}
+          onInsert={(latex) => {
+            insertAtCursor(latex);
+            setShowArrowLabelPicker(null);
+          }}
+        />,
+        document.body
+      )}
+
+      {showGreekItalicPicker && createPortal(
+        <GreekItalicPickerPopover
+          position={showGreekItalicPicker}
+          onInsert={(latex) => {
+            insertAtCursor(latex);
+            setShowGreekItalicPicker(null);
           }}
         />,
         document.body
@@ -2763,6 +3679,7 @@ function latexToPlainText(latex) {
     ['\\Phi', 'Φ'], ['\\Psi', 'Ψ'], ['\\Omega', 'Ω'],
     // Operators
     ['\\pm', '±'], ['\\mp', '∓'], ['\\times', '×'], ['\\div', '÷'],
+    ['\\backslash', '\\'],
     ['\\cdot', '·'], ['\\neq', '≠'], ['\\leq', '≤'], ['\\geq', '≥'],
     ['\\approx', '≈'], ['\\equiv', '≡'], ['\\infty', '∞'],
     ['\\sum', '∑'], ['\\prod', '∏'], ['\\int', '∫'], ['\\oint', '∮'],
@@ -2770,7 +3687,7 @@ function latexToPlainText(latex) {
     ['\\partial', '∂'], ['\\nabla', '∇'],
     ['\\in', '∈'], ['\\notin', '∉'],
     ['\\subset', '⊂'], ['\\subseteq', '⊆'], ['\\supset', '⊃'], ['\\supseteq', '⊇'],
-    ['\\cup', '∪'], ['\\cap', '∩'], ['\\emptyset', '∅'], ['\\setminus', '∖'],
+    ['\\cup', '∪'], ['\\cap', '∩'], ['\\emptyset', '∅'], ['\\setminus', '﹨'],
     ['\\forall', '∀'], ['\\exists', '∃'], ['\\neg', '¬'],
     ['\\land', '∧'], ['\\lor', '∨'],
     // Arrows
@@ -2892,9 +3809,13 @@ function CkEditor({ value, onChange, className = '' }) {
 
 
   /* Insert new OR update existing widget */
-  const handleInsert = useCallback((latex) => {
+  const handleInsert = useCallback((latex, { direction = 'ltr' } = {}) => {
     const editor = editorRef.current;
     if (!editor || !latex?.trim()) return;
+    const mathAttributes = {
+      latex: latex.trim(),
+      dir: direction === 'rtl' ? 'rtl' : 'ltr',
+    };
 
     if (editingWidget) {
       const targetModel = isModelElementLive(editor, editingWidget.modelElement)
@@ -2904,7 +3825,7 @@ function CkEditor({ value, onChange, className = '' }) {
       if (targetModel) {
         // ── EDIT MODE: replace widget so the math-field re-renders with new latex ──
         editor.model.change((writer) => {
-          const mathElement = writer.createElement('mathInline', { latex: latex.trim() });
+          const mathElement = writer.createElement('mathInline', mathAttributes);
           const position = writer.createPositionBefore(targetModel);
           writer.insert(mathElement, position);
           writer.remove(targetModel);
@@ -2913,7 +3834,7 @@ function CkEditor({ value, onChange, className = '' }) {
       } else {
         // Fallback: insert updated value at cursor if model reference was lost
         editor.model.change((writer) => {
-          const mathElement = writer.createElement('mathInline', { latex: latex.trim() });
+          const mathElement = writer.createElement('mathInline', mathAttributes);
           editor.model.insertContent(mathElement);
         });
       }
@@ -2928,7 +3849,7 @@ function CkEditor({ value, onChange, className = '' }) {
       });
     } else {
       editor.model.change((writer) => {
-        const mathElement = writer.createElement('mathInline', { latex: latex.trim() });
+        const mathElement = writer.createElement('mathInline', mathAttributes);
         editor.model.insertContent(mathElement);
         editor.model.insertContent(writer.createText(' '));
       });
@@ -2942,12 +3863,16 @@ function CkEditor({ value, onChange, className = '' }) {
   const handleEditorReady = useCallback((editor) => {
     editorRef.current = editor;
 
-    const openEditPopup = (modelElement, latex) => {
+    const openEditPopup = (modelElement, latex, direction = 'ltr') => {
       if (popupOpenRef.current || !latex) return;
 
       const isChem = /^\\ce\{/.test(latex);
+      const resolvedDirection =
+        modelElement?.getAttribute('dir') === 'rtl' || direction === 'rtl'
+          ? 'rtl'
+          : 'ltr';
       popupOpenRef.current = true;
-      setEditingWidget({ modelElement, latex });
+      setEditingWidget({ modelElement, latex, direction: resolvedDirection });
       setPopup(isChem ? 'chem' : 'math');
     };
 
@@ -2998,6 +3923,16 @@ function CkEditor({ value, onChange, className = '' }) {
           width: auto !important;
           max-width: 100% !important;
           pointer-events: none !important;
+          color: #ffffff !important;
+        }
+        .ck-math-widget[data-dir="rtl"] {
+          direction: rtl !important;
+          unicode-bidi: plaintext !important;
+        }
+        .ck-math-widget[data-dir="rtl"] .ck-math-widget-inner,
+        .ck-math-widget[data-dir="rtl"] math-field {
+          direction: rtl !important;
+          text-align: right !important;
         }
         .ck-math-widget:hover,
         .ck-math-widget.ck-widget_selected { outline: 2px solid #0f766e; outline-offset: 1px; border-radius: 4px; }
@@ -3058,6 +3993,7 @@ function CkEditor({ value, onChange, className = '' }) {
           onInsert={handleInsert}
           onClose={closePopup}
           initialLatex={editingWidget?.latex || ''}
+          initialDirection={editingWidget?.direction || 'ltr'}
           isEditing={!!editingWidget}
         />
       )}
