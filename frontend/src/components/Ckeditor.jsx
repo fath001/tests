@@ -251,11 +251,24 @@ const MATH_GROUPS = [
     label: '□/□', isTemplate: true, items: [
       { label: 'a/b', insert: '\\frac{#0}{#?}', title: 'Fraction', icon: 'fraction-template-image' }, { label: 'xⁿ', insert: '#0^{#?}', title: 'Superscript', icon: 'superscript-template-image' },
       { label: 'xₙ', insert: '#0_{#?}', title: 'Subscript', icon: 'subscript-template-image' }, { label: '√x', insert: '\\sqrt{#0}', title: 'Square Root', icon: 'sqrt-template-image' },
-      { label: 'ⁿ√x', insert: '\\sqrt[#?]{#0}', title: 'Nth Root', icon: 'nth-root-template-image' }, { label: '(□)', insert: '\\left(#0\\right)' },
-      { label: '[□]', insert: '\\left[#0\\right]' }, { label: '{□}', insert: '\\left\\{#0\\right\\}' },
-      { label: '⟨□⟩', insert: '\\left\\langle #0 \\right\\rangle' }, { label: '|□|', insert: '\\left|#0\\right|' },
-      { label: 'x̅', insert: '\\overline{#0}', title: 'Overline', icon: 'overline-template-image' }, { label: 'x̲', insert: '\\underline{#0}', title: 'Underline', icon: 'underline-template-image' },
+      { label: 'ⁿ√x', insert: '\\sqrt[#?]{#0}', title: 'Nth Root', icon: 'nth-root-template-image' }, { label: '□/□', insert: '#?/#?', cls: 'template', directInsert: true, title: 'Slash Fraction', icon: 'slash-fraction-template-image' },
+      { label: '□^□_□', insert: '#?^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Right Superscript and Subscript', icon: 'right-sup-sub-template-image' },
+      { label: 'ˡ□', insert: '{}^{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript', icon: 'left-sup-template-image' },
+      { label: 'ₗ□', insert: '{}_{#?}#?', cls: 'template', directInsert: true, title: 'Left Subscript', icon: 'left-sub-template-image' },
+      { label: 'ˡₗ□', insert: '{}^{#?}_{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript and Subscript', icon: 'left-sup-sub-template-image' },
+      { label: '□\n□', insert: '\\overset{#?}{#?}', cls: 'template', directInsert: true, title: 'Overset', icon: 'overset-template-image' },
+      { label: '□\n□', insert: '\\underset{#?}{#?}', cls: 'template', directInsert: true, title: 'Underset', icon: 'underset-template-image' },
+      { label: '□\n□\n□', insert: '\\overset{#?}{\\underset{#?}{#?}}', cls: 'template', directInsert: true, title: 'Over and Under', icon: 'over-under-template-image' },
+      { label: '□⏟□', insert: '\\underbrace{#?}_{#?}', cls: 'template', directInsert: true, title: 'Underbrace', icon: 'underbrace-template-image' },
+      { label: '□⏞□', insert: '\\overbrace{#?}^{#?}', cls: 'template', directInsert: true, title: 'Overbrace', icon: 'overbrace-template-image' },
+      { label: '□\n▯\n□', insert: '\\mathop{#?}\\limits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image' },
+      { label: '▯\n□', insert: '\\mathop{#?}\\limits_{#?}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image' },
+      { label: '▯^□_□', insert: '#?^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
+      { label: '▯_□', insert: '#?_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
       { label: '□!', insert: '{#0}!' }, { label: '□(mod□)', insert: '#0 \\pmod{#?}' },
+      { label: 'hphantom', insert: '\\hphantom{0}', cls: 'template', directInsert: true, title: 'Horizontal Phantom Space', icon: 'hphantom-space-template-image' },
+      { label: 'thin-space', insert: '\\,', cls: 'template', directInsert: true, title: 'Thin Space', icon: 'thin-space-template-image' },
+      { label: 'negative-space', insert: '\\!', cls: 'template', directInsert: true, title: 'Negative Thin Space', icon: 'negative-thin-space-template-image' },
       { label: 'lim', insert: '\\lim_{#?}', title: 'Limit', icon: 'limit-template-image' }, { label: '∫dx', insert: '\\int_{#?}^{#?}', title: 'Integral with Limits', icon: 'integral-limits-template-image' },
       { label: '∑', insert: '\\sum_{#?}^{#?}', title: 'Summation with Limits', icon: 'summation-template-image' }, { label: 'vec', insert: '\\vec{#0}', title: 'Vector', icon: 'vector-template-image' },
       { label: '(a/b)', insert: '\\left(\\frac{#0}{#?}\\right)', title: 'Fraction in Parentheses', icon: 'paren-fraction-template-image' },
@@ -442,17 +455,35 @@ const MATH_GROUPS = [
       { label: '[]', insert: 'bmatrix', cls: 'template' },
       { label: '()', insert: 'pmatrix', cls: 'template' },
       { label: '||', insert: 'vmatrix', cls: 'template' },
+      { type: 'sep', cols: 2 },
       { label: '□ □ □', insert: '\\begin{matrix} #? & #? & #? \\end{matrix}', cls: 'template', directInsert: true },
       { label: '□ \\ □', insert: '\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}', cls: 'template', directInsert: true },
       { label: '□ & □', insert: '\\begin{bmatrix} #? & #? \\end{bmatrix}', cls: 'template', directInsert: true },
       { label: '□ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}', cls: 'template', directInsert: true },
+      { type: 'sep', cols: 2 },
       { label: '□ & □', insert: '\\begin{pmatrix} #? & #? \\end{pmatrix}', cls: 'template', directInsert: true },
       { label: '□ \\ □ \\ □', insert: '\\begin{bmatrix} #? \\\\ #? \\\\ #? \\end{bmatrix}', cls: 'template', directInsert: true },
       { label: '□ \\ □ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\\\ #? \\end{pmatrix}', cls: 'template', directInsert: true },
-      { label: 'I₂', insert: '\\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix}', cls: 'template', directInsert: true },
-      { label: 'I₃', insert: '\\begin{bmatrix} 1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\end{bmatrix}', cls: 'template', directInsert: true },
-      { label: 'O₂', insert: '\\begin{bmatrix} 0 & 0 \\\\ 0 & 0 \\end{bmatrix}', cls: 'template', directInsert: true },
-      { label: 'O₃', insert: '\\begin{bmatrix} 0 & 0 & 0 \\\\ 0 & 0 & 0 \\\\ 0 & 0 & 0 \\end{bmatrix}', cls: 'template', directInsert: true },
+      { label: '□ \\ □ \\ □', insert: '\\begin{matrix} #? \\\\ #? \\\\ #? \\end{matrix}', cls: 'template', directInsert: true },
+      { type: 'sep', cols: 2 },
+      { label: 'cases', insert: '\\begin{cases} #? \\\\ #? \\end{cases}', cls: 'template', directInsert: true, icon: 'cases-template-image', title: 'Cases' },
+      { label: 'rcases', insert: '\\begin{rcases} #? \\\\ #? \\end{rcases}', cls: 'template', directInsert: true, icon: 'rcases-template-image', title: 'Right Cases' },
+      { label: 'cases-2x2', insert: '\\begin{cases} #? & #? \\\\ #? & #? \\end{cases}', cls: 'template', directInsert: true, icon: 'cases-two-by-two-template-image', title: 'Cases 2x2' },
+      { label: 'aligned', insert: '\\begin{aligned} #? &= #? \\\\ #? &= #? \\end{aligned}', cls: 'template', directInsert: true, icon: 'aligned-equals-template-image', title: 'Aligned Equations' },
+      { type: 'sep', cols: 2 },
+      { label: '⋮', insert: '\\vdots', title: 'Vertical ellipsis', icon: 'vertical-ellipsis-template-image', directInsert: true },
+      { label: '⋯', insert: '\\cdots', title: 'Midline ellipsis', icon: 'midline-ellipsis-template-image', directInsert: true },
+      { label: '⋰', insert: '⋰', title: 'Up-right diagonal ellipsis', icon: 'upright-ellipsis-template-image', directInsert: true },
+      { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis', icon: 'downright-ellipsis-template-image', directInsert: true },
+      { type: 'sep', cols: 2 },
+      { label: 'sum-array', insert: '\\begin{array}{r} #? \\\\ +\\,#? \\\\ \\hline #? \\end{array}', cls: 'template', directInsert: true, icon: 'sum-array-template-image', title: 'Column Addition' },
+      { label: 'diff-array', insert: '\\begin{array}{r} #? \\\\ -\\,#? \\\\ \\hline #? \\end{array}', cls: 'template', directInsert: true, icon: 'difference-array-template-image', title: 'Column Subtraction' },
+      { label: 'stack-line', insert: '\\begin{array}{c} #? \\\\ #? \\\\ \\hline #? \\end{array}', cls: 'template', directInsert: true, icon: 'stack-line-template-image', title: 'Stacked Line Layout' },
+      { label: 'division', insert: '\\overset{#?}{\\overline{#?\\big)#?}}', cls: 'template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
+      { label: 'product-array', insert: '\\begin{array}{r} #? \\\\ \\times\\,#? \\\\ \\hline #? \\end{array}', cls: 'template', directInsert: true, icon: 'product-array-template-image', title: 'Column Multiplication' },
+      { label: 'mixed-fraction', insert: '#?\\,\\frac{#?}{#?}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
+      { label: 'array-cc', insert: '\\left.\\begin{array}{c} #? \\\\ #? \\end{array}\\right|\\frac{#?}{#?}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
+      { label: 'division-remainder', insert: '\\begin{array}{r} \\overset{#?}{\\overline{#?\\big)#?}} \\\\ #? \\end{array}', cls: 'template', directInsert: true, icon: 'division-remainder-template-image', title: 'Division With Remainder' },
     ]
   },
 ];
@@ -699,6 +730,323 @@ const GREEK_ITALIC_UPPERCASE_ITEMS = [
   { label: 'Ω', insert: '\\varOmega', title: 'Italic Omega' },
 ];
 
+const BLACKBOARD_BOLD_LETTERS = [
+  ['𝔸', 'A'], ['𝔹', 'B'], ['ℂ', 'C'], ['𝔻', 'D'], ['𝔼', 'E'], ['𝔽', 'F'],
+  ['𝔾', 'G'], ['ℍ', 'H'], ['𝕀', 'I'], ['𝕁', 'J'], ['𝕂', 'K'], ['𝕃', 'L'],
+  ['𝕄', 'M'], ['ℕ', 'N'], ['𝕆', 'O'], ['ℙ', 'P'], ['ℚ', 'Q'], ['ℝ', 'R'],
+  ['𝕊', 'S'], ['𝕋', 'T'], ['𝕌', 'U'], ['𝕍', 'V'], ['𝕎', 'W'], ['𝕏', 'X'],
+  ['𝕐', 'Y'], ['ℤ', 'Z'],
+  ['𝕒', 'a'], ['𝕓', 'b'], ['𝕔', 'c'], ['𝕕', 'd'], ['𝕖', 'e'], ['𝕗', 'f'],
+  ['𝕘', 'g'], ['𝕙', 'h'], ['𝕚', 'i'], ['𝕛', 'j'], ['𝕜', 'k'], ['𝕝', 'l'],
+  ['𝕞', 'm'], ['𝕟', 'n'], ['𝕠', 'o'], ['𝕡', 'p'], ['𝕢', 'q'], ['𝕣', 'r'],
+  ['𝕤', 's'], ['𝕥', 't'], ['𝕦', 'u'], ['𝕧', 'v'], ['𝕨', 'w'], ['𝕩', 'x'],
+  ['𝕪', 'y'], ['𝕫', 'z'],
+];
+
+const BLACKBOARD_BOLD_PICKER_ITEMS = BLACKBOARD_BOLD_LETTERS.map(([label, letter]) => ({
+  label,
+  insert: `\\mathbb{${letter}}`,
+  title: `Blackboard Bold ${letter}`,
+}));
+
+const FRAKTUR_SCRIPT_PICKER_ITEMS = [
+  ['𝔄', '\\mathfrak{A}', 'Fraktur A'],
+  ['𝔅', '\\mathfrak{B}', 'Fraktur B'],
+  ['ℭ', '\\mathfrak{C}', 'Fraktur C'],
+  ['𝔇', '\\mathfrak{D}', 'Fraktur D'],
+  ['𝔈', '\\mathfrak{E}', 'Fraktur E'],
+  ['𝔉', '\\mathfrak{F}', 'Fraktur F'],
+  ['𝔊', '\\mathfrak{G}', 'Fraktur G'],
+  ['ℌ', '\\mathfrak{H}', 'Fraktur H'],
+  ['ℑ', '\\mathfrak{I}', 'Fraktur I'],
+  ['𝔍', '\\mathfrak{J}', 'Fraktur J'],
+  ['𝔎', '\\mathfrak{K}', 'Fraktur K'],
+  ['𝔏', '\\mathfrak{L}', 'Fraktur L'],
+  ['𝔐', '\\mathfrak{M}', 'Fraktur M'],
+  ['𝔑', '\\mathfrak{N}', 'Fraktur N'],
+  ['𝔒', '\\mathfrak{O}', 'Fraktur O'],
+  ['𝔓', '\\mathfrak{P}', 'Fraktur P'],
+  ['𝔔', '\\mathfrak{Q}', 'Fraktur Q'],
+  ['ℜ', '\\mathfrak{R}', 'Fraktur R'],
+  ['𝔖', '\\mathfrak{S}', 'Fraktur S'],
+  ['𝔗', '\\mathfrak{T}', 'Fraktur T'],
+  ['𝔘', '\\mathfrak{U}', 'Fraktur U'],
+  ['𝔙', '\\mathfrak{V}', 'Fraktur V'],
+  ['𝔚', '\\mathfrak{W}', 'Fraktur W'],
+  ['𝔛', '\\mathfrak{X}', 'Fraktur X'],
+  ['𝔜', '\\mathfrak{Y}', 'Fraktur Y'],
+  ['ℨ', '\\mathfrak{Z}', 'Fraktur Z'],
+  ['𝔞', '\\mathfrak{a}', 'Fraktur a'],
+  ['𝔟', '\\mathfrak{b}', 'Fraktur b'],
+  ['𝔠', '\\mathfrak{c}', 'Fraktur c'],
+  ['𝔡', '\\mathfrak{d}', 'Fraktur d'],
+  ['𝔢', '\\mathfrak{e}', 'Fraktur e'],
+  ['𝔣', '\\mathfrak{f}', 'Fraktur f'],
+  ['𝔤', '\\mathfrak{g}', 'Fraktur g'],
+  ['𝔥', '\\mathfrak{h}', 'Fraktur h'],
+  ['𝔦', '\\mathfrak{i}', 'Fraktur i'],
+  ['𝔧', '\\mathfrak{j}', 'Fraktur j'],
+  ['𝔨', '\\mathfrak{k}', 'Fraktur k'],
+  ['𝔩', '\\mathfrak{l}', 'Fraktur l'],
+  ['𝔪', '\\mathfrak{m}', 'Fraktur m'],
+  ['𝔫', '\\mathfrak{n}', 'Fraktur n'],
+  ['𝔬', '\\mathfrak{o}', 'Fraktur o'],
+  ['𝔭', '\\mathfrak{p}', 'Fraktur p'],
+  ['𝔮', '\\mathfrak{q}', 'Fraktur q'],
+  ['𝔯', '\\mathfrak{r}', 'Fraktur r'],
+  ['𝔰', '\\mathfrak{s}', 'Fraktur s'],
+  ['𝔱', '\\mathfrak{t}', 'Fraktur t'],
+  ['𝔲', '\\mathfrak{u}', 'Fraktur u'],
+  ['𝔳', '\\mathfrak{v}', 'Fraktur v'],
+  ['𝔴', '\\mathfrak{w}', 'Fraktur w'],
+  ['𝔵', '\\mathfrak{x}', 'Fraktur x'],
+  ['𝔶', '\\mathfrak{y}', 'Fraktur y'],
+  ['𝔷', '\\mathfrak{z}', 'Fraktur z'],
+  ['𝒜', '\\mathscr{A}', 'Script A'],
+  ['ℬ', '\\mathscr{B}', 'Script B'],
+  ['𝒞', '\\mathscr{C}', 'Script C'],
+  ['𝒟', '\\mathscr{D}', 'Script D'],
+  ['ℰ', '\\mathscr{E}', 'Script E'],
+  ['ℱ', '\\mathscr{F}', 'Script F'],
+  ['𝒢', '\\mathscr{G}', 'Script G'],
+  ['ℋ', '\\mathscr{H}', 'Script H'],
+  ['ℐ', '\\mathscr{I}', 'Script I'],
+  ['𝒥', '\\mathscr{J}', 'Script J'],
+  ['𝒦', '\\mathscr{K}', 'Script K'],
+  ['ℒ', '\\mathscr{L}', 'Script L'],
+  ['ℳ', '\\mathscr{M}', 'Script M'],
+  ['𝒩', '\\mathscr{N}', 'Script N'],
+  ['𝒪', '\\mathscr{O}', 'Script O'],
+  ['𝒫', '\\mathscr{P}', 'Script P'],
+  ['𝒬', '\\mathscr{Q}', 'Script Q'],
+  ['ℛ', '\\mathscr{R}', 'Script R'],
+  ['𝒮', '\\mathscr{S}', 'Script S'],
+  ['𝒯', '\\mathscr{T}', 'Script T'],
+  ['𝒰', '\\mathscr{U}', 'Script U'],
+  ['𝒱', '\\mathscr{V}', 'Script V'],
+  ['𝒲', '\\mathscr{W}', 'Script W'],
+  ['𝒳', '\\mathscr{X}', 'Script X'],
+  ['𝒴', '\\mathscr{Y}', 'Script Y'],
+  ['𝒵', '\\mathscr{Z}', 'Script Z'],
+  ['𝒶', '\\mathscr{a}', 'Script a'],
+  ['𝒷', '\\mathscr{b}', 'Script b'],
+  ['𝒸', '\\mathscr{c}', 'Script c'],
+  ['𝒹', '\\mathscr{d}', 'Script d'],
+  ['ℯ', '\\mathscr{e}', 'Script e'],
+  ['𝒻', '\\mathscr{f}', 'Script f'],
+  ['ℊ', '\\mathscr{g}', 'Script g'],
+  ['𝒽', '\\mathscr{h}', 'Script h'],
+  ['𝒾', '\\mathscr{i}', 'Script i'],
+  ['𝒿', '\\mathscr{j}', 'Script j'],
+  ['𝓀', '\\mathscr{k}', 'Script k'],
+  ['𝓁', '\\mathscr{l}', 'Script l'],
+  ['𝓂', '\\mathscr{m}', 'Script m'],
+  ['𝓃', '\\mathscr{n}', 'Script n'],
+  ['ℴ', '\\mathscr{o}', 'Script o'],
+  ['𝓅', '\\mathscr{p}', 'Script p'],
+  ['𝓆', '\\mathscr{q}', 'Script q'],
+  ['𝓇', '\\mathscr{r}', 'Script r'],
+  ['𝓈', '\\mathscr{s}', 'Script s'],
+  ['𝓉', '\\mathscr{t}', 'Script t'],
+  ['𝓊', '\\mathscr{u}', 'Script u'],
+  ['𝓋', '\\mathscr{v}', 'Script v'],
+  ['𝓌', '\\mathscr{w}', 'Script w'],
+  ['𝓍', '\\mathscr{x}', 'Script x'],
+  ['𝓎', '\\mathscr{y}', 'Script y'],
+  ['𝓏', '\\mathscr{z}', 'Script z'],
+].map(([label, insert, title]) => ({ label, insert, title }));
+
+const HEBREW_SYMBOL_PICKER_ITEMS = [
+  { label: 'ℵ', insert: '\\aleph', title: 'Aleph' },
+  { label: 'ℒ', insert: '\\mathscr{L}', title: 'Script L' },
+  { label: '℘', insert: '\\wp', title: 'Weierstrass p' },
+  { label: '𝒵', insert: '\\mathscr{Z}', title: 'Script Z' },
+  { label: 'ℱ', insert: '\\mathscr{F}', title: 'Script F' },
+];
+
+const PERIODIC_TABLE_CELL_SIZE = 31;
+const PERIODIC_TABLE_GAP = 2;
+const PERIODIC_TABLE_PITCH = PERIODIC_TABLE_CELL_SIZE + PERIODIC_TABLE_GAP;
+const PERIODIC_TABLE_WIDTH = (18 * PERIODIC_TABLE_CELL_SIZE) + (17 * PERIODIC_TABLE_GAP);
+const PERIODIC_TABLE_HEIGHT = (9 * PERIODIC_TABLE_CELL_SIZE) + (8 * PERIODIC_TABLE_GAP);
+
+const PERIODIC_TABLE_ROWS = [
+  {
+    row: 1,
+    items: [
+      ['H', 1, 'hydrogen'],
+      ['He', 18, 'noble-gas'],
+    ],
+  },
+  {
+    row: 2,
+    items: [
+      ['Li', 1, 'alkali'],
+      ['Be', 2, 'alkaline'],
+      ['B', 13, 'nonmetal'],
+      ['C', 14, 'nonmetal'],
+      ['N', 15, 'nonmetal'],
+      ['O', 16, 'nonmetal'],
+      ['F', 17, 'nonmetal'],
+      ['Ne', 18, 'noble-gas'],
+    ],
+  },
+  {
+    row: 3,
+    items: [
+      ['Na', 1, 'alkali'],
+      ['Mg', 2, 'alkaline'],
+      ['Al', 13, 'post-transition'],
+      ['Si', 14, 'post-transition'],
+      ['P', 15, 'nonmetal'],
+      ['S', 16, 'nonmetal'],
+      ['Cl', 17, 'nonmetal'],
+      ['Ar', 18, 'noble-gas'],
+    ],
+  },
+  {
+    row: 4,
+    items: [
+      ['K', 1, 'alkali'],
+      ['Ca', 2, 'alkaline'],
+      ['Sc', 3, 'transition'],
+      ['Ti', 4, 'transition'],
+      ['V', 5, 'transition'],
+      ['Cr', 6, 'transition'],
+      ['Mn', 7, 'transition'],
+      ['Fe', 8, 'transition'],
+      ['Co', 9, 'transition'],
+      ['Ni', 10, 'transition'],
+      ['Cu', 11, 'transition'],
+      ['Zn', 12, 'transition'],
+      ['Ga', 13, 'post-transition'],
+      ['Ge', 14, 'post-transition'],
+      ['As', 15, 'nonmetal'],
+      ['Se', 16, 'nonmetal'],
+      ['Br', 17, 'nonmetal'],
+      ['Kr', 18, 'noble-gas'],
+    ],
+  },
+  {
+    row: 5,
+    items: [
+      ['Rb', 1, 'alkali'],
+      ['Sr', 2, 'alkaline'],
+      ['Y', 3, 'transition'],
+      ['Zr', 4, 'transition'],
+      ['Nb', 5, 'transition'],
+      ['Mo', 6, 'transition'],
+      ['Tc', 7, 'transition'],
+      ['Ru', 8, 'transition'],
+      ['Rh', 9, 'transition'],
+      ['Pd', 10, 'transition'],
+      ['Ag', 11, 'transition'],
+      ['Cd', 12, 'transition'],
+      ['In', 13, 'post-transition'],
+      ['Sn', 14, 'post-transition'],
+      ['Sb', 15, 'nonmetal'],
+      ['Te', 16, 'nonmetal'],
+      ['I', 17, 'nonmetal'],
+      ['Xe', 18, 'noble-gas'],
+    ],
+  },
+  {
+    row: 6,
+    items: [
+      ['Cs', 1, 'alkali'],
+      ['Ba', 2, 'alkaline'],
+      ['Hf', 4, 'transition'],
+      ['Ta', 5, 'transition'],
+      ['W', 6, 'transition'],
+      ['Re', 7, 'transition'],
+      ['Os', 8, 'transition'],
+      ['Ir', 9, 'transition'],
+      ['Pt', 10, 'transition'],
+      ['Au', 11, 'transition'],
+      ['Hg', 12, 'transition'],
+      ['Tl', 13, 'post-transition'],
+      ['Pb', 14, 'post-transition'],
+      ['Bi', 15, 'post-transition'],
+      ['Po', 16, 'post-transition'],
+      ['At', 17, 'nonmetal'],
+      ['Rn', 18, 'noble-gas'],
+    ],
+  },
+  {
+    row: 7,
+    items: [
+      ['Fr', 1, 'alkali'],
+      ['Ra', 2, 'alkaline'],
+      ['Rf', 4, 'transition'],
+      ['Db', 5, 'transition'],
+      ['Sg', 6, 'transition'],
+      ['Bh', 7, 'transition'],
+      ['Hs', 8, 'transition'],
+      ['Mt', 9, 'transition'],
+      ['Ds', 10, 'transition'],
+      ['Rg', 11, 'transition'],
+      ['Cn', 12, 'transition'],
+      ['Nh', 13, 'post-transition'],
+      ['Fl', 14, 'post-transition'],
+      ['Mc', 15, 'post-transition'],
+      ['Lv', 16, 'post-transition'],
+      ['Ts', 17, 'placeholder'],
+      ['Og', 18, 'placeholder'],
+    ],
+  },
+  {
+    row: 8,
+    items: [
+      ['La', 4, 'series-anchor'],
+      ['Ce', 5, 'lanthanide'],
+      ['Pr', 6, 'lanthanide'],
+      ['Nd', 7, 'lanthanide'],
+      ['Pm', 8, 'lanthanide'],
+      ['Sm', 9, 'lanthanide'],
+      ['Eu', 10, 'lanthanide'],
+      ['Gd', 11, 'lanthanide'],
+      ['Tb', 12, 'lanthanide'],
+      ['Dy', 13, 'lanthanide'],
+      ['Ho', 14, 'lanthanide'],
+      ['Er', 15, 'lanthanide'],
+      ['Tm', 16, 'lanthanide'],
+      ['Yb', 17, 'lanthanide'],
+      ['Lu', 18, 'lanthanide'],
+    ],
+  },
+  {
+    row: 9,
+    items: [
+      ['Ac', 4, 'series-anchor'],
+      ['Th', 5, 'actinide'],
+      ['Pa', 6, 'actinide'],
+      ['U', 7, 'actinide'],
+      ['Np', 8, 'actinide'],
+      ['Pu', 9, 'actinide'],
+      ['Am', 10, 'actinide'],
+      ['Cm', 11, 'actinide'],
+      ['Bk', 12, 'actinide'],
+      ['Cf', 13, 'actinide'],
+      ['Es', 14, 'actinide'],
+      ['Fm', 15, 'actinide'],
+      ['Md', 16, 'actinide'],
+      ['No', 17, 'actinide'],
+      ['Lr', 18, 'actinide'],
+    ],
+  },
+];
+
+const PERIODIC_TABLE_PICKER_ITEMS = PERIODIC_TABLE_ROWS.flatMap(({ row, items }) =>
+  items.map(([label, col, tone]) => ({
+    label,
+    insert: label,
+    row,
+    col,
+    tone,
+    title: label,
+  }))
+);
+
 const ORDERED_MATH_GROUPS = [
   {
     id: 'roots-main',
@@ -814,24 +1162,28 @@ const ORDERED_MATH_GROUPS = [
       { category: 'Uppercase Greek Letters', label: 'ℂ', insert: '\\mathbb{C}' },
       { category: 'Uppercase Greek Letters', label: 'ℝ', insert: '\\mathbb{R}' },
       { category: 'Uppercase Greek Letters', label: 'ℙ', insert: '\\mathbb{P}' },
+      { category: 'Uppercase Greek Letters', label: '|', action: 'BLACKBOARD_BOLD_PICKER', title: 'More Blackboard Bold Letters', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool blackboard-bold-picker-tool' },
 
       { category: 'Fraktur / Gothic Symbols', label: '𝔄', insert: '\\mathfrak{A}' },
       { category: 'Fraktur / Gothic Symbols', label: '𝒜', insert: '\\mathscr{A}' },
       { category: 'Fraktur / Gothic Symbols', label: '𝔅', insert: '\\mathfrak{B}' },
-      { category: 'Fraktur / Gothic Symbols', label: 'ℬ', insert: '\\\mathscr{B}' },
+      { category: 'Fraktur / Gothic Symbols', label: 'ℬ', insert: '\\mathscr{B}' },
       { category: 'Fraktur / Gothic Symbols', label: 'ℭ', insert: '\\mathfrak{C}' },
       { category: 'Fraktur / Gothic Symbols', label: '𝒞', insert: '\\mathscr{C}' },
+      { category: 'Fraktur / Gothic Symbols', label: '|', action: 'FRAKTUR_SCRIPT_PICKER', title: 'More Fraktur and Script Letters', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool fraktur-script-picker-tool' },
 
-      { category: 'Hebrew Mathematical Symbols', label: 'ℵ', insert: '\\aleph' },
-      { category: 'Hebrew Mathematical Symbols', label: 'ℶ', insert: '\\beth' },
-      { category: 'Hebrew Mathematical Symbols', label: 'ℷ', insert: '\\gimel' },
+      { category: 'Hebrew Mathematical Symbols', label: 'ℑ', insert: '\\Im' },
+      { category: 'Hebrew Mathematical Symbols', label: 'ℜ', insert: '\\Re' },
+      { category: 'Hebrew Mathematical Symbols', label: '𝓁', insert: '\\ell' },
+      { category: 'Hebrew Mathematical Symbols', label: '|', action: 'HEBREW_SYMBOL_PICKER', title: 'More Hebrew Mathematical Symbols', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool hebrew-symbol-picker-tool' },
 
-      { category: 'Blackboard Bold / Number Sets', label: 'ℍ', insert: '\\mathbb{H}' },
-      { category: 'Blackboard Bold / Number Sets', label: 'ℂ', insert: '\\mathbb{C}' },
-      { category: 'Blackboard Bold / Number Sets', label: 'ℕ', insert: '\\mathbb{N}' },
-      { category: 'Blackboard Bold / Number Sets', label: '𝕆', insert: '\\mathbb{O}' },
-      { category: 'Blackboard Bold / Number Sets', label: '𝔽', insert: '\\mathbb{F}' },
-      { category: 'Blackboard Bold / Number Sets', label: '𝕊', insert: '\\mathbb{S}' },
+      { category: 'Blackboard Bold / Number Sets', label: 'H', insert: 'H' },
+      { category: 'Blackboard Bold / Number Sets', label: 'C', insert: 'C' },
+      { category: 'Blackboard Bold / Number Sets', label: 'N', insert: 'N' },
+      { category: 'Blackboard Bold / Number Sets', label: 'O', insert: 'O' },
+      { category: 'Blackboard Bold / Number Sets', label: 'F', insert: 'F' },
+      { category: 'Blackboard Bold / Number Sets', label: 'S', insert: 'S' },
+      { category: 'Blackboard Bold / Number Sets', label: '|', action: 'PERIODIC_TABLE_PICKER', title: 'Periodic Table', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool periodic-table-picker-tool' },
     ],
   },
   {
@@ -867,31 +1219,25 @@ const ORDERED_MATH_GROUPS = [
     id: 'sets',
     label: <TabIcon top="Σ ∪" compact />,
     items: [
-      { label: 'Σ', insert: '\\sum' },
+      { label: 'sum-limits-both', insert: '\\sum\\limits_{#?}^{#?}', cls: 'template', directInsert: true, title: 'Summation With Upper and Lower Limits', icon: 'sum-limits-both-template-image' },
+      { label: 'sum-right-both', insert: '\\sum^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Summation With Right Superscript and Subscript', icon: 'sum-right-both-template-image' },
+      { label: 'sum-limits-lower', insert: '\\sum\\limits_{#?}', cls: 'template', directInsert: true, title: 'Summation With Lower Limit', icon: 'sum-limits-lower-template-image' },
+      { label: 'sum-right-lower', insert: '\\sum_{#?}', cls: 'template', directInsert: true, title: 'Summation With Right Subscript', icon: 'sum-right-lower-template-image' },
+      { label: 'prod-limits-both', insert: '\\prod\\limits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Product With Upper and Lower Limits', icon: 'prod-limits-both-template-image' },
+      { label: 'prod-limits-lower', insert: '\\prod\\limits_{#?}', cls: 'template', directInsert: true, title: 'Product With Lower Limit', icon: 'prod-limits-lower-template-image' },
+      { label: 'prod-right-lower', insert: '\\prod_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Subscript', icon: 'prod-right-lower-template-image' },
+      { label: 'prod-right-both', insert: '\\prod^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Superscript and Subscript', icon: 'prod-right-both-template-image' },
+      { label: '□\n▯\n□', insert: '\\mathop{#?}\\limits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image' },
+      { label: '▯\n□', insert: '\\mathop{#?}\\limits_{#?}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image' },
+      { label: '▯^□_□', insert: '#?^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
+      { label: '▯_□', insert: '#?_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
+      { label: '⋂', insert: '\\bigcap' },
+      { label: '⋃', insert: '\\bigcup' },
       { label: '∏', insert: '\\prod' },
-      { label: '∪', insert: '\\cup' },
-      { label: '∩', insert: '\\cap' },
-      { label: '⊂', insert: '\\subset' },
-      { label: '⊆', insert: '\\subseteq' },
-      { label: '⊃', insert: '\\supset' },
-      { label: '⊇', insert: '\\supseteq' },
-      { label: '∈', insert: '\\in' },
-      { label: '∉', insert: '\\notin' },
-      { label: '∅', insert: '\\emptyset' },
-      { label: '﹨', insert: '﹨' },
-      { label: '∀', insert: '\\forall' },
-      { label: '∃', insert: '\\exists' },
-      { label: '¬', insert: '\\neg' },
-      { label: '∧', insert: '\\land' },
-      { label: '∨', insert: '\\lor' },
-      { label: '□⊂□', insert: '#? \\subset #?' },
-      { label: '□⊆□', insert: '#? \\subseteq #?' },
-      { label: '□∈□', insert: '#? \\in #?' },
-      { label: '□∉□', insert: '#? \\notin #?' },
-      { label: '□∪□', insert: '#? \\cup #?' },
-      { label: '□∩□', insert: '#? \\cap #?' },
-      { label: '□⇒□', insert: '#? \\Rightarrow #?' },
-      { label: '□⇔□', insert: '#? \\Leftrightarrow #?' },
+      { label: '∐', insert: '\\coprod' },
+      { label: '∑', insert: '\\sum' },
+      { label: '⨅', insert: '\\sqcap' },
+      { label: '⨆', insert: '\\sqcup' },
     ],
   },
   {
@@ -1299,6 +1645,168 @@ const TOOLBAR_ICON_IMAGES = {
       <rect x="9.8" y="5.1" width="4.3" height="6.6" rx="0.55" fill="none" stroke="#2c8a43" stroke-width="1.4"/>
     </svg>
   `),
+  'slash-fraction-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" fill="none">
+      <rect x="2" y="4" width="10" height="18" stroke="#008000" stroke-width="1.5"/>
+      <line x1="22" y1="2" x2="14" y2="26" stroke="#000" stroke-width="2" stroke-linecap="round"/>
+      <rect x="32" y="10" width="10" height="18" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
+  'right-sup-sub-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+      <rect x="8" y="10" width="10" height="14" stroke="#008000" stroke-width="1.5"/>
+      <rect x="20" y="2" width="8" height="10" stroke="#008000" stroke-width="1.5" opacity="0.5"/>
+      <rect x="20" y="20" width="8" height="10" stroke="#008000" stroke-width="1.5" opacity="0.5"/>
+    </svg>
+  `),
+  'left-sup-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+      <rect x="4" y="2" width="8" height="10" stroke="#008000" stroke-width="1.5" opacity="0.5"/>
+      <rect x="16" y="10" width="10" height="14" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
+  'left-sub-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+      <rect x="16" y="6" width="10" height="14" stroke="#008000" stroke-width="1.5"/>
+      <rect x="4" y="18" width="8" height="10" stroke="#008000" stroke-width="1.5" opacity="0.5"/>
+    </svg>
+  `),
+  'left-sup-sub-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 36" fill="none">
+      <rect x="4" y="2" width="8" height="10" stroke="#008000" stroke-width="1.5" opacity="0.5"/>
+      <rect x="4" y="22" width="8" height="10" stroke="#008000" stroke-width="1.5" opacity="0.5"/>
+      <rect x="16" y="10" width="10" height="14" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
+  'overset-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 40" fill="none">
+      <rect x="10" y="2" width="10" height="10" stroke="#008000" stroke-width="1.5" opacity="0.5"/>
+      <rect x="8" y="18" width="14" height="14" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
+  'underset-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 40" fill="none">
+      <rect x="8" y="6" width="14" height="14" stroke="#008000" stroke-width="1.5"/>
+      <rect x="10" y="28" width="10" height="10" stroke="#008000" stroke-width="1.5" opacity="0.5"/>
+    </svg>
+  `),
+  'over-under-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 52" fill="none">
+      <rect x="10" y="2" width="10" height="10" stroke="#008000" stroke-width="1.5" opacity="0.5"/>
+      <rect x="8" y="18" width="14" height="14" stroke="#008000" stroke-width="1.5"/>
+      <rect x="10" y="40" width="10" height="10" stroke="#008000" stroke-width="1.5" opacity="0.5"/>
+    </svg>
+  `),
+  'underbrace-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 64" fill="none">
+      <rect x="10" y="2" width="12" height="18" stroke="#008000" stroke-width="1.5"/>
+      <path d="M4 30 C8 38,14 38,16 34 C18 38,24 38,28 30" stroke="#000" stroke-width="2" fill="none"/>
+      <rect x="10" y="44" width="12" height="18" stroke="#008000" stroke-width="1.5" opacity="0.6"/>
+    </svg>
+  `),
+  'overbrace-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 64" fill="none">
+      <rect x="10" y="2" width="12" height="18" stroke="#008000" stroke-width="1.5" opacity="0.6"/>
+      <path d="M4 34 C8 26,14 26,16 30 C18 26,24 26,28 34" stroke="#000" stroke-width="2" fill="none"/>
+      <rect x="10" y="44" width="12" height="18" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
+  'operator-limits-both-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 90" fill="none">
+      <rect x="24" y="2" width="12" height="20" stroke="#5f9f5f" stroke-width="2"/>
+      <rect x="10" y="30" width="40" height="40" stroke="#000" stroke-width="3"/>
+      <rect x="24" y="78" width="12" height="20" stroke="#5f9f5f" stroke-width="2"/>
+    </svg>
+  `),
+  'operator-lower-limit-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 90" fill="none">
+      <rect x="10" y="30" width="40" height="40" stroke="#000" stroke-width="3"/>
+      <rect x="24" y="78" width="12" height="20" stroke="#5f9f5f" stroke-width="2"/>
+    </svg>
+  `),
+  'operator-right-sup-sub-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 90" fill="none">
+      <rect x="10" y="30" width="40" height="40" stroke="#000" stroke-width="3"/>
+      <rect x="55" y="8" width="12" height="20" stroke="#5f9f5f" stroke-width="2"/>
+      <rect x="55" y="62" width="12" height="20" stroke="#5f9f5f" stroke-width="2"/>
+    </svg>
+  `),
+  'operator-right-sub-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 90" fill="none">
+      <rect x="10" y="30" width="40" height="40" stroke="#000" stroke-width="3"/>
+      <rect x="55" y="62" width="12" height="20" stroke="#5f9f5f" stroke-width="2"/>
+    </svg>
+  `),
+  'hphantom-space-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 32" fill="none">
+      <rect x="4" y="4" width="12" height="20" stroke="#008000" stroke-width="2"/>
+      <rect x="36" y="4" width="12" height="20" stroke="#008000" stroke-width="2"/>
+    </svg>
+  `),
+  'thin-space-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 32" fill="none">
+      <rect x="4" y="4" width="12" height="20" stroke="#008000" stroke-width="2"/>
+      <rect x="24" y="4" width="12" height="20" stroke="#008000" stroke-width="2"/>
+    </svg>
+  `),
+  'negative-thin-space-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+      <rect x="4" y="4" width="12" height="20" stroke="#008000" stroke-width="2"/>
+      <rect x="12" y="4" width="12" height="20" stroke="#008000" stroke-width="2"/>
+    </svg>
+  `),
+  'sum-limits-both-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 90" fill="none">
+      <rect x="24" y="2" width="12" height="20" stroke="#6aa56a" stroke-width="2"/>
+      <text x="30" y="58" font-size="64" text-anchor="middle" fill="#000">∑</text>
+      <rect x="24" y="72" width="12" height="20" stroke="#6aa56a" stroke-width="2"/>
+    </svg>
+  `),
+  'sum-right-both-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 72" fill="none">
+      <text x="20" y="52" font-size="54" fill="#000">∑</text>
+      <rect x="50" y="6" width="10" height="18" stroke="#6aa56a" stroke-width="2"/>
+      <rect x="50" y="46" width="10" height="18" stroke="#6aa56a" stroke-width="2"/>
+    </svg>
+  `),
+  'sum-limits-lower-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 90" fill="none">
+      <text x="30" y="58" font-size="64" text-anchor="middle" fill="#000">∑</text>
+      <rect x="24" y="72" width="12" height="20" stroke="#6aa56a" stroke-width="2"/>
+    </svg>
+  `),
+  'sum-right-lower-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 90" fill="none">
+      <text x="26" y="58" font-size="64" text-anchor="middle" fill="#000">∑</text>
+      <rect x="50" y="58" width="12" height="20" stroke="#6aa56a" stroke-width="2"/>
+    </svg>
+  `),
+  'prod-limits-both-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 96" fill="none">
+      <rect x="27" y="2" width="10" height="18" stroke="#6aa56a" stroke-width="2"/>
+      <text x="12" y="62" font-size="58" font-family="Times New Roman" fill="#000">∏</text>
+      <rect x="27" y="74" width="10" height="18" stroke="#6aa56a" stroke-width="2"/>
+    </svg>
+  `),
+  'prod-limits-lower-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 96" fill="none">
+      <text x="12" y="62" font-size="58" font-family="Times New Roman" fill="#000">∏</text>
+      <rect x="27" y="74" width="10" height="18" stroke="#6aa56a" stroke-width="2"/>
+    </svg>
+  `),
+  'prod-right-lower-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" fill="none">
+      <text x="12" y="54" font-size="58" font-family="Times New Roman" fill="#000">∏</text>
+      <rect x="52" y="44" width="10" height="18" stroke="#6aa56a" stroke-width="2"/>
+    </svg>
+  `),
+  'prod-right-both-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" fill="none">
+      <text x="10" y="54" font-size="58" fill="#000">∏</text>
+      <rect x="52" y="6" width="10" height="18" stroke="#6aa56a" stroke-width="2"/>
+      <rect x="52" y="44" width="10" height="18" stroke="#6aa56a" stroke-width="2"/>
+    </svg>
+  `),
   'overline-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
       <line x1="4" y1="3.4" x2="14" y2="3.4" stroke="#2c8a43" stroke-width="1.6" stroke-linecap="round"/>
@@ -1671,6 +2179,158 @@ const TOOLBAR_ICON_IMAGES = {
       <circle cx="12" cy="8" r="3" fill="currentColor" />
     </svg>
   `),
+  'cases-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 48" fill="none">
+      <path
+        d="M9 2 C4 2 4 5 4 8 L4 16 C4 19 3 21 1 24 C3 27 4 29 4 32 L4 40 C4 43 4 46 9 46"
+        stroke="#7e8d98"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <rect x="15" y="7" width="8" height="13" stroke="#008000" stroke-width="1.5"/>
+      <rect x="15" y="28" width="8" height="13" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
+  'rcases-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 72" fill="none">
+      <rect x="10" y="8" width="9" height="22" stroke="#0a7a18" stroke-width="2"/>
+      <rect x="10" y="42" width="9" height="22" stroke="#0a7a18" stroke-width="2"/>
+      <path
+        d="M30 2 C36 2,36 8,36 14 L36 28 C36 32,38 34,40 36 C38 38,36 40,36 44 L36 58 C36 64,36 70,30 70"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  `),
+  'cases-two-by-two-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 48" fill="none">
+      <path
+        d="M8 2 C4 2 4 5 4 8 L4 16 C4 18 3 20 1 24 C3 28 4 30 4 32 L4 40 C4 43 4 46 8 46"
+        stroke="#000"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <rect x="14" y="8" width="6" height="12" stroke="#008000" stroke-width="1.5"/>
+      <rect x="28" y="8" width="6" height="12" stroke="#008000" stroke-width="1.5"/>
+      <rect x="14" y="28" width="6" height="12" stroke="#008000" stroke-width="1.5"/>
+      <rect x="28" y="28" width="6" height="12" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
+  'aligned-equals-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 48" fill="none">
+      <rect x="6" y="6" width="8" height="12" stroke="#008000" stroke-width="1.5"/>
+      <text x="21" y="16" font-size="12" text-anchor="middle" fill="#000">=</text>
+      <rect x="28" y="6" width="8" height="12" stroke="#008000" stroke-width="1.5"/>
+      <rect x="6" y="28" width="8" height="12" stroke="#008000" stroke-width="1.5"/>
+      <text x="21" y="38" font-size="12" text-anchor="middle" fill="#000">=</text>
+      <rect x="28" y="28" width="8" height="12" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
+  'vertical-ellipsis-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="5.5" r="1.35" fill="#22343d" />
+      <circle cx="12" cy="12" r="1.35" fill="#22343d" />
+      <circle cx="12" cy="18.5" r="1.35" fill="#22343d" />
+    </svg>
+  `),
+  'midline-ellipsis-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <circle cx="5.5" cy="12" r="1.35" fill="#22343d" />
+      <circle cx="12" cy="12" r="1.35" fill="#22343d" />
+      <circle cx="18.5" cy="12" r="1.35" fill="#22343d" />
+    </svg>
+  `),
+  'upright-ellipsis-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <circle cx="6.2" cy="17.8" r="1.35" fill="#22343d" />
+      <circle cx="12" cy="12" r="1.35" fill="#22343d" />
+      <circle cx="17.8" cy="6.2" r="1.35" fill="#22343d" />
+    </svg>
+  `),
+  'downright-ellipsis-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <circle cx="6.2" cy="6.2" r="1.35" fill="#22343d" />
+      <circle cx="12" cy="12" r="1.35" fill="#22343d" />
+      <circle cx="17.8" cy="17.8" r="1.35" fill="#22343d" />
+    </svg>
+  `),
+  'sum-array-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 72" fill="none">
+      <rect x="28" y="6" width="10" height="16" stroke="#008000" stroke-width="1.5"/>
+      <text x="14" y="40" font-size="18" text-anchor="middle" fill="#000">+</text>
+      <rect x="28" y="28" width="10" height="16" stroke="#008000" stroke-width="1.5"/>
+      <line x1="6" y1="52" x2="42" y2="52" stroke="#000" stroke-width="1.5"/>
+      <rect x="28" y="58" width="10" height="16" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
+  'difference-array-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 72" fill="none">
+      <rect x="28" y="6" width="10" height="16" stroke="#008000" stroke-width="1.5"/>
+      <line x1="8" y1="36" x2="18" y2="36" stroke="#000" stroke-width="2"/>
+      <rect x="28" y="28" width="10" height="16" stroke="#008000" stroke-width="1.5"/>
+      <line x1="6" y1="52" x2="42" y2="52" stroke="#000" stroke-width="1.5"/>
+      <rect x="28" y="58" width="10" height="16" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
+  'stack-line-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 64" fill="none">
+      <rect x="7" y="4" width="10" height="12" stroke="#008000" stroke-width="1.5"/>
+      <rect x="7" y="22" width="10" height="12" stroke="#008000" stroke-width="1.5"/>
+      <line x1="4" y1="42" x2="20" y2="42" stroke="#000" stroke-width="1.5"/>
+      <rect x="7" y="48" width="10" height="12" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
+  'division-layout-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80" fill="none">
+      <rect x="38" y="6" width="10" height="14" stroke="#008000" stroke-width="1.5"/>
+      <line x1="28" y1="28" x2="56" y2="28" stroke="#000" stroke-width="2"/>
+      <path d="M22 28 C30 35,30 45,22 54" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="6" y="34" width="10" height="14" stroke="#008000" stroke-width="1.5"/>
+      <rect x="40" y="34" width="10" height="14" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
+  'product-array-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 88" fill="none">
+      <rect x="34" y="6" width="10" height="16" stroke="#008000" stroke-width="1.5"/>
+      <text x="14" y="46" font-size="18" text-anchor="middle" fill="#000">×</text>
+      <rect x="34" y="38" width="10" height="16" stroke="#008000" stroke-width="1.5"/>
+      <line x1="4" y1="66" x2="46" y2="66" stroke="#000" stroke-width="1.5"/>
+      <rect x="34" y="74" width="10" height="16" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
+  'mixed-fraction-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 70" fill="none">
+      <rect x="6" y="18" width="12" height="18" stroke="#008000" stroke-width="1.5"/>
+      <line x1="28" y1="4" x2="28" y2="36" stroke="#000" stroke-width="2"/>
+      <rect x="40" y="10" width="12" height="18" stroke="#008000" stroke-width="1.5"/>
+      <line x1="28" y1="36" x2="58" y2="36" stroke="#000" stroke-width="2"/>
+      <rect x="40" y="46" width="12" height="18" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
+  'array-cc-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 70" fill="none">
+      <rect x="8" y="12" width="12" height="18" stroke="#008000" stroke-width="1.5"/>
+      <rect x="8" y="46" width="12" height="18" stroke="#008000" stroke-width="1.5"/>
+      <rect x="40" y="12" width="12" height="18" stroke="#008000" stroke-width="1.5"/>
+      <line x1="34" y1="36" x2="58" y2="36" stroke="#000" stroke-width="2"/>
+      <rect x="40" y="46" width="12" height="18" stroke="#008000" stroke-width="1.5"/>
+      <line x1="30" y1="2" x2="30" y2="36" stroke="#000" stroke-width="2"/>
+    </svg>
+  `),
+  'division-remainder-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 90" fill="none">
+      <rect x="40" y="6" width="12" height="18" stroke="#008000" stroke-width="1.5"/>
+      <line x1="28" y1="32" x2="56" y2="32" stroke="#000" stroke-width="2"/>
+      <path d="M22 32 C30 40,30 52,22 60" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="6" y="40" width="12" height="18" stroke="#008000" stroke-width="1.5"/>
+      <rect x="40" y="40" width="12" height="18" stroke="#008000" stroke-width="1.5"/>
+      <rect x="40" y="70" width="12" height="18" stroke="#008000" stroke-width="1.5"/>
+    </svg>
+  `),
   'vertical-line-picker-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
       <rect x="8.6" y="2.5" width="4.3" height="18.5" rx="1.4" fill="#89a5b6" />
@@ -2007,6 +2667,10 @@ function renderToolbarItemLabel(item, context = {}) {
     },
     '\\begin{pmatrix} #? \\\\ #? \\\\ #? \\end{pmatrix}': {
       frame: 'parentheses',
+      cells: [[7.05, 1.9], [7.05, 7.05], [7.05, 12.2]]
+    },
+    '\\begin{matrix} #? \\\\ #? \\\\ #? \\end{matrix}': {
+      frame: 'none',
       cells: [[7.05, 1.9], [7.05, 7.05], [7.05, 12.2]]
     }
   };
@@ -2493,6 +3157,194 @@ function GreekItalicPickerPopover({ position, onInsert }) {
   );
 }
 
+function BlackboardBoldPickerPopover({ position, onInsert }) {
+  const left = Math.min(Math.max(position.x - 8, 8), window.innerWidth - 356);
+  const top = Math.min(position.y + 2, window.innerHeight - 308);
+
+  return (
+    <div
+      className="cme-blackboard-bold-picker-popup"
+      style={{
+        position: 'fixed',
+        left: `${left}px`,
+        top: `${top}px`,
+        zIndex: 100000,
+      }}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
+      <div className="cme-blackboard-bold-picker-grid">
+        {BLACKBOARD_BOLD_PICKER_ITEMS.map((item) => (
+          <button
+            key={item.insert}
+            type="button"
+            className="cme-blackboard-bold-picker-btn"
+            title={item.title}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              onInsert(item.insert);
+            }}
+          >
+            <span className="cme-blackboard-bold-picker-glyph" aria-hidden="true">
+              {item.label}
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FrakturScriptPickerPopover({ position, onInsert }) {
+  const left = Math.min(Math.max(position.x - 8, 8), window.innerWidth - 356);
+  const top = Math.min(position.y + 2, window.innerHeight - 348);
+
+  return (
+    <div
+      className="cme-fraktur-script-picker-popup"
+      style={{
+        position: 'fixed',
+        left: `${left}px`,
+        top: `${top}px`,
+        zIndex: 100000,
+      }}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
+      <div className="cme-fraktur-script-picker-grid">
+        {FRAKTUR_SCRIPT_PICKER_ITEMS.map((item) => (
+          <button
+            key={item.insert}
+            type="button"
+            className="cme-fraktur-script-picker-btn"
+            title={item.title}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              onInsert(item.insert);
+            }}
+          >
+            <span className="cme-fraktur-script-picker-glyph" aria-hidden="true">
+              {item.label}
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function HebrewSymbolPickerPopover({ position, onInsert }) {
+  const left = Math.min(Math.max(position.x - 8, 8), window.innerWidth - 248);
+  const top = Math.min(position.y + 2, window.innerHeight - 88);
+
+  return (
+    <div
+      className="cme-hebrew-symbol-picker-popup"
+      style={{
+        position: 'fixed',
+        left: `${left}px`,
+        top: `${top}px`,
+        zIndex: 100000,
+      }}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
+      <div className="cme-hebrew-symbol-picker-grid">
+        {HEBREW_SYMBOL_PICKER_ITEMS.map((item) => (
+          <button
+            key={item.insert}
+            type="button"
+            className="cme-hebrew-symbol-picker-btn"
+            title={item.title}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              onInsert(item.insert);
+            }}
+          >
+            <span className="cme-hebrew-symbol-picker-glyph" aria-hidden="true">
+              {item.label}
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PeriodicTablePickerPopover({ position, onInsert }) {
+  const left = Math.min(Math.max(position.x - 8, 8), window.innerWidth - (PERIODIC_TABLE_WIDTH + 20));
+  const top = Math.min(position.y + 2, window.innerHeight - (PERIODIC_TABLE_HEIGHT + 18));
+  const connectorX = ((3 - 1) * PERIODIC_TABLE_PITCH) + Math.floor(PERIODIC_TABLE_CELL_SIZE / 2);
+  const connectorStartY = ((6 - 1) * PERIODIC_TABLE_PITCH) + Math.floor(PERIODIC_TABLE_CELL_SIZE / 2);
+  const lanthanideY = ((8 - 1) * PERIODIC_TABLE_PITCH) + Math.floor(PERIODIC_TABLE_CELL_SIZE / 2);
+  const actinideY = ((9 - 1) * PERIODIC_TABLE_PITCH) + Math.floor(PERIODIC_TABLE_CELL_SIZE / 2);
+  const seriesStartX = ((4 - 1) * PERIODIC_TABLE_PITCH);
+
+  return (
+    <div
+      className="cme-periodic-table-picker-popup"
+      style={{
+        position: 'fixed',
+        left: `${left}px`,
+        top: `${top}px`,
+        zIndex: 100000,
+      }}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
+      <div
+        className="cme-periodic-table-board"
+        style={{
+          width: `${PERIODIC_TABLE_WIDTH}px`,
+          height: `${PERIODIC_TABLE_HEIGHT}px`,
+        }}
+      >
+        <div
+          className="cme-periodic-table-connector cme-periodic-table-connector--vertical"
+          style={{
+            left: `${connectorX}px`,
+            top: `${connectorStartY}px`,
+            height: `${actinideY - connectorStartY}px`,
+          }}
+        />
+        <div
+          className="cme-periodic-table-connector cme-periodic-table-connector--horizontal"
+          style={{
+            left: `${connectorX}px`,
+            top: `${lanthanideY}px`,
+            width: `${seriesStartX - connectorX}px`,
+          }}
+        />
+        <div
+          className="cme-periodic-table-connector cme-periodic-table-connector--horizontal"
+          style={{
+            left: `${connectorX}px`,
+            top: `${actinideY}px`,
+            width: `${seriesStartX - connectorX}px`,
+          }}
+        />
+
+        {PERIODIC_TABLE_PICKER_ITEMS.map((item) => (
+          <button
+            key={`${item.label}-${item.row}-${item.col}`}
+            type="button"
+            className={`cme-periodic-table-cell cme-periodic-table-cell--${item.tone}`}
+            title={item.title}
+            style={{
+              left: `${(item.col - 1) * PERIODIC_TABLE_PITCH}px`,
+              top: `${(item.row - 1) * PERIODIC_TABLE_PITCH}px`,
+              width: `${PERIODIC_TABLE_CELL_SIZE}px`,
+              height: `${PERIODIC_TABLE_CELL_SIZE}px`,
+            }}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              onInsert(item.insert);
+            }}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function makeToolbarPlugin(onOpenPopup) {
   return class MathChemToolbarPlugin extends Plugin {
     init() {
@@ -2605,6 +3457,10 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   const [showArrowPicker, setShowArrowPicker] = useState(null); // { x, y } or null
   const [showArrowLabelPicker, setShowArrowLabelPicker] = useState(null); // { x, y } or null
   const [showGreekItalicPicker, setShowGreekItalicPicker] = useState(null); // { x, y } or null
+  const [showBlackboardBoldPicker, setShowBlackboardBoldPicker] = useState(null); // { x, y } or null
+  const [showFrakturScriptPicker, setShowFrakturScriptPicker] = useState(null); // { x, y } or null
+  const [showHebrewSymbolPicker, setShowHebrewSymbolPicker] = useState(null); // { x, y } or null
+  const [showPeriodicTablePicker, setShowPeriodicTablePicker] = useState(null); // { x, y } or null
   const [showColorPicker, setShowColorPicker] = useState(null); // { x, y } or null
   const [windowMode, setWindowMode] = useState('normal');
   const [activeToolbarItem, setActiveToolbarItem] = useState(null);
@@ -2760,7 +3616,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
 
 
   useEffect(() => {
-    if (!activeMatrix && !showColorPicker && !showArrowPicker && !showArrowLabelPicker && !showGreekItalicPicker) return;
+    if (!activeMatrix && !showColorPicker && !showArrowPicker && !showArrowLabelPicker && !showGreekItalicPicker && !showBlackboardBoldPicker && !showFrakturScriptPicker && !showHebrewSymbolPicker && !showPeriodicTablePicker) return;
     const handleOutsideClick = (e) => {
       if (!e.target.closest('.cme-matrix-hover-popover') && !e.target.closest('.cme-matrix-btn-wrapper')) {
         setActiveMatrix(null);
@@ -2777,6 +3633,18 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       if (!e.target.closest('.cme-greek-italic-picker-popup') && !e.target.closest('.greek-italic-picker-tool')) {
         setShowGreekItalicPicker(null);
       }
+      if (!e.target.closest('.cme-blackboard-bold-picker-popup') && !e.target.closest('.blackboard-bold-picker-tool')) {
+        setShowBlackboardBoldPicker(null);
+      }
+      if (!e.target.closest('.cme-fraktur-script-picker-popup') && !e.target.closest('.fraktur-script-picker-tool')) {
+        setShowFrakturScriptPicker(null);
+      }
+      if (!e.target.closest('.cme-hebrew-symbol-picker-popup') && !e.target.closest('.hebrew-symbol-picker-tool')) {
+        setShowHebrewSymbolPicker(null);
+      }
+      if (!e.target.closest('.cme-periodic-table-picker-popup') && !e.target.closest('.periodic-table-picker-tool')) {
+        setShowPeriodicTablePicker(null);
+      }
     };
     window.addEventListener('mousedown', handleOutsideClick, true);
     window.addEventListener('pointerdown', handleOutsideClick, true);
@@ -2784,7 +3652,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       window.removeEventListener('mousedown', handleOutsideClick, true);
       window.removeEventListener('pointerdown', handleOutsideClick, true);
     };
-  }, [activeMatrix, showColorPicker, showArrowPicker, showArrowLabelPicker, showGreekItalicPicker]);
+  }, [activeMatrix, showColorPicker, showArrowPicker, showArrowLabelPicker, showGreekItalicPicker, showBlackboardBoldPicker, showFrakturScriptPicker, showHebrewSymbolPicker, showPeriodicTablePicker]);
 
   useEffect(() => {
     const mf = popupMfRef.current;
@@ -3056,9 +3924,21 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           const groupKey = currentGroup.id || currentGroup.label || activeGroup;
                           const buttonKey = `${groupKey}-${category}-${i}-${item.insert || item.action || item.label}`;
                           const isGreekItalicPickerBtn = item.action === 'GREEK_ITALIC_PICKER';
+                          const isBlackboardBoldPickerBtn = item.action === 'BLACKBOARD_BOLD_PICKER';
+                          const isFrakturScriptPickerBtn = item.action === 'FRAKTUR_SCRIPT_PICKER';
+                          const isHebrewSymbolPickerBtn = item.action === 'HEBREW_SYMBOL_PICKER';
+                          const isPeriodicTablePickerBtn = item.action === 'PERIODIC_TABLE_PICKER';
                           const isTouchedButton = isGreekItalicPickerBtn
                             ? !!showGreekItalicPicker
-                            : activeToolbarItem === buttonKey;
+                            : isBlackboardBoldPickerBtn
+                              ? !!showBlackboardBoldPicker
+                              : isFrakturScriptPickerBtn
+                                ? !!showFrakturScriptPicker
+                                : isHebrewSymbolPickerBtn
+                                  ? !!showHebrewSymbolPicker
+                                  : isPeriodicTablePickerBtn
+                                    ? !!showPeriodicTablePicker
+                                    : activeToolbarItem === buttonKey;
 
                           return (
                             <button
@@ -3075,7 +3955,71 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                                   setShowArrowLabelPicker(null);
                                   setShowColorPicker(null);
                                   setShowSpecialChars(null);
+                                  setShowBlackboardBoldPicker(null);
+                                  setShowFrakturScriptPicker(null);
+                                  setShowHebrewSymbolPicker(null);
+                                  setShowPeriodicTablePicker(null);
                                   setShowGreekItalicPicker((prev) => (
+                                    prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                                  ));
+                                  return;
+                                }
+                                if (item.action === 'BLACKBOARD_BOLD_PICKER') {
+                                  const rect = e.currentTarget.getBoundingClientRect();
+                                  setShowArrowPicker(null);
+                                  setShowArrowLabelPicker(null);
+                                  setShowColorPicker(null);
+                                  setShowSpecialChars(null);
+                                  setShowGreekItalicPicker(null);
+                                  setShowFrakturScriptPicker(null);
+                                  setShowHebrewSymbolPicker(null);
+                                  setShowPeriodicTablePicker(null);
+                                  setShowBlackboardBoldPicker((prev) => (
+                                    prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                                  ));
+                                  return;
+                                }
+                                if (item.action === 'FRAKTUR_SCRIPT_PICKER') {
+                                  const rect = e.currentTarget.getBoundingClientRect();
+                                  setShowArrowPicker(null);
+                                  setShowArrowLabelPicker(null);
+                                  setShowColorPicker(null);
+                                  setShowSpecialChars(null);
+                                  setShowGreekItalicPicker(null);
+                                  setShowBlackboardBoldPicker(null);
+                                  setShowHebrewSymbolPicker(null);
+                                  setShowPeriodicTablePicker(null);
+                                  setShowFrakturScriptPicker((prev) => (
+                                    prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                                  ));
+                                  return;
+                                }
+                                if (item.action === 'HEBREW_SYMBOL_PICKER') {
+                                  const rect = e.currentTarget.getBoundingClientRect();
+                                  setShowArrowPicker(null);
+                                  setShowArrowLabelPicker(null);
+                                  setShowColorPicker(null);
+                                  setShowSpecialChars(null);
+                                  setShowGreekItalicPicker(null);
+                                  setShowBlackboardBoldPicker(null);
+                                  setShowFrakturScriptPicker(null);
+                                  setShowPeriodicTablePicker(null);
+                                  setShowHebrewSymbolPicker((prev) => (
+                                    prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                                  ));
+                                  return;
+                                }
+                                if (item.action === 'PERIODIC_TABLE_PICKER') {
+                                  const rect = e.currentTarget.getBoundingClientRect();
+                                  setShowArrowPicker(null);
+                                  setShowArrowLabelPicker(null);
+                                  setShowColorPicker(null);
+                                  setShowSpecialChars(null);
+                                  setShowGreekItalicPicker(null);
+                                  setShowBlackboardBoldPicker(null);
+                                  setShowFrakturScriptPicker(null);
+                                  setShowHebrewSymbolPicker(null);
+                                  setShowPeriodicTablePicker((prev) => (
                                     prev ? null : { x: rect.left, y: rect.bottom + 4 }
                                   ));
                                   return;
@@ -3241,6 +4185,10 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                   const isRtlBtn = item.action === 'TOGGLE_RTL';
                   const isArrowPickerBtn = item.action === 'ARROW_PICKER';
                   const isArrowLabelPickerBtn = item.action === 'ARROW_LABEL_PICKER';
+                  const isBlackboardBoldPickerBtn = item.action === 'BLACKBOARD_BOLD_PICKER';
+                  const isFrakturScriptPickerBtn = item.action === 'FRAKTUR_SCRIPT_PICKER';
+                  const isHebrewSymbolPickerBtn = item.action === 'HEBREW_SYMBOL_PICKER';
+                  const isPeriodicTablePickerBtn = item.action === 'PERIODIC_TABLE_PICKER';
                   const isBtnActive =
                     (isBoldBtn && activeStyles.bold && !activeStyles.italic) ||
                     (isItalicBtn && activeStyles.italic && !activeStyles.bold) ||
@@ -3248,6 +4196,10 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                     (isRtlBtn && isRtlInput) ||
                     (isArrowPickerBtn && !!showArrowPicker) ||
                     (isArrowLabelPickerBtn && !!showArrowLabelPicker) ||
+                    (isBlackboardBoldPickerBtn && !!showBlackboardBoldPicker) ||
+                    (isFrakturScriptPickerBtn && !!showFrakturScriptPicker) ||
+                    (isHebrewSymbolPickerBtn && !!showHebrewSymbolPicker) ||
+                    (isPeriodicTablePickerBtn && !!showPeriodicTablePicker) ||
                     (isColorBtn && activeStyles.color !== 'none') ||
                     (!isRtlBtn && activeToolbarItem === buttonKey);
 
@@ -3265,12 +4217,22 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           const rect = e.currentTarget.getBoundingClientRect();
                           setShowArrowPicker(null);
                           setShowArrowLabelPicker(null);
+                          setShowGreekItalicPicker(null);
+                          setShowBlackboardBoldPicker(null);
+                          setShowFrakturScriptPicker(null);
+                          setShowHebrewSymbolPicker(null);
+                          setShowPeriodicTablePicker(null);
                           setShowColorPicker(null);
                           setShowSpecialChars({ x: rect.left, y: rect.bottom + 4 });
                         } else if (item.action === 'ARROW_PICKER') {
                           const rect = e.currentTarget.getBoundingClientRect();
                           setShowSpecialChars(null);
                           setShowArrowLabelPicker(null);
+                          setShowGreekItalicPicker(null);
+                          setShowBlackboardBoldPicker(null);
+                          setShowFrakturScriptPicker(null);
+                          setShowHebrewSymbolPicker(null);
+                          setShowPeriodicTablePicker(null);
                           setShowColorPicker(null);
                           setShowArrowPicker((prev) => (
                             prev ? null : { x: rect.left, y: rect.bottom + 4 }
@@ -3279,14 +4241,76 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           const rect = e.currentTarget.getBoundingClientRect();
                           setShowSpecialChars(null);
                           setShowArrowPicker(null);
+                          setShowGreekItalicPicker(null);
+                          setShowBlackboardBoldPicker(null);
+                          setShowFrakturScriptPicker(null);
+                          setShowHebrewSymbolPicker(null);
+                          setShowPeriodicTablePicker(null);
                           setShowColorPicker(null);
                           setShowArrowLabelPicker((prev) => (
+                            prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                          ));
+                        } else if (item.action === 'BLACKBOARD_BOLD_PICKER') {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setShowSpecialChars(null);
+                          setShowArrowPicker(null);
+                          setShowArrowLabelPicker(null);
+                          setShowColorPicker(null);
+                          setShowGreekItalicPicker(null);
+                          setShowFrakturScriptPicker(null);
+                          setShowHebrewSymbolPicker(null);
+                          setShowPeriodicTablePicker(null);
+                          setShowBlackboardBoldPicker((prev) => (
+                            prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                          ));
+                        } else if (item.action === 'FRAKTUR_SCRIPT_PICKER') {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setShowSpecialChars(null);
+                          setShowArrowPicker(null);
+                          setShowArrowLabelPicker(null);
+                          setShowColorPicker(null);
+                          setShowGreekItalicPicker(null);
+                          setShowBlackboardBoldPicker(null);
+                          setShowHebrewSymbolPicker(null);
+                          setShowPeriodicTablePicker(null);
+                          setShowFrakturScriptPicker((prev) => (
+                            prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                          ));
+                        } else if (item.action === 'HEBREW_SYMBOL_PICKER') {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setShowSpecialChars(null);
+                          setShowArrowPicker(null);
+                          setShowArrowLabelPicker(null);
+                          setShowColorPicker(null);
+                          setShowGreekItalicPicker(null);
+                          setShowBlackboardBoldPicker(null);
+                          setShowFrakturScriptPicker(null);
+                          setShowPeriodicTablePicker(null);
+                          setShowHebrewSymbolPicker((prev) => (
+                            prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                          ));
+                        } else if (item.action === 'PERIODIC_TABLE_PICKER') {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setShowSpecialChars(null);
+                          setShowArrowPicker(null);
+                          setShowArrowLabelPicker(null);
+                          setShowColorPicker(null);
+                          setShowGreekItalicPicker(null);
+                          setShowBlackboardBoldPicker(null);
+                          setShowFrakturScriptPicker(null);
+                          setShowHebrewSymbolPicker(null);
+                          setShowPeriodicTablePicker((prev) => (
                             prev ? null : { x: rect.left, y: rect.bottom + 4 }
                           ));
                         } else if (item.action === 'TEXT_COLOR') {
                           const rect = e.currentTarget.getBoundingClientRect();
                           setShowArrowPicker(null);
                           setShowArrowLabelPicker(null);
+                          setShowGreekItalicPicker(null);
+                          setShowBlackboardBoldPicker(null);
+                          setShowFrakturScriptPicker(null);
+                          setShowHebrewSymbolPicker(null);
+                          setShowPeriodicTablePicker(null);
                           setCustomColorInput(activeStyles.color !== 'none' ? activeStyles.color : '');
                           setCustomColorError('');
                           setShowColorPicker({ x: rect.left, y: rect.bottom + 4 });
@@ -3446,6 +4470,50 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           onInsert={(latex) => {
             insertAtCursor(latex);
             setShowGreekItalicPicker(null);
+          }}
+        />,
+        document.body
+      )}
+
+      {showBlackboardBoldPicker && createPortal(
+        <BlackboardBoldPickerPopover
+          position={showBlackboardBoldPicker}
+          onInsert={(latex) => {
+            insertAtCursor(latex);
+            setShowBlackboardBoldPicker(null);
+          }}
+        />,
+        document.body
+      )}
+
+      {showFrakturScriptPicker && createPortal(
+        <FrakturScriptPickerPopover
+          position={showFrakturScriptPicker}
+          onInsert={(latex) => {
+            insertAtCursor(latex);
+            setShowFrakturScriptPicker(null);
+          }}
+        />,
+        document.body
+      )}
+
+      {showHebrewSymbolPicker && createPortal(
+        <HebrewSymbolPickerPopover
+          position={showHebrewSymbolPicker}
+          onInsert={(latex) => {
+            insertAtCursor(latex);
+            setShowHebrewSymbolPicker(null);
+          }}
+        />,
+        document.body
+      )}
+
+      {showPeriodicTablePicker && createPortal(
+        <PeriodicTablePickerPopover
+          position={showPeriodicTablePicker}
+          onInsert={(latex) => {
+            insertAtCursor(latex);
+            setShowPeriodicTablePicker(null);
           }}
         />,
         document.body
@@ -3700,8 +4768,10 @@ function latexToPlainText(latex) {
     ['\\cot', 'cot'], ['\\sec', 'sec'], ['\\csc', 'csc'],
     ['\\log', 'log'], ['\\ln', 'ln'], ['\\exp', 'exp'], ['\\lim', 'lim'],
     // Math sets
-    ['\\mathbb{R}', 'ℝ'], ['\\mathbb{Z}', 'ℤ'], ['\\mathbb{N}', 'ℕ'], ['\\mathbb{Q}', 'ℚ'],
-    ['\\mathbb{C}', 'ℂ'],
+    ...BLACKBOARD_BOLD_PICKER_ITEMS.map(({ insert, label }) => [insert, label]),
+    ...FRAKTUR_SCRIPT_PICKER_ITEMS.map(({ insert, label }) => [insert, label]),
+    ...HEBREW_SYMBOL_PICKER_ITEMS.map(({ insert, label }) => [insert, label]),
+    ['\\wp', '℘'],
     // Delimiters
     ['\\left(', '('], ['\\right)', ')'],
     ['\\left[', '['], ['\\right]', ']'],
@@ -3710,7 +4780,7 @@ function latexToPlainText(latex) {
     // Spacing
     ['\\,', ' '], ['\\;', ' '], ['\\quad', ' '], ['\\qquad', '  '],
     // Misc
-    ['\\prime', '′'], ['\\cdots', '⋯'], ['\\ldots', '…'],
+    ['\\prime', '′'], ['\\vdots', '⋮'], ['\\cdots', '⋯'], ['\\ddots', '⋱'], ['\\ldots', '…'],
   ];
 
   for (const [cmd, char] of replacements) {
