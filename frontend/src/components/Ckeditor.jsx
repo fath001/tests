@@ -261,21 +261,14 @@ const MATH_GROUPS = [
       { label: '□\n□\n□', insert: '\\overset{#?}{\\underset{#?}{#?}}', cls: 'template', directInsert: true, title: 'Over and Under', icon: 'over-under-template-image' },
       { label: '□⏟□', insert: '\\underbrace{#?}_{#?}', cls: 'template', directInsert: true, title: 'Underbrace', icon: 'underbrace-template-image' },
       { label: '□⏞□', insert: '\\overbrace{#?}^{#?}', cls: 'template', directInsert: true, title: 'Overbrace', icon: 'overbrace-template-image' },
-      { label: '□\n▯\n□', insert: '\\mathop{#?}\\limits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image' },
-      { label: '▯\n□', insert: '\\mathop{#?}\\limits_{#?}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image' },
+      { label: '□\n▯\n□', insert: '\\underset{#?}{\\overset{#?}{#?}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image' },
+      { label: '▯\n□', insert: '\\underset{#?}{#?}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image' },
       { label: '▯^□_□', insert: '#?^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
       { label: '▯_□', insert: '#?_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
       { label: '□!', insert: '{#0}!' }, { label: '□(mod□)', insert: '#0 \\pmod{#?}' },
       { label: 'hphantom', insert: '\\hphantom{0}', cls: 'template', directInsert: true, title: 'Horizontal Phantom Space', icon: 'hphantom-space-template-image' },
       { label: 'thin-space', insert: '\\,', cls: 'template', directInsert: true, title: 'Thin Space', icon: 'thin-space-template-image' },
       { label: 'negative-space', insert: '\\!', cls: 'template', directInsert: true, title: 'Negative Thin Space', icon: 'negative-thin-space-template-image' },
-      { label: 'lim', insert: '\\lim_{#?}', title: 'Limit', icon: 'limit-template-image' }, { label: '∫dx', insert: '\\int_{#?}^{#?}', title: 'Integral with Limits', icon: 'integral-limits-template-image' },
-      { label: '∑', insert: '\\sum_{#?}^{#?}', title: 'Summation with Limits', icon: 'summation-template-image' }, { label: 'vec', insert: '\\vec{#0}', title: 'Vector', icon: 'vector-template-image' },
-      { label: '(a/b)', insert: '\\left(\\frac{#0}{#?}\\right)', title: 'Fraction in Parentheses', icon: 'paren-fraction-template-image' },
-      { label: '[a/b]', insert: '\\left[\\frac{#0}{#?}\\right]', title: 'Fraction in Brackets', icon: 'bracket-fraction-template-image' },
-      { label: '{a/b}', insert: '\\left\\{\\frac{#0}{#?}\\right\\}', title: 'Fraction in Braces', icon: 'brace-fraction-template-image' },
-      { label: 'xᵃ/ᵇ', insert: '#0^{\\frac{#?}{#?}}', title: 'Fraction Exponent', icon: 'fraction-exponent-template-image' },
-      { label: 'xₐᵇ', insert: '#0_{#?}^{#?}', title: 'Subscript and Superscript', icon: 'subsup-template-image' },
     ]
   },
   {
@@ -476,12 +469,11 @@ const MATH_GROUPS = [
       { label: '⋰', insert: '⋰', title: 'Up-right diagonal ellipsis', icon: 'upright-ellipsis-template-image', directInsert: true },
       { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis', icon: 'downright-ellipsis-template-image', directInsert: true },
       { type: 'sep', cols: 2 },
-      { label: 'sum-array', insert: '\\begin{array}{r} #? \\\\ +\\,#? \\\\ \\hline #? \\end{array}', cls: 'template', directInsert: true, icon: 'sum-array-template-image', title: 'Column Addition' },
-      { label: 'diff-array', insert: '\\begin{array}{r} #? \\\\ -\\,#? \\\\ \\hline #? \\end{array}', cls: 'template', directInsert: true, icon: 'difference-array-template-image', title: 'Column Subtraction' },
+      {label: 'sum-array',insert: '\\frac{\\begin{array}{r}#?\\\\+\\,#?\\end{array}}{\\quad#?}',cls: 'template',directInsert: true,icon: 'sum-array-template-image',title: 'Column Addition'},     { label: 'diff-array', insert: '\\frac{\\begin{array}{r}#?\\\\-\\,#?\\end{array}}{\\quad#?}', directInsert: true, icon: 'difference-array-template-image', title: 'Column Subtraction' },
       { label: 'stack-line', insert: '\\begin{array}{c} #? \\\\ #? \\\\ \\hline #? \\end{array}', cls: 'template', directInsert: true, icon: 'stack-line-template-image', title: 'Stacked Line Layout' },
       { label: 'division', insert: '\\overset{#?}{\\overline{#?\\big)#?}}', cls: 'template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
-      { label: 'product-array', insert: '\\begin{array}{r} #? \\\\ \\times\\,#? \\\\ \\hline #? \\end{array}', cls: 'template', directInsert: true, icon: 'product-array-template-image', title: 'Column Multiplication' },
-      { label: 'mixed-fraction', insert: '#?\\,\\frac{#?}{#?}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
+      { label: 'product-array', insert: '\\frac{\\begin{array}{r}#?\\\\\\times\\,#?\\end{array}}{\\quad#?}', cls: 'template', directInsert: true, icon: 'product-array-template-image', title: 'Column Multiplication' },
+      { label: 'mixed-fraction', insert: '\\left.\\begin{array}{c} #? \\end{array}\\right|\\begin{array}{c} #? \\\\ \\hline #? \\end{array}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
       { label: 'array-cc', insert: '\\left.\\begin{array}{c} #? \\\\ #? \\end{array}\\right|\\frac{#?}{#?}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
       { label: 'division-remainder', insert: '\\begin{array}{r} \\overset{#?}{\\overline{#?\\big)#?}} \\\\ #? \\end{array}', cls: 'template', directInsert: true, icon: 'division-remainder-template-image', title: 'Division With Remainder' },
     ]
@@ -594,7 +586,7 @@ const RELATIONS_TAB_ITEMS = [
   { label: '⊙', insert: '\\odot' },
   { label: '⊖', insert: '\\ominus', title: 'Circled Minus', icon: 'circled-minus-template-image' },
   { label: '⊛', insert: '\\circledast', title: 'Circled Asterisk', icon: 'circled-asterisk-template-image' },
-  { label: '⊘', insert: '\\oslash', title: 'Circled Divide', icon: 'circled-divide-template-image' },
+  { label: '⊘', insert: '⨸', title: 'Circled Divide', icon: 'circled-divide-template-image' },
   { label: '•', insert: '^{\\bullet}', title: 'Raised Bullet', icon: 'raised-bullet-template-image' },
 ];
 
@@ -1213,6 +1205,38 @@ const ORDERED_MATH_GROUPS = [
       { label: '{□ □}', insert: '\\left\\{ #0, #? \\right\\}' },
       { label: '[□ □]', insert: '\\left[#0, #?\\right]' },
       { label: '(□ □)', insert: '\\left(#0, #?\\right)' },
+      { label: '⟨□ | □⟩', insert: '\\left\\langle #0 \\middle| #? \\right\\rangle' },
+      { type: 'sep', cols: 2 },
+      { label: 'overbrace', insert: '\\overbrace{#?}^{#?}', cls: 'template', directInsert: true, title: 'Overbrace', icon: 'overbrace-arc-template-image' },
+      { label: 'overparen', insert: '\\overparen{#?}^{#?}', cls: 'template', directInsert: true, title: 'Overparen', icon: 'overparen-template-image' },
+      { label: 'underbrace', insert: '\\underbrace{#?}_{#?}', cls: 'template', directInsert: true, title: 'Underbrace', icon: 'underbrace-arc-template-image' },
+      { label: 'underparen', insert: '\\underparen{#?}_{#?}', cls: 'template', directInsert: true, title: 'Underparen', icon: 'underparen-template-image' },
+      { type: 'sep', cols: 2 },
+      { label: '⃗\n▯', insert: '\\vec{#?}', cls: 'template', directInsert: true, title: 'Vector Accent', icon: 'vec-accent-template-image' },
+      { label: '→\n▯', insert: '\\overrightarrow{#?}', cls: 'template', directInsert: true, title: 'Right Arrow Accent', icon: 'overrightarrow-accent-template-image' },
+      { label: '↔\n▯', insert: '\\overleftrightarrow{#?}', cls: 'template', directInsert: true, title: 'Left-Right Arrow Accent', icon: 'overleftrightarrow-accent-template-image' },
+      { label: '¯\n▯', insert: '\\overline{#?}', cls: 'template', directInsert: true, title: 'Overline Accent', icon: 'overline-accent-template-image' },
+      { label: '^\n▯', insert: '\\hat{#?}', cls: 'template', directInsert: true, title: 'Hat Accent', icon: 'hat-accent-template-image' },
+      { label: '~\n▯', insert: '\\tilde{#?}', cls: 'template', directInsert: true, title: 'Tilde Accent', icon: 'tilde-accent-template-image' },
+      { label: '¨\n▯', insert: '\\ddot{#?}', cls: 'template', directInsert: true, title: 'Double Dot Accent', icon: 'ddot-accent-template-image' },
+      { label: '˙\n▯', insert: '\\dot{#?}', cls: 'template', directInsert: true, title: 'Dot Accent', icon: 'dot-accent-template-image' },
+      { type: 'sep', cols: 2 },
+      { label: '¯\n▯', insert: '\\overline{#?}', cls: 'template', directInsert: true, title: 'Overline', icon: 'overline-frame-template-image' },
+      { label: '|\n▯', insert: '\\left|#?\\right.', cls: 'template', directInsert: true, title: 'Left Bar', icon: 'left-bar-template-image' },
+      { label: '□\n▯', insert: '\\boxed{#?}', cls: 'template', directInsert: true, title: 'Boxed', icon: 'boxed-square-template-image' },
+      { label: '_\n▯', insert: '\\underline{#?}', cls: 'template', directInsert: true, title: 'Underline', icon: 'underline-frame-template-image' },
+      { label: '▯\n|', insert: '\\left.#?\\right|', cls: 'template', directInsert: true, title: 'Right Bar', icon: 'right-bar-template-image' },
+      { label: '(\n▯\n)', insert: '\\enclose{circle}{#?}', cls: 'template', directInsert: true, title: 'Rounded Enclosure', icon: 'paren-frame-template-image' },
+      { label: '¯\n▯|', insert: '\\overline{\\left.#?\\right|}', cls: 'template', directInsert: true, title: 'Overline with Right Bar', icon: 'overline-right-bar-template-image' },
+      { label: '▢\n▯', insert: '\\enclose{roundedbox}{#?}', cls: 'template', directInsert: true, title: 'Rounded Boxed', icon: 'boxed-rounded-template-image' },
+      { type: 'sep', cols: 2 },
+      { label: '╱\n▯', insert: '\\cancel{#?}', cls: 'template', directInsert: true, title: 'Cancel', icon: 'cancel-diagonal-template-image' },
+      { label: '─\n▯', insert: '\\text{\\sout{#?}}', cls: 'template', directInsert: true, title: 'Strikeout Text', icon: 'sout-template-image' },
+      { label: '╲\n▯', insert: '\\bcancel{#?}', cls: 'template', directInsert: true, title: 'Backward Cancel', icon: 'bcancel-template-image' },
+      { label: '╳\n▯', insert: '\\xcancel{#?}', cls: 'template', directInsert: true, title: 'Cross Cancel', icon: 'xcancel-template-image' },
+      { label: '│\n▯', insert: '\\enclose{verticalstrike}{#?}', cls: 'template', directInsert: true, title: 'Vertical Strike', icon: 'vertical-strike-template-image' },
+      { label: ')\n¯', insert: '\\overline{\\left)#?\\right.}', cls: 'template', directInsert: true, title: 'Overline with Curved Left Boundary', icon: 'overline-left-curve-template-image' },
+      { label: '┼\n▯', insert: '\\enclose{verticalstrike horizontalstrike}{#?}', cls: 'template', directInsert: true, title: 'Vertical and Horizontal Strike', icon: 'crosshair-strike-template-image' },
     ],
   },
   {
@@ -1220,15 +1244,15 @@ const ORDERED_MATH_GROUPS = [
     label: <TabIcon top="Σ ∪" compact />,
     items: [
       { label: 'sum-limits-both', insert: '\\sum\\limits_{#?}^{#?}', cls: 'template', directInsert: true, title: 'Summation With Upper and Lower Limits', icon: 'sum-limits-both-template-image' },
-      { label: 'sum-right-both', insert: '\\sum^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Summation With Right Superscript and Subscript', icon: 'sum-right-both-template-image' },
+      { label: 'sum-right-both', insert: '\\sum\\nolimits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Summation With Right Superscript and Subscript', icon: 'sum-right-both-template-image' },
       { label: 'sum-limits-lower', insert: '\\sum\\limits_{#?}', cls: 'template', directInsert: true, title: 'Summation With Lower Limit', icon: 'sum-limits-lower-template-image' },
-      { label: 'sum-right-lower', insert: '\\sum_{#?}', cls: 'template', directInsert: true, title: 'Summation With Right Subscript', icon: 'sum-right-lower-template-image' },
+      { label: 'sum-right-lower', insert: '\\sum\\nolimits_{#?}', cls: 'template', directInsert: true, title: 'Summation With Right Subscript', icon: 'sum-right-lower-template-image' },
       { label: 'prod-limits-both', insert: '\\prod\\limits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Product With Upper and Lower Limits', icon: 'prod-limits-both-template-image' },
       { label: 'prod-limits-lower', insert: '\\prod\\limits_{#?}', cls: 'template', directInsert: true, title: 'Product With Lower Limit', icon: 'prod-limits-lower-template-image' },
-      { label: 'prod-right-lower', insert: '\\prod_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Subscript', icon: 'prod-right-lower-template-image' },
-      { label: 'prod-right-both', insert: '\\prod^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Superscript and Subscript', icon: 'prod-right-both-template-image' },
-      { label: '□\n▯\n□', insert: '\\mathop{#?}\\limits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image' },
-      { label: '▯\n□', insert: '\\mathop{#?}\\limits_{#?}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image' },
+      { label: 'prod-right-lower', insert: '\\prod\\nolimits_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Subscript', icon: 'prod-right-lower-template-image' },
+      { label: 'prod-right-both', insert: '\\prod\\nolimits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Superscript and Subscript', icon: 'prod-right-both-template-image' },
+      { label: '□\n▯\n□', insert: '\\underset{#?}{\\overset{#?}{#?}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image' },
+      { label: '▯\n□', insert: '\\underset{#?}{#?}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image' },
       { label: '▯^□_□', insert: '#?^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
       { label: '▯_□', insert: '#?_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
       { label: '⋂', insert: '\\bigcap' },
@@ -1251,27 +1275,31 @@ const ORDERED_MATH_GROUPS = [
       { label: '∮', insert: '\\oint' },
       { label: '∯', insert: '\\oiint' },
       { label: '∰', insert: '\\oiiint' },
-      { label: '∫dx', insert: '\\int #0 \\, d#?', icon: 'integral-with-differential' },
       { label: '∫ₐᵇ', insert: '\\int_{#?}^{#?} #0 \\, d#?', icon: 'integral-with-limits-differential' },
-      { label: '∬dA', insert: '\\iint_{#?} #0 \\, dA', title: 'Double Integral with Area Element', icon: 'double-integral-area-template-image' },
-      { label: 'F(b)-F(a)', insert: '\\left[#0\\right]_{#?}^{#?}', title: 'Evaluated Expression', icon: 'evaluated-expression-template-image' },
-      { label: 'd/dx', insert: '\\frac{d}{dx}' },
-      { label: 'dy/dx', insert: '\\frac{dy}{dx}' },
-      { label: 'd²y/dx²', insert: '\\frac{d^{2}y}{dx^{2}}' },
-      { label: '∂/∂x', insert: '\\frac{\\partial}{\\partial x}' },
-      { label: '∂□/∂x', insert: '\\frac{\\partial #0}{\\partial x}' },
-      { label: '∇□', insert: '\\nabla #0' },
-      { label: '∇²□', insert: '\\nabla^{2} #0' },
-      { label: 'lim', insert: '\\lim_{#?}' },
-      { label: 'log', insert: '\\log' },
-      { label: 'ln', insert: '\\ln' },
-      { label: 'eˣ', insert: 'e^{#0}', title: 'e to the Power', icon: 'exp-e-template-image' },
-      { label: 'aˣ', insert: '#?^{#0}', title: 'Base to the Power', icon: 'exp-generic-template-image' },
-      { label: 'sin', insert: '\\sin' },
-      { label: 'cos', insert: '\\cos' },
-      { label: 'tan', insert: '\\tan' },
-      { label: 'sin⁻¹', insert: '\\sin^{-1}' },
-      { label: 'exp', insert: '\\exp' },
+      { type: 'sep', cols: 3 },
+      { label: 'integral-both', insert: '\\int_{#?}^{#?}', cls: 'template', directInsert: true, title: 'Definite Integral', icon: 'integral-both-template-image' },
+      { label: 'integral-lower', insert: '\\int_{#?}', cls: 'template', directInsert: true, title: 'Integral With Subscript', icon: 'integral-lower-template-image' },
+      { label: 'first-derivative', insert: '\\frac{d#?}{d#?}', cls: 'template', directInsert: true, title: 'First Derivative', icon: 'first-derivative-template-image' },
+      { label: 'partial-derivative', insert: '\\frac{\\partial#?}{\\partial#?}', cls: 'template', directInsert: true, title: 'Partial Derivative', icon: 'partial-derivative-template-image' },
+      { label: 'limit-infinity', insert: '\\lim_{#?\\to\\infty}', cls: 'template', directInsert: true, title: 'Limit to Infinity', icon: 'limit-infinity-template-image' },
+      { label: 'limit-generic', insert: '\\lim_{#?}', cls: 'template', directInsert: true, title: 'Limit', icon: 'limit-generic-template-image' },
+      { type: 'sep', cols: 2 },
+      { label: '∇×\n▯', insert: '\\nabla \\times #?', cls: 'template', directInsert: true, title: 'Curl' },
+      { label: '∇\n▯', insert: '\\nabla #?', cls: 'template', directInsert: true, title: 'Gradient' },
+      { label: '∇·\n▯', insert: '\\nabla \\cdot #?', cls: 'template', directInsert: true, title: 'Divergence' },
+      { label: 'Δ\n▯', insert: '\\Delta #?', cls: 'template', directInsert: true, title: 'Delta Expression' },
+      { label: 'sin(□)', insert: '\\sin\\left(#0\\right)' },
+      { label: 'cos(□)', insert: '\\cos\\left(#0\\right)' },
+      { label: 'tan(□)', insert: '\\tan\\left(#0\\right)' },
+      { label: 'log(□)', insert: '\\log\\left(#0\\right)' },
+      { label: 'ln(□)', insert: '\\ln\\left(#0\\right)' },
+      { label: 'csc(□)', insert: '\\csc\\left(#0\\right)' },
+      { label: 'sec(□)', insert: '\\sec\\left(#0\\right)' },
+      { label: 'cot(□)', insert: '\\cot\\left(#0\\right)' },
+      { label: 'sin⁻¹(□)', insert: '\\sin^{-1}\\left(#0\\right)' },
+      { label: 'cos⁻¹(□)', insert: '\\cos^{-1}\\left(#0\\right)' },
+      { label: 'tan⁻¹(□)', insert: '\\tan^{-1}\\left(#0\\right)' },
+      { label: 'log₍□₎(□)', insert: '\\log_{#?}\\left(#?\\right)', cls: 'template', directInsert: true, title: 'Logarithm With Base', icon: 'log-base-template-image' },
     ],
   },
   {
@@ -1711,6 +1739,177 @@ const TOOLBAR_ICON_IMAGES = {
       <rect x="10" y="44" width="12" height="18" stroke="#008000" stroke-width="1.5"/>
     </svg>
   `),
+  'overbrace-arc-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+      <path d="M8 10 C8 6,12 6,16 6 C20 6,20 2,20 2 C20 2,20 6,24 6 C28 6,32 6,32 10" stroke="#666" stroke-width="2"/>
+      <rect x="15" y="16" width="10" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'overparen-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+      <path d="M8 10 Q20 2 32 10" stroke="#666" stroke-width="2"/>
+      <rect x="15" y="16" width="10" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'underbrace-arc-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+      <rect x="15" y="6" width="10" height="16" stroke="#1b8f3a" stroke-width="2"/>
+      <path d="M8 30 C8 34,12 34,16 34 C20 34,20 38,20 38 C20 38,20 34,24 34 C28 34,32 34,32 30" stroke="#666" stroke-width="2"/>
+    </svg>
+  `),
+  'underparen-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+      <rect x="15" y="6" width="10" height="16" stroke="#1b8f3a" stroke-width="2"/>
+      <path d="M8 30 Q20 38 32 30" stroke="#666" stroke-width="2"/>
+    </svg>
+  `),
+  'vec-accent-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+      <path d="M10 10 H26" stroke="#666" stroke-width="2"/>
+      <path d="M22 6 L30 10 L22 14" stroke="#666" stroke-width="2" fill="none"/>
+      <rect x="15" y="18" width="10" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'overrightarrow-accent-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+      <path d="M8 10 H30" stroke="#666" stroke-width="2"/>
+      <path d="M26 6 L34 10 L26 14" stroke="#666" stroke-width="2" fill="none"/>
+      <rect x="15" y="18" width="10" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'overleftrightarrow-accent-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+      <path d="M8 10 H32" stroke="#666" stroke-width="2"/>
+      <path d="M12 6 L4 10 L12 14" stroke="#666" stroke-width="2" fill="none"/>
+      <path d="M28 6 L36 10 L28 14" stroke="#666" stroke-width="2" fill="none"/>
+      <rect x="15" y="18" width="10" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'overline-accent-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+      <line x1="10" y1="10" x2="30" y2="10" stroke="#666" stroke-width="2"/>
+      <rect x="15" y="18" width="10" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'hat-accent-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+      <path d="M12 12 L20 6 L28 12" stroke="#666" stroke-width="2" fill="none"/>
+      <rect x="15" y="18" width="10" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'tilde-accent-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+      <path d="M10 11 C14 6,18 16,22 11 C26 6,30 16,34 11" stroke="#666" stroke-width="2" fill="none"/>
+      <rect x="15" y="18" width="10" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'ddot-accent-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+      <circle cx="16" cy="10" r="2" fill="#666"/>
+      <circle cx="24" cy="10" r="2" fill="#666"/>
+      <rect x="15" y="18" width="10" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'dot-accent-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="10" r="2" fill="#666"/>
+      <rect x="15" y="18" width="10" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'overline-frame-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 40" fill="none">
+      <line x1="8" y1="8" x2="40" y2="8" stroke="#666" stroke-width="2"/>
+      <rect x="18" y="14" width="12" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'left-bar-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 40" fill="none">
+      <line x1="12" y1="6" x2="12" y2="34" stroke="#666" stroke-width="2"/>
+      <rect x="18" y="12" width="12" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'boxed-square-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 40" fill="none">
+      <rect x="10" y="6" width="28" height="28" stroke="#666" stroke-width="2"/>
+      <rect x="18" y="12" width="12" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'underline-frame-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 40" fill="none">
+      <rect x="18" y="8" width="12" height="16" stroke="#1b8f3a" stroke-width="2"/>
+      <line x1="8" y1="30" x2="40" y2="30" stroke="#666" stroke-width="2"/>
+    </svg>
+  `),
+  'right-bar-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 40" fill="none">
+      <rect x="18" y="12" width="12" height="16" stroke="#1b8f3a" stroke-width="2"/>
+      <line x1="36" y1="6" x2="36" y2="34" stroke="#666" stroke-width="2"/>
+    </svg>
+  `),
+  'paren-frame-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 40" fill="none">
+      <ellipse cx="24" cy="20" rx="16" ry="14" stroke="#666" stroke-width="2"/>
+      <rect x="18" y="12" width="12" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'overline-right-bar-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 40" fill="none">
+      <line x1="10" y1="8" x2="36" y2="8" stroke="#666" stroke-width="2"/>
+      <line x1="36" y1="8" x2="36" y2="32" stroke="#666" stroke-width="2"/>
+      <rect x="18" y="12" width="12" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'boxed-rounded-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 40" fill="none">
+      <rect x="10" y="6" width="28" height="28" rx="6" ry="6" stroke="#666" stroke-width="2"/>
+      <rect x="18" y="12" width="12" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'cancel-diagonal-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" fill="none">
+      <line x1="10" y1="30" x2="50" y2="10" stroke="#666" stroke-width="2"/>
+      <rect x="22" y="12" width="16" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'sout-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" fill="none">
+      <line x1="8" y1="20" x2="52" y2="20" stroke="#666" stroke-width="2"/>
+      <rect x="22" y="12" width="16" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'bcancel-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" fill="none">
+      <line x1="10" y1="10" x2="50" y2="30" stroke="#666" stroke-width="2"/>
+      <rect x="22" y="12" width="16" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'xcancel-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" fill="none">
+      <line x1="10" y1="10" x2="50" y2="30" stroke="#666" stroke-width="2"/>
+      <line x1="10" y1="30" x2="50" y2="10" stroke="#666" stroke-width="2"/>
+      <rect x="22" y="12" width="16" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'vertical-strike-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" fill="none">
+      <line x1="30" y1="6" x2="30" y2="34" stroke="#666" stroke-width="2"/>
+      <rect x="22" y="12" width="16" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'overline-left-curve-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" fill="none">
+      <path d="M16 8 Q8 14 8 20 Q8 26 16 32" stroke="#666" stroke-width="2" fill="none"/>
+      <line x1="16" y1="8" x2="52" y2="8" stroke="#666" stroke-width="2"/>
+      <rect x="24" y="12" width="16" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
+  'crosshair-strike-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" fill="none">
+      <line x1="8" y1="20" x2="52" y2="20" stroke="#666" stroke-width="2"/>
+      <line x1="30" y1="6" x2="30" y2="34" stroke="#666" stroke-width="2"/>
+      <rect x="22" y="12" width="16" height="16" stroke="#1b8f3a" stroke-width="2"/>
+    </svg>
+  `),
   'operator-limits-both-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 90" fill="none">
       <rect x="24" y="2" width="12" height="20" stroke="#5f9f5f" stroke-width="2"/>
@@ -1834,13 +2033,66 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'integral-with-limits-differential': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-      <text x="0.85" y="14.05" font-size="14.4" font-family="Cambria Math, STIX Two Math, Times New Roman, serif" font-weight="700" fill="#37474f">∫</text>
-      <rect x="5.15" y="1.15" width="2.45" height="2.45" rx="0.42" fill="none" stroke="#4a5559" stroke-width="1.15"/>
-      <rect x="2.15" y="13.1" width="2.45" height="2.45" rx="0.42" fill="none" stroke="#4a5559" stroke-width="1.15"/>
-      <rect x="8.45" y="6.95" width="3.45" height="3.45" rx="0.55" fill="none" stroke="#4a5559" stroke-width="1.2"/>
-      <text x="12.45" y="9.85" font-size="5.15" font-family="Arial, Helvetica, sans-serif" font-weight="700" fill="#37474f">d</text>
-      <rect x="14.15" y="6.95" width="2.9" height="3.45" rx="0.5" fill="none" stroke="#4a5559" stroke-width="1.2"/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60">
+      <text x="10" y="42" font-size="42" font-family="Times New Roman, serif" fill="#000">∫</text>
+      <rect x="34" y="2" width="8" height="18" fill="none" stroke="#2e8b57" stroke-width="2"/>
+      <rect x="18" y="40" width="8" height="18" fill="none" stroke="#2e8b57" stroke-width="2"/>
+      <rect x="48" y="22" width="12" height="22" fill="none" stroke="#2e8b57" stroke-width="2"/>
+      <text x="64" y="39" font-size="18" font-family="Times New Roman, serif" fill="#000">d</text>
+      <rect x="76" y="22" width="12" height="22" fill="none" stroke="#2e8b57" stroke-width="2"/>
+    </svg>
+  `),
+  'integral-both-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 70">
+      <text x="8" y="48" font-size="46" font-family="Times New Roman">∫</text>
+      <rect x="34" y="4" width="8" height="18" fill="none" stroke="#2e8b57" stroke-width="2"/>
+      <rect x="18" y="46" width="8" height="18" fill="none" stroke="#2e8b57" stroke-width="2"/>
+    </svg>
+  `),
+  'integral-lower-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 60">
+      <text x="8" y="42" font-size="44" font-family="Times New Roman">∫</text>
+      <rect x="20" y="40" width="8" height="18" fill="none" stroke="#2e8b57" stroke-width="2"/>
+    </svg>
+  `),
+  'first-derivative-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+      <text x="5" y="18" font-size="18">d</text>
+      <rect x="18" y="4" width="8" height="16" fill="none" stroke="#2e8b57" stroke-width="2"/>
+      <line x1="2" y1="25" x2="32" y2="25" stroke="#000" stroke-width="2"/>
+      <text x="5" y="44" font-size="18">d</text>
+      <rect x="18" y="30" width="8" height="16" fill="none" stroke="#2e8b57" stroke-width="2"/>
+    </svg>
+  `),
+  'partial-derivative-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 50">
+      <text x="4" y="18" font-size="18">∂</text>
+      <rect x="20" y="4" width="8" height="16" fill="none" stroke="#2e8b57" stroke-width="2"/>
+      <line x1="2" y1="25" x2="34" y2="25" stroke="#000" stroke-width="2"/>
+      <text x="4" y="44" font-size="18">∂</text>
+      <rect x="20" y="30" width="8" height="16" fill="none" stroke="#2e8b57" stroke-width="2"/>
+    </svg>
+  `),
+  'limit-infinity-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 40">
+      <text x="18" y="15" font-size="18">lim</text>
+      <rect x="4" y="22" width="8" height="14" fill="none" stroke="#2e8b57" stroke-width="2"/>
+      <text x="16" y="33" font-size="16">→∞</text>
+    </svg>
+  `),
+  'limit-generic-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 40">
+      <text x="14" y="15" font-size="18">lim</text>
+      <rect x="20" y="22" width="8" height="14" fill="none" stroke="#2e8b57" stroke-width="2"/>
+    </svg>
+  `),
+  'log-base-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 40">
+      <text x="2" y="22" font-size="16" font-family="Arial, sans-serif" fill="#000">log</text>
+      <rect x="36" y="24" width="8" height="10" fill="none" stroke="#2e8b57" stroke-width="2"/>
+      <path d="M52 6 Q45 20 52 34" fill="none" stroke="#000" stroke-width="2"/>
+      <rect x="56" y="10" width="10" height="16" fill="none" stroke="#2e8b57" stroke-width="2"/>
+      <path d="M72 6 Q79 20 72 34" fill="none" stroke="#000" stroke-width="2"/>
     </svg>
   `),
   'integral-limits-template-image': makeToolbarIconImage(`
