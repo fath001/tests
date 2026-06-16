@@ -220,8 +220,8 @@ const MATH_GROUPS = [
 
       { type: 'sep', cols: 1 },
       // 9. Font Controls (1 col)
-      { type: 'dropdown', label: 'Font...' },
-      { type: 'dropdown', label: 'Size' }
+      { type: 'dropdown', label: 'Font...', width: '92px' },
+      { type: 'dropdown', label: 'Size', width: '86px' }
     ]
   },
   {
@@ -462,11 +462,11 @@ const MATH_GROUPS = [
       { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis', icon: 'downright-ellipsis-template-image', directInsert: true },
       { type: 'sep', cols: 2 },
       {label: 'sum-array',insert: '\\frac{\\begin{array}{r}#?\\\\+\\,#?\\end{array}}{\\quad#?}',cls: 'template',directInsert: true,icon: 'sum-array-template-image',title: 'Column Addition'},     { label: 'diff-array', insert: '\\frac{\\begin{array}{r}#?\\\\-\\,#?\\end{array}}{\\quad#?}', directInsert: true, icon: 'difference-array-template-image', title: 'Column Subtraction' },
-      { label: 'stack-line', insert: '\\begin{array}{c} #? \\\\ #? \\\\ \\hline #? \\end{array}', cls: 'template', directInsert: true, icon: 'stack-line-template-image', title: 'Stacked Line Layout' },
+      { label: 'stack-line', insert: '\\frac{\\begin{array}{c}#?\\\\#?\\end{array}}{#?}', cls: 'template', directInsert: true, icon: 'stack-line-template-image', title: 'Stacked Line Layout' },
       { label: 'division', insert: '\\overset{#?}{\\overline{#?\\big)#?}}', cls: 'template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
       { label: 'product-array', insert: '\\frac{\\begin{array}{r}#?\\\\\\times\\,#?\\end{array}}{\\quad#?}', cls: 'template', directInsert: true, icon: 'product-array-template-image', title: 'Column Multiplication' },
-      { label: 'mixed-fraction', insert: '\\left.\\begin{array}{c} #? \\end{array}\\right|\\begin{array}{c} #? \\\\ \\hline #? \\end{array}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
-      { label: 'array-cc', insert: '\\left.\\begin{array}{c} #? \\\\ #? \\end{array}\\right|\\frac{#?}{#?}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
+      { label: 'mixed-fraction', insert: '\\left[\\begin{array}{c|c}#? & #?\\\\#? & #?\\end{array}\\right.', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
+      { label: 'array-cc', insert: '\\left.\\begin{array}{c}#?\\\\#?\\end{array}\\right|\\begin{array}{c}#?\\\\#?\\end{array}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
       { label: 'division-remainder', insert: '\\begin{array}{r} \\overset{#?}{\\overline{#?\\big)#?}} \\\\ #? \\end{array}', cls: 'template', directInsert: true, icon: 'division-remainder-template-image', title: 'Division With Remainder' },
     ]
   },
@@ -665,7 +665,7 @@ const ARROW_PICKER_ITEMS = [
   },
   { label: '↕', insert: '\\updownarrow', title: 'Up Down Arrow' },
   { label: '⇕', insert: '\\Updownarrow', title: 'Double Up Down Arrow' },
-  { label: '↵', insert: '\\downhookleftarrow', title: 'Downwards Arrow with Corner Leftwards' },
+  { label: '↵', insert: '↵', title: 'Downwards Arrow with Corner Leftwards' },
 ];
 
 const ARROW_LABEL_PICKER_ITEMS = [
@@ -705,7 +705,7 @@ const ARROW_LABEL_PICKER_ITEMS = [
     icon: 'harpoon-label-left-right-above-below',
   },
   {
-    insert: '\\xRightleftharpoons[#?]{#0}',
+    insert: '\\xrightleftharpoons[#?]{#0}',
     title: 'Bar Harpoons with Labels Above and Below',
     icon: 'bar-harpoon-label-right-left-above-below',
   },
@@ -1090,6 +1090,31 @@ const PERIODIC_TABLE_PICKER_ITEMS = PERIODIC_TABLE_ROWS.flatMap(({ row, items })
   }))
 );
 
+const FONT_OPTIONS = [
+  { label: 'Times', value: 'family:roman', style: { fontFamily: 'roman' } },
+  { label: 'Helvetica', value: 'family:sans-serif', style: { fontFamily: 'sans-serif' } },
+  { label: 'Courier', value: 'family:monospace', style: { fontFamily: 'monospace' } },
+  { label: 'Calligraphic', value: 'variant:calligraphic', style: { variant: 'calligraphic' } },
+  { label: 'Script', value: 'variant:script', style: { variant: 'script' } },
+  { label: 'Fraktur', value: 'variant:fraktur', style: { variant: 'fraktur' } },
+  { label: 'Blackboard', value: 'variant:double-struck', style: { variant: 'double-struck' } },
+];
+
+const DEFAULT_FONT_STYLE = { fontFamily: 'none', variant: 'main' };
+
+const FONT_SIZE_OPTIONS = [
+  { label: '8px', value: '3' },
+  { label: '10px', value: '4' },
+  { label: '12px', value: '5' },
+  { label: '14px', value: '6' },
+  { label: '16px', value: '7' },
+  { label: '18px', value: '8' },
+  { label: '24px', value: '10' },
+  { label: '36px', value: '12' },
+  { label: '48px', value: '14' },
+  { label: '72px', value: '18' },
+];
+
 const ORDERED_MATH_GROUPS = [
   {
     id: 'roots-main',
@@ -1152,6 +1177,9 @@ const ORDERED_MATH_GROUPS = [
       { label: 'A', action: 'TEXT_COLOR', cls: 'format-tool color-tool', title: 'Text Color' },
       { type: 'sep', cols: 1 },
       { label: 'RTL', action: 'TOGGLE_RTL', cls: 'format-tool rtl-tool', title: 'Right-to-Left Input', icon: 'rtl-input-template-image' },
+      { type: 'sep', cols: 1 },
+      { type: 'dropdown', label: 'Font...', width: '92px' },
+      { type: 'dropdown', label: 'Size', width: '86px' },
     ],
   },
   {
@@ -1358,7 +1386,7 @@ const ORDERED_MATH_GROUPS = [
     label: <TabIcon top="↺" compact />,
     items: [
       { type: 'dropdown', label: 'Font...', width: '92px' },
-      { type: 'dropdown', label: 'Size', width: '72px' },
+      { type: 'dropdown', label: 'Size', width: '86px' },
       { type: 'sep', cols: 2 },
       { label: 'sin(□)', insert: '\\sin\\left(#0\\right)' },
       { label: 'cos(□)', insert: '\\cos\\left(#0\\right)' },
@@ -3748,6 +3776,39 @@ function PeriodicTablePickerPopover({ position, onInsert }) {
   );
 }
 
+function StyleDropdownPopover({ position, options, value, onSelect, width = 132 }) {
+  const left = Math.min(Math.max(position.x, 8), window.innerWidth - width - 8);
+  const top = Math.max(8, Math.min(position.y + 4, window.innerHeight - 290));
+
+  return (
+    <div
+      className="cme-style-dropdown-popup"
+      style={{
+        position: 'fixed',
+        left: `${left}px`,
+        top: `${top}px`,
+        width: `${width}px`,
+        zIndex: 100000,
+      }}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
+      {options.map((option) => (
+        <button
+          key={option.value}
+          type="button"
+          className={`cme-style-dropdown-option${value === option.value ? ' active' : ''}`}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            onSelect(option.value);
+          }}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function makeToolbarPlugin(onOpenPopup) {
   return class MathChemToolbarPlugin extends Plugin {
     init() {
@@ -3890,6 +3951,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   const [showHebrewSymbolPicker, setShowHebrewSymbolPicker] = useState(null); // { x, y } or null
   const [showPeriodicTablePicker, setShowPeriodicTablePicker] = useState(null); // { x, y } or null
   const [showColorPicker, setShowColorPicker] = useState(null); // { x, y } or null
+  const [showStyleDropdown, setShowStyleDropdown] = useState(null); // { x, y, type, buttonKey } or null
   const [windowMode, setWindowMode] = useState('normal');
   const [activeToolbarItem, setActiveToolbarItem] = useState(null);
   const [isRtlInput, setIsRtlInput] = useState(initialDirection === 'rtl');
@@ -3911,7 +3973,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     italic: false,
     boldItalic: false,
     color: 'none',
-    fontFamily: 'none',
+    fontOption: '',
     fontSize: 'auto'
   });
 
@@ -3942,13 +4004,13 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
         mf.queryStyle({ variantStyle: 'italic' }) === 'all'
       );
 
-      const currentFont = ['roman', 'sans-serif', 'monospace'].find(
-        (f) => mf.queryStyle({ fontFamily: f }) === 'all'
-      ) || 'none';
+      const currentFontOption = FONT_OPTIONS.find(({ style }) =>
+        Object.entries(style).every(([key, value]) => mf.queryStyle({ [key]: value }) === 'all')
+      ) || null;
 
-      const currentSize = [5, 7, 9].find(
-        (sz) => mf.queryStyle({ fontSize: sz }) === 'all'
-      ) || 'auto';
+      const currentSize = FONT_SIZE_OPTIONS.find(
+        ({ value }) => mf.queryStyle({ fontSize: parseInt(value, 10) }) === 'all'
+      )?.value || 'auto';
 
       const customCandidate = normalizeCssColor(customColorInput);
       const colorCandidates = [
@@ -3969,7 +4031,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
         bold,
         italic,
         boldItalic,
-        fontFamily: currentFont,
+        fontOption: currentFontOption?.value || '',
         fontSize: String(currentSize),
         color: currentColor,
       });
@@ -3999,8 +4061,10 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     });
 
     mf.applyStyle({ color: styleState.color === 'none' ? 'none' : styleState.color });
-    if (styleState.fontFamily !== 'none') {
-      mf.applyStyle({ fontFamily: styleState.fontFamily });
+    mf.applyStyle(DEFAULT_FONT_STYLE);
+    const selectedFontOption = FONT_OPTIONS.find(({ value }) => value === styleState.fontOption);
+    if (selectedFontOption) {
+      mf.applyStyle(selectedFontOption.style);
     }
     if (styleState.fontSize !== 'auto') {
       const fontSize = parseInt(styleState.fontSize, 10);
@@ -4042,15 +4106,39 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     return true;
   }, [updateActiveStyles]);
 
+  const applyStyleDropdownValue = useCallback((type, value) => {
+    const mf = popupMfRef.current;
+    if (!mf || typeof mf.applyStyle !== 'function') return;
+
+    mf.focus();
+    if (type === 'font') {
+      mf.applyStyle(DEFAULT_FONT_STYLE);
+      const selectedFontOption = FONT_OPTIONS.find((option) => option.value === value);
+      if (selectedFontOption) {
+        mf.applyStyle(selectedFontOption.style);
+      }
+      setActiveStyles((prev) => ({ ...prev, fontOption: value }));
+    } else {
+      const fontSize = value ? parseInt(value, 10) : 'auto';
+      mf.applyStyle({ fontSize, size: fontSize });
+      setActiveStyles((prev) => ({ ...prev, fontSize: value || 'auto' }));
+    }
+
+    requestAnimationFrame(updateActiveStyles);
+  }, [updateActiveStyles]);
+
 
   useEffect(() => {
-    if (!activeMatrix && !showColorPicker && !showArrowPicker && !showRelationMorePicker && !showArrowLabelPicker && !showGreekItalicPicker && !showBlackboardBoldPicker && !showFrakturScriptPicker && !showHebrewSymbolPicker && !showPeriodicTablePicker) return;
+    if (!activeMatrix && !showColorPicker && !showStyleDropdown && !showArrowPicker && !showRelationMorePicker && !showArrowLabelPicker && !showGreekItalicPicker && !showBlackboardBoldPicker && !showFrakturScriptPicker && !showHebrewSymbolPicker && !showPeriodicTablePicker) return;
     const handleOutsideClick = (e) => {
       if (!e.target.closest('.cme-matrix-hover-popover') && !e.target.closest('.cme-matrix-btn-wrapper')) {
         setActiveMatrix(null);
       }
       if (!e.target.closest('.cme-color-picker-popup') && !e.target.closest('[title="Text Color"]')) {
         setShowColorPicker(null);
+      }
+      if (!e.target.closest('.cme-style-dropdown-popup') && !e.target.closest('.cme-style-select-trigger')) {
+        setShowStyleDropdown(null);
       }
       if (!e.target.closest('.cme-arrow-picker-popup') && !e.target.closest('.arrow-picker-tool')) {
         setShowArrowPicker(null);
@@ -4083,7 +4171,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       window.removeEventListener('mousedown', handleOutsideClick, true);
       window.removeEventListener('pointerdown', handleOutsideClick, true);
     };
-  }, [activeMatrix, showColorPicker, showArrowPicker, showRelationMorePicker, showArrowLabelPicker, showGreekItalicPicker, showBlackboardBoldPicker, showFrakturScriptPicker, showHebrewSymbolPicker, showPeriodicTablePicker]);
+  }, [activeMatrix, showColorPicker, showStyleDropdown, showArrowPicker, showRelationMorePicker, showArrowLabelPicker, showGreekItalicPicker, showBlackboardBoldPicker, showFrakturScriptPicker, showHebrewSymbolPicker, showPeriodicTablePicker]);
 
   useEffect(() => {
     const mf = popupMfRef.current;
@@ -4317,7 +4405,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           ))}
         </div>
 
-        <div className={`cme-toolbar-items${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${isMathMode ? ' cme-toolbar-items--math-compact' : ''}`}>
+        <div className={`cme-toolbar-items${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${activeGroupConfig.id === 'relations' ? ' cme-toolbar-items--relations' : ''}${isMathMode ? ' cme-toolbar-items--math-compact' : ''}`}>
           {(() => {
             const activeItems = activeGroupConfig.items || [];
 
@@ -4488,6 +4576,13 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
               if (currentSub.items.length > 0) {
                 subgroups.push(currentSub);
               }
+
+              if (activeGroupConfig.id === 'relations') {
+                subgroups = subgroups.map((subgroup) => ({
+                  ...subgroup,
+                  cols: Math.max(1, Math.ceil(subgroup.items.length / 2)),
+                }));
+              }
             } else {
               // Legacy grouping for tabs without explicit separators (chunk by 4 items = 2x2 grid)
               const size = 4;
@@ -4516,64 +4611,51 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                     const isFont = item.label === 'Font...';
                     const isSize = item.label === 'Size';
 
-                    const isFontActive = isFont && activeStyles.fontFamily !== 'none';
+                    const isFontActive = isFont && activeStyles.fontOption !== '';
                     const isSizeActive = isSize && activeStyles.fontSize !== 'auto' && activeStyles.fontSize !== '5';
                     const isTouchedSelect = activeToolbarItem === buttonKey;
 
                     const selectValue = isFont
-                      ? (activeStyles.fontFamily === 'none' ? '' : activeStyles.fontFamily)
+                      ? activeStyles.fontOption
                       : (isSize
                         ? (activeStyles.fontSize === 'auto' || activeStyles.fontSize === '5' ? '' : activeStyles.fontSize)
                         : '');
 
+                    const dropdownOptions = isFont ? FONT_OPTIONS : FONT_SIZE_OPTIONS;
+                    const selectedLabel = dropdownOptions.find((option) => option.value === selectValue)?.label || item.label;
+                    const isOpenStyleDropdown = showStyleDropdown?.buttonKey === buttonKey;
+
                     return (
-                      <select
+                      <button
                         key={i}
-                        className={`cme-btn template${isFontActive || isSizeActive || isTouchedSelect ? ' active' : ''}`}
-                        value={selectValue}
+                        type="button"
+                        className={`cme-style-select-trigger cme-select cme-btn template${isFontActive || isSizeActive || isTouchedSelect || isOpenStyleDropdown ? ' active' : ''}`}
+                        title={item.label}
                         style={{
                           width: item.width || '60px',
-                          height: '18px',
-                          minHeight: '18px',
-                          maxHeight: '18px',
-                          lineHeight: '18px',
                           boxSizing: 'border-box',
-                          marginTop: "10px",
-                          fontSize: '10px',
-                          padding: '0',
                           margin: '2px 0',
                           gridColumn: (subgroup.cols === 3) ? 'span 1' : ((subgroup.cols === 1) ? 'span 1' : 'span 2')
                         }}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          const mf = popupMfRef.current;
-                          if (!mf || typeof mf.applyStyle !== 'function') return;
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
                           setActiveToolbarItem(buttonKey);
-                          mf.focus();
-                          if (isFont) {
-                            mf.applyStyle({ fontFamily: val || 'none' });
-                          } else if (isSize) {
-                            mf.applyStyle({ fontSize: val ? parseInt(val, 10) : 'auto' });
-                          }
-                          updateActiveStyles();
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setShowStyleDropdown((current) => (
+                            current?.buttonKey === buttonKey
+                              ? null
+                              : {
+                                x: rect.left,
+                                y: rect.bottom,
+                                type: isFont ? 'font' : 'size',
+                                buttonKey,
+                              }
+                          ));
                         }}
                       >
-                        <option value="">{item.label}</option>
-                        {isFont && (
-                          <>
-                            <option value="roman">Times</option>
-                            <option value="sans-serif">Helvetica</option>
-                            <option value="monospace">Courier</option>
-                          </>
-                        )}
-                        {isSize && (
-                          <>
-                            <option value="5">12px</option>
-                            <option value="7">16px</option>
-                            <option value="9">20px</option>
-                          </>
-                        )}
-                      </select>
+                        {selectedLabel}
+                      </button>
                     );
                   }
 
@@ -4981,6 +5063,20 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           onInsert={(latex) => {
             insertAtCursor(latex);
             setShowPeriodicTablePicker(null);
+          }}
+        />,
+        document.body
+      )}
+
+      {showStyleDropdown && createPortal(
+        <StyleDropdownPopover
+          position={showStyleDropdown}
+          options={showStyleDropdown.type === 'font' ? FONT_OPTIONS : FONT_SIZE_OPTIONS}
+          value={showStyleDropdown.type === 'font' ? activeStyles.fontOption : activeStyles.fontSize}
+          width={showStyleDropdown.type === 'font' ? 142 : 96}
+          onSelect={(value) => {
+            applyStyleDropdownValue(showStyleDropdown.type, value);
+            setShowStyleDropdown(null);
           }}
         />,
         document.body
