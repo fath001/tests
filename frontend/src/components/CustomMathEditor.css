@@ -464,6 +464,23 @@
   font-size: 13px;
 }
 
+.cme-btn.small-template {
+  min-width: 17px;
+  height: 20px;
+  padding: 0 1px;
+  font-size: 8px;
+}
+
+.cme-btn.small-template .cme-toolbar-icon-image {
+  max-width: 12px;
+  max-height: 13px;
+}
+
+.cme-btn.small-template .cme-toolbar-glyph {
+  font-size: 8px;
+  line-height: 0.9;
+}
+
 .cme-btn.integral-hero-template {
   min-width: 48px;
   width: 48px;

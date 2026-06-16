@@ -249,23 +249,30 @@ const MATH_GROUPS = [
   },
   {
     label: '□/□', isTemplate: true, items: [
-      { label: 'a/b', insert: '\\frac{#0}{#?}', title: 'Fraction', icon: 'fraction-template-image' }, { label: 'xⁿ', insert: '#0^{#?}', title: 'Superscript', icon: 'superscript-template-image' },
-      { label: 'xₙ', insert: '#0_{#?}', title: 'Subscript', icon: 'subscript-template-image' }, { label: '√x', insert: '\\sqrt{#0}', title: 'Square Root', icon: 'sqrt-template-image' },
-      { label: 'ⁿ√x', insert: '\\sqrt[#?]{#0}', title: 'Nth Root', icon: 'nth-root-template-image' }, { label: '□/□', insert: '#?/#?', cls: 'template', directInsert: true, title: 'Slash Fraction', icon: 'slash-fraction-template-image' },
+      { label: 'a/b', insert: '\\frac{#0}{#?}', title: 'Fraction', icon: 'fraction-template-image' },
+      { label: '□/□', insert: '{#0}/{#?}', title: 'Bevelled Fraction', cls: 'green-template' },
+      { label: 'a/b', insert: '{\\scriptstyle \\frac{#0}{#?}}', title: 'Small Fraction', icon: 'fraction-template-image', cls: 'small-template' },
+      { label: '□/□', insert: '{\\scriptstyle {#0}/{#?}}', title: 'Small Bevelled Fraction', cls: 'green-template small-template' },
+      { label: '√x', insert: '\\sqrt{#0}', title: 'Square Root', icon: 'sqrt-template-image' },
+      { label: 'ⁿ√x', insert: '\\sqrt[#?]{#0}', title: 'Nth Root', icon: 'nth-root-template-image' },
+      { label: 'xⁿ', insert: '#0^{#?}', title: 'Superscript', icon: 'superscript-template-image' },
+     { label: 'ˡ□', insert: '{}^{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript', icon: 'left-sup-template-image' },
+      
       { label: '□^□_□', insert: '#?^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Right Superscript and Subscript', icon: 'right-sup-sub-template-image' },
-      { label: 'ˡ□', insert: '{}^{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript', icon: 'left-sup-template-image' },
-      { label: 'ₗ□', insert: '{}_{#?}#?', cls: 'template', directInsert: true, title: 'Left Subscript', icon: 'left-sub-template-image' },
       { label: 'ˡₗ□', insert: '{}^{#?}_{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript and Subscript', icon: 'left-sup-sub-template-image' },
+      { label: 'xₙ', insert: '#0_{#?}', title: 'Subscript', icon: 'subscript-template-image' },
+      { label: 'ₗ□', insert: '{}_{#?}#?', cls: 'template', directInsert: true, title: 'Left Subscript', icon: 'left-sub-template-image' },
+      
       { label: '□\n□', insert: '\\overset{#?}{#?}', cls: 'template', directInsert: true, title: 'Overset', icon: 'overset-template-image' },
-      { label: '□\n□', insert: '\\underset{#?}{#?}', cls: 'template', directInsert: true, title: 'Underset', icon: 'underset-template-image' },
       { label: '□\n□\n□', insert: '\\overset{#?}{\\underset{#?}{#?}}', cls: 'template', directInsert: true, title: 'Over and Under', icon: 'over-under-template-image' },
+      { label: '□\n□', insert: '\\underset{#?}{#?}', cls: 'template', directInsert: true, title: 'Underset', icon: 'underset-template-image' },
+      { type: 'sep', cols: 2 },
       { label: '□⏟□', insert: '\\underbrace{#?}_{#?}', cls: 'template', directInsert: true, title: 'Underbrace', icon: 'underbrace-template-image' },
       { label: '□⏞□', insert: '\\overbrace{#?}^{#?}', cls: 'template', directInsert: true, title: 'Overbrace', icon: 'overbrace-template-image' },
       { label: '□\n▯\n□', insert: '\\underset{#?}{\\overset{#?}{#?}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image' },
       { label: '▯\n□', insert: '\\underset{#?}{#?}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image' },
       { label: '▯^□_□', insert: '#?^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
       { label: '▯_□', insert: '#?_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
-      { label: '□!', insert: '{#0}!' }, { label: '□(mod□)', insert: '#0 \\pmod{#?}' },
       { label: 'hphantom', insert: '\\hphantom{0}', cls: 'template', directInsert: true, title: 'Horizontal Phantom Space', icon: 'hphantom-space-template-image' },
       { label: 'thin-space', insert: '\\,', cls: 'template', directInsert: true, title: 'Thin Space', icon: 'thin-space-template-image' },
       { label: 'negative-space', insert: '\\!', cls: 'template', directInsert: true, title: 'Negative Thin Space', icon: 'negative-thin-space-template-image' },
@@ -1273,25 +1280,20 @@ const ORDERED_MATH_GROUPS = [
     items: [
       { label: '(□)', insert: '\\left(#0\\right)' },
       { label: '[□]', insert: '\\left[#0\\right]' },
-      { label: '{□}', insert: '\\left\\{#0\\right\\}' },
-      { label: '⟨□⟩', insert: '\\left\\langle #0 \\right\\rangle' },
       { label: '|□|', insert: '\\left|#0\\right|' },
+      { label: '‖□‖', insert: '\\left\\| #0 \\right\\|' },
+      { label: '⟨□⟩', insert: '\\left\\langle #0 \\right\\rangle' },
+      { label: '{□}', insert: '\\left\\{#0\\right\\}' },
       { label: '⌊□⌋', insert: '\\left\\lfloor #0 \\right\\rfloor' },
       { label: '⌈□⌉', insert: '\\left\\lceil #0 \\right\\rceil' },
-      { label: '(□]', insert: '\\left(#0\\right]' },
-      { label: '[□)', insert: '\\left[#0\\right)' },
-      { label: '‖□‖', insert: '\\left\\| #0 \\right\\|' },
-      { label: '{□ □}', insert: '\\left\\{ #0, #? \\right\\}' },
-      { label: '[□ □]', insert: '\\left[#0, #?\\right]' },
-      { label: '(□ □)', insert: '\\left(#0, #?\\right)' },
-      { label: '⟨□ | □⟩', insert: '\\left\\langle #0 \\middle| #? \\right\\rangle' },
+      { label: '⟨□|□⟩', insert: '\\left\\langle #0 \\middle| #? \\right\\rangle' },
       { type: 'sep', cols: 2 },
-      { label: 'overbrace', insert: '\\overbrace{#?}^{#?}', cls: 'template', directInsert: true, title: 'Overbrace', icon: 'overbrace-arc-template-image' },
-      { label: 'overparen', insert: '\\overparen{#?}^{#?}', cls: 'template', directInsert: true, title: 'Overparen', icon: 'overparen-template-image' },
-      { label: 'underbrace', insert: '\\underbrace{#?}_{#?}', cls: 'template', directInsert: true, title: 'Underbrace', icon: 'underbrace-arc-template-image' },
-      { label: 'underparen', insert: '\\underparen{#?}_{#?}', cls: 'template', directInsert: true, title: 'Underparen', icon: 'underparen-template-image' },
+      { label: 'overbrace', insert: '\\overbrace{#0}', cls: 'template', directInsert: true, title: 'Overbrace', icon: 'overbrace-arc-template-image' },
+      { label: 'underbrace', insert: '\\underbrace{#0}', cls: 'template', directInsert: true, title: 'Underbrace', icon: 'underbrace-arc-template-image' },
+      { label: 'overparen', insert: '\\overparen{#0}', cls: 'template', directInsert: true, title: 'Overparen', icon: 'overparen-template-image' },
+      { label: 'underparen', insert: '\\underparen{#0}', cls: 'template', directInsert: true, title: 'Underparen', icon: 'underparen-template-image' },
       { type: 'sep', cols: 2 },
-      { label: '⃗\n▯', insert: '\\vec{#?}', cls: 'template', directInsert: true, title: 'Vector Accent', icon: 'vec-accent-template-image' },
+      { label: '⃗\n▯', insert: '\\vec{#0}', cls: 'template', directInsert: true, title: 'Vector Accent', icon: 'vec-accent-template-image' },
       { label: '→\n▯', insert: '\\overrightarrow{#?}', cls: 'template', directInsert: true, title: 'Right Arrow Accent', icon: 'overrightarrow-accent-template-image' },
       { label: '↔\n▯', insert: '\\overleftrightarrow{#?}', cls: 'template', directInsert: true, title: 'Left-Right Arrow Accent', icon: 'overleftrightarrow-accent-template-image' },
       { label: '¯\n▯', insert: '\\overline{#?}', cls: 'template', directInsert: true, title: 'Overline Accent', icon: 'overline-accent-template-image' },
@@ -1300,18 +1302,18 @@ const ORDERED_MATH_GROUPS = [
       { label: '¨\n▯', insert: '\\ddot{#?}', cls: 'template', directInsert: true, title: 'Double Dot Accent', icon: 'ddot-accent-template-image' },
       { label: '˙\n▯', insert: '\\dot{#?}', cls: 'template', directInsert: true, title: 'Dot Accent', icon: 'dot-accent-template-image' },
       { type: 'sep', cols: 2 },
-      { label: '¯\n▯', insert: '\\overline{#?}', cls: 'template', directInsert: true, title: 'Overline', icon: 'overline-frame-template-image' },
-      { label: '|\n▯', insert: '\\left|#?\\right.', cls: 'template', directInsert: true, title: 'Left Bar', icon: 'left-bar-template-image' },
-      { label: '□\n▯', insert: '\\boxed{#?}', cls: 'template', directInsert: true, title: 'Boxed', icon: 'boxed-square-template-image' },
+      { label: '¯\n▯', insert: '\\overline{#?}aa', cls: 'template', directInsert: true, title: 'Overline', icon: 'overline-frame-template-image' },
       { label: '_\n▯', insert: '\\underline{#?}', cls: 'template', directInsert: true, title: 'Underline', icon: 'underline-frame-template-image' },
+      { label: '|\n▯', insert: '\\left|#?\\right.', cls: 'template', directInsert: true, title: 'Left Bar', icon: 'left-bar-template-image' },
       { label: '▯\n|', insert: '\\left.#?\\right|', cls: 'template', directInsert: true, title: 'Right Bar', icon: 'right-bar-template-image' },
+      { label: '□\n▯', insert: '\\boxed{#?}', cls: 'template', directInsert: true, title: 'Boxed', icon: 'boxed-square-template-image' },
       { label: '(\n▯\n)', insert: '\\enclose{circle}{#?}', cls: 'template', directInsert: true, title: 'Rounded Enclosure', icon: 'paren-frame-template-image' },
       { label: '¯\n▯|', insert: '\\overline{\\left.#?\\right|}', cls: 'template', directInsert: true, title: 'Overline with Right Bar', icon: 'overline-right-bar-template-image' },
       { label: '▢\n▯', insert: '\\enclose{roundedbox}{#?}', cls: 'template', directInsert: true, title: 'Rounded Boxed', icon: 'boxed-rounded-template-image' },
       { type: 'sep', cols: 2 },
       { label: '╱\n▯', insert: '\\cancel{#?}', cls: 'template', directInsert: true, title: 'Cancel', icon: 'cancel-diagonal-template-image' },
-      { label: '─\n▯', insert: '\\text{\\sout{#?}}', cls: 'template', directInsert: true, title: 'Strikeout Text', icon: 'sout-template-image' },
       { label: '╲\n▯', insert: '\\bcancel{#?}', cls: 'template', directInsert: true, title: 'Backward Cancel', icon: 'bcancel-template-image' },
+      { label: '─\n▯', insert: '\\text{\\sout{#?}}', cls: 'template', directInsert: true, title: 'Strikeout Text', icon: 'sout-template-image' },
       { label: '╳\n▯', insert: '\\xcancel{#?}', cls: 'template', directInsert: true, title: 'Cross Cancel', icon: 'xcancel-template-image' },
       { label: '│\n▯', insert: '\\enclose{verticalstrike}{#?}', cls: 'template', directInsert: true, title: 'Vertical Strike', icon: 'vertical-strike-template-image' },
       { label: ')\n¯', insert: '\\overline{\\left)#?\\right.}', cls: 'template', directInsert: true, title: 'Overline with Curved Left Boundary', icon: 'overline-left-curve-template-image' },
@@ -1323,13 +1325,13 @@ const ORDERED_MATH_GROUPS = [
     label: <TabIcon top="Σ ∪" compact />,
     items: [
       { label: 'sum-limits-both', insert: '\\sum\\limits_{#?}^{#?}', cls: 'template', directInsert: true, title: 'Summation With Upper and Lower Limits', icon: 'sum-limits-both-template-image' },
-      { label: 'sum-right-both', insert: '\\sum\\nolimits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Summation With Right Superscript and Subscript', icon: 'sum-right-both-template-image' },
       { label: 'sum-limits-lower', insert: '\\sum\\limits_{#?}', cls: 'template', directInsert: true, title: 'Summation With Lower Limit', icon: 'sum-limits-lower-template-image' },
+      { label: 'sum-right-both', insert: '\\sum\\nolimits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Summation With Right Superscript and Subscript', icon: 'sum-right-both-template-image' },
       { label: 'sum-right-lower', insert: '\\sum\\nolimits_{#?}', cls: 'template', directInsert: true, title: 'Summation With Right Subscript', icon: 'sum-right-lower-template-image' },
       { label: 'prod-limits-both', insert: '\\prod\\limits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Product With Upper and Lower Limits', icon: 'prod-limits-both-template-image' },
       { label: 'prod-limits-lower', insert: '\\prod\\limits_{#?}', cls: 'template', directInsert: true, title: 'Product With Lower Limit', icon: 'prod-limits-lower-template-image' },
-      { label: 'prod-right-lower', insert: '\\prod\\nolimits_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Subscript', icon: 'prod-right-lower-template-image' },
       { label: 'prod-right-both', insert: '\\prod\\nolimits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Superscript and Subscript', icon: 'prod-right-both-template-image' },
+      { label: 'prod-right-lower', insert: '\\prod\\nolimits_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Subscript', icon: 'prod-right-lower-template-image' },
       { label: '□\n▯\n□', insert: '\\underset{#?}{\\overset{#?}{#?}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image' },
       { label: '▯\n□', insert: '\\underset{#?}{#?}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image' },
       { label: '▯^□_□', insert: '#?^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
@@ -1338,9 +1340,9 @@ const ORDERED_MATH_GROUPS = [
       { label: '⋃', insert: '\\bigcup' },
       { label: '∏', insert: '\\prod' },
       { label: '∐', insert: '\\coprod' },
-      { label: '∑', insert: '\\sum' },
       { label: '⨅', insert: '\\sqcap' },
       { label: '⨆', insert: '\\sqcup' },
+      { label: '∑', insert: '\\sum' },
     ],
   },
   {
@@ -1348,37 +1350,40 @@ const ORDERED_MATH_GROUPS = [
     label: <TabIcon top="∫" bottom="lim" />,
     isTemplate: true,
     items: [
-      { label: '∫', insert: '\\int' },
-      { label: '∬', insert: '\\iint' },
-      { label: '∭', insert: '\\iiint' },
-      { label: '∮', insert: '\\oint' },
-      { label: '∯', insert: '\\oiint' },
-      { label: '∰', insert: '\\oiiint' },
-      { label: '∫ₐᵇ', insert: '\\int_{#?}^{#?} #0 \\, d#?', icon: 'integral-with-limits-differential' },
-      { type: 'sep', cols: 3 },
       { label: 'integral-both', insert: '\\int_{#?}^{#?}', cls: 'template', directInsert: true, title: 'Definite Integral', icon: 'integral-both-template-image' },
       { label: 'integral-lower', insert: '\\int_{#?}', cls: 'template', directInsert: true, title: 'Integral With Subscript', icon: 'integral-lower-template-image' },
+      { label: '∫□d□', insert: '\\int_{#?}^{#?} #? \\, d#?', directInsert: true, title: 'Integral', icon: 'integral-box-differential-template-image' },
+      { label: '', insert: '\\int_{#?} #? \\, d#?', cls: 'template', directInsert: true, title: 'Integral', icon: 'integral-template-image' },
+      { type: 'sep', cols: 4 },
+      {label: 'd', insert: 'd', cls: 'template', directInsert: true, title: 'Differential'},
+      {label: '∂', insert: '∂', cls: 'template', directInsert: true, title: 'Partial Differential'},
       { label: 'first-derivative', insert: '\\frac{d#?}{d#?}', cls: 'template', directInsert: true, title: 'First Derivative', icon: 'first-derivative-template-image' },
       { label: 'partial-derivative', insert: '\\frac{\\partial#?}{\\partial#?}', cls: 'template', directInsert: true, title: 'Partial Derivative', icon: 'partial-derivative-template-image' },
       { label: 'limit-infinity', insert: '\\lim_{#?\\to\\infty}', cls: 'template', directInsert: true, title: 'Limit to Infinity', icon: 'limit-infinity-template-image' },
       { label: 'limit-generic', insert: '\\lim_{#?}', cls: 'template', directInsert: true, title: 'Limit', icon: 'limit-generic-template-image' },
       { type: 'sep', cols: 2 },
       { label: '∇×\n▯', insert: '\\nabla \\times #?', cls: 'template', directInsert: true, title: 'Curl' },
-      { label: '∇\n▯', insert: '\\nabla #?', cls: 'template', directInsert: true, title: 'Gradient' },
       { label: '∇·\n▯', insert: '\\nabla \\cdot #?', cls: 'template', directInsert: true, title: 'Divergence' },
+      { label: '∇\n▯', insert: '\\nabla #?', cls: 'template', directInsert: true, title: 'Gradient' },
       { label: 'Δ\n▯', insert: '\\Delta #?', cls: 'template', directInsert: true, title: 'Delta Expression' },
+      { label: '∫', insert: '\\int' },
+      { label: '∮', insert: '\\oint' },
+      { label: '∬', insert: '\\iint' },
+      { label: '∯', insert: '\\oiint' },
+      { label: '∭', insert: '\\iiint' },
+      { label: '∰', insert: '\\oiiint' },
       { label: 'sin(□)', insert: '\\sin\\left(#0\\right)' },
-      { label: 'cos(□)', insert: '\\cos\\left(#0\\right)' },
-      { label: 'tan(□)', insert: '\\tan\\left(#0\\right)' },
       { label: 'log(□)', insert: '\\log\\left(#0\\right)' },
+      { label: 'cos(□)', insert: '\\cos\\left(#0\\right)' },
+            { label: 'log₍□₎(□)', insert: '\\log_{#?}\\left(#?\\right)', cls: 'template', directInsert: true, title: 'Logarithm With Base', icon: 'log-base-template-image' },
+      { label: 'tan(□)', insert: '\\tan\\left(#0\\right)' },
       { label: 'ln(□)', insert: '\\ln\\left(#0\\right)' },
-      { label: 'csc(□)', insert: '\\csc\\left(#0\\right)' },
-      { label: 'sec(□)', insert: '\\sec\\left(#0\\right)' },
-      { label: 'cot(□)', insert: '\\cot\\left(#0\\right)' },
       { label: 'sin⁻¹(□)', insert: '\\sin^{-1}\\left(#0\\right)' },
+      { label: 'csc(□)', insert: '\\csc\\left(#0\\right)' },
       { label: 'cos⁻¹(□)', insert: '\\cos^{-1}\\left(#0\\right)' },
+      { label: 'sec(□)', insert: '\\sec\\left(#0\\right)' },
       { label: 'tan⁻¹(□)', insert: '\\tan^{-1}\\left(#0\\right)' },
-      { label: 'log₍□₎(□)', insert: '\\log_{#?}\\left(#?\\right)', cls: 'template', directInsert: true, title: 'Logarithm With Base', icon: 'log-base-template-image' },
+      { label: 'cot(□)', insert: '\\cot\\left(#0\\right)' },
     ],
   },
   {
@@ -2101,6 +2106,40 @@ const TOOLBAR_ICON_IMAGES = {
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
       <text x="9" y="8.1" text-anchor="middle" fill="#2f3b43" font-size="6.4" font-weight="500" font-family="Cambria Math, Times New Roman, serif">lim</text>
       <rect x="6.7" y="10.1" width="4.6" height="5.2" rx="0.55" fill="none" stroke="#2c8a43" stroke-width="1.2"/>
+    </svg>
+  `),
+  'integral-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 28">
+      <path d="M10 2C6 2 6 6 6 14C6 22 6 26 2 26" fill="none" stroke="#37474f" stroke-width="1.5" stroke-linecap="round"/>
+      <rect x="2" y="20" width="5" height="5" fill="none" stroke="#4a5559" stroke-width="1"/>
+      <rect x="16" y="8" width="6" height="6" fill="none" stroke="#4a5559" stroke-width="1"/>
+      <text x="25" y="14" font-size="8" font-family="serif" fill="#37474f">d</text>
+      <rect x="31" y="8" width="6" height="6" fill="none" stroke="#4a5559" stroke-width="1"/>
+    </svg>
+  `),
+  'definite-integral-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <text x="0.95" y="14.05" font-size="14.2" font-family="Cambria Math, STIX Two Math, Times New Roman, serif" font-weight="700" fill="#37474f">∫</text>
+      <rect x="5.1" y="1.2" width="2.55" height="2.55" rx="0.42" fill="none" stroke="#4a5559" stroke-width="1.15"/>
+      <rect x="2.1" y="13.15" width="2.55" height="2.55" rx="0.42" fill="none" stroke="#4a5559" stroke-width="1.15"/>
+      <rect x="8.45" y="6.15" width="3.8" height="3.8" rx="0.58" fill="none" stroke="#4a5559" stroke-width="1.2"/>
+    </svg>
+  `),
+  'integral-with-differential-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <text x="0.95" y="13.85" font-size="14.6" font-family="Cambria Math, STIX Two Math, Times New Roman, serif" font-weight="700" fill="#37474f">∫</text>
+      <rect x="6.55" y="6.15" width="3.05" height="3.05" rx="0.48" fill="none" stroke="#4a5559" stroke-width="1.15"/>
+      <text x="10.55" y="8.95" font-size="4.95" font-family="Arial, Helvetica, sans-serif" font-weight="700" fill="#37474f">d</text>
+      <rect x="13.15" y="6.15" width="3.05" height="3.05" rx="0.48" fill="none" stroke="#4a5559" stroke-width="1.15"/>
+    </svg>
+  `),
+  'integral-box-differential-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <path d="M5.8 1.8C3.7 1.8 3.7 5 3.7 9C3.7 13 3.7 16.2 1.6 16.2" fill="none" stroke="#37474f" stroke-width="1.15"/>
+      <rect x="2.3" y="13.4" width="2.3" height="2.3" rx="0.35" fill="none" stroke="#4a5559" stroke-width="0.9"/>
+      <rect x="7.2" y="6.2" width="2.8" height="4.6" rx="0.4" fill="none" stroke="#4a5559" stroke-width="0.9"/>
+      <text x="10.8" y="10.4" font-size="4.7" fill="#37474f" font-family="Arial, Helvetica, sans-serif" font-weight="700">d</text>
+      <rect x="14" y="6.2" width="2.8" height="4.6" rx="0.4" fill="none" stroke="#4a5559" stroke-width="0.9"/>
     </svg>
   `),
   'integral-with-differential': makeToolbarIconImage(`
