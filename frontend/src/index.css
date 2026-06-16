@@ -10,7 +10,7 @@
   --bg-2: #0f0f1a;
   --panel: #13131f;
   --panel-2: #1a1a2e;
-  --panel-3: #1f1f35;
+  --panel-3: #ffffff;
 
   /* Text */
   --text: #a0a0c0;
@@ -446,7 +446,7 @@ input,
 select {
   width: 100%;
   max-width: 100%;
-  min-height: 46px;
+  min-height: 6px;
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 11px 14px;

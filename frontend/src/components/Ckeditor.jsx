@@ -295,11 +295,18 @@ const MATH_GROUPS = [
       { label: '→', insert: '\\rightarrow' }, { label: '←', insert: '\\leftarrow' },
       { label: '↔', insert: '\\leftrightarrow' }, { label: '⇒', insert: '\\Rightarrow' },
       { label: '⇐', insert: '\\Leftarrow' }, { label: '⇔', insert: '\\Leftrightarrow' },
-      { label: '|', action: 'ARROW_PICKER', title: 'More Arrows', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool' },
-      { label: '⟶', insert: '\\longrightarrow' }, { label: '⟵', insert: '\\longleftarrow' },
-      { label: '⟷', insert: '\\longleftrightarrow' }, { label: '⟹', insert: '\\Longrightarrow' },
-      { label: '⟸', insert: '\\Longleftarrow' }, { label: '⟺', insert: '\\Longleftrightarrow' },
       { label: '↤', insert: '\\mapsfrom' }, { label: '↦', insert: '\\mapsto' },
+      { label: '|', action: 'ARROW_PICKER', title: 'More Arrows', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool' },
+      { type: 'sep', cols: 3 },
+      { label: '⋮', insert: '\\vdots', title: 'Vertical ellipsis' },
+      { label: '⋰', insert: '⋰', title: 'Up-right diagonal ellipsis' },
+      { label: '…', insert: '\\ldots', title: 'Horizontal ellipsis' },
+      { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis' },
+      { label: '⋯', insert: '\\cdots', title: 'Midline ellipsis' },
+      { type: 'sep', cols: 3 },
+      { label: '-', insert: '-', title: 'Short dash' },
+      { label: '–', insert: '–', title: 'Dash' },
+      { label: '—', insert: '—', title: 'Long dash' },
 
       { type: 'sep', cols: 3 },
       { label: 'A→', insert: '\\xrightarrow{#0}', title: 'Arrow with label above', icon: 'arrow-label-right-above' },
@@ -309,24 +316,6 @@ const MATH_GROUPS = [
       { label: '←A', insert: '\\xleftarrow[#?]{}', title: 'Left arrow with label below', icon: 'arrow-label-left-below' },
       { label: 'A←B', insert: '\\xleftarrow[#?]{#0}', title: 'Left arrow with labels above and below', icon: 'arrow-label-left-above-below' },
       { label: '|', action: 'ARROW_LABEL_PICKER', title: 'More Labelled Arrows', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool arrow-label-picker-tool' },
-
-      { type: 'sep', cols: 3 },
-      { label: '⇌', insert: '\\rightleftharpoons', title: 'Equilibrium harpoons' },
-      { label: '⇋', insert: '\\leftrightharpoons', title: 'Reverse equilibrium harpoons' },
-      { label: '⇀', insert: '\\rightharpoonup', title: 'Right harpoon' },
-      { label: '↼', insert: '\\leftharpoonup', title: 'Left harpoon' },
-
-      { type: 'sep', cols: 3 },
-      { label: '⋮', insert: '\\vdots', title: 'Vertical ellipsis' },
-      { label: '⋰', insert: '⋰', title: 'Up-right diagonal ellipsis' },
-      { label: '…', insert: '\\ldots', title: 'Horizontal ellipsis' },
-      { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis' },
-      { label: '⋯', insert: '\\cdots', title: 'Midline ellipsis' },
-
-      { type: 'sep', cols: 3 },
-      { label: '-', insert: '-', title: 'Short dash' },
-      { label: '–', insert: '–', title: 'Dash' },
-      { label: '—', insert: '—', title: 'Long dash' },
 
       { type: 'sep', cols: 2 },
       { label: 'x⇀', insert: '\\overrightharpoon{#0}', title: 'Vector accent', icon: 'accent-harpoon-right' },
@@ -446,18 +435,21 @@ const MATH_GROUPS = [
     items: [
       { label: '□', insert: 'matrix', cls: 'template' },
       { label: '[]', insert: 'bmatrix', cls: 'template' },
-      { label: '()', insert: 'pmatrix', cls: 'template' },
       { label: '||', insert: 'vmatrix', cls: 'template' },
+      { label: '()', insert: 'pmatrix', cls: 'template' },
       { type: 'sep', cols: 2 },
+      { label: '□ \\ □ \\ □', insert: '\\begin{matrix} #? \\\\ #? \\\\ #? \\end{matrix}', cls: 'template', directInsert: true },
       { label: '□ □ □', insert: '\\begin{matrix} #? & #? & #? \\end{matrix}', cls: 'template', directInsert: true },
       { label: '□ \\ □', insert: '\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}', cls: 'template', directInsert: true },
       { label: '□ & □', insert: '\\begin{bmatrix} #? & #? \\end{bmatrix}', cls: 'template', directInsert: true },
-      { label: '□ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}', cls: 'template', directInsert: true },
+
       { type: 'sep', cols: 2 },
+      { label: '□ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}', cls: 'template', directInsert: true },
       { label: '□ & □', insert: '\\begin{pmatrix} #? & #? \\end{pmatrix}', cls: 'template', directInsert: true },
       { label: '□ \\ □ \\ □', insert: '\\begin{bmatrix} #? \\\\ #? \\\\ #? \\end{bmatrix}', cls: 'template', directInsert: true },
       { label: '□ \\ □ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\\\ #? \\end{pmatrix}', cls: 'template', directInsert: true },
-      { label: '□ \\ □ \\ □', insert: '\\begin{matrix} #? \\\\ #? \\\\ #? \\end{matrix}', cls: 'template', directInsert: true },
+
+
       { type: 'sep', cols: 2 },
       { label: 'cases', insert: '\\begin{cases} #? \\\\ #? \\end{cases}', cls: 'template', directInsert: true, icon: 'cases-template-image', title: 'Cases' },
       { label: 'rcases', insert: '\\begin{rcases} #? \\\\ #? \\end{rcases}', cls: 'template', directInsert: true, icon: 'rcases-template-image', title: 'Right Cases' },
@@ -480,6 +472,77 @@ const MATH_GROUPS = [
   },
 ];
 
+const RELATION_MORE_PICKERS = {
+  operatorExtras: [
+    { label: '\\', insert: '\\backslash', title: 'Slash', icon: 'slash-operator-template-image' },
+    { label: '﹨', insert: '﹨', title: 'Reverse Solidus' },
+    { label: '∓', insert: '\\mp', title: 'Minus or Plus', icon: 'minus-plus-operator-template-image' },
+  ],
+  primeExtras: [
+    { label: '‴', insert: "'''", cls: 'prime-symbol-tool' },
+    { label: '⁗', insert: "''''", cls: 'prime-symbol-tool' },
+    { label: '‵', insert: '‵', cls: 'prime-symbol-tool', title: 'Reversed Prime' },
+  ],
+  notEqualExtras: [
+    { label: '≠', insert: '\\neq', title: 'Not Equal', icon: 'not-equal-template-image' },
+    { label: '≉', insert: '\\not\\approx', title: 'Not Approximately Equal', icon: 'not-approx-equal-template-image' },
+    { label: '≁', insert: '\\nsim', title: 'Not Similar', icon: 'not-similar-template-image' },
+    { label: '≢', insert: '\\not\\equiv', title: 'Not Identical', icon: 'not-identical-template-image' },
+  ],
+  comparisonExtras: [
+    { label: '≫', insert: '\\gg', title: 'Much Greater Than', icon: 'much-greater-than-template-image' },
+    { label: '≪', insert: '\\ll', title: 'Much Less Than', icon: 'much-less-than-template-image' },
+    { label: '⪇', insert: '\\lneqq', title: 'Less Than But Not Equal' },
+    { label: '≻', insert: '\\succ', title: 'Succeeds', icon: 'succeeds-template-image' },
+    { label: '⪈', insert: '\\gneqq', title: 'Greater Than But Not Equal', icon: 'greater-than-not-equal-template-image' },
+    { label: '∝', insert: '\\propto', title: 'Proportional To', icon: 'proportional-to-template-image' },
+    { label: '⊲', insert: '\\lhd', title: 'Normal Subgroup', icon: 'normal-subgroup-template-image' },
+    { label: '≺', insert: '\\prec', title: 'Precedes', icon: 'precedes-template-image' },
+    { label: '▷', insert: '\\rhd', title: 'Contains Normal Subgroup', icon: 'contains-normal-subgroup-template-image' },
+  ],
+  setExtras: [
+    { label: '∉', insert: '\\notin', title: 'Not Element Of', icon: 'not-element-of-template-image' },
+    { label: '∌', insert: '\\not\\ni', title: 'Not Contains Member', icon: 'not-contains-member-template-image' },
+    { label: '⊆', insert: '\\subseteq', title: 'Subset Equal', icon: 'subset-equal-template-image' },
+    { label: '⊇', insert: '\\supseteq', title: 'Superset Equal', icon: 'superset-equal-template-image' },
+    { label: '⊏', insert: '\\sqsubset', title: 'Square Subset', icon: 'square-subset-template-image' },
+    { label: '⊐', insert: '\\sqsupset', title: 'Square Superset', icon: 'square-superset-template-image' },
+    { label: '⊑', insert: '\\sqsubseteq', title: 'Square Subset Equal', icon: 'square-subset-equal-template-image' },
+    { label: '⊒', insert: '\\sqsupseteq', title: 'Square Superset Equal', icon: 'square-superset-equal-template-image' },
+    { label: '⊓', insert: '\\sqcap', title: 'Square Cap', icon: 'square-cap-template-image' },
+    { label: '⊔', insert: '\\sqcup', title: 'Square Cup', icon: 'square-cup-template-image' },
+  ],
+  logicExtras: [
+    { label: '∴', insert: '\\therefore', title: 'Therefore', icon: 'therefore-template-image' },
+    { label: '∵', insert: '\\because', title: 'Because', icon: 'because-template-image' },
+  ],
+  geometryExtras: [
+    { label: '∦', insert: '\\nparallel', title: 'Not Parallel', icon: 'not-parallel-template-image' },
+    { label: '∡', insert: '\\measuredangle', title: 'Measured Angle', icon: 'measured-angle-template-image' },
+    { label: '∢', insert: '\\sphericalangle', title: 'Spherical Angle', icon: 'spherical-angle-template-image' },
+    { label: '⋄', insert: '\\diamond', title: 'Diamond', icon: 'diamond-template-image' },
+  ],
+  shapeExtras: [
+    { label: '▭', insert: '▭', title: 'Rectangle', icon: 'rectangle-template-image' },
+    { label: '▱', insert: '\\parallelogram', title: 'Parallelogram', icon: 'parallelogram-template-image' },
+  ],
+  circledExtras: [
+    { label: '⊖', insert: '\\ominus', title: 'Circled Minus', icon: 'circled-minus-template-image' },
+    { label: '⊛', insert: '\\circledast', title: 'Circled Asterisk', icon: 'circled-asterisk-template-image' },
+    { label: '⊘', insert: '⨸', title: 'Circled Divide', icon: 'circled-divide-template-image' },
+    { label: '•', insert: '^{\\bullet}', title: 'Raised Bullet', icon: 'raised-bullet-template-image' },
+  ],
+};
+
+const makeRelationMorePicker = (picker, title = 'More Symbols') => ({
+  label: '|',
+  action: 'RELATION_MORE_PICKER',
+  picker,
+  title,
+  icon: 'vertical-line-picker-template-image',
+  cls: 'arrow-picker-tool relation-more-picker-tool',
+});
+
 const RELATIONS_TAB_ITEMS = [
   { label: 'cancel', insert: '\\cancel{#0}', title: 'Negate / Cross Out', icon: 'negate-template-image' },
   { type: 'sep', cols: 1 },
@@ -492,9 +555,7 @@ const RELATIONS_TAB_ITEMS = [
   { label: '±', insert: '\\pm' },
   { label: '*', insert: '\\ast' },
   { label: '°', insert: '\\degree' },
-  { label: '\\', insert: '\\backslash', title: 'Slash', icon: 'slash-operator-template-image' },
-  { label: '﹨', insert: '﹨', title: 'Reverse Solidus' },
-  { label: '∓', insert: '\\mp', title: 'Minus or Plus', icon: 'minus-plus-operator-template-image' },
+  makeRelationMorePicker('operatorExtras', 'More Operators'),
 
   { type: 'sep', cols: 5 },
   { label: 'π', insert: '\\pi' },
@@ -506,9 +567,8 @@ const RELATIONS_TAB_ITEMS = [
   { label: '∅', insert: '\\emptyset' },
   { label: '∇', insert: '\\nabla' },
   { label: '″', insert: "''", cls: 'prime-symbol-tool' },
-  { label: '‴', insert: "'''", cls: 'prime-symbol-tool' },
-  { label: '⁗', insert: "''''", cls: 'prime-symbol-tool' },
-  { label: '‵', insert: '‵', cls: 'prime-symbol-tool', title: 'Reversed Prime' },
+  makeRelationMorePicker('primeExtras', 'More Prime Symbols'),
+  
 
   { type: 'sep', cols: 3 },
   { label: '=', insert: '=' },
@@ -517,25 +577,16 @@ const RELATIONS_TAB_ITEMS = [
   { label: '≈', insert: '\\approx' },
   { label: '≃', insert: '\\simeq' },
   { label: '≅', insert: '\\cong' },
-  { label: '≠', insert: '\\neq', title: 'Not Equal', icon: 'not-equal-template-image' },
-  { label: '≉', insert: '\\not\\approx', title: 'Not Approximately Equal', icon: 'not-approx-equal-template-image' },
-  { label: '≁', insert: '\\nsim', title: 'Not Similar', icon: 'not-similar-template-image' },
-  { label: '≢', insert: '\\not\\equiv', title: 'Not Identical', icon: 'not-identical-template-image' },
+  makeRelationMorePicker('notEqualExtras', 'More Not Equal Relations'),
 
   { type: 'sep', cols: 3 },
   { label: '>', insert: '>' },
   { label: '<', insert: '<' },
   { label: '≥', insert: '\\geq' },
   { label: '≤', insert: '\\leq' },
-  { label: '≫', insert: '\\gg', title: 'Much Greater Than', icon: 'much-greater-than-template-image' },
-  { label: '≪', insert: '\\ll', title: 'Much Less Than', icon: 'much-less-than-template-image' },
-  { label: '≨', insert: '\\lneqq', title: 'Less Than But Not Equal', icon: 'less-than-not-equal-template-image' },
-  { label: '≻', insert: '\\succ', title: 'Succeeds', icon: 'succeeds-template-image' },
-  { label: '≩', insert: '\\gneqq', title: 'Greater Than But Not Equal', icon: 'greater-than-not-equal-template-image' },
-  { label: '∝', insert: '\\propto', title: 'Proportional To', icon: 'proportional-to-template-image' },
-  { label: '⊲', insert: '\\lhd', title: 'Normal Subgroup', icon: 'normal-subgroup-template-image' },
-  { label: '≺', insert: '\\prec', title: 'Precedes', icon: 'precedes-template-image' },
-  { label: '▷', insert: '\\rhd', title: 'Contains Normal Subgroup', icon: 'contains-normal-subgroup-template-image' },
+  { label: '⩾', insert: '\\geqslant', title: 'Greater Than or Slanted Equal To' },
+  { label: '⩽', insert: '\\leqslant', title: 'Less Than or Slanted Equal To' },
+  makeRelationMorePicker('comparisonExtras', 'More Comparison Symbols'),
 
   { type: 'sep', cols: 3 },
   { label: '∈', insert: '\\in' },
@@ -544,16 +595,7 @@ const RELATIONS_TAB_ITEMS = [
   { label: '∩', insert: '\\cap' },
   { label: '⊂', insert: '\\subset' },
   { label: '⊃', insert: '\\supset' },
-  { label: '∉', insert: '\\notin', title: 'Not Element Of', icon: 'not-element-of-template-image' },
-  { label: '∌', insert: '\\not\\ni', title: 'Not Contains Member', icon: 'not-contains-member-template-image' },
-  { label: '⊆', insert: '\\subseteq', title: 'Subset Equal', icon: 'subset-equal-template-image' },
-  { label: '⊇', insert: '\\supseteq', title: 'Superset Equal', icon: 'superset-equal-template-image' },
-  { label: '⊏', insert: '\\sqsubset', title: 'Square Subset', icon: 'square-subset-template-image' },
-  { label: '⊐', insert: '\\sqsupset', title: 'Square Superset', icon: 'square-superset-template-image' },
-  { label: '⊑', insert: '\\sqsubseteq', title: 'Square Subset Equal', icon: 'square-subset-equal-template-image' },
-  { label: '⊒', insert: '\\sqsupseteq', title: 'Square Superset Equal', icon: 'square-superset-equal-template-image' },
-  { label: '⊓', insert: '\\sqcap', title: 'Square Cap', icon: 'square-cap-template-image' },
-  { label: '⊔', insert: '\\sqcup', title: 'Square Cup', icon: 'square-cup-template-image' },
+  makeRelationMorePicker('setExtras', 'More Set Symbols'),
 
   { type: 'sep', cols: 3 },
   { label: '∧', insert: '\\land' },
@@ -562,59 +604,68 @@ const RELATIONS_TAB_ITEMS = [
   { label: '∀', insert: '\\forall' },
   { label: '∃', insert: '\\exists' },
   { label: '∄', insert: '\\nexists' },
-  { label: '∴', insert: '\\therefore', title: 'Therefore', icon: 'therefore-template-image' },
-  { label: '∵', insert: '\\because', title: 'Because', icon: 'because-template-image' },
+  makeRelationMorePicker('logicExtras', 'More Logic Symbols'),
 
   { type: 'sep', cols: 2 },
   { label: '∠', insert: '\\angle' },
   { label: '∥', insert: '\\parallel' },
   { label: '⊥', insert: '\\perp' },
-  { label: '∦', insert: '\\nparallel', title: 'Not Parallel', icon: 'not-parallel-template-image' },
-  { label: '∡', insert: '\\measuredangle', title: 'Measured Angle', icon: 'measured-angle-template-image' },
-  { label: '∢', insert: '\\sphericalangle', title: 'Spherical Angle', icon: 'spherical-angle-template-image' },
-  { label: '⋄', insert: '\\diamond', title: 'Diamond', icon: 'diamond-template-image' },
+  makeRelationMorePicker('geometryExtras', 'More Geometry Symbols'),
 
   { type: 'sep', cols: 3 },
   { label: '□', insert: '\\square' },
   { label: '△', insert: '\\triangle' },
   { label: '○', insert: '\\bigcirc' },
-  { label: '▭', insert: '▭', title: 'Rectangle', icon: 'rectangle-template-image' },
-  { label: '▱', insert: '\\parallelogram', title: 'Parallelogram', icon: 'parallelogram-template-image' },
+  makeRelationMorePicker('shapeExtras', 'More Shape Symbols'),
   { type: 'sep', cols: 3 },
   { label: '⊕', insert: '\\oplus' },
   { label: '⊗', insert: '\\otimes' },
   { label: '⊙', insert: '\\odot' },
-  { label: '⊖', insert: '\\ominus', title: 'Circled Minus', icon: 'circled-minus-template-image' },
-  { label: '⊛', insert: '\\circledast', title: 'Circled Asterisk', icon: 'circled-asterisk-template-image' },
-  { label: '⊘', insert: '⨸', title: 'Circled Divide', icon: 'circled-divide-template-image' },
-  { label: '•', insert: '^{\\bullet}', title: 'Raised Bullet', icon: 'raised-bullet-template-image' },
+  makeRelationMorePicker('circledExtras', 'More Circled Operators'),
 ];
 
 const ARROW_PICKER_ITEMS = [
-  { type: '↗', insert: '\\nearrow', title: 'North East Arrow' },
-  { type: '↘', insert: '\\searrow', title: 'South East Arrow' },
-  { type: '↖', insert: '\\nwarrow', title: 'North West Arrow' },
-  { type: '↙', insert: '\\swarrow', title: 'South West Arrow' },
-  { type: '←', insert: '\\leftarrow', title: 'Left Arrow' },
-  { type: '→', insert: '\\rightarrow', title: 'Right Arrow' },
-  { type: '↤', insert: '\\mapsfrom', title: 'Maps From' },
-  { type: '↦', insert: '\\mapsto', title: 'Maps To' },
-  { type: '↑', insert: '\\uparrow', title: 'Up Arrow' },
-  { type: '↓', insert: '\\downarrow', title: 'Down Arrow' },
-  { type: '⇑', insert: '\\Uparrow', title: 'Double Up Arrow' },
-  { type: '⇓', insert: '\\Downarrow', title: 'Double Down Arrow' },
-  { type: '⇐', insert: '\\Leftarrow', title: 'Double Left Arrow' },
-  { type: '⇒', insert: '\\Rightarrow', title: 'Double Right Arrow' },
-  { type: '⟵', insert: '\\longleftarrow', title: 'Long Left Arrow' },
-  { type: '⟶', insert: '\\longrightarrow', title: 'Long Right Arrow' },
-  { type: '↕', insert: '\\updownarrow', title: 'Up Down Arrow' },
-  { type: '⇕', insert: '\\Updownarrow', title: 'Double Up Down Arrow' },
-  { type: '↔', insert: '\\leftrightarrow', title: 'Left Right Arrow' },
-  { type: '⇔', insert: '\\Leftrightarrow', title: 'Double Left Right Arrow' },
-  { type: '⟷', insert: '\\longleftrightarrow', title: 'Long Left Right Arrow' },
-  { type: '⟸', insert: '\\Longleftarrow', title: 'Long Double Left Arrow' },
-  { type: '⟹', insert: '\\Longrightarrow', title: 'Long Double Right Arrow' },
-  { type: '⟺', insert: '\\Longleftrightarrow', title: 'Long Double Left Right Arrow' },
+  { label: '↗', insert: '\\nearrow', title: 'North East Arrow' },
+  { label: '↘', insert: '\\searrow', title: 'South East Arrow' },
+  { label: '↖', insert: '\\nwarrow', title: 'North West Arrow' },
+  { label: '↙', insert: '\\swarrow', title: 'South West Arrow' },
+  { label: '⤡', insert: '⤡', title: 'North East and South West Arrow' },
+  { label: '⤢', insert: '⤢', title: 'North West and South East Arrow' },
+  { label: '↩', insert: '\\hookleftarrow', title: 'Hook Left Arrow' },
+  { label: '↪', insert: '\\hookrightarrow', title: 'Hook Right Arrow' },
+  { label: '↼', insert: '\\leftharpoonup', title: 'Left Harpoon Up' },
+  { label: '⇀', insert: '\\rightharpoonup', title: 'Right Harpoon Up' },
+  { label: '↑', insert: '\\uparrow', title: 'Up Arrow' },
+  { label: '↓', insert: '\\downarrow', title: 'Down Arrow' },
+  { label: '⇑', insert: '\\Uparrow', title: 'Double Up Arrow' },
+  { label: '⇓', insert: '\\Downarrow', title: 'Double Down Arrow' },
+  { label: '⥪', insert: '⥪', title: 'Leftwards Arrow with Hook' },
+  { label: '⥭', insert: '⥭', title: 'Rightwards Arrow with Hook' },
+  { label: '⇋', insert: '\\leftrightharpoons', title: 'Reverse Equilibrium Harpoons' },
+  { label: '⇌', insert: '\\rightleftharpoons', title: 'Equilibrium Harpoons' },
+  { label: '↽', insert: '\\leftharpoondown', title: 'Left Harpoon Down' },
+  { label: '⇁', insert: '\\rightharpoondown', title: 'Right Harpoon Down' },
+  { label: '⇆', insert: '⇆', title: 'Leftwards Arrow over Rightwards Arrow' },
+  { label: '⇄', insert: '\\rightleftarrows', title: 'Rightwards Arrow over Leftwards Arrow' },
+  { label: '⇅', insert: '⇅', title: 'Upwards Arrow Left of Downwards Arrow' },
+  { label: '⇵', insert: '⇵', title: 'Downwards Arrow Left of Upwards Arrow' },
+  { label: '⥮', insert: '⥮', title: 'Upwards Harpoon with Barb Left beside Downwards Harpoon with Barb Right' },
+  { label: '⥯', insert: '⥯', title: 'Downwards Harpoon with Barb Left beside Upwards Harpoon with Barb Right' },
+  {
+    label: '⇄',
+    insert: '\\rightleftarrows',
+    title: 'Rightwards Arrow over Short Leftwards Arrow',
+    preview: 'rightleft-short-left'
+  },
+  {
+    label: '→\n←',
+    insert: '\\overset{\\to}{\\longleftarrow}',
+    title: 'Short Rightwards Arrow over Leftwards Arrow',
+    preview: 'right-short-over-left-long'
+  },
+  { label: '↕', insert: '\\updownarrow', title: 'Up Down Arrow' },
+  { label: '⇕', insert: '\\Updownarrow', title: 'Double Up Down Arrow' },
+  { label: '↵', insert: '\\downhookleftarrow', title: 'Downwards Arrow with Corner Leftwards' },
 ];
 
 const ARROW_LABEL_PICKER_ITEMS = [
@@ -3306,6 +3357,64 @@ function ArrowPickerPopover({ position, onInsert }) {
   const left = Math.min(Math.max(position.x - 6, 8), window.innerWidth - 348);
   const top = Math.min(position.y + 2, window.innerHeight - 148);
 
+  const renderArrowPickerItem = (item) => {
+    if (item.preview === 'rightleft-short-left') {
+      return (
+        <svg
+          width="22"
+          height="18"
+          viewBox="0 0 50 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <line x1="10" y1="8" x2="38" y2="8" />
+          <polyline points="30,2 38,8 30,14" />
+          <line x1="34" y1="16" x2="18" y2="16" />
+          <polyline points="26,10 18,16 26,22" />
+        </svg>
+      );
+    }
+
+    if (item.preview === 'right-short-over-left-long') {
+      return (
+        <svg
+          width="22"
+          height="18"
+          viewBox="0 0 50 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <line x1="14" y1="8" x2="30" y2="8" />
+          <polyline points="22,2 30,8 22,14" />
+          <line x1="40" y1="16" x2="12" y2="16" />
+          <polyline points="20,10 12,16 20,22" />
+        </svg>
+      );
+    }
+
+    return (
+      <span
+        aria-hidden="true"
+        style={{
+          fontSize: '18px',
+          lineHeight: 1,
+          fontFamily: '"Cambria Math", "STIX Two Math", "Segoe UI Symbol", "Segoe UI", sans-serif',
+          whiteSpace: 'pre-line'
+        }}
+      >
+        {item.label}
+      </span>
+    );
+  };
+
   return (
     <div
       className="cme-arrow-picker-popup"
@@ -3320,7 +3429,7 @@ function ArrowPickerPopover({ position, onInsert }) {
       <div className="cme-arrow-picker-grid">
         {ARROW_PICKER_ITEMS.map((item) => (
           <button
-            key={item.type}
+            key={`${item.insert}-${item.title || item.label}`}
             type="button"
             className="cme-arrow-picker-btn"
             title={item.title}
@@ -3329,7 +3438,49 @@ function ArrowPickerPopover({ position, onInsert }) {
               onInsert(item.insert);
             }}
           >
-            <ArrowGlyphIcon type={item.type} />
+            {renderArrowPickerItem(item)}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RelationMorePickerPopover({ position, items = [], onInsert }) {
+  const columns = Math.max(1, Math.min(items.length, 5));
+  const rows = Math.max(1, Math.ceil(items.length / columns));
+  const width = (columns * 30) + ((columns - 1) * 8) + 20;
+  const height = (rows * 30) + ((rows - 1) * 6) + 16;
+  const left = Math.min(Math.max(position.x - 6, 8), window.innerWidth - width - 8);
+  const top = Math.min(position.y + 2, window.innerHeight - height - 8);
+
+  return (
+    <div
+      className="cme-arrow-picker-popup cme-relation-more-picker-popup"
+      style={{
+        position: 'fixed',
+        left: `${left}px`,
+        top: `${top}px`,
+        zIndex: 100000,
+      }}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
+      <div
+        className="cme-arrow-picker-grid"
+        style={{ gridTemplateColumns: `repeat(${columns}, 30px)` }}
+      >
+        {items.map((item) => (
+          <button
+            key={`${item.insert}-${item.title || item.label}`}
+            type="button"
+            className={`cme-arrow-picker-btn${item.cls ? ` ${item.cls}` : ''}`}
+            title={item.title || item.label}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              onInsert(item.insert);
+            }}
+          >
+            {renderToolbarItemLabel(item, { groupId: 'relations', isMathMode: true, isChemMode: false })}
           </button>
         ))}
       </div>
@@ -3630,6 +3781,14 @@ function MatrixHoverGrid({ matrixType, x, y, onSelect, onMouseEnter, onMouseLeav
     pmatrix: 'Parenthesis Matrix',
     vmatrix: 'Vertical Matrix'
   };
+  const updateGridValue = useCallback((key, nextValue) => {
+    const parsedValue = Number.parseInt(nextValue, 10);
+    if (Number.isNaN(parsedValue)) return;
+    setHoverGrid((prev) => ({
+      ...prev,
+      [key]: Math.min(20, Math.max(1, parsedValue)),
+    }));
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -3679,17 +3838,33 @@ function MatrixHoverGrid({ matrixType, x, y, onSelect, onMouseEnter, onMouseLeav
       <div className="cme-matrix-hover-footer">
         <div className="cme-matrix-counter">
           <span className="cme-counter-label">R</span>
-          <span className="cme-counter-val">{hoverGrid.r}</span>
+          <input
+            type="number"
+            min="1"
+            max="20"
+            value={hoverGrid.r}
+            className="cme-counter-input"
+            onChange={(e) => updateGridValue('r', e.target.value)}
+            onMouseDown={(e) => e.stopPropagation()}
+          />
           <div className="cme-counter-btns">
-            <button type="button" onClick={() => setHoverGrid(prev => ({ ...prev, r: Math.min(10, prev.r + 1) }))}>+</button>
+            <button type="button" onClick={() => setHoverGrid(prev => ({ ...prev, r: Math.min(20, prev.r + 1) }))}>+</button>
             <button type="button" onClick={() => setHoverGrid(prev => ({ ...prev, r: Math.max(1, prev.r - 1) }))}>-</button>
           </div>
         </div>
         <div className="cme-matrix-counter">
           <span className="cme-counter-label">C</span>
-          <span className="cme-counter-val">{hoverGrid.c}</span>
+          <input
+            type="number"
+            min="1"
+            max="20"
+            value={hoverGrid.c}
+            className="cme-counter-input"
+            onChange={(e) => updateGridValue('c', e.target.value)}
+            onMouseDown={(e) => e.stopPropagation()}
+          />
           <div className="cme-counter-btns">
-            <button type="button" onClick={() => setHoverGrid(prev => ({ ...prev, c: Math.min(10, prev.c + 1) }))}>+</button>
+            <button type="button" onClick={() => setHoverGrid(prev => ({ ...prev, c: Math.min(20, prev.c + 1) }))}>+</button>
             <button type="button" onClick={() => setHoverGrid(prev => ({ ...prev, c: Math.max(1, prev.c - 1) }))}>-</button>
           </div>
         </div>
@@ -3707,6 +3882,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   const [activeMatrix, setActiveMatrix] = useState(null); // { type, x, y }
   const [showSpecialChars, setShowSpecialChars] = useState(null); // { x, y } or null
   const [showArrowPicker, setShowArrowPicker] = useState(null); // { x, y } or null
+  const [showRelationMorePicker, setShowRelationMorePicker] = useState(null); // { x, y, picker } or null
   const [showArrowLabelPicker, setShowArrowLabelPicker] = useState(null); // { x, y } or null
   const [showGreekItalicPicker, setShowGreekItalicPicker] = useState(null); // { x, y } or null
   const [showBlackboardBoldPicker, setShowBlackboardBoldPicker] = useState(null); // { x, y } or null
@@ -3868,7 +4044,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
 
 
   useEffect(() => {
-    if (!activeMatrix && !showColorPicker && !showArrowPicker && !showArrowLabelPicker && !showGreekItalicPicker && !showBlackboardBoldPicker && !showFrakturScriptPicker && !showHebrewSymbolPicker && !showPeriodicTablePicker) return;
+    if (!activeMatrix && !showColorPicker && !showArrowPicker && !showRelationMorePicker && !showArrowLabelPicker && !showGreekItalicPicker && !showBlackboardBoldPicker && !showFrakturScriptPicker && !showHebrewSymbolPicker && !showPeriodicTablePicker) return;
     const handleOutsideClick = (e) => {
       if (!e.target.closest('.cme-matrix-hover-popover') && !e.target.closest('.cme-matrix-btn-wrapper')) {
         setActiveMatrix(null);
@@ -3878,6 +4054,9 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       }
       if (!e.target.closest('.cme-arrow-picker-popup') && !e.target.closest('.arrow-picker-tool')) {
         setShowArrowPicker(null);
+      }
+      if (!e.target.closest('.cme-relation-more-picker-popup') && !e.target.closest('.relation-more-picker-tool')) {
+        setShowRelationMorePicker(null);
       }
       if (!e.target.closest('.cme-arrow-label-picker-popup') && !e.target.closest('.arrow-label-picker-tool')) {
         setShowArrowLabelPicker(null);
@@ -3904,7 +4083,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       window.removeEventListener('mousedown', handleOutsideClick, true);
       window.removeEventListener('pointerdown', handleOutsideClick, true);
     };
-  }, [activeMatrix, showColorPicker, showArrowPicker, showArrowLabelPicker, showGreekItalicPicker, showBlackboardBoldPicker, showFrakturScriptPicker, showHebrewSymbolPicker, showPeriodicTablePicker]);
+  }, [activeMatrix, showColorPicker, showArrowPicker, showRelationMorePicker, showArrowLabelPicker, showGreekItalicPicker, showBlackboardBoldPicker, showFrakturScriptPicker, showHebrewSymbolPicker, showPeriodicTablePicker]);
 
   useEffect(() => {
     const mf = popupMfRef.current;
@@ -4436,6 +4615,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                   const isColorBtn = item.action === 'TEXT_COLOR';
                   const isRtlBtn = item.action === 'TOGGLE_RTL';
                   const isArrowPickerBtn = item.action === 'ARROW_PICKER';
+                  const isRelationMorePickerBtn = item.action === 'RELATION_MORE_PICKER';
                   const isArrowLabelPickerBtn = item.action === 'ARROW_LABEL_PICKER';
                   const isBlackboardBoldPickerBtn = item.action === 'BLACKBOARD_BOLD_PICKER';
                   const isFrakturScriptPickerBtn = item.action === 'FRAKTUR_SCRIPT_PICKER';
@@ -4447,6 +4627,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                     (isBoldItalicBtn && activeStyles.boldItalic) ||
                     (isRtlBtn && isRtlInput) ||
                     (isArrowPickerBtn && !!showArrowPicker) ||
+                    (isRelationMorePickerBtn && showRelationMorePicker?.picker === item.picker) ||
                     (isArrowLabelPickerBtn && !!showArrowLabelPicker) ||
                     (isBlackboardBoldPickerBtn && !!showBlackboardBoldPicker) ||
                     (isFrakturScriptPickerBtn && !!showFrakturScriptPicker) ||
@@ -4468,6 +4649,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                         if (item.action === 'SPECIAL_CHARS') {
                           const rect = e.currentTarget.getBoundingClientRect();
                           setShowArrowPicker(null);
+                          setShowRelationMorePicker(null);
                           setShowArrowLabelPicker(null);
                           setShowGreekItalicPicker(null);
                           setShowBlackboardBoldPicker(null);
@@ -4479,6 +4661,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                         } else if (item.action === 'ARROW_PICKER') {
                           const rect = e.currentTarget.getBoundingClientRect();
                           setShowSpecialChars(null);
+                          setShowRelationMorePicker(null);
                           setShowArrowLabelPicker(null);
                           setShowGreekItalicPicker(null);
                           setShowBlackboardBoldPicker(null);
@@ -4489,10 +4672,25 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           setShowArrowPicker((prev) => (
                             prev ? null : { x: rect.left, y: rect.bottom + 4 }
                           ));
+                        } else if (item.action === 'RELATION_MORE_PICKER') {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setShowSpecialChars(null);
+                          setShowArrowPicker(null);
+                          setShowArrowLabelPicker(null);
+                          setShowGreekItalicPicker(null);
+                          setShowBlackboardBoldPicker(null);
+                          setShowFrakturScriptPicker(null);
+                          setShowHebrewSymbolPicker(null);
+                          setShowPeriodicTablePicker(null);
+                          setShowColorPicker(null);
+                          setShowRelationMorePicker((prev) => (
+                            prev?.picker === item.picker ? null : { x: rect.left, y: rect.bottom + 4, picker: item.picker }
+                          ));
                         } else if (item.action === 'ARROW_LABEL_PICKER') {
                           const rect = e.currentTarget.getBoundingClientRect();
                           setShowSpecialChars(null);
                           setShowArrowPicker(null);
+                          setShowRelationMorePicker(null);
                           setShowGreekItalicPicker(null);
                           setShowBlackboardBoldPicker(null);
                           setShowFrakturScriptPicker(null);
@@ -4508,6 +4706,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           setShowArrowPicker(null);
                           setShowArrowLabelPicker(null);
                           setShowColorPicker(null);
+                          setShowRelationMorePicker(null);
                           setShowGreekItalicPicker(null);
                           setShowFrakturScriptPicker(null);
                           setShowHebrewSymbolPicker(null);
@@ -4521,6 +4720,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           setShowArrowPicker(null);
                           setShowArrowLabelPicker(null);
                           setShowColorPicker(null);
+                          setShowRelationMorePicker(null);
                           setShowGreekItalicPicker(null);
                           setShowBlackboardBoldPicker(null);
                           setShowHebrewSymbolPicker(null);
@@ -4534,6 +4734,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           setShowArrowPicker(null);
                           setShowArrowLabelPicker(null);
                           setShowColorPicker(null);
+                          setShowRelationMorePicker(null);
                           setShowGreekItalicPicker(null);
                           setShowBlackboardBoldPicker(null);
                           setShowFrakturScriptPicker(null);
@@ -4547,6 +4748,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           setShowArrowPicker(null);
                           setShowArrowLabelPicker(null);
                           setShowColorPicker(null);
+                          setShowRelationMorePicker(null);
                           setShowGreekItalicPicker(null);
                           setShowBlackboardBoldPicker(null);
                           setShowFrakturScriptPicker(null);
@@ -4557,6 +4759,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                         } else if (item.action === 'TEXT_COLOR') {
                           const rect = e.currentTarget.getBoundingClientRect();
                           setShowArrowPicker(null);
+                          setShowRelationMorePicker(null);
                           setShowArrowLabelPicker(null);
                           setShowGreekItalicPicker(null);
                           setShowBlackboardBoldPicker(null);
@@ -4700,6 +4903,18 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           onInsert={(latex) => {
             insertAtCursor(latex);
             setShowArrowPicker(null);
+          }}
+        />,
+        document.body
+      )}
+
+      {showRelationMorePicker && createPortal(
+        <RelationMorePickerPopover
+          position={showRelationMorePicker}
+          items={RELATION_MORE_PICKERS[showRelationMorePicker.picker] || []}
+          onInsert={(latex) => {
+            insertAtCursor(latex);
+            setShowRelationMorePicker(null);
           }}
         />,
         document.body

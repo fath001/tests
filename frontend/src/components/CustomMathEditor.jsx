@@ -560,6 +560,13 @@ export default function CustomMathEditor({ value = "", onChange }) {
     if (!popupMf || !isEditorOpen) return;
     popupMf.defaultMode = mode === "chem" ? "text" : "math";
     popupMf.letterShapeStyle = "upright";
+    popupMf.smartMode = true;
+    popupMf.smartFence = false;
+    if ("inlineShortcuts" in popupMf) popupMf.inlineShortcuts = {};
+    popupMf.style.color = "#000000";
+    popupMf.style.setProperty("--primary-color", "#000000");
+    popupMf.style.setProperty("--caret-color", "#000000");
+    popupMf.style.setProperty("--smart-fence-color", "#000000");
     requestAnimationFrame(() => popupMf.focus());
   }, [mode, isEditorOpen]);
 

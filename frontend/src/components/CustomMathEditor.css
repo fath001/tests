@@ -1681,13 +1681,38 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
 
 /* ── CKEditor specific ── */
 .cme-matrix-hover-popover.ck-only { width: 136px; min-height: 146px; box-sizing: border-box; padding: 8px; overflow: hidden; gap: 6px; display: flex; flex-direction: column; align-items: stretch; }
-.cme-matrix-hover-popover.ck-only .cme-matrix-hover-grid { width: 100%; display: flex; flex-direction: column; padding: 0; gap: 0; border-radius: 4px; overflow: hidden; }
-.cme-matrix-hover-popover.ck-only .cme-matrix-hover-row { width: 100%; display: flex; gap: 0; }
-.cme-matrix-hover-popover.ck-only .cme-matrix-hover-cell { flex: 1; height: 14px; border-radius: 0; }
+.cme-matrix-hover-popover.ck-only { width: 152px; min-height: 148px; padding: 8px; gap: 8px; }
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-title-wrap { display: none; }
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-grid { width: 100%; display: flex; flex-direction: column; padding: 3px; gap: 2px; border-radius: 4px; overflow: hidden; }
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-row { width: 100%; display: flex; gap: 2px; }
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-cell { flex: 1; height: 14px; border-radius: 2px; }
 .cme-matrix-hover-popover.ck-only .cme-matrix-hover-footer { margin-top: auto; gap: 8px; }
 .cme-matrix-hover-popover.ck-only .cme-matrix-counter { gap: 3px; }
-.cme-matrix-hover-popover.ck-only .cme-counter-val { min-width: 16px; font-size: 10px; padding: 1px 3px; }
 .cme-matrix-hover-popover.ck-only .cme-counter-btns button { width: 15px; height: 11px; font-size: 9px; }
+.cme-counter-input {
+  width: 34px;
+  min-width: 34px;
+  height: 20px;
+  padding: 0 4px;
+  border: 1px solid #b8c8d2;
+  border-radius: 4px;
+  background: #ffffff;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #21363f;
+  text-align: center;
+  box-sizing: border-box;
+}
+.cme-counter-input:focus {
+  outline: none;
+  border-color: #56a17e;
+  box-shadow: 0 0 0 2px rgba(86, 161, 126, 0.18);
+}
+.cme-counter-input::-webkit-outer-spin-button,
+.cme-counter-input::-webkit-inner-spin-button {
+  margin: 0;
+}
 
 .cme-btn.active,
 .cme-select.active {

@@ -31,7 +31,7 @@ const generateCharacters = () => {
 
 const ALL_CHARACTERS = generateCharacters();
 
-export default function SpecialCharacterModal({ isOpen, onClose, onInsert, position }) {
+export default function SpecialCharacterModal({ isOpen, onClose, onInsert, position, contained = false }) {
   const [searchCode, setSearchCode] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
@@ -84,26 +84,31 @@ export default function SpecialCharacterModal({ isOpen, onClose, onInsert, posit
 
   let modalStyle = { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
   if (position) {
-    let x = position.x - 120; // Shift left so it aligns better under the button
+    let x = position.x;
     let y = position.y;
-    
-    // Prevent modal from overflowing the left edge
-    if (x < 10) {
-      x = 10;
+
+    if (!contained) {
+      x -= 120; // Shift left so it aligns better under the button
+
+      if (x < 10) {
+        x = 10;
+      }
+      if (x + 230 > window.innerWidth) {
+        x = window.innerWidth - 240;
+      }
+      if (y + 200 > window.innerHeight) {
+        y = window.innerHeight - 210;
+      }
     }
-    // Prevent modal from overflowing the right edge
-    if (x + 230 > window.innerWidth) {
-      x = window.innerWidth - 240;
-    }
-    // Prevent modal from overflowing the bottom edge
-    if (y + 200 > window.innerHeight) {
-      y = window.innerHeight - 210;
-    }
+
     modalStyle = { top: `${y}px`, left: `${x}px` };
   }
 
   return (
-    <div className="scm-overlay" onMouseDown={(e) => { e.stopPropagation(); onClose(); }}>
+    <div
+      className={`scm-overlay${contained ? ' scm-overlay--contained' : ''}`}
+      onMouseDown={(e) => { e.stopPropagation(); onClose(); }}
+    >
       <div className="scm-modal" style={modalStyle} onMouseDown={(e) => e.stopPropagation()}>
         <div className="scm-toolbar">
           <input

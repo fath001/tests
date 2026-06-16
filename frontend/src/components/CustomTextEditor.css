@@ -108,12 +108,19 @@
   outline: none;
   cursor: default;
   pointer-events: none;
-  --primary-color: #8b5cf6;
-  color: #e8e8ff;
+  --primary-color: #ffffff;
+  --caret-color: #ffffff;
+  --smart-fence-color: #ffffff;
+  --placeholder-color: #ffffff;
+  --latex-color: #ffffff;
+  --correct-color: #ffffff;
+  --incorrect-color: #ffffff;
+  color: #ffffff;
 }
 
 .cte-content math-field.cte-inline-mathfield::part(virtual-keyboard-toggle),
 .cte-content math-field.cte-inline-mathfield::part(menu-toggle) { display: none; }
+.cte-content math-field.cte-inline-mathfield::part(content) { color: #ffffff; }
 
 .cte-content b, .cte-content strong { font-weight: 700; color: #e8e8ff; }
 .cte-content i, .cte-content em { font-style: italic; }

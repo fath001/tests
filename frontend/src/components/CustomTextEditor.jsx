@@ -188,6 +188,10 @@ function createMathFieldNode(latex) {
   mf.setAttribute("math-virtual-keyboard-policy", "manual");
   mf.setAttribute("tabindex", "-1");
   mf.setAttribute("letter-shape-style", "upright");
+  mf.style.color = "#ffffff";
+  mf.style.setProperty("--primary-color", "#ffffff");
+  mf.style.setProperty("--caret-color", "#ffffff");
+  mf.style.setProperty("--smart-fence-color", "#ffffff");
 
   const setLatex = () => {
     if (mf.setValue) mf.setValue(latex, { silenceNotifications: true });
