@@ -1169,6 +1169,21 @@ const FONT_SIZE_OPTIONS = [
   // { label: '72px', value: '18' },
 ];
 
+const MOVE_TEXT_TEMPLATE_MAP = {
+  up: {
+    selection: '\\htmlStyle{display:inline-block;position:relative;top:-0.65em;}{#@}',
+  },
+  right: {
+    selection: '\\htmlStyle{display:inline-block;position:relative;left:0.65em;}{#@}',
+  },
+  left: {
+    selection: '\\htmlStyle{display:inline-block;position:relative;left:-0.65em;}{#@}',
+  },
+  down: {
+    selection: '\\htmlStyle{display:inline-block;position:relative;top:0.65em;}{#@}',
+  },
+};
+
 const ORDERED_MATH_GROUPS = [
   {
     id: 'roots-main',
@@ -1437,6 +1452,17 @@ const ORDERED_MATH_GROUPS = [
       { label: 'cot(□)', insert: '\\cot\\left(#0\\right)' },
     ],
   },
+  {
+    id: 'move-text',
+    label: <MoveTextTabIcon />,
+    isTemplate: true,
+    items: [
+      { label: 'Move Up', action: 'MOVE_TEXT_UP', cls: 'template', title: 'Move Up', icon: 'move-text-up-template-image' },
+      { label: 'Move Right', action: 'MOVE_TEXT_RIGHT', cls: 'template', title: 'Move Right', icon: 'move-text-right-template-image' },
+      { label: 'Move Left', action: 'MOVE_TEXT_LEFT', cls: 'template', title: 'Move Left', icon: 'move-text-left-template-image' },
+      { label: 'Move Down', action: 'MOVE_TEXT_DOWN', cls: 'template', title: 'Move Down', icon: 'move-text-down-template-image' },
+    ],
+  },
 ];
 
 const CHEM_GROUPS = [
@@ -1617,6 +1643,44 @@ function CalcTabIcon() {
         >
           lim
         </text>
+      </svg>
+    </span>
+  );
+}
+
+function MoveTextTabIcon() {
+  return (
+    <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
+      <svg className="cme-tab-svg-icon" viewBox="0 0 24 24" focusable="false">
+        <path
+          d="M12 4V11"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+        <path
+          d="M9.5 8.5L12 11L14.5 8.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M5 14 C5 18 8 20 12 20 C16 20 19 18 19 14"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+        <path
+          d="M8 14 C8 16.5 9.5 18 12 18 C14.5 18 16 16.5 16 14"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.2"
+          strokeLinecap="round"
+        />
       </svg>
     </span>
   );
@@ -2199,6 +2263,39 @@ const TOOLBAR_ICON_IMAGES = {
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
       <rect x="4" y="4" width="12" height="20" stroke="#008000" stroke-width="2"/>
       <rect x="12" y="4" width="12" height="20" stroke="#008000" stroke-width="2"/>
+    </svg>
+  `),
+  'move-text-up-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <rect x="5" y="2" width="14" height="20" fill="none" stroke="#2e7d32" stroke-width="2"/>
+      <rect x="5" y="14" width="14" height="8" fill="#ffffff"/>
+      <rect x="5" y="14" width="14" height="8" fill="none" stroke="#2e7d32" stroke-width="2" stroke-dasharray="2 2"/>
+      <path d="M12 17V8" stroke="#546e7a" stroke-width="2" stroke-linecap="round"/>
+      <path d="M9 11L12 8L15 11" fill="none" stroke="#546e7a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  `),
+  'move-text-right-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <rect x="2" y="5" width="20" height="14" fill="none" stroke="#2e7d32" stroke-width="2"/>
+      <rect x="2" y="5" width="8" height="14" fill="none" stroke="#2e7d32" stroke-width="2" stroke-dasharray="2 2"/>
+      <path d="M7 12H16" stroke="#546e7a" stroke-width="2" stroke-linecap="round"/>
+      <path d="M13 9L16 12L13 15" fill="none" stroke="#546e7a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  `),
+  'move-text-left-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <rect x="2" y="5" width="20" height="14" fill="none" stroke="#2e7d32" stroke-width="2"/>
+      <rect x="14" y="5" width="8" height="14" fill="none" stroke="#2e7d32" stroke-width="2" stroke-dasharray="2 2"/>
+      <path d="M17 12H8" stroke="#546e7a" stroke-width="2" stroke-linecap="round"/>
+      <path d="M11 9L8 12L11 15" fill="none" stroke="#546e7a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  `),
+  'move-text-down-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <rect x="5" y="2" width="14" height="20" fill="none" stroke="#2e7d32" stroke-width="2"/>
+      <rect x="5" y="2" width="14" height="8" fill="none" stroke="#2e7d32" stroke-width="2" stroke-dasharray="2 2"/>
+      <path d="M12 7V16" stroke="#546e7a" stroke-width="2" stroke-linecap="round"/>
+      <path d="M9 13L12 16L15 13" fill="none" stroke="#546e7a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   `),
   'sum-limits-both-template-image': makeToolbarIconImage(`
@@ -4361,6 +4458,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     fontSize: 'auto'
   });
   const [numeralMode, setNumeralMode] = useState('western'); // western | arabicIndic | easternArabicIndic
+  const [spacingMode, setSpacingMode] = useState('thin'); // thin | negativeThin
 
   useEffect(() => {
     const mf = popupMfRef.current;
@@ -4625,11 +4723,32 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     };
 
     const handleKeyDown = (e) => {
+      const isPlainTypingKey =
+        e.key.length === 1 &&
+        e.key !== ' ' &&
+        !e.ctrlKey &&
+        !e.metaKey &&
+        !e.altKey;
       const isPlainDigitKey =
         /^\d$/.test(e.key) &&
         !e.ctrlKey &&
         !e.metaKey &&
         !e.altKey;
+
+      if (spacingMode === 'negativeThin' && isPlainTypingKey) {
+        e.preventDefault();
+        const typedValue =
+          numeralMode !== 'western' && isPlainDigitKey
+            ? convertDigitsToNumeralSystem(e.key, numeralMode)
+            : e.key;
+
+        if (isRtlInput) {
+          writeValue(`\\!${typedValue}${readValue()}`);
+        } else {
+          mf.executeCommand(['insert', `\\!${typedValue}`]);
+        }
+        return;
+      }
 
       if (numeralMode !== 'western' && isPlainDigitKey) {
         e.preventDefault();
@@ -4644,10 +4763,11 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
 
       if (e.key === ' ') {
         e.preventDefault();
+        const spacingInsert = spacingMode === 'negativeThin' ? '\\!' : '\\, ';
         if (isRtlInput) {
-          writeValue(`\\, ${readValue()}`);
+          writeValue(`${spacingInsert}${readValue()}`);
         } else {
-          mf.executeCommand(['insert', '\\, ']);
+          mf.executeCommand(['insert', spacingInsert]);
         }
         return;
       } else if (e.key === 'Enter') {
@@ -4671,12 +4791,6 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
         return;
       }
 
-      const isPlainTypingKey =
-        e.key.length === 1 &&
-        !e.ctrlKey &&
-        !e.metaKey &&
-        !e.altKey;
-
       if (isRtlInput && isPlainTypingKey) {
         e.preventDefault();
         writeValue(`${e.key}${readValue()}`);
@@ -4684,7 +4798,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     };
     mf.addEventListener('keydown', handleKeyDown);
     return () => mf.removeEventListener('keydown', handleKeyDown);
-  }, [mode, activeStyles, applyCurrentTypingStyles, updateActiveStyles, isRtlInput, numeralMode]);
+  }, [mode, activeStyles, applyCurrentTypingStyles, updateActiveStyles, isRtlInput, numeralMode, spacingMode]);
 
 
 
@@ -4725,6 +4839,51 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     if (!mf) return;
     mf.focus();
     mf.executeCommand(['insert', sym]);
+  }, []);
+
+  const insertSpacingToolAtCursor = useCallback((sym) => {
+    const mf = popupMfRef.current;
+    if (!mf) return;
+
+    mf.focus();
+
+    if (sym === '\\hphantom{0}') {
+      mf.executeCommand(['insert', '\\hphantom{0}']);
+      return;
+    }
+
+    if (sym === '\\,') {
+      setSpacingMode('thin');
+      mf.executeCommand(['insert', '\\,']);
+      return;
+    }
+
+    if (sym === '\\!') {
+      setSpacingMode('negativeThin');
+      mf.executeCommand(['insert', '\\!']);
+    }
+  }, []);
+
+  const applyMoveTextAction = useCallback((direction) => {
+    const mf = popupMfRef.current;
+    const template = MOVE_TEXT_TEMPLATE_MAP[direction];
+    if (!mf || !template) return;
+
+    mf.focus();
+
+    if (mf.selectionIsCollapsed) {
+      return;
+    }
+
+    if (typeof mf.insert === 'function') {
+      mf.insert(template.selection, {
+        insertionMode: 'replaceSelection',
+        selectionMode: 'after',
+      });
+      return;
+    }
+
+    mf.executeCommand(['insert', template.selection]);
   }, []);
 
   const handleMatrixInsert = useCallback((type, rows, cols) => {
@@ -5329,6 +5488,14 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                         } else if (item.action === 'EASTERN_ARABIC_INDIC_NUMERALS') {
                           setNumeralMode((current) => (current === 'easternArabicIndic' ? 'western' : 'easternArabicIndic'));
                           requestAnimationFrame(() => popupMfRef.current?.focus?.());
+                        } else if (item.action === 'MOVE_TEXT_UP') {
+                          applyMoveTextAction('up');
+                        } else if (item.action === 'MOVE_TEXT_RIGHT') {
+                          applyMoveTextAction('right');
+                        } else if (item.action === 'MOVE_TEXT_LEFT') {
+                          applyMoveTextAction('left');
+                        } else if (item.action === 'MOVE_TEXT_DOWN') {
+                          applyMoveTextAction('down');
                         } else if (item.action === 'BLACKBOARD') {
                           insertAtCursor('\\mathbb{#0}');
                         } else if (item.action === 'GREEK') {
@@ -5352,6 +5519,12 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                             }
                             mf.focus?.();
                           }
+                        } else if (
+                          item.insert === '\\hphantom{0}' ||
+                          item.insert === '\\,' ||
+                          item.insert === '\\!'
+                        ) {
+                          insertSpacingToolAtCursor(item.insert);
                         } else {
                           insertAtCursor(item.insert);
                         }
