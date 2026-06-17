@@ -297,9 +297,10 @@
   min-width: 24px;
   height: 24px;
   padding: 0 3px;
-  border: 1px solid #c5d0d8;
+  border: 1px solid #E6EDF2;
+  border-image: #E6EDF2;
   border-radius: 2px;
-  background: linear-gradient(180deg, #ffffff 0%, #edf3f7 100%);
+  background: #E6EDF2;
   color: #22343d;
   font-size: 11px;
   font-family: "Latin Modern Math", "STIX Two Math", "Times New Roman", serif;
@@ -312,7 +313,7 @@
   line-height: 1;
   user-select: none;
   box-sizing: border-box;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  /* box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92); */
 }
 
 .cme-btn:hover {
