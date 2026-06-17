@@ -124,6 +124,17 @@
   line-height: 1;
 }
 
+.cme-tab-icon--svg {
+  width: 46px;
+  height: 20px;
+}
+
+.cme-tab-svg-icon {
+  display: block;
+  width: 46px;
+  height: 20px;
+}
+
 .cme-tab-icon-top,
 .cme-tab-icon-bottom {
   display: block;

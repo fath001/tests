@@ -133,10 +133,52 @@ function renderToolbarItemLabel(item) {
   return item.label;
 }
 
+function RootFractionTabIcon() {
+  return (
+    <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
+      <svg className="cme-tab-svg-icon" viewBox="0 0 48 24" focusable="false">
+        <path
+          d="M2 13 L5 13 L7 18 L10 4 L20 4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <rect x="13" y="7" width="8" height="8" fill="none" stroke="currentColor" strokeWidth="1.2" />
+        <rect x="31" y="3" width="6" height="6" fill="none" stroke="currentColor" strokeWidth="1.2" />
+        <line x1="29" y1="12" x2="39" y2="12" stroke="currentColor" strokeWidth="1.2" />
+        <rect x="31" y="15" width="6" height="6" fill="none" stroke="currentColor" strokeWidth="1.2" />
+      </svg>
+    </span>
+  );
+}
+
 /* ─────────────────────────────────────────────────────────────
    Symbol / Template definitions
 ───────────────────────────────────────────────────────────── */
 const MATH_GROUPS = [
+  {
+    label: <RootFractionTabIcon />,
+    isTemplate: true,
+    items: [
+      { label: "a/b", insert: "\\frac{#0}{#?}" },
+      { label: "xⁿ", insert: "#0^{#?}" },
+      { label: "xₙ", insert: "#0_{#?}" },
+      { label: "√x", insert: "\\sqrt{#0}" },
+      { label: "ⁿ√x", insert: "\\sqrt[#?]{#0}" },
+      { label: "()", insert: "\\left(#0\\right)" },
+      { label: "[]", insert: "\\left[#0\\right]" },
+      { label: "|x|", insert: "\\left|#0\\right|" },
+      { label: "lim", insert: "\\lim_{#?}" },
+      { label: "∫dx", insert: "\\int_{#?}^{#?}" },
+      { label: "∑", insert: "\\sum_{#?}^{#?}" },
+      { label: "matrix", insert: "\\begin{pmatrix} #? & #? \\\\ #? & #? \\end{pmatrix}" },
+      { label: "vec", insert: "\\vec{#0}" },
+      { label: "hat", insert: "\\hat{#0}" },
+      { label: "bar", insert: "\\bar{#0}" },
+    ],
+  },
   {
     label: "αβγ",
     items: [
@@ -193,27 +235,6 @@ const MATH_GROUPS = [
       { label: "∅", insert: "\\emptyset" },
       { label: "√", insert: "\\sqrt{#0}" },
       { label: "∛", insert: "\\sqrt[3]{#0}" },
-    ],
-  },
-  {
-    label: "□/□",
-    isTemplate: true,
-    items: [
-      { label: "a/b", insert: "\\frac{#0}{#?}" },
-      { label: "xⁿ", insert: "#0^{#?}" },
-      { label: "xₙ", insert: "#0_{#?}" },
-      { label: "√x", insert: "\\sqrt{#0}" },
-      { label: "ⁿ√x", insert: "\\sqrt[#?]{#0}" },
-      { label: "()", insert: "\\left(#0\\right)" },
-      { label: "[]", insert: "\\left[#0\\right]" },
-      { label: "|x|", insert: "\\left|#0\\right|" },
-      { label: "lim", insert: "\\lim_{#?}" },
-      { label: "∫dx", insert: "\\int_{#?}^{#?}" },
-      { label: "∑", insert: "\\sum_{#?}^{#?}" },
-      { label: "matrix", insert: "\\begin{pmatrix} #? & #? \\\\ #? & #? \\end{pmatrix}" },
-      { label: "vec", insert: "\\vec{#0}" },
-      { label: "hat", insert: "\\hat{#0}" },
-      { label: "bar", insert: "\\bar{#0}" },
     ],
   },
   {

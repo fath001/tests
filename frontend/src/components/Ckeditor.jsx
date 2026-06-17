@@ -269,10 +269,10 @@ const MATH_GROUPS = [
       { type: 'sep', cols: 2 },
       { label: '□⏟□', insert: '\\underbrace{#?}_{#?}', cls: 'template', directInsert: true, title: 'Underbrace', icon: 'underbrace-template-image' },
       { label: '□⏞□', insert: '\\overbrace{#?}^{#?}', cls: 'template', directInsert: true, title: 'Overbrace', icon: 'overbrace-template-image' },
-      { label: '□\n▯\n□', insert: '\\underset{#?}{\\overset{#?}{#?}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image' },
-      { label: '▯\n□', insert: '\\underset{#?}{#?}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image' },
-      { label: '▯^□_□', insert: '#?^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
-      { label: '▯_□', insert: '#?_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
+      { label: '□\n▯\n□', insert: '\\displaystyle{\\underset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.34em;line-height:1.15}{#?}}{\\overset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-bottom:0.34em;line-height:1.15}{#?}}{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}}}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image' },
+      { label: '▯\n□', insert: '\\displaystyle{\\underset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.34em;line-height:1.15}{#?}}{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}}}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image' },
+      { label: '▯^□_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}^{\\htmlStyle{font-size:1.1em;display:inline-block;padding-bottom:0.26em;line-height:1.15}{#?}}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
+      { label: '▯_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
       { label: 'hphantom', insert: '\\hphantom{0}', cls: 'template', directInsert: true, title: 'Horizontal Phantom Space', icon: 'hphantom-space-template-image' },
       { label: 'thin-space', insert: '\\,', cls: 'template', directInsert: true, title: 'Thin Space', icon: 'thin-space-template-image' },
       { label: 'negative-space', insert: '\\!', cls: 'template', directInsert: true, title: 'Negative Thin Space', icon: 'negative-thin-space-template-image' },
@@ -319,8 +319,8 @@ const MATH_GROUPS = [
       { label: 'A→', insert: '\\xrightarrow{#0}', title: 'Arrow with label above', icon: 'arrow-label-right-above' },
       { label: 'A←', insert: '\\xleftarrow{#0}', title: 'Left arrow with label above', icon: 'arrow-label-left-above' },
       { label: '→A', insert: '\\xrightarrow[#?]{}', title: 'Arrow with label below', icon: 'arrow-label-right-below' },
-      { label: 'A→B', insert: '\\xrightarrow[#?]{#0}', title: 'Arrow with labels above and below', icon: 'arrow-label-right-above-below' },
       { label: '←A', insert: '\\xleftarrow[#?]{}', title: 'Left arrow with label below', icon: 'arrow-label-left-below' },
+      { label: 'A→B', insert: '\\xrightarrow[#?]{#0}', title: 'Arrow with labels above and below', icon: 'arrow-label-right-above-below' },
       { label: 'A←B', insert: '\\xleftarrow[#?]{#0}', title: 'Left arrow with labels above and below', icon: 'arrow-label-left-above-below' },
       { label: '|', action: 'ARROW_LABEL_PICKER', title: 'More Labelled Arrows', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool arrow-label-picker-tool' },
 
@@ -453,8 +453,8 @@ const MATH_GROUPS = [
       { type: 'sep', cols: 2 },
       { label: '□ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}', cls: 'template', directInsert: true },
       { label: '□ & □', insert: '\\begin{pmatrix} #? & #? \\end{pmatrix}', cls: 'template', directInsert: true },
-      { label: '□ \\ □ \\ □', insert: '\\begin{bmatrix} #? \\\\ #? \\\\ #? \\end{bmatrix}', cls: 'template', directInsert: true },
-      { label: '□ \\ □ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\\\ #? \\end{pmatrix}', cls: 'template', directInsert: true },
+      // { label: '□ \\ □ \\ □', insert: '\\begin{bmatrix} #? \\\\ #? \\\\ #? \\end{bmatrix}', cls: 'template', directInsert: true },
+      // { label: '□ \\ □ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\\\ #? \\end{pmatrix}', cls: 'template', directInsert: true },
 
 
       { type: 'sep', cols: 2 },
@@ -554,22 +554,22 @@ const RELATIONS_TAB_ITEMS = [
   { label: 'cancel', insert: '\\cancel{#0}', title: 'Negate / Cross Out', icon: 'negate-template-image' },
   { type: 'sep', cols: 1 },
   { label: '+', insert: '+' },
-  { label: '×', insert: '\\times' },
   { label: '·', insert: '\\cdot' },
   { label: '−', insert: '-' },
-  { label: '÷', insert: '\\div' },
   { label: '/', insert: '/' },
+  { label: '×', insert: '\\times' },
   { label: '±', insert: '\\pm' },
+  { label: '÷', insert: '\\div' },
   { label: '*', insert: '\\ast' },
-  { label: '°', insert: '\\degree' },
+  { label: '∘', insert: '∘' },
   makeRelationMorePicker('operatorExtras', 'More Operators'),
 
   { type: 'sep', cols: 5 },
   { label: 'π', insert: '\\pi' },
-  { label: '∂', insert: '\\partial' },
-  { label: '°', insert: '\\degree' },
   { label: '∞', insert: '\\infty' },
+  { label: '∂', insert: '\\partial' },
   { label: 'Δ', insert: '\\Delta' },
+  { label: '°', insert: '\\degree' },
   { label: '′', insert: "'", cls: 'prime-symbol-tool' },
   { label: '∅', insert: '\\emptyset' },
   { label: '∇', insert: '\\nabla' },
@@ -914,6 +914,23 @@ const HEBREW_SYMBOL_PICKER_ITEMS = [
   { label: 'ℱ', insert: '\\mathscr{F}', title: 'Script F' },
 ];
 
+const ARABIC_INDIC_DIGITS = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+const EASTERN_ARABIC_INDIC_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+
+function convertDigitsToNumeralSystem(value, numeralMode) {
+  if (!value || numeralMode === 'western') return value;
+
+  const digits = numeralMode === 'arabicIndic'
+    ? ARABIC_INDIC_DIGITS
+    : numeralMode === 'easternArabicIndic'
+      ? EASTERN_ARABIC_INDIC_DIGITS
+      : null;
+
+  if (!digits) return value;
+
+  return String(value).replace(/\d/g, (digit) => digits[Number(digit)] || digit);
+}
+
 const PERIODIC_TABLE_CELL_SIZE = 31;
 const PERIODIC_TABLE_GAP = 2;
 const PERIODIC_TABLE_PITCH = PERIODIC_TABLE_CELL_SIZE + PERIODIC_TABLE_GAP;
@@ -1117,31 +1134,32 @@ const FONT_SIZE_OPTIONS = [
   { label: '16px', value: '7' },
   { label: '18px', value: '8' },
   { label: '24px', value: '10' },
-  { label: '36px', value: '12' },
-  { label: '48px', value: '14' },
-  { label: '72px', value: '18' },
+  // { label: '36px', value: '12' },
+  // { label: '48px', value: '14' },
+  // { label: '72px', value: '18' },
 ];
 
 const ORDERED_MATH_GROUPS = [
   {
     id: 'roots-main',
-    label: <TabIcon top="√□" bottom="□/□" />,
+    label: <RootFractionTabIcon />,
     items: [
       // GROUP 1 - Fractions & Roots (cols: 2)
       { label: '□/□', insert: '\\frac{#0}{#?}', title: 'Fraction', cls: 'green-template', icon: 'stacked-fraction' },
-      { label: '√□', insert: '\\sqrt{#0}', title: 'Square Root', cls: 'green-template', icon: 'square-root-template' },
       { label: '□/□', insert: '{#0}/{#?}', title: 'Bevelled Fraction', cls: 'green-template' },
+      { label: '√□', insert: '\\sqrt{#0}', title: 'Square Root', cls: 'green-template', icon: 'square-root-template' },
       { label: '□√□', insert: '\\sqrt[#?]{#0}', title: 'Root', cls: 'green-template', icon: 'nth-root-template' },
       { type: 'sep', cols: 2 },
       // GROUP 2a - Brackets (cols: 2)
-      { label: '(□)', insert: '\\left(#0\\right)', title: 'Parentheses', cls: 'green-template' },
-      { label: '[□]', insert: '\\left[#0\\right]', title: 'Square Brackets', cls: 'green-template' },
-      { label: '|□|', insert: '\\left|#0\\right|', title: 'Absolute Value', cls: 'green-template' },
-      { label: '{□}', insert: '\\left\\{#0\\right\\}', title: 'Curly Braces', cls: 'green-template' },
-      { type: 'sep', cols: 1 },
-      // GROUP 2b - Super/Subscript (cols: 1)
       { label: '□^□', insert: '#0^{#?}', title: 'Superscript', cls: 'green-template', icon: 'superscript-template' },
       { label: '□_□', insert: '#0_{#?}', title: 'Subscript', cls: 'green-template', icon: 'subscript-template' },
+      
+      { type: 'sep', cols: 1 },
+      // GROUP 2b - Super/Subscript (cols: 1)
+      { label: '(□)', insert: '\\left(#0\\right)', title: 'Parentheses', cls: 'green-template' },
+      { label: '|□|', insert: '\\left|#0\\right|', title: 'Absolute Value', cls: 'green-template' },
+      { label: '[□]', insert: '\\left[#0\\right]', title: 'Square Brackets', cls: 'green-template' },
+      { label: '{□}', insert: '\\left\\{#0\\right\\}', title: 'Curly Braces', cls: 'green-template' },
       { type: 'sep', cols: 3 },
       // GROUP 3 - Operators (cols: 3)
       { label: '+', insert: '+' },
@@ -1153,13 +1171,13 @@ const ORDERED_MATH_GROUPS = [
       { type: 'sep', cols: 3 },
       // GROUP 4 - Relations (cols: 4)
       { label: '≥', insert: '\\geq' },
-      { label: '=', insert: '=' },
-      { label: '∩', insert: '\\cap' },
-      { label: '⊂', insert: '\\subset' },
       { label: '≤', insert: '\\leq' },
-      { label: '≠', insert: '\\neq' },
-      { label: '∈', insert: '\\in' },
+      { label: '∩', insert: '\\cap' },
       { label: '∪', insert: '\\cup' },
+      { label: '=', insert: '=' },
+        { label: '≠', insert: '\\neq' },
+      { label: '⊂', insert: '\\subset' },
+      { label: '∈', insert: '\\in' },
       { type: 'sep', cols: 4 },
       // GROUP 5 - Symbols (cols: 2)
       { label: '∅', insert: '\\emptyset' },
@@ -1198,7 +1216,7 @@ const ORDERED_MATH_GROUPS = [
   {
     id: 'arrows',
     ...MATH_GROUPS[4],
-    label: <TabIcon top="→⋯" compact />,
+    label: <ArrowTabIcon />,
   },
   {
     id: 'greek',
@@ -1255,6 +1273,9 @@ const ORDERED_MATH_GROUPS = [
       { category: 'Hebrew Mathematical Symbols', label: '𝓁', insert: '\\ell' },
       { category: 'Hebrew Mathematical Symbols', label: '|', action: 'HEBREW_SYMBOL_PICKER', title: 'More Hebrew Mathematical Symbols', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool hebrew-symbol-picker-tool' },
 
+      { category: 'Arabic-Indic Numeral Systems', label: '٤٦', action: 'ARABIC_INDIC_NUMERALS', title: 'Arabic-Indic Numerals', icon: 'arabic-indic-numerals-template-image', cls: 'numeral-mode-tool' },
+      { category: 'Arabic-Indic Numeral Systems', label: '۴۶', action: 'EASTERN_ARABIC_INDIC_NUMERALS', title: 'Eastern Arabic-Indic Numerals (Persian/Urdu)', icon: 'eastern-arabic-indic-numerals-template-image', cls: 'numeral-mode-tool' },
+
       { category: 'Blackboard Bold / Number Sets', label: 'H', insert: 'H' },
       { category: 'Blackboard Bold / Number Sets', label: 'C', insert: 'C' },
       { category: 'Blackboard Bold / Number Sets', label: 'N', insert: 'N' },
@@ -1267,16 +1288,16 @@ const ORDERED_MATH_GROUPS = [
   {
     id: 'matrix',
     ...MATH_GROUPS[11],
-    label: <TabIcon top="⌗⌘" compact />,
+    label: <MatrixTabIcon />,
   },
   {
     id: 'power-frac',
     ...MATH_GROUPS[2],
-    label: <TabIcon top="□^□" bottom="□_□" />,
+    label: <PowerFracTabIcon />,
   },
   {
     id: 'brackets',
-    label: <TabIcon top="( )[ ]" compact />,
+    label: <BracketsTabIcon />,
     items: [
       { label: '(□)', insert: '\\left(#0\\right)' },
       { label: '[□]', insert: '\\left[#0\\right]' },
@@ -1302,7 +1323,7 @@ const ORDERED_MATH_GROUPS = [
       { label: '¨\n▯', insert: '\\ddot{#?}', cls: 'template', directInsert: true, title: 'Double Dot Accent', icon: 'ddot-accent-template-image' },
       { label: '˙\n▯', insert: '\\dot{#?}', cls: 'template', directInsert: true, title: 'Dot Accent', icon: 'dot-accent-template-image' },
       { type: 'sep', cols: 2 },
-      { label: '¯\n▯', insert: '\\overline{#?}aa', cls: 'template', directInsert: true, title: 'Overline', icon: 'overline-frame-template-image' },
+      { label: '¯\n▯', insert: '\\overline{#?}', cls: 'template', directInsert: true, title: 'Overline', icon: 'overline-frame-template-image' },
       { label: '_\n▯', insert: '\\underline{#?}', cls: 'template', directInsert: true, title: 'Underline', icon: 'underline-frame-template-image' },
       { label: '|\n▯', insert: '\\left|#?\\right.', cls: 'template', directInsert: true, title: 'Left Bar', icon: 'left-bar-template-image' },
       { label: '▯\n|', insert: '\\left.#?\\right|', cls: 'template', directInsert: true, title: 'Right Bar', icon: 'right-bar-template-image' },
@@ -1313,7 +1334,7 @@ const ORDERED_MATH_GROUPS = [
       { type: 'sep', cols: 2 },
       { label: '╱\n▯', insert: '\\cancel{#?}', cls: 'template', directInsert: true, title: 'Cancel', icon: 'cancel-diagonal-template-image' },
       { label: '╲\n▯', insert: '\\bcancel{#?}', cls: 'template', directInsert: true, title: 'Backward Cancel', icon: 'bcancel-template-image' },
-      { label: '─\n▯', insert: '\\text{\\sout{#?}}', cls: 'template', directInsert: true, title: 'Strikeout Text', icon: 'sout-template-image' },
+      { label: '─\n▯', insert: '\\enclose{horizontalstrike}{#?}', cls: 'template', directInsert: true, title: 'Strikeout Text', icon: 'sout-template-image' },
       { label: '╳\n▯', insert: '\\xcancel{#?}', cls: 'template', directInsert: true, title: 'Cross Cancel', icon: 'xcancel-template-image' },
       { label: '│\n▯', insert: '\\enclose{verticalstrike}{#?}', cls: 'template', directInsert: true, title: 'Vertical Strike', icon: 'vertical-strike-template-image' },
       { label: ')\n¯', insert: '\\overline{\\left)#?\\right.}', cls: 'template', directInsert: true, title: 'Overline with Curved Left Boundary', icon: 'overline-left-curve-template-image' },
@@ -1332,10 +1353,10 @@ const ORDERED_MATH_GROUPS = [
       { label: 'prod-limits-lower', insert: '\\prod\\limits_{#?}', cls: 'template', directInsert: true, title: 'Product With Lower Limit', icon: 'prod-limits-lower-template-image' },
       { label: 'prod-right-both', insert: '\\prod\\nolimits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Superscript and Subscript', icon: 'prod-right-both-template-image' },
       { label: 'prod-right-lower', insert: '\\prod\\nolimits_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Subscript', icon: 'prod-right-lower-template-image' },
-      { label: '□\n▯\n□', insert: '\\underset{#?}{\\overset{#?}{#?}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image' },
-      { label: '▯\n□', insert: '\\underset{#?}{#?}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image' },
-      { label: '▯^□_□', insert: '#?^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
-      { label: '▯_□', insert: '#?_{#?}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
+      { label: '□\n▯\n□', insert: '\\displaystyle{\\underset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.34em;line-height:1.15}{#?}}{\\overset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-bottom:0.34em;line-height:1.15}{#?}}{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}}}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image' },
+      { label: '▯\n□', insert: '\\displaystyle{\\underset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.34em;line-height:1.15}{#?}}{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}}}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image' },
+      { label: '▯^□_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}^{\\htmlStyle{font-size:1.1em;display:inline-block;padding-bottom:0.26em;line-height:1.15}{#?}}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
+      { label: '▯_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
       { label: '⋂', insert: '\\bigcap' },
       { label: '⋃', insert: '\\bigcup' },
       { label: '∏', insert: '\\prod' },
@@ -1347,7 +1368,7 @@ const ORDERED_MATH_GROUPS = [
   },
   {
     id: 'calc',
-    label: <TabIcon top="∫" bottom="lim" />,
+    label: <CalcTabIcon />,
     isTemplate: true,
     items: [
       { label: 'integral-both', insert: '\\int_{#?}^{#?}', cls: 'template', directInsert: true, title: 'Definite Integral', icon: 'integral-both-template-image' },
@@ -1384,21 +1405,6 @@ const ORDERED_MATH_GROUPS = [
       { label: 'sec(□)', insert: '\\sec\\left(#0\\right)' },
       { label: 'tan⁻¹(□)', insert: '\\tan^{-1}\\left(#0\\right)' },
       { label: 'cot(□)', insert: '\\cot\\left(#0\\right)' },
-    ],
-  },
-  {
-    id: 'format',
-    label: <TabIcon top="↺" compact />,
-    items: [
-      { type: 'dropdown', label: 'Font...', width: '92px' },
-      { type: 'dropdown', label: 'Size', width: '86px' },
-      { type: 'sep', cols: 2 },
-      { label: 'sin(□)', insert: '\\sin\\left(#0\\right)' },
-      { label: 'cos(□)', insert: '\\cos\\left(#0\\right)' },
-      { label: 'tan(□)', insert: '\\tan\\left(#0\\right)' },
-      { label: 'log₁₀', insert: '\\log_{10}' },
-      { label: 'log₂', insert: '\\log_{2}' },
-      { label: 'ln(□)', insert: '\\ln\\left(#0\\right)' },
     ],
   },
 ];
@@ -1480,6 +1486,123 @@ function TabIcon({ top, bottom = '', compact = false }) {
     <span className={`cme-tab-icon${compact ? ' compact' : ''}`} aria-hidden="true">
       <span className="cme-tab-icon-top">{top}</span>
       {bottom ? <span className="cme-tab-icon-bottom">{bottom}</span> : null}
+    </span>
+  );
+}
+
+function RootFractionTabIcon() {
+  return (
+    <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
+      <svg className="cme-tab-svg-icon" viewBox="0 0 48 24" focusable="false">
+        <path
+          d="M2 13 L5 13 L7 18 L10 4 L20 4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <rect x="13" y="7" width="8" height="8" fill="none" stroke="currentColor" strokeWidth="1.2" />
+        <rect x="31" y="3" width="6" height="6" fill="none" stroke="currentColor" strokeWidth="1.2" />
+        <line x1="29" y1="12" x2="39" y2="12" stroke="currentColor" strokeWidth="1.2" />
+        <rect x="31" y="15" width="6" height="6" fill="none" stroke="currentColor" strokeWidth="1.2" />
+      </svg>
+    </span>
+  );
+}
+
+function MatrixTabIcon() {
+  return (
+    <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
+      <svg className="cme-tab-svg-icon" viewBox="0 0 210 110" focusable="false">
+        <path d="M12 8 H4 V102 H12" fill="none" stroke="currentColor" strokeWidth="3" />
+        <path d="M96 8 H104 V102 H96" fill="none" stroke="currentColor" strokeWidth="3" />
+        <rect x="28" y="15" width="14" height="24" fill="none" stroke="#ffffff" strokeWidth="2.5" />
+        <rect x="64" y="15" width="14" height="24" fill="none" stroke="#ffffff" strokeWidth="2.5" />
+        <rect x="28" y="63" width="14" height="24" fill="none" stroke="#ffffff" strokeWidth="2.5" />
+        <rect x="64" y="63" width="14" height="24" fill="none" stroke="#ffffff" strokeWidth="2.5" />
+        <path
+          d="M142 8 C132 8 132 18 132 28 C132 38 128 45 124 49 C128 53 132 60 132 70 C132 80 132 90 142 102"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+        />
+        <rect x="154" y="15" width="14" height="24" fill="none" stroke="#ffffff" strokeWidth="2.5" />
+        <rect x="154" y="63" width="14" height="24" fill="none" stroke="#ffffff" strokeWidth="2.5" />
+      </svg>
+    </span>
+  );
+}
+
+function PowerFracTabIcon() {
+  return (
+    <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
+      <svg className="cme-tab-svg-icon" viewBox="0 0 70 50" focusable="false">
+        <rect x="8" y="18" width="14" height="14" fill="none" stroke="#ffffff" strokeWidth="2.5" />
+        <rect x="20" y="6" width="14" height="14" fill="none" stroke="#ffffff" strokeWidth="2.5" />
+        <rect x="50" y="6" width="8" height="8" fill="none" stroke="#ffffff" strokeWidth="2.5" />
+        <rect x="48" y="22" width="12" height="12" fill="none" stroke="#ffffff" strokeWidth="2.5" />
+      </svg>
+    </span>
+  );
+}
+
+function BracketsTabIcon() {
+  return (
+    <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
+      <svg className="cme-tab-svg-icon" viewBox="0 0 120 90" focusable="false">
+        <g
+          fill="none"
+          stroke="#ffffff"
+          strokeWidth="4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M22 15 C8 28 8 62 22 75" />
+          <path d="M58 15 C72 28 72 62 58 75" />
+          <rect x="30" y="22" width="20" height="36" />
+          <rect x="82" y="22" width="20" height="36" />
+          <path d="M80 12 Q92 2 104 12" />
+        </g>
+      </svg>
+    </span>
+  );
+}
+
+function CalcTabIcon() {
+  return (
+    <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
+      <svg className="cme-tab-svg-icon" viewBox="0 0 120 80" focusable="false">
+        <g fill="none" stroke="#ffffff" strokeWidth="2.5">
+          <path d="M18 68 C30 68 30 56 30 42 L30 24 C30 12 34 8 42 8" />
+          <rect x="48" y="8" width="14" height="14" />
+          <rect x="48" y="54" width="14" height="14" />
+        </g>
+        <text
+          x="78"
+          y="48"
+          fontFamily="Times New Roman, serif"
+          fontSize="28"
+          fill="#ffffff"
+        >
+          lim
+        </text>
+      </svg>
+    </span>
+  );
+}
+
+function ArrowTabIcon() {
+  return (
+    <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
+      <svg className="cme-tab-svg-icon" viewBox="0 0 64 24" focusable="false">
+        <g fill="#ffffff">
+          <path d="M4 10h20V5l12 7-12 7v-5H4z" />
+          <circle cx="44" cy="18" r="2.5" />
+          <circle cx="52" cy="12" r="2.5" />
+          <circle cx="60" cy="6" r="2.5" />
+        </g>
+      </svg>
     </span>
   );
 }
@@ -2705,6 +2828,16 @@ const TOOLBAR_ICON_IMAGES = {
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
       <rect x="8.6" y="2.5" width="4.3" height="18.5" rx="1.4" fill="#89a5b6" />
       <path d="M12.8 15L17 18.1L12.8 21.2Z" fill="#ffffff" />
+    </svg>
+  `),
+  'arabic-indic-numerals-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+      <text x="4" y="36" font-family="Amiri, Noto Naskh Arabic, serif" font-size="38" fill="#000">٤٦</text>
+    </svg>
+  `),
+  'eastern-arabic-indic-numerals-template-image': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+      <text x="4" y="36" font-size="36" font-family="sans-serif" fill="#000">۴۶</text>
     </svg>
   `),
 };
@@ -4015,6 +4148,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     fontOption: '',
     fontSize: 'auto'
   });
+  const [numeralMode, setNumeralMode] = useState('western'); // western | arabicIndic | easternArabicIndic
 
   useEffect(() => {
     const mf = popupMfRef.current;
@@ -4279,6 +4413,23 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     };
 
     const handleKeyDown = (e) => {
+      const isPlainDigitKey =
+        /^\d$/.test(e.key) &&
+        !e.ctrlKey &&
+        !e.metaKey &&
+        !e.altKey;
+
+      if (numeralMode !== 'western' && isPlainDigitKey) {
+        e.preventDefault();
+        const localizedDigit = convertDigitsToNumeralSystem(e.key, numeralMode);
+        if (isRtlInput) {
+          writeValue(`${localizedDigit}${readValue()}`);
+        } else {
+          mf.executeCommand(['insert', localizedDigit]);
+        }
+        return;
+      }
+
       if (e.key === ' ') {
         e.preventDefault();
         if (isRtlInput) {
@@ -4321,7 +4472,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     };
     mf.addEventListener('keydown', handleKeyDown);
     return () => mf.removeEventListener('keydown', handleKeyDown);
-  }, [mode, activeStyles, applyCurrentTypingStyles, updateActiveStyles, isRtlInput]);
+  }, [mode, activeStyles, applyCurrentTypingStyles, updateActiveStyles, isRtlInput, numeralMode]);
 
 
 
@@ -4460,6 +4611,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                 'Uppercase Greek Letters': 2,
                 'Fraktur / Gothic Symbols': 2,
                 'Hebrew Mathematical Symbols': 1,
+                'Arabic-Indic Numeral Systems': 2,
                 'Blackboard Bold / Number Sets': 2,
               };
 
@@ -4486,6 +4638,8 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           const isFrakturScriptPickerBtn = item.action === 'FRAKTUR_SCRIPT_PICKER';
                           const isHebrewSymbolPickerBtn = item.action === 'HEBREW_SYMBOL_PICKER';
                           const isPeriodicTablePickerBtn = item.action === 'PERIODIC_TABLE_PICKER';
+                          const isArabicIndicNumeralsBtn = item.action === 'ARABIC_INDIC_NUMERALS';
+                          const isEasternArabicIndicNumeralsBtn = item.action === 'EASTERN_ARABIC_INDIC_NUMERALS';
                           const isTouchedButton = isGreekItalicPickerBtn
                             ? !!showGreekItalicPicker
                             : isBlackboardBoldPickerBtn
@@ -4496,6 +4650,10 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                                   ? !!showHebrewSymbolPicker
                                   : isPeriodicTablePickerBtn
                                     ? !!showPeriodicTablePicker
+                                    : isArabicIndicNumeralsBtn
+                                      ? numeralMode === 'arabicIndic'
+                                      : isEasternArabicIndicNumeralsBtn
+                                        ? numeralMode === 'easternArabicIndic'
                                     : activeToolbarItem === buttonKey;
 
                           return (
@@ -4580,6 +4738,34 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                                   setShowPeriodicTablePicker((prev) => (
                                     prev ? null : { x: rect.left, y: rect.bottom + 4 }
                                   ));
+                                  return;
+                                }
+                                if (item.action === 'ARABIC_INDIC_NUMERALS') {
+                                  setShowArrowPicker(null);
+                                  setShowArrowLabelPicker(null);
+                                  setShowColorPicker(null);
+                                  setShowSpecialChars(null);
+                                  setShowGreekItalicPicker(null);
+                                  setShowBlackboardBoldPicker(null);
+                                  setShowFrakturScriptPicker(null);
+                                  setShowHebrewSymbolPicker(null);
+                                  setShowPeriodicTablePicker(null);
+                                  setNumeralMode((current) => (current === 'arabicIndic' ? 'western' : 'arabicIndic'));
+                                  requestAnimationFrame(() => popupMfRef.current?.focus?.());
+                                  return;
+                                }
+                                if (item.action === 'EASTERN_ARABIC_INDIC_NUMERALS') {
+                                  setShowArrowPicker(null);
+                                  setShowArrowLabelPicker(null);
+                                  setShowColorPicker(null);
+                                  setShowSpecialChars(null);
+                                  setShowGreekItalicPicker(null);
+                                  setShowBlackboardBoldPicker(null);
+                                  setShowFrakturScriptPicker(null);
+                                  setShowHebrewSymbolPicker(null);
+                                  setShowPeriodicTablePicker(null);
+                                  setNumeralMode((current) => (current === 'easternArabicIndic' ? 'western' : 'easternArabicIndic'));
+                                  requestAnimationFrame(() => popupMfRef.current?.focus?.());
                                   return;
                                 }
                                 insertAtCursor(item.insert);
@@ -4920,10 +5106,16 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           if (navigator.clipboard?.readText) {
                             void navigator.clipboard.readText().then((text) => {
                               if (text) {
-                                insertAtCursor(text);
+                                insertAtCursor(convertDigitsToNumeralSystem(text, numeralMode));
                               }
                             }).catch(() => {});
                           }
+                        } else if (item.action === 'ARABIC_INDIC_NUMERALS') {
+                          setNumeralMode((current) => (current === 'arabicIndic' ? 'western' : 'arabicIndic'));
+                          requestAnimationFrame(() => popupMfRef.current?.focus?.());
+                        } else if (item.action === 'EASTERN_ARABIC_INDIC_NUMERALS') {
+                          setNumeralMode((current) => (current === 'easternArabicIndic' ? 'western' : 'easternArabicIndic'));
+                          requestAnimationFrame(() => popupMfRef.current?.focus?.());
                         } else if (item.action === 'BLACKBOARD') {
                           insertAtCursor('\\mathbb{#0}');
                         } else if (item.action === 'GREEK') {
