@@ -677,79 +677,109 @@ const ARROW_PICKER_ITEMS = [
 
 const ARROW_LABEL_PICKER_ITEMS = [
   {
-    insert: '\\xleftrightarrow{#0}',
-    title: 'Left Right Arrow with Label Above',
-    icon: 'arrow-label-both-above',
-  },
-  {
-    insert: '\\xleftrightarrow[#?]{}',
-    title: 'Left Right Arrow with Label Below',
-    icon: 'arrow-label-both-below',
-  },
-  {
-    insert: '\\xleftrightarrow[#?]{#0}',
-    title: 'Left Right Arrow with Labels Above and Below',
-    icon: 'arrow-label-both-above-below',
-  },
-  {
-    insert: '\\xrightleftharpoons{#0}',
-    title: 'Equilibrium Harpoons with Label Above',
-    icon: 'harpoon-label-right-left-above',
-  },
-  {
-    insert: '\\xrightleftharpoons[#?]{}',
-    title: 'Equilibrium Harpoons with Label Below',
-    icon: 'harpoon-label-right-left-below',
-  },
-  {
-    insert: '\\xrightleftharpoons[#?]{#0}',
-    title: 'Equilibrium Harpoons with Labels Above and Below',
-    icon: 'harpoon-label-right-left-above-below',
-  },
-  {
-    insert: '\\xleftrightharpoons[#?]{#0}',
-    title: 'Reverse Equilibrium Harpoons with Labels Above and Below',
-    icon: 'harpoon-label-left-right-above-below',
-  },
-  {
-    insert: '\\xrightleftharpoons[#?]{#0}',
-    title: 'Bar Harpoons with Labels Above and Below',
-    icon: 'bar-harpoon-label-right-left-above-below',
-  },
-  {
-    insert: '\\xRightleftharpoons{#0}',
-    title: 'Bar Harpoons with Label Above',
-    icon: 'bar-harpoon-label-right-left-above',
-  },
-  {
-    insert: '\\xRightleftharpoons[#?]{}',
-    title: 'Bar Harpoons with Label Below',
-    icon: 'bar-harpoon-label-right-left-below',
-  },
-  {
-    insert: '\\xLeftrightharpoons[#?]{#0}',
-    title: 'Reverse Bar Harpoons with Labels Above and Below',
-    icon: 'bar-harpoon-label-left-right-above-below',
-  },
-  {
-    insert: '\\overset{#0}{\\rightleftarrows}',
-    title: 'Right Left Arrows with Label Above',
-    icon: 'bar-arrow-label-right-left-above',
-  },
-  {
-    insert: '\\overset{#0}{\\underset{#?}{\\rightleftarrows}}',
-    title: 'Right Left Arrows with Labels Above and Below',
-    icon: 'bar-arrow-label-right-left-above-below',
-  },
-  {
     insert: '\\xleftrightarrows{#0}',
-    title: 'Left Right Arrows with Label Above',
-    icon: 'bar-arrow-label-left-right-above',
+    title: 'Right Left Arrows with Overscript',
+    icon: 'right-left-arrows-over',
+  },
+  {
+    insert: '\\xleftrightarrows[#0]{}',
+    title: 'Right Left Arrows with Underscript',
+    icon: 'right-left-arrows-under',
   },
   {
     insert: '\\xleftrightarrows[#?]{#0}',
-    title: 'Left Right Arrows with Labels Above and Below',
-    icon: 'bar-arrow-label-left-right-above-below',
+    title: 'Right Left Arrows with Under and Overscript',
+    icon: 'right-left-arrows-over-under',
+  },
+  {
+    insert: '\\xleftrightarrows{#0}',
+    title: 'Left Arrow over Right Arrow with Overscript',
+    icon: 'left-right-arrows-over',
+  },
+  {
+    insert: '\\xleftrightarrows[#0]{}',
+    title: 'Left Arrow over Right Arrow with Underscript',
+    icon: 'left-right-arrows-under',
+  },
+  {
+    insert: '\\xleftrightarrows[#?]{#0}',
+    title: 'Left Arrow over Right Arrow with Under and Overscript',
+    icon: 'left-right-arrows-over-under',
+  },
+  {
+    insert: '\\xleftrightarrows{#0}',
+    title: 'Right Arrow over Left Arrow with Overscript',
+    icon: 'right-left-stacked-arrows-over',
+  },
+  {
+    insert: '\\xleftrightarrows[#0]{}',
+    title: 'Right Arrow over Left Arrow with Underscript',
+    icon: 'right-left-stacked-arrows-under',
+  },
+  {
+    insert: '\\xleftrightarrows[#?]{#0}',
+    title: 'Right Arrow over Left Arrow with Under and Overscript',
+    icon: 'right-left-stacked-arrows-over-under',
+  },
+  {
+    insert: '\\xleftrightharpoons{#0}',
+    title: 'Left Harpoon over Right Harpoon with Overscript',
+    icon: 'left-right-harpoons-over',
+  },
+  {
+    insert: '\\xleftrightharpoons[#0]{}',
+    title: 'Left Harpoon over Right Harpoon with Underscript',
+    icon: 'left-right-harpoons-under',
+  },
+  {
+    insert: '\\xleftrightharpoons[#?]{#0}',
+    title: 'Left Harpoon over Right Harpoon with Under and Overscript',
+    icon: 'left-right-harpoons-over-under',
+  },
+  {
+    insert: '\\xrightleftharpoons{#0}',
+    title: 'Right Harpoon over Left Harpoon with Overscript',
+    icon: 'right-left-harpoons-over',
+  },
+  {
+    insert: '\\xrightleftharpoons[#0]{}',
+    title: 'Right Harpoon over Left Harpoon with Underscript',
+    icon: 'right-left-harpoons-under',
+  },
+  {
+    insert: '\\xrightleftharpoons[#?]{#0}',
+    title: 'Right Harpoon over Left Harpoon with Under and Overscript',
+    icon: 'right-left-harpoons-over-under',
+  },
+  {
+    insert: '\\overset{#0}{\\rightleftarrows}',
+    title: 'Rightwards Arrow over Short Leftwards Arrow with Overscript',
+    icon: 'long-right-short-left-over',
+  },
+  {
+    insert: '\\underset{#0}{\\rightleftarrows}',
+    title: 'Rightwards Arrow over Short Leftwards Arrow with Underscript',
+    icon: 'long-right-short-left-under',
+  },
+  {
+    insert: '\\overset{#0}{\\underset{#?}{\\rightleftarrows}}',
+    title: 'Rightwards Arrow over Short Leftwards Arrow with Under and Overscript',
+    icon: 'long-right-short-left-over-under',
+  },
+  {
+    insert: '\\overset{#0}{\\leftrightarrows}',
+    title: 'Short Rightwards Arrow over Leftwards Arrow with Overscript',
+    icon: 'short-right-long-left-over',
+  },
+  {
+    insert: '\\underset{#0}{\\leftrightarrows}',
+    title: 'Short Rightwards Arrow over Leftwards Arrow with Underscript',
+    icon: 'short-right-long-left-under',
+  },
+  {
+    insert: '\\overset{#0}{\\underset{#?}{\\leftrightarrows}}',
+    title: 'Short Rightwards Arrow over Leftwards Arrow with Under and Overscript',
+    icon: 'short-right-long-left-over-under',
   },
 ];
 
@@ -1847,6 +1877,16 @@ function makeToolbarIconImage(svg) {
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
+function makeArrowLabelToolbarIcon(content) {
+  return makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <g fill="none" stroke="#1f252b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        ${content}
+      </g>
+    </svg>
+  `);
+}
+
 const TOOLBAR_ICON_IMAGES = {
   'fraction-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
@@ -2830,6 +2870,160 @@ const TOOLBAR_ICON_IMAGES = {
       <path d="M12.8 15L17 18.1L12.8 21.2Z" fill="#ffffff" />
     </svg>
   `),
+  'right-left-arrows-over': makeArrowLabelToolbarIcon(`
+    <rect x="10" y="1" width="4" height="4"/>
+    <line x1="4" y1="10" x2="20" y2="10"/>
+    <polyline points="17,8 20,10 17,12"/>
+    <line x1="20" y1="14" x2="4" y2="14"/>
+    <polyline points="7,12 4,14 7,16"/>
+  `),
+  'right-left-arrows-under': makeArrowLabelToolbarIcon(`
+    <line x1="4" y1="8" x2="20" y2="8"/>
+    <polyline points="17,6 20,8 17,10"/>
+    <line x1="20" y1="12" x2="4" y2="12"/>
+    <polyline points="7,10 4,12 7,14"/>
+    <rect x="10" y="18" width="4" height="4"/>
+  `),
+  'right-left-arrows-over-under': makeArrowLabelToolbarIcon(`
+    <rect x="10" y="1" width="4" height="4"/>
+    <line x1="4" y1="10" x2="20" y2="10"/>
+    <polyline points="17,8 20,10 17,12"/>
+    <line x1="20" y1="14" x2="4" y2="14"/>
+    <polyline points="7,12 4,14 7,16"/>
+    <rect x="10" y="19" width="4" height="4"/>
+  `),
+  'left-right-arrows-over': makeArrowLabelToolbarIcon(`
+    <rect x="10" y="1" width="4" height="4"/>
+    <line x1="20" y1="10" x2="4" y2="10"/>
+    <polyline points="7,8 4,10 7,12"/>
+    <line x1="4" y1="15" x2="20" y2="15"/>
+    <polyline points="17,13 20,15 17,17"/>
+  `),
+  'left-right-arrows-under': makeArrowLabelToolbarIcon(`
+    <line x1="20" y1="6" x2="4" y2="6"/>
+    <polyline points="7,4 4,6 7,8"/>
+    <line x1="4" y1="11" x2="20" y2="11"/>
+    <polyline points="17,9 20,11 17,13"/>
+    <rect x="10" y="18" width="4" height="4"/>
+  `),
+  'left-right-arrows-over-under': makeArrowLabelToolbarIcon(`
+    <rect x="10" y="1" width="4" height="4"/>
+    <line x1="20" y1="9" x2="4" y2="9"/>
+    <polyline points="7,7 4,9 7,11"/>
+    <line x1="4" y1="14" x2="20" y2="14"/>
+    <polyline points="17,12 20,14 17,16"/>
+    <rect x="10" y="19" width="4" height="4"/>
+  `),
+  'right-left-stacked-arrows-over': makeArrowLabelToolbarIcon(`
+    <rect x="10" y="1" width="4" height="4"/>
+    <line x1="4" y1="10" x2="20" y2="10"/>
+    <polyline points="17,8 20,10 17,12"/>
+    <line x1="20" y1="15" x2="4" y2="15"/>
+    <polyline points="7,13 4,15 7,17"/>
+  `),
+  'right-left-stacked-arrows-under': makeArrowLabelToolbarIcon(`
+    <line x1="4" y1="6" x2="20" y2="6"/>
+    <polyline points="17,4 20,6 17,8"/>
+    <line x1="20" y1="11" x2="4" y2="11"/>
+    <polyline points="7,9 4,11 7,13"/>
+    <rect x="10" y="18" width="4" height="4"/>
+  `),
+  'right-left-stacked-arrows-over-under': makeArrowLabelToolbarIcon(`
+    <rect x="10" y="1" width="4" height="4"/>
+    <line x1="4" y1="9" x2="20" y2="9"/>
+    <polyline points="17,7 20,9 17,11"/>
+    <line x1="20" y1="14" x2="4" y2="14"/>
+    <polyline points="7,12 4,14 7,16"/>
+    <rect x="10" y="19" width="4" height="4"/>
+  `),
+  'left-right-harpoons-over': makeArrowLabelToolbarIcon(`
+    <rect x="10" y="1" width="4" height="4"/>
+    <line x1="20" y1="10" x2="4" y2="10"/>
+    <line x1="4" y1="10" x2="7" y2="7"/>
+    <line x1="4" y1="15" x2="20" y2="15"/>
+    <line x1="20" y1="15" x2="17" y2="12"/>
+  `),
+  'left-right-harpoons-under': makeArrowLabelToolbarIcon(`
+    <line x1="20" y1="6" x2="4" y2="6"/>
+    <line x1="4" y1="6" x2="7" y2="3"/>
+    <line x1="4" y1="11" x2="20" y2="11"/>
+    <line x1="20" y1="11" x2="17" y2="8"/>
+    <rect x="10" y="18" width="4" height="4"/>
+  `),
+  'left-right-harpoons-over-under': makeArrowLabelToolbarIcon(`
+    <rect x="10" y="1" width="4" height="4"/>
+    <line x1="20" y1="9" x2="4" y2="9"/>
+    <line x1="4" y1="9" x2="7" y2="6"/>
+    <line x1="4" y1="14" x2="20" y2="14"/>
+    <line x1="20" y1="14" x2="17" y2="11"/>
+    <rect x="10" y="19" width="4" height="4"/>
+  `),
+  'right-left-harpoons-over': makeArrowLabelToolbarIcon(`
+    <rect x="10" y="1" width="4" height="4"/>
+    <line x1="4" y1="10" x2="20" y2="10"/>
+    <line x1="20" y1="10" x2="17" y2="7"/>
+    <line x1="20" y1="15" x2="4" y2="15"/>
+    <line x1="4" y1="15" x2="7" y2="12"/>
+  `),
+  'right-left-harpoons-under': makeArrowLabelToolbarIcon(`
+    <line x1="4" y1="6" x2="20" y2="6"/>
+    <line x1="20" y1="6" x2="17" y2="3"/>
+    <line x1="20" y1="11" x2="4" y2="11"/>
+    <line x1="4" y1="11" x2="7" y2="8"/>
+    <rect x="10" y="18" width="4" height="4"/>
+  `),
+  'right-left-harpoons-over-under': makeArrowLabelToolbarIcon(`
+    <rect x="10" y="1" width="4" height="4"/>
+    <line x1="4" y1="9" x2="20" y2="9"/>
+    <line x1="20" y1="9" x2="17" y2="6"/>
+    <line x1="20" y1="14" x2="4" y2="14"/>
+    <line x1="4" y1="14" x2="7" y2="11"/>
+    <rect x="10" y="19" width="4" height="4"/>
+  `),
+  'long-right-short-left-over': makeArrowLabelToolbarIcon(`
+    <rect x="10" y="1" width="4" height="4"/>
+    <line x1="3" y1="10" x2="20" y2="10"/>
+    <polyline points="17,8 20,10 17,12"/>
+    <line x1="15" y1="15" x2="8" y2="15"/>
+    <polyline points="11,13 8,15 11,17"/>
+  `),
+  'long-right-short-left-under': makeArrowLabelToolbarIcon(`
+    <line x1="3" y1="6" x2="20" y2="6"/>
+    <polyline points="17,4 20,6 17,8"/>
+    <line x1="15" y1="11" x2="8" y2="11"/>
+    <polyline points="11,9 8,11 11,13"/>
+    <rect x="10" y="18" width="4" height="4"/>
+  `),
+  'long-right-short-left-over-under': makeArrowLabelToolbarIcon(`
+    <rect x="10" y="1" width="4" height="4"/>
+    <line x1="3" y1="9" x2="20" y2="9"/>
+    <polyline points="17,7 20,9 17,11"/>
+    <line x1="15" y1="14" x2="8" y2="14"/>
+    <polyline points="11,12 8,14 11,16"/>
+    <rect x="10" y="19" width="4" height="4"/>
+  `),
+  'short-right-long-left-over': makeArrowLabelToolbarIcon(`
+    <rect x="10" y="1" width="4" height="4"/>
+    <line x1="8" y1="10" x2="15" y2="10"/>
+    <polyline points="12,8 15,10 12,12"/>
+    <line x1="20" y1="15" x2="3" y2="15"/>
+    <polyline points="6,13 3,15 6,17"/>
+  `),
+  'short-right-long-left-under': makeArrowLabelToolbarIcon(`
+    <line x1="8" y1="6" x2="15" y2="6"/>
+    <polyline points="12,4 15,6 12,8"/>
+    <line x1="20" y1="11" x2="3" y2="11"/>
+    <polyline points="6,9 3,11 6,13"/>
+    <rect x="10" y="18" width="4" height="4"/>
+  `),
+  'short-right-long-left-over-under': makeArrowLabelToolbarIcon(`
+    <rect x="10" y="1" width="4" height="4"/>
+    <line x1="8" y1="9" x2="15" y2="9"/>
+    <polyline points="12,7 15,9 12,11"/>
+    <line x1="20" y1="14" x2="3" y2="14"/>
+    <polyline points="6,12 3,14 6,16"/>
+    <rect x="10" y="19" width="4" height="4"/>
+  `),
   'arabic-indic-numerals-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
       <text x="4" y="36" font-family="Amiri, Noto Naskh Arabic, serif" font-size="38" fill="#000">٤٦</text>
@@ -3689,8 +3883,23 @@ function RelationMorePickerPopover({ position, items = [], onInsert }) {
 }
 
 function ArrowLabelPickerPopover({ position, onInsert }) {
-  const left = Math.min(Math.max(position.x - 8, 8), window.innerWidth - 196);
-  const top = Math.min(position.y + 2, window.innerHeight - 86);
+  const columns = 4;
+  const buttonWidth = 48;
+  const buttonHeight = 34;
+  const gap = 4;
+  const paddingX = 16;
+  const paddingY = 12;
+  const rows = Math.ceil(ARROW_LABEL_PICKER_ITEMS.length / columns);
+  const popupWidth = (columns * buttonWidth) + ((columns - 1) * gap) + paddingX;
+  const popupHeight = (rows * buttonHeight) + ((rows - 1) * gap) + paddingY;
+  const left = Math.min(
+    Math.max(position.x - 8, 8),
+    Math.max(8, window.innerWidth - popupWidth - 8)
+  );
+  const top = Math.min(
+    position.y + 2,
+    Math.max(8, window.innerHeight - popupHeight - 8)
+  );
 
   return (
     <div
@@ -3703,10 +3912,13 @@ function ArrowLabelPickerPopover({ position, onInsert }) {
       }}
       onMouseDown={(e) => e.stopPropagation()}
     >
-      <div className="cme-arrow-label-picker-grid">
+      <div
+        className="cme-arrow-label-picker-grid"
+        style={{ gridTemplateColumns: `repeat(${columns}, ${buttonWidth}px)` }}
+      >
         {ARROW_LABEL_PICKER_ITEMS.map((item) => (
           <button
-            key={item.insert}
+            key={`${item.icon}-${item.title}`}
             type="button"
             className="cme-arrow-label-picker-btn"
             title={item.title}
@@ -4611,7 +4823,8 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                 'Uppercase Greek Letters': 2,
                 'Fraktur / Gothic Symbols': 2,
                 'Hebrew Mathematical Symbols': 1,
-                'Arabic-Indic Numeral Systems': 2,
+                'Arabic-Indic Numerals': 1,
+                'Eastern Arabic-Indic Numerals': 1,
                 'Blackboard Bold / Number Sets': 2,
               };
 
