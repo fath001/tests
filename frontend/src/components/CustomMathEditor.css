@@ -216,6 +216,26 @@
   gap: 2px;
 }
 
+.cme-toolbar-items--first-tab {
+  padding: 5px 5px;
+  gap: 5px;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+.cme-toolbar-items--first-tab .cme-symbol-subgroup {
+  padding: 0 4px;
+  margin: 0;
+  gap: 0;
+}
+
+.cme-toolbar-items--first-tab .cme-btn,
+.cme-toolbar-items--first-tab .cme-btn--compact {
+  padding: 0 1px;
+  margin: 0;
+}
+
 .cme-toolbar-items--relations {
   overflow: hidden;
   gap: 1px;
@@ -1285,14 +1305,14 @@
 
 .cme-toolbar-glyph--roots-main {
   font-family: "Cambria Math", "STIX Two Math", "Segoe UI Symbol", "Segoe UI", serif;
-  font-size: 12.4px;
+  font-size: 14.4px;
   font-weight: 800;
   letter-spacing: -0.01em;
 }
 
 .cme-toolbar-glyph--math {
   font-family: "Cambria Math", "STIX Two Math", "Segoe UI Symbol", "Segoe UI", serif;
-  font-size: 15.2px;
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: -0.01em;
 }

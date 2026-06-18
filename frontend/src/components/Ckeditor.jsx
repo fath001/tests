@@ -4977,7 +4977,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           ))}
         </div>
 
-        <div className={`cme-toolbar-items${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${activeGroupConfig.id === 'relations' ? ' cme-toolbar-items--relations' : ''}${isMathMode ? ' cme-toolbar-items--math-compact' : ''}`}>
+        <div className={`cme-toolbar-items${activeGroup === 0 && isMathMode ? ' cme-toolbar-items--first-tab' : ''}${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${activeGroupConfig.id === 'relations' ? ' cme-toolbar-items--relations' : ''}${isMathMode ? ' cme-toolbar-items--math-compact' : ''}`}>
           {(() => {
             const activeItems = activeGroupConfig.items || [];
 
