@@ -253,6 +253,7 @@ const MATH_GROUPS = [
       { label: '□/□', insert: '{#0}/{#?}', title: 'Bevelled Fraction', cls: 'green-template' },
       { label: 'a/b', insert: '{\\scriptstyle \\frac{#0}{#?}}', title: 'Small Fraction', icon: 'fraction-template-image', cls: 'small-template' },
       { label: '□/□', insert: '{\\scriptstyle {#0}/{#?}}', title: 'Small Bevelled Fraction', cls: 'green-template small-template' },
+      { type: 'sep', cols: 4 },
       { label: '√x', insert: '\\sqrt{#0}', title: 'Square Root', icon: 'sqrt-template-image' },
       { label: 'ⁿ√x', insert: '\\sqrt[#?]{#0}', title: 'Nth Root', icon: 'nth-root-template-image' },
       { label: 'xⁿ', insert: '#0^{#?}', title: 'Superscript', icon: 'superscript-template-image' },
@@ -262,17 +263,19 @@ const MATH_GROUPS = [
       { label: 'ˡₗ□', insert: '{}^{#?}_{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript and Subscript', icon: 'left-sup-sub-template-image' },
       { label: 'xₙ', insert: '#0_{#?}', title: 'Subscript', icon: 'subscript-template-image' },
       { label: 'ₗ□', insert: '{}_{#?}#?', cls: 'template', directInsert: true, title: 'Left Subscript', icon: 'left-sub-template-image' },
-      
+      { type: 'sep', cols: 3 },
       { label: '□\n□', insert: '\\overset{#?}{#?}', cls: 'template', directInsert: true, title: 'Overset', icon: 'overset-template-image' },
       { label: '□\n□\n□', insert: '\\overset{#?}{\\underset{#?}{#?}}', cls: 'template', directInsert: true, title: 'Over and Under', icon: 'over-under-template-image' },
       { label: '□\n□', insert: '\\underset{#?}{#?}', cls: 'template', directInsert: true, title: 'Underset', icon: 'underset-template-image' },
       { type: 'sep', cols: 2 },
       { label: '□⏟□', insert: '\\underbrace{#?}_{#?}', cls: 'template', directInsert: true, title: 'Underbrace', icon: 'underbrace-template-image' },
       { label: '□⏞□', insert: '\\overbrace{#?}^{#?}', cls: 'template', directInsert: true, title: 'Overbrace', icon: 'overbrace-template-image' },
+      { type: 'sep', cols: 4 },
       { label: '□\n▯\n□', insert: '\\displaystyle{\\underset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.34em;line-height:1.15}{#?}}{\\overset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-bottom:0.34em;line-height:1.15}{#?}}{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}}}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image' },
       { label: '▯\n□', insert: '\\displaystyle{\\underset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.34em;line-height:1.15}{#?}}{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}}}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image' },
       { label: '▯^□_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}^{\\htmlStyle{font-size:1.1em;display:inline-block;padding-bottom:0.26em;line-height:1.15}{#?}}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
       { label: '▯_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
+      { type: 'sep', cols: 3 },
       { label: 'hphantom', insert: '\\hphantom{0}', cls: 'template', directInsert: true, title: 'Horizontal Phantom Space', icon: 'hphantom-space-template-image' },
       { label: 'thin-space', insert: '\\,', cls: 'template', directInsert: true, title: 'Thin Space', icon: 'thin-space-template-image' },
       { label: 'negative-space', insert: '\\!', cls: 'template', directInsert: true, title: 'Negative Thin Space', icon: 'negative-thin-space-template-image' },
@@ -1432,6 +1435,7 @@ const ORDERED_MATH_GROUPS = [
       { label: '∇·\n▯', insert: '\\nabla \\cdot #?', cls: 'template', directInsert: true, title: 'Divergence' },
       { label: '∇\n▯', insert: '\\nabla #?', cls: 'template', directInsert: true, title: 'Gradient' },
       { label: 'Δ\n▯', insert: '\\Delta #?', cls: 'template', directInsert: true, title: 'Delta Expression' },
+      { type: 'sep', cols: 3 },
       { label: '∫', insert: '\\int' },
       { label: '∮', insert: '\\oint' },
       { label: '∬', insert: '\\iint' },
@@ -3134,6 +3138,14 @@ const TOOLBAR_ICON_IMAGES = {
 };
 
 function renderToolbarItemLabel(item, context = {}) {
+  if (item.cls?.includes('arrow-picker-tool')) {
+    return (
+      <span className="cme-toolbar-chevron-indicator" aria-hidden="true">
+        ⏵
+      </span>
+    );
+  }
+
   if (item.icon && TOOLBAR_ICON_IMAGES[item.icon]) {
     return (
       <span className="cme-toolbar-icon-image-wrapper" aria-hidden="true">
@@ -4434,7 +4446,6 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   const [showColorPicker, setShowColorPicker] = useState(null); // { x, y } or null
   const [showStyleDropdown, setShowStyleDropdown] = useState(null); // { x, y, type, buttonKey } or null
   const [windowMode, setWindowMode] = useState('normal');
-  const [activeToolbarItem, setActiveToolbarItem] = useState(null);
   const [isRtlInput, setIsRtlInput] = useState(initialDirection === 'rtl');
   const [customColorInput, setCustomColorInput] = useState('');
   const [customColorError, setCustomColorError] = useState('');
@@ -4459,6 +4470,10 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   });
   const [numeralMode, setNumeralMode] = useState('western'); // western | arabicIndic | easternArabicIndic
   const [spacingMode, setSpacingMode] = useState('thin'); // thin | negativeThin
+
+  useEffect(() => {
+    setIsRtlInput(initialDirection === 'rtl');
+  }, [initialDirection]);
 
   useEffect(() => {
     const mf = popupMfRef.current;
@@ -4664,16 +4679,15 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
 
     // Pre-fill with existing value when editing
     const prefill = () => {
-      if (initialLatex) {
-        // For chem, unwrap \ce{...} so user edits raw content
-        let valueToSet = initialLatex;
-        if (mode === 'chem') {
-          const ceMatch = valueToSet.match(/^\\ce\{([\s\S]*)\}$/);
-          if (ceMatch) valueToSet = ceMatch[1];
-        }
-        if (mf.setValue) mf.setValue(valueToSet, { silenceNotifications: true });
-        else mf.value = valueToSet;
+      // Keep the popup content in sync when switching between different widgets
+      // while the editor stays open.
+      let valueToSet = initialLatex || '';
+      if (mode === 'chem' && valueToSet) {
+        const ceMatch = valueToSet.match(/^\\ce\{([\s\S]*)\}$/);
+        if (ceMatch) valueToSet = ceMatch[1];
       }
+      if (mf.setValue) mf.setValue(valueToSet, { silenceNotifications: true });
+      else mf.value = valueToSet;
       requestAnimationFrame(() => mf.focus());
     };
 
@@ -4904,14 +4918,12 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     if (!mf) return;
     let latex = mf.getValue ? mf.getValue() : mf.value;
     if (!latex || latex.trim() === '') {
-      setActiveToolbarItem(null);
       onClose();
       return;
     }
     if (mode === 'chem') latex = serializeChemValue(latex);
     onInsert(latex, { direction: isRtlInput ? 'rtl' : 'ltr' });
     if (mf.setValue) mf.setValue(''); else mf.value = '';
-    setActiveToolbarItem(null);
     onClose();
   };
 
@@ -4939,10 +4951,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           <button
             type="button"
             className="cme-popup-close"
-            onClick={() => {
-              setActiveToolbarItem(null);
-              onClose();
-            }}
+            onClick={onClose}
           >
             x
           </button>
@@ -5024,9 +5033,9 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                                     ? !!showPeriodicTablePicker
                                     : isArabicIndicNumeralsBtn
                                       ? numeralMode === 'arabicIndic'
-                                      : isEasternArabicIndicNumeralsBtn
+                                    : isEasternArabicIndicNumeralsBtn
                                         ? numeralMode === 'easternArabicIndic'
-                                    : activeToolbarItem === buttonKey;
+                                        : false;
 
                           return (
                             <button
@@ -5036,7 +5045,6 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                               title={item.title || item.insert}
                               onMouseDown={(e) => {
                                 e.preventDefault();
-                                setActiveToolbarItem(buttonKey);
                                 if (item.action === 'GREEK_ITALIC_PICKER') {
                                   const rect = e.currentTarget.getBoundingClientRect();
                                   setShowArrowPicker(null);
@@ -5210,7 +5218,6 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
 
                     const isFontActive = isFont && activeStyles.fontOption !== '';
                     const isSizeActive = isSize && activeStyles.fontSize !== 'auto' && activeStyles.fontSize !== '5';
-                    const isTouchedSelect = activeToolbarItem === buttonKey;
 
                     const selectValue = isFont
                       ? activeStyles.fontOption
@@ -5226,7 +5233,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                       <button
                         key={i}
                         type="button"
-                        className={`cme-style-select-trigger cme-select cme-btn template${isFontActive || isSizeActive || isTouchedSelect || isOpenStyleDropdown ? ' active' : ''}`}
+                        className={`cme-style-select-trigger cme-select cme-btn template${isFontActive || isSizeActive || isOpenStyleDropdown ? ' active' : ''}`}
                         title={item.label}
                         style={{
                           width: item.width || '60px',
@@ -5237,7 +5244,6 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                         onMouseDown={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          setActiveToolbarItem(buttonKey);
                           const rect = e.currentTarget.getBoundingClientRect();
                           setShowStyleDropdown((current) => (
                             current?.buttonKey === buttonKey
@@ -5264,12 +5270,11 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                       >
                         <button
                           type="button"
-                        className={`cme-btn template${isMathMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${activeToolbarItem === buttonKey || activeMatrix?.type === item.insert ? ' active' : ''}`}
+                        className={`cme-btn template${isMathMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${activeMatrix?.type === item.insert ? ' active' : ''}`}
                           title={item.insert}
                           onMouseDown={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            setActiveToolbarItem(buttonKey);
                             if (activeMatrix?.type === item.insert) {
                               setActiveMatrix(null);
                             } else {
@@ -5312,8 +5317,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                     (isFrakturScriptPickerBtn && !!showFrakturScriptPicker) ||
                     (isHebrewSymbolPickerBtn && !!showHebrewSymbolPicker) ||
                     (isPeriodicTablePickerBtn && !!showPeriodicTablePicker) ||
-                    (isColorBtn && activeStyles.color !== 'none') ||
-                    (!isRtlBtn && activeToolbarItem === buttonKey);
+                    (isColorBtn && activeStyles.color !== 'none');
 
                   return (
                     <button
@@ -5323,7 +5327,6 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                       title={item.title || item.insert}
                       onMouseDown={(e) => {
                         e.preventDefault();
-                        setActiveToolbarItem(buttonKey);
                         const mf = popupMfRef.current;
                         if (item.action === 'SPECIAL_CHARS') {
                           const rect = e.currentTarget.getBoundingClientRect();
@@ -6114,7 +6117,7 @@ function CkEditor({ value, onChange, className = '' }) {
     editorRef.current = editor;
 
     const openEditPopup = (modelElement, latex, direction = 'ltr') => {
-      if (popupOpenRef.current || !latex) return;
+      if (!latex) return;
 
       const isChem = /^\\ce\{/.test(latex);
       const resolvedDirection =

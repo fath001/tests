@@ -118,6 +118,14 @@ const TOOLBAR_ICON_IMAGES = {
 };
 
 function renderToolbarItemLabel(item) {
+  if (item.cls?.includes("arrow-picker-tool")) {
+    return (
+      <span className="cme-toolbar-chevron-indicator" aria-hidden="true">
+        ⏵
+      </span>
+    );
+  }
+
   if (item.icon && TOOLBAR_ICON_IMAGES[item.icon]) {
     return (
       <span className="cme-toolbar-icon-image-wrapper" aria-hidden="true">
@@ -562,7 +570,6 @@ export default function CustomMathEditor({ value = "", onChange }) {
   const [activeChemGroup, setActiveChemGroup] = useState(0);
   const [activeMatrix, setActiveMatrix] = useState(null); // { type, x, y }
   const [showSpecialChars, setShowSpecialChars] = useState(null); // { x, y } or null
-  const [activeToolbarItem, setActiveToolbarItem] = useState(null);
 
   useEffect(() => {
     if (!activeMatrix) return;
@@ -668,13 +675,11 @@ export default function CustomMathEditor({ value = "", onChange }) {
     if (isEditorOpen && mode === newMode) {
       setIsEditorOpen(false);
       setPopupWindowMode("normal");
-      setActiveToolbarItem(null);
       requestAnimationFrame(() => mainTextEditorRef.current?.focus());
       return;
     }
     setMode(newMode);
     setPopupWindowMode("normal");
-    setActiveToolbarItem(null);
     setIsEditorOpen(true);
   };
 
@@ -693,7 +698,6 @@ export default function CustomMathEditor({ value = "", onChange }) {
       if (popupMf.setValue) popupMf.setValue("");
       else popupMf.value = "";
       setIsEditorOpen(false);
-      setActiveToolbarItem(null);
       return;
     }
 
@@ -708,7 +712,6 @@ export default function CustomMathEditor({ value = "", onChange }) {
   const handleClose = () => {
     setIsEditorOpen(false);
     setPopupWindowMode("normal");
-    setActiveToolbarItem(null);
   };
 
   const groups = mode === "math" ? MATH_GROUPS : CHEM_GROUPS;
@@ -805,10 +808,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
                   <div key={chunkIndex} className="cme-symbol-subgroup">
                     {chunk.map((item, i) => {
                       const currentGroup = groups[activeGroupIndex];
-                      const buttonKey = `${currentGroup.label}-${chunkIndex * size + i}-${item.insert || item.action || item.label}`;
-                      const isTouchedButton =
-                        activeToolbarItem === buttonKey ||
-                        activeMatrix?.type === item.insert;
+                      const isTouchedButton = activeMatrix?.type === item.insert;
                       if (currentGroup.isMatrix && !item.directInsert) {
                         return (
                           <div
@@ -822,7 +822,6 @@ export default function CustomMathEditor({ value = "", onChange }) {
                               onMouseDown={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                setActiveToolbarItem(buttonKey);
                                 if (activeMatrix?.type === item.insert) {
                                   setActiveMatrix(null);
                                 } else {
@@ -845,11 +844,10 @@ export default function CustomMathEditor({ value = "", onChange }) {
                         <button
                           key={`${currentGroup.label}-${chunkIndex * size + i}`}
                           type="button"
-                          className={`cme-btn${currentGroup.isTemplate ? " template" : ""}${item.cls ? ` ${item.cls}` : ""}${isTouchedButton ? " active" : ""}`}
+                          className={`cme-btn${currentGroup.isTemplate ? " template" : ""}${item.cls ? ` ${item.cls}` : ""}`}
                           title={item.title || item.insert}
                           onMouseDown={(e) => {
                             e.preventDefault();
-                            setActiveToolbarItem(buttonKey);
                             if (item.action === "SPECIAL_CHARS") {
                               const rect = e.currentTarget.getBoundingClientRect();
                               setShowSpecialChars({ x: rect.left, y: rect.bottom + 4 });
