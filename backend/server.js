@@ -10,6 +10,7 @@ import resultRoutes from "./routes/resultRoutes.js";
 dotenv.config();
 
 const app = express();
+const PORT = Number(process.env.PORT) || 5000;
 
 connectDB();
 
@@ -21,6 +22,6 @@ app.use("/api/exams", examRoutes);
 app.use("/api/questions", questionRoutes);
 app.use("/api/results", resultRoutes);
 
-app.listen(process.env.PORT, () => {
-  console.log("Server Running");
+app.listen(PORT, () => {
+  console.log(`Server Running on port ${PORT}`);
 });
