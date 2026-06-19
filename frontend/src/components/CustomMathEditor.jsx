@@ -562,9 +562,14 @@ export default function CustomMathEditor({ value = "", onChange }) {
   const [mode, setMode] = useState("math");       // "math" | "chem"
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [popupWindowMode, setPopupWindowMode] = useState("normal");
+  const [popupPosition, setPopupPosition] = useState(null);
 
   const mainTextEditorRef = useRef(null);
   const popupMfRef = useRef(null);
+  const popupRef = useRef(null);
+  const popupPositionRef = useRef(null);
+  const dragStateRef = useRef(null);
+  const removeDragListenersRef = useRef(() => {});
 
   const [activeMathGroup, setActiveMathGroup] = useState(0);
   const [activeChemGroup, setActiveChemGroup] = useState(0);
@@ -581,6 +586,119 @@ export default function CustomMathEditor({ value = "", onChange }) {
     window.addEventListener('mousedown', handleOutsideClick, true);
     return () => window.removeEventListener('mousedown', handleOutsideClick, true);
   }, [activeMatrix]);
+
+
+  const clampPopupPosition = useCallback((nextX, nextY) => {
+    const popupEl = popupRef.current;
+    const width = popupEl?.offsetWidth || 720;
+    const height = popupEl?.offsetHeight || 384;
+    const maxX = Math.max(12, window.innerWidth - width - 12);
+    const maxY = Math.max(12, window.innerHeight - height - 12);
+
+    return {
+      x: Math.min(Math.max(12, nextX), maxX),
+      y: Math.min(Math.max(12, nextY), maxY),
+    };
+  }, []);
+
+  const stopDragging = useCallback(() => {
+    removeDragListenersRef.current();
+    removeDragListenersRef.current = () => {};
+    dragStateRef.current = null;
+  }, []);
+
+  useEffect(() => () => stopDragging(), [stopDragging]);
+
+  useEffect(() => {
+    popupPositionRef.current = popupPosition;
+  }, [popupPosition]);
+
+  useEffect(() => {
+    if (!isEditorOpen || popupWindowMode === "maximized") return;
+
+    const syncPopupPosition = () => {
+      const popupEl = popupRef.current;
+      if (!popupEl) return;
+
+      const current = popupPositionRef.current;
+      if (current) {
+        const clamped = clampPopupPosition(current.x, current.y);
+        popupPositionRef.current = clamped;
+        setPopupPosition(clamped);
+        return;
+      }
+
+      const rect = popupEl.getBoundingClientRect();
+      const next = clampPopupPosition(
+        window.innerWidth - rect.width - 24,
+        window.innerHeight - rect.height - 24,
+      );
+      popupPositionRef.current = next;
+      setPopupPosition(next);
+    };
+
+    const frameId = requestAnimationFrame(syncPopupPosition);
+    return () => cancelAnimationFrame(frameId);
+  }, [clampPopupPosition, isEditorOpen, popupWindowMode]);
+
+  useEffect(() => {
+    if (!isEditorOpen || popupWindowMode === "maximized") return;
+
+    const handleResize = () => {
+      const current = popupPositionRef.current;
+      if (!current) return;
+      const clamped = clampPopupPosition(current.x, current.y);
+      popupPositionRef.current = clamped;
+      setPopupPosition(clamped);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [clampPopupPosition, isEditorOpen, popupWindowMode]);
+
+  const handlePopupDragStart = useCallback((event) => {
+    if (popupWindowMode === "maximized") return;
+    if (event.button !== undefined && event.button !== 0) return;
+    if (event.target.closest(".cme-popup-actions")) return;
+
+    const popupEl = popupRef.current;
+    if (!popupEl) return;
+
+    event.preventDefault();
+
+    const rect = popupEl.getBoundingClientRect();
+    const startPosition = popupPositionRef.current || { x: rect.left, y: rect.top };
+    popupPositionRef.current = startPosition;
+    setPopupPosition(startPosition);
+
+    dragStateRef.current = {
+      offsetX: event.clientX - rect.left,
+      offsetY: event.clientY - rect.top,
+    };
+
+    const handlePointerMove = (moveEvent) => {
+      if (!dragStateRef.current) return;
+      moveEvent.preventDefault();
+
+      const next = clampPopupPosition(
+        moveEvent.clientX - dragStateRef.current.offsetX,
+        moveEvent.clientY - dragStateRef.current.offsetY,
+      );
+
+      popupPositionRef.current = next;
+      setPopupPosition(next);
+    };
+
+    const handlePointerUp = () => stopDragging();
+
+    removeDragListenersRef.current = () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+  }, [clampPopupPosition, popupWindowMode, stopDragging]);
 
   /* ── Configure popup math-field when mode switches ── */
   useEffect(() => {
@@ -710,6 +828,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
   };
 
   const handleClose = () => {
+    stopDragging();
     setIsEditorOpen(false);
     setPopupWindowMode("normal");
   };
@@ -725,6 +844,16 @@ export default function CustomMathEditor({ value = "", onChange }) {
     mode === "math" &&
     Array.isArray(activeGroup.items) &&
     activeGroup.items.some((item) => item.cls === "derivative-hero-template");
+  const popupStyle =
+    popupWindowMode !== "maximized" && popupPosition
+      ? {
+          left: `${popupPosition.x}px`,
+          top: `${popupPosition.y}px`,
+          right: "auto",
+          bottom: "auto",
+        }
+      : undefined;
+
 
   return (
     <div className="cme-wrapper">
@@ -743,10 +872,10 @@ export default function CustomMathEditor({ value = "", onChange }) {
 
       {/* ── MathLive Visual Editor Popup ──────────────────── */}
       {isEditorOpen && (
-        <div className={`cme-editor-popup ${popupWindowMode}`}>
-          <div className="cme-popup-header">
+        <div ref={popupRef} className={`cme-editor-popup ${popupWindowMode}`} style={popupStyle}>
+          <div className="cme-popup-header" onPointerDown={handlePopupDragStart}>
             <span>{mode === "math" ? "MathType" : "ChemType"}</span>
-            <div className="cme-popup-actions">
+            <div className="cme-popup-actions" onPointerDown={(e) => e.stopPropagation()}>
               <button
                 type="button"
                 className="cme-popup-window-btn"

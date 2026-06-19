@@ -1544,6 +1544,7 @@ function serializeChemValue(latex = '') {
 }
 
 function TabIcon({ top, bottom = '', compact = false }) {
+
   return (
     <span className={`cme-tab-icon${compact ? ' compact' : ''}`} aria-hidden="true">
       <span className="cme-tab-icon-top">{top}</span>
@@ -4434,6 +4435,10 @@ function MatrixHoverGrid({ matrixType, x, y, onSelect, onMouseEnter, onMouseLeav
    ══════════════════════════════════════════════════════════ */
 function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection = 'ltr', isEditing }) {
   const popupMfRef = useRef(null);
+  const popupRef = useRef(null);
+  const popupPositionRef = useRef(null);
+  const dragStateRef = useRef(null);
+  const removeDragListenersRef = useRef(() => {});
   const [activeGroup, setActiveGroup] = useState(0);
   const [activeMatrix, setActiveMatrix] = useState(null); // { type, x, y }
   const [showSpecialChars, setShowSpecialChars] = useState(null); // { x, y } or null
@@ -4448,6 +4453,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   const [showColorPicker, setShowColorPicker] = useState(null); // { x, y } or null
   const [showStyleDropdown, setShowStyleDropdown] = useState(null); // { x, y, type, buttonKey } or null
   const [windowMode, setWindowMode] = useState('normal');
+  const [popupPosition, setPopupPosition] = useState(null);
   const [isRtlInput, setIsRtlInput] = useState(initialDirection === 'rtl');
   const [customColorInput, setCustomColorInput] = useState('');
   const [customColorError, setCustomColorError] = useState('');
@@ -4472,6 +4478,119 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   });
   const [numeralMode, setNumeralMode] = useState('western'); // western | arabicIndic | easternArabicIndic
   const [spacingMode, setSpacingMode] = useState('thin'); // thin | negativeThin
+
+  const clampPopupPosition = useCallback((nextX, nextY) => {
+    const popupEl = popupRef.current;
+    const width = popupEl?.offsetWidth || 720;
+    const height = popupEl?.offsetHeight || 384;
+    const maxX = Math.max(12, window.innerWidth - width - 12);
+    const maxY = Math.max(12, window.innerHeight - height - 12);
+
+    return {
+      x: Math.min(Math.max(12, nextX), maxX),
+      y: Math.min(Math.max(12, nextY), maxY),
+    };
+  }, []);
+
+  const stopDragging = useCallback(() => {
+    removeDragListenersRef.current();
+    removeDragListenersRef.current = () => {};
+    dragStateRef.current = null;
+  }, []);
+
+  useEffect(() => () => stopDragging(), [stopDragging]);
+
+  useEffect(() => {
+    popupPositionRef.current = popupPosition;
+  }, [popupPosition]);
+
+  useEffect(() => {
+    if (windowMode === 'maximized') return;
+
+    const syncPopupPosition = () => {
+      const popupEl = popupRef.current;
+      if (!popupEl) return;
+
+      const current = popupPositionRef.current;
+      if (current) {
+        const clamped = clampPopupPosition(current.x, current.y);
+        popupPositionRef.current = clamped;
+        setPopupPosition(clamped);
+        return;
+      }
+
+      const rect = popupEl.getBoundingClientRect();
+      const next = clampPopupPosition(
+        window.innerWidth - rect.width - 24,
+        window.innerHeight - rect.height - 24,
+      );
+      popupPositionRef.current = next;
+      setPopupPosition(next);
+    };
+
+    const frameId = requestAnimationFrame(syncPopupPosition);
+    return () => cancelAnimationFrame(frameId);
+  }, [clampPopupPosition, windowMode]);
+
+  useEffect(() => {
+    if (windowMode === 'maximized') return;
+
+    const handleResize = () => {
+      const current = popupPositionRef.current;
+      if (!current) return;
+      const clamped = clampPopupPosition(current.x, current.y);
+      popupPositionRef.current = clamped;
+      setPopupPosition(clamped);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [clampPopupPosition, windowMode]);
+
+  const handlePopupDragStart = useCallback((event) => {
+    if (windowMode === 'maximized') return;
+    if (event.button !== undefined && event.button !== 0) return;
+    if (event.target.closest('.cme-popup-actions')) return;
+
+    const popupEl = popupRef.current;
+    if (!popupEl) return;
+
+    event.preventDefault();
+
+    const rect = popupEl.getBoundingClientRect();
+    const startPosition = popupPositionRef.current || { x: rect.left, y: rect.top };
+    popupPositionRef.current = startPosition;
+    setPopupPosition(startPosition);
+
+    dragStateRef.current = {
+      offsetX: event.clientX - rect.left,
+      offsetY: event.clientY - rect.top,
+    };
+
+    const handlePointerMove = (moveEvent) => {
+      if (!dragStateRef.current) return;
+      moveEvent.preventDefault();
+
+      const next = clampPopupPosition(
+        moveEvent.clientX - dragStateRef.current.offsetX,
+        moveEvent.clientY - dragStateRef.current.offsetY,
+      );
+
+      popupPositionRef.current = next;
+      setPopupPosition(next);
+    };
+
+    const handlePointerUp = () => stopDragging();
+
+    removeDragListenersRef.current = () => {
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+    };
+
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
+  }, [clampPopupPosition, stopDragging, windowMode]);
+
 
   useEffect(() => {
     setIsRtlInput(initialDirection === 'rtl');
@@ -4929,11 +5048,21 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     onClose();
   };
 
+  const popupStyle =
+    windowMode !== 'maximized' && popupPosition
+      ? {
+          left: `${popupPosition.x}px`,
+          top: `${popupPosition.y}px`,
+          right: 'auto',
+          bottom: 'auto',
+        }
+      : undefined;
+
   return (
-    <div className={`cme-editor-popup ${windowMode}`} onMouseDown={(e) => e.stopPropagation()}>
-      <div className="cme-popup-header">
+    <div ref={popupRef} className={`cme-editor-popup ${windowMode}`} style={popupStyle} onMouseDown={(e) => e.stopPropagation()}>
+      <div className="cme-popup-header" onPointerDown={handlePopupDragStart}>
         <span>{mode === 'math' ? 'MathType' : 'ChemType'}</span>
-        <div className="cme-popup-actions">
+        <div className="cme-popup-actions" onPointerDown={(e) => e.stopPropagation()}>
           <button
             type="button"
             className="cme-popup-window-btn"
@@ -4953,7 +5082,10 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           <button
             type="button"
             className="cme-popup-close"
-            onClick={onClose}
+            onClick={() => {
+              stopDragging();
+              onClose();
+            }}
           >
             x
           </button>
@@ -6257,3 +6389,4 @@ function CkEditor({ value, onChange, className = '' }) {
 }
 
 export default CkEditor;
+

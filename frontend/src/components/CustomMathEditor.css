@@ -1577,6 +1577,7 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   overflow: hidden;
   box-sizing: border-box;
   animation: slideUp 0.2s ease-out;
+  will-change: top, left;
 }
 
 .cme-editor-popup.maximized {
@@ -1618,6 +1619,14 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   min-height: 30px;
   box-sizing: border-box;
   border-bottom: 1px solid #6b8391;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+
+.cme-popup-header:active {
+  cursor: grabbing;
 }
 
 .cme-popup-actions {
