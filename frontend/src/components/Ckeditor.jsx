@@ -1565,10 +1565,10 @@ function RootFractionTabIcon() {
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <rect x="13" y="7" width="8" height="8" fill="none" stroke="currentColor" strokeWidth="1.2" />
-        <rect x="31" y="3" width="6" height="6" fill="none" stroke="currentColor" strokeWidth="1.2" />
-        <line x1="29" y1="12" x2="39" y2="12" stroke="currentColor" strokeWidth="1.2" />
-        <rect x="31" y="15" width="6" height="6" fill="none" stroke="currentColor" strokeWidth="1.2" />
+        <rect x="13" y="7" width="8" height="8" fill="none" stroke="currentColor" strokeWidth="1.7" />
+        <rect x="31" y="3" width="6" height="6" fill="none" stroke="currentColor" strokeWidth="1.7" />
+        <line x1="29" y1="12" x2="39" y2="12" stroke="currentColor" strokeWidth="1.7" />
+        <rect x="31" y="15" width="6" height="6" fill="none" stroke="currentColor" strokeWidth="1.7" />
       </svg>
     </span>
   );
@@ -1578,20 +1578,20 @@ function MatrixTabIcon() {
   return (
     <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
       <svg className="cme-tab-svg-icon" viewBox="0 0 210 110" focusable="false">
-        <path d="M12 8 H4 V102 H12" fill="none" stroke="currentColor" strokeWidth="3" />
-        <path d="M96 8 H104 V102 H96" fill="none" stroke="currentColor" strokeWidth="3" />
-        <rect x="28" y="15" width="14" height="24" fill="none" stroke="#ffffff" strokeWidth="2.5" />
-        <rect x="64" y="15" width="14" height="24" fill="none" stroke="#ffffff" strokeWidth="2.5" />
-        <rect x="28" y="63" width="14" height="24" fill="none" stroke="#ffffff" strokeWidth="2.5" />
-        <rect x="64" y="63" width="14" height="24" fill="none" stroke="#ffffff" strokeWidth="2.5" />
+        <path d="M12 8 H4 V102 H12" fill="none" stroke="currentColor" strokeWidth="7" />
+        <path d="M96 8 H104 V102 H96" fill="none" stroke="currentColor" strokeWidth="7" />
+        <rect x="24" y="15" width="22" height="32" fill="none" stroke="#ffffff" strokeWidth="7.5" />
+        <rect x="64" y="15" width="22" height="32" fill="none" stroke="#ffffff" strokeWidth="7.5" />
+        <rect x="24" y="63" width="22" height="32" fill="none" stroke="#ffffff" strokeWidth="7.5" />
+        <rect x="64" y="63" width="22" height="32" fill="none" stroke="#ffffff" strokeWidth="7.5" />
         <path
           d="M142 8 C132 8 132 18 132 28 C132 38 128 45 124 49 C128 53 132 60 132 70 C132 80 132 90 142 102"
           fill="none"
           stroke="currentColor"
-          strokeWidth="3"
+          strokeWidth="7"
         />
-        <rect x="154" y="15" width="14" height="24" fill="none" stroke="#ffffff" strokeWidth="2.5" />
-        <rect x="154" y="63" width="14" height="24" fill="none" stroke="#ffffff" strokeWidth="2.5" />
+        <rect x="154" y="15" width="22" height="32" fill="none" stroke="#ffffff" strokeWidth="7.5" />
+        <rect x="154" y="63" width="22" height="32" fill="none" stroke="#ffffff" strokeWidth="7.5" />
       </svg>
     </span>
   );
@@ -1600,12 +1600,47 @@ function MatrixTabIcon() {
 function PowerFracTabIcon() {
   return (
     <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
-      <svg className="cme-tab-svg-icon" viewBox="0 0 70 50" focusable="false">
-        <rect x="8" y="18" width="14" height="14" fill="none" stroke="#ffffff" strokeWidth="2.5" />
-        <rect x="20" y="6" width="14" height="14" fill="none" stroke="#ffffff" strokeWidth="2.5" />
-        <rect x="50" y="6" width="8" height="8" fill="none" stroke="#ffffff" strokeWidth="2.5" />
-        <rect x="48" y="22" width="12" height="12" fill="none" stroke="#ffffff" strokeWidth="2.5" />
-      </svg>
+<svg className="cme-tab-svg-icon" viewBox="0 0 70 50" focusable="false">
+  <rect
+    x="4"
+    y="20"
+    width="20"
+    height="28"
+    fill="none"
+    stroke="#ffffff"
+    strokeWidth="4"
+  />
+
+  <rect
+    x="24"
+    y="6"
+    width="12"
+    height="22"
+    fill="none"
+    stroke="#ffffff"
+    strokeWidth="4"
+  />
+
+  <rect
+    x="51"
+    y="10"
+    width="8"
+    height="10"
+    fill="none"
+    stroke="#ffffff"
+    strokeWidth="4"
+  />
+
+  <rect
+    x="48"
+    y="30"
+    width="14"
+    height="18"
+    fill="none"
+    stroke="#ffffff"
+    strokeWidth="4"
+  />
+</svg>
     </span>
   );
 }
@@ -1613,21 +1648,55 @@ function PowerFracTabIcon() {
 function BracketsTabIcon() {
   return (
     <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
-      <svg className="cme-tab-svg-icon" viewBox="0 0 120 90" focusable="false">
-        <g
-          fill="none"
-          stroke="#ffffff"
-          strokeWidth="4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M22 15 C8 28 8 62 22 75" />
-          <path d="M58 15 C72 28 72 62 58 75" />
-          <rect x="30" y="22" width="20" height="36" />
-          <rect x="82" y="22" width="20" height="36" />
-          <path d="M80 12 Q92 2 104 12" />
-        </g>
-      </svg>
+      <svg className="cme-tab-svg-icon" viewBox="0 0 90 50" focusable="false">
+
+  {/* Left icon: (□) */}
+  <path
+    d="M12 8 C4 14,4 36,12 42"
+    fill="none"
+    stroke="#ffffff"
+    strokeWidth="4"
+    strokeLinecap="round"
+  />
+
+  <rect
+    x="20"
+    y="10"
+    width="18"
+    height="30"
+    fill="none"
+    stroke="#ffffff"
+    strokeWidth="4"
+  />
+
+  <path
+    d="M46 8 C54 14,54 36,46 42"
+    fill="none"
+    stroke="#ffffff"
+    strokeWidth="4"
+    strokeLinecap="round"
+  />
+
+  {/* Right icon: overparen + □ */}
+  <path
+    d="M65 10 Q75 2 85 10"
+    fill="none"
+    stroke="#ffffff"
+    strokeWidth="4"
+    strokeLinecap="round"
+  />
+
+  <rect
+    x="68"
+    y="18"
+    width="14"
+    height="22"
+    fill="none"
+    stroke="#ffffff"
+    strokeWidth="4"
+  />
+
+</svg>
     </span>
   );
 }
@@ -1635,22 +1704,55 @@ function BracketsTabIcon() {
 function CalcTabIcon() {
   return (
     <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
-      <svg className="cme-tab-svg-icon" viewBox="0 0 120 80" focusable="false">
-        <g fill="none" stroke="#ffffff" strokeWidth="2.5">
-          <path d="M18 68 C30 68 30 56 30 42 L30 24 C30 12 34 8 42 8" />
-          <rect x="48" y="8" width="14" height="14" />
-          <rect x="48" y="54" width="14" height="14" />
-        </g>
-        <text
-          x="78"
-          y="48"
-          fontFamily="Times New Roman, serif"
-          fontSize="28"
-          fill="#ffffff"
-        >
-          lim
-        </text>
-      </svg>
+<svg className="cme-tab-svg-icon" viewBox="0 0 80 50" focusable="false">
+
+  {/* Integral */}
+  <text
+    x="2"
+    y="40"
+    fill="#ffffff"
+    fontSize="42"
+    fontFamily="Cambria Math, Times New Roman, serif"
+    fontWeight="500"
+  >
+    ∫
+  </text>
+
+  {/* Upper limit */}
+  <rect
+    x="30"
+    y="1"
+    width="10"
+    height="10"
+    fill="none"
+    stroke="#ffffff"
+    strokeWidth="2.5"
+  />
+
+  {/* Lower limit */}
+  <rect
+    x="24"
+    y="40"
+    width="10"
+    height="10"
+    fill="none"
+    stroke="#ffffff"
+    strokeWidth="2.5"
+  />
+
+  {/* lim */}
+  <text
+    x="45"
+    y="36"
+    fill="#ffffff"
+    fontSize="32"
+    fontWeight="500"
+    fontFamily="Cambria Math, Times New Roman, serif"
+  >
+    lim
+  </text>
+
+</svg>
     </span>
   );
 }
@@ -1658,37 +1760,48 @@ function CalcTabIcon() {
 function MoveTextTabIcon() {
   return (
     <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
-      <svg className="cme-tab-svg-icon" viewBox="0 0 24 24" focusable="false">
-        <path
-          d="M12 4V11"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        />
-        <path
-          d="M9.5 8.5L12 11L14.5 8.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M5 14 C5 18 8 20 12 20 C16 20 19 18 19 14"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        />
-        <path
-          d="M8 14 C8 16.5 9.5 18 12 18 C14.5 18 16 16.5 16 14"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-        />
-      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg"
+     width="24"
+     height="24"
+     viewBox="0 0 24 24"
+     fill="none">
+
+  {/* <!-- Arrow shaft --> */}
+  <path
+    d="M12 3V12"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+
+  {/* <!-- Arrow head --> */}
+  <path
+    d="M8.5 8.5L12 12L15.5 8.5"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+
+  {/* <!-- Outer curved arc --> */}
+  <path
+    d="M4 15C4 19 7.5 22 12 22C16.5 22 20 19 20 15"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    fill="none"
+  />
+
+  {/* <!-- Inner curved arc --> */}
+  <path
+    d="M7 15C7 17.5 9 19 12 19C15 19 17 17.5 17 15"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    fill="none"    
+  />
+</svg>  
     </span>
   );
 }
@@ -2818,11 +2931,31 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'rtl-input-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-      <text x="10.9" y="8.6" text-anchor="middle" fill="#2f3b43" font-size="6.9" font-weight="700" font-family="Tahoma, Arial, sans-serif">س</text>
-      <rect x="11.85" y="3.1" width="3.2" height="3.2" rx="0.45" fill="none" stroke="#2c8a43" stroke-width="1.1"/>
-      <path d="M13.9 13.1H4.55M6.2 11.45L4.55 13.1L6.2 14.75" fill="none" stroke="#2c8a43" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="70" height="40" viewBox="0 0 70 40">
+  <!-- Arabic text -->
+  <text x="22"
+        y="31"
+        text-anchor="middle"
+        direction="rtl"
+        font-family="Amiri, Noto Naskh Arabic, serif"
+        font-size="26"
+        font-weight="600"
+        fill="#111">
+    س
+  </text>
+
+  <!-- Complete radical -->
+  <path d="M6 10
+           H40
+           L44 10
+           L54 35
+           L66 15"
+        fill="none"
+        stroke="#111"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+</svg>
   `),
   'negate-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
@@ -5602,14 +5735,14 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           {groups.map((group, index) => (
             <button
               key={group.id || index}
-              className={`cme-group-tab${activeGroup === index ? ' active' : ''}`}
+              className={`cme-group-tab${isMathMode ? ' cme-group-tab--math' : ''}${activeGroup === index ? ' active' : ''}`}
               type="button"
               onClick={() => {
                 setActiveGroup(index);
                 setActiveMatrix(null);
               }}
             >
-              {group.label}
+              <span className="cme-group-tab-label">{group.label}</span>
             </button>
           ))}
         </div>

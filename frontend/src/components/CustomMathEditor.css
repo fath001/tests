@@ -107,6 +107,44 @@
   box-sizing: border-box;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
+.cme-group-tab--math {
+  flex: 0 0 56px;
+  width: 56px;
+  min-width: 56px;
+  max-width: 56px;
+  padding: 0 4px;
+  overflow: hidden;
+}
+
+.cme-group-tab-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.cme-group-tab--math .cme-tab-icon {
+  width: 100%;
+  max-width: 38px;
+}
+
+.cme-group-tab--math .cme-tab-icon--svg,
+.cme-group-tab--math .cme-tab-svg-icon {
+  width: 38px;
+  height: 16px;
+  max-width: 100%;
+  flex-shrink: 1;
+}
+
+.cme-group-tab--math .cme-tab-icon-top,
+.cme-group-tab--math .cme-tab-icon-bottom {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
 
 .cme-tab-icon {
   display: inline-flex;
@@ -149,7 +187,7 @@
 }
 
 .cme-tab-icon.compact .cme-tab-icon-top {
-  font-size: 11px;
+  font-size: 15px;
 }
 
 .cme-group-tab:hover {
@@ -1930,3 +1968,4 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   transform: none !important;
   transition: none !important;
 }
+

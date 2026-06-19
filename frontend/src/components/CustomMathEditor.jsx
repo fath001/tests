@@ -910,7 +910,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
                 return (
                   <button
                     key={group.label}
-                    className={`cme-group-tab${isActive ? " active" : ""}`}
+                    className={`cme-group-tab${mode === "math" ? " cme-group-tab--math" : ""}${isActive ? " active" : ""}`}
                     type="button"
                     onClick={() => {
                       if (mode === "math") setActiveMathGroup(index);
@@ -918,7 +918,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
                       setActiveMatrix(null);
                     }}
                   >
-                    {group.label}
+                    <span className="cme-group-tab-label">{group.label}</span>
                   </button>
                 );
               })}
@@ -1066,3 +1066,4 @@ export default function CustomMathEditor({ value = "", onChange }) {
     </div>
   );
 }
+
