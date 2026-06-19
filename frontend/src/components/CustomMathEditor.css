@@ -166,7 +166,7 @@
 }
 
 .cme-toolbar-items {
-  background: linear-gradient(180deg, #edf2f6 0%, #dfe8ef 100%);
+  background: #E6EDF2;
   border: 1px solid #9aadb9;
   border-radius: 0 0 4px 4px;
   margin: 0 6px 6px;
@@ -1369,7 +1369,7 @@
 }
 
 .cme-toolbar-glyph--template {
-  font-size: 14.4px;
+  font-size: 16.4px;
   color: #2c8a43;
 }
 
@@ -1392,7 +1392,7 @@
 }
 
 .cme-toolbar-glyph--very-wide {
-  font-size: 9.2px;
+  font-size: 12.2px;
   letter-spacing: -0.02em;
 }
 
