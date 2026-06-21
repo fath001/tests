@@ -281,6 +281,9 @@
 
 .cme-toolbar-items--relations .cme-symbol-subgroup {
   padding: 0 2px;
+  margin: 0;
+  align-content: start;
+  grid-template-rows: repeat(3, auto) !important;
 }
 
 .cme-toolbar-items--relations .cme-btn {
@@ -1968,4 +1971,5 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   transform: none !important;
   transition: none !important;
 }
+
 
