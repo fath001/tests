@@ -337,6 +337,44 @@
   color: #526a79;
 }
 
+.cme-toolbar-items--arrows {
+  overflow: hidden;
+  gap: 1px;
+  height: 84px;
+  min-height: 84px;
+  max-height: 84px;
+}
+
+.cme-toolbar-items--arrows .cme-arrows-subgroup {
+  align-self: stretch;
+  height: 100%;
+  align-content: stretch;
+  justify-content: stretch;
+  grid-template-rows: var(--cme-subgroup-rows, repeat(2, minmax(0, 1fr))) !important;
+  padding: 0 4px;
+  margin: 0;
+  gap: 0;
+}
+
+.cme-toolbar-items--arrows .cme-arrows-subgroup .cme-btn,
+.cme-toolbar-items--arrows .cme-arrows-subgroup .cme-btn--compact {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.cme-toolbar-items--arrows .cme-arrows-subgroup--stack {
+  min-width: 20px;
+}
+
+.cme-toolbar-items--arrows .cme-arrows-subgroup--picker {
+  min-width: 14px;
+}
+
+.cme-toolbar-items--arrows .cme-arrows-subgroup--before-picker {
+  border-right: none;
+}
+
 .cme-toolbar-items::-webkit-scrollbar { height: 5px; }
 .cme-toolbar-items::-webkit-scrollbar-track { background: transparent; }
 .cme-toolbar-items::-webkit-scrollbar-thumb { background: #3a3a5c; border-radius: 3px; }
@@ -2027,6 +2065,8 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   transform: none !important;
   transition: none !important;
 }
+
+
 
 
 

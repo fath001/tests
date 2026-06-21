@@ -5742,7 +5742,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           ))}
         </div>
 
-        <div className={`cme-toolbar-items${activeGroup === 0 && isMathMode ? ' cme-toolbar-items--first-tab' : ''}${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${activeGroupConfig.id === 'relations' ? ' cme-toolbar-items--relations' : ''}${isMathMode ? ' cme-toolbar-items--math-compact' : ''}`}>
+        <div className={`cme-toolbar-items${activeGroup === 0 && isMathMode ? ' cme-toolbar-items--first-tab' : ''}${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${activeGroupConfig.id === 'relations' ? ' cme-toolbar-items--relations' : ''}${activeGroupConfig.id === 'arrows' ? ' cme-toolbar-items--arrows' : ''}${isMathMode ? ' cme-toolbar-items--math-compact' : ''}`}>
           {(() => {
             const activeItems = activeGroupConfig.items || [];
 
@@ -6076,6 +6076,87 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                   },
                 ].filter((subgroup) => subgroup.items.length > 0);
               }
+
+              if (activeGroupConfig.id === 'arrows') {
+                const groupedItems = subgroups.map((subgroup) => subgroup.items || []);
+                const [
+                  arrowBasics = [],
+                  ellipsis = [],
+                  dashes = [],
+                  arrowLabels = [],
+                  accents = [],
+                ] = groupedItems;
+                const pick = (items, order) => order.map((index) => items[index]).filter(Boolean);
+                const splitPicker = (items) => ({
+                  regular: items.filter((item) => item?.action !== 'ARROW_PICKER' && item?.action !== 'ARROW_LABEL_PICKER'),
+                  picker: items.find((item) => item?.action === 'ARROW_PICKER' || item?.action === 'ARROW_LABEL_PICKER') || null,
+                });
+                const basicSplit = splitPicker(arrowBasics);
+                const labelSplit = splitPicker(arrowLabels);
+
+                subgroups = [
+                  {
+                    cols: 3,
+                    trackCols: 6,
+                    rows: 3,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-arrows-subgroup cme-arrows-subgroup--before-picker',
+                    items: pick(basicSplit.regular, [1, 0, 2, 4, 3, 5, 6, 7]),
+                  },
+                  basicSplit.picker ? {
+                    cols: 1,
+                    rows: 3,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-arrows-subgroup cme-arrows-subgroup--picker',
+                    items: [basicSplit.picker],
+                  } : null,
+                  {
+                    cols: 2,
+                    trackCols: 2,
+                    rows: 3,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-arrows-subgroup',
+                    items: pick(ellipsis, [0, 1, 2, 3, 4]),
+                  },
+                  {
+                    cols: 1,
+                    rows: 3,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-arrows-subgroup cme-arrows-subgroup--stack',
+                    items: pick(dashes, [0, 1, 2]),
+                  },
+                  {
+                    cols: 3,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-arrows-subgroup cme-arrows-subgroup--before-picker',
+                    items: pick(labelSplit.regular, [0, 2, 4, 1, 3, 5]),
+                  },
+                  labelSplit.picker ? {
+                    cols: 1,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-arrows-subgroup cme-arrows-subgroup--picker',
+                    items: [labelSplit.picker],
+                  } : null,
+                  {
+                    cols: 2,
+                    trackCols: 2,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    stretchLastRow: true,
+                    className: ' cme-arrows-subgroup',
+                    items: pick(accents, [0, 1, 2, 3]),
+                  },
+                ].filter((subgroup) => subgroup && subgroup.items.length > 0);
+              }
             } else {
               // Legacy grouping for tabs without explicit separators (chunk by 4 items = 2x2 grid)
               const size = 4;
@@ -6087,18 +6168,31 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
               }
             }
 
-            return subgroups.map((subgroup, chunkIndex) => (
+            return subgroups.map((subgroup, chunkIndex) => {
+              const baseCols = subgroup.cols || 1;
+              const actualCols = subgroup.trackCols || baseCols;
+              const totalItems = subgroup.items.length;
+              const remainder = baseCols > 0 ? (totalItems % baseCols) : 0;
+              const lastRowCount = remainder === 0 ? baseCols : remainder;
+              const lastRowStartIndex = totalItems - lastRowCount;
+              const defaultSpan = Math.max(1, Math.floor(actualCols / baseCols));
+
+              return (
               <div
                 key={chunkIndex}
                 className={`cme-symbol-subgroup${subgroup.className || ''}${isMathMode ? ' cme-symbol-subgroup--compact' : ''}`}
                 style={{
-                  gridTemplateColumns: `repeat(${subgroup.cols}, ${subgroup.equalColumns ? 'minmax(0, 1fr)' : 'auto'})`,
-                  gridTemplateRows: `repeat(${subgroup.rows || Math.ceil(subgroup.items.length / subgroup.cols)}, auto)`,
+                  gridTemplateColumns: `repeat(${actualCols}, ${subgroup.equalColumns ? 'minmax(0, 1fr)' : 'auto'})`,
+                  gridTemplateRows: `repeat(${subgroup.rows || Math.ceil(subgroup.items.length / baseCols)}, auto)`,
                   gridAutoFlow: subgroup.flow || 'column',
                   ...(subgroup.rows ? { '--cme-subgroup-rows': `repeat(${subgroup.rows}, minmax(0, 1fr))` } : {}),
                 }}
               >
                 {subgroup.items.map((item, i) => {
+                  const isLastRowStretchItem = Boolean(subgroup.stretchLastRow) && totalItems > 0 && i >= lastRowStartIndex && lastRowCount < baseCols;
+                  const itemGridColumn = isLastRowStretchItem
+                    ? `span ${Math.max(1, Math.floor(actualCols / lastRowCount))}`
+                    : (defaultSpan > 1 ? `span ${defaultSpan}` : undefined);
                   const currentGroup = activeGroupConfig;
                   const groupKey = currentGroup.id || currentGroup.label || activeGroup;
                   const buttonKey = `${groupKey}-${chunkIndex * 4 + i}-${item.insert || item.action || item.label}`;
@@ -6129,7 +6223,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           width: item.width || '60px',
                           boxSizing: 'border-box',
                           margin: '2px 0',
-                          gridColumn: (subgroup.cols === 3) ? 'span 1' : ((subgroup.cols === 1) ? 'span 1' : 'span 2')
+                          gridColumn: itemGridColumn || ((subgroup.cols === 3) ? 'span 1' : ((subgroup.cols === 1) ? 'span 1' : 'span 2'))
                         }}
                         onMouseDown={(e) => {
                           e.preventDefault();
@@ -6215,6 +6309,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                       type="button"
                       className={`cme-btn${currentGroup.isTemplate ? ' template' : ''}${isMathMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${isBtnActive ? ' active' : ''}`}
                       title={item.title || item.insert}
+                      style={itemGridColumn ? { gridColumn: itemGridColumn } : undefined}
                       onMouseDown={(e) => {
                         e.preventDefault();
                         const mf = popupMfRef.current;
@@ -6428,7 +6523,8 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                   );
                 })}
               </div>
-            ));
+            );
+            });
           })()}
         </div>
       </div>
