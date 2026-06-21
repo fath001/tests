@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
+﻿import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import {
@@ -580,7 +580,6 @@ const RELATIONS_TAB_ITEMS = [
   makeRelationMorePicker('primeExtras', 'More Prime Symbols'),
 
   { type: 'sep', cols: 3 },
-  { label: '=', insert: '=' },
   { label: '~', insert: '\\sim' },
   { label: '\u2243', insert: '\\simeq' },
   { label: '\u2261', insert: '\\equiv' },
@@ -1217,20 +1216,17 @@ const ORDERED_MATH_GROUPS = [
       { label: '±', insert: '\\pm' },
       { type: 'sep', cols: 3 },
       // GROUP 4 - Relations (cols: 4)
-      { label: '≥', insert: '\\geq' },
-      { label: '≤', insert: '\\leq' },
-      { label: '∩', insert: '\\cap' },
-      { label: '∪', insert: '\\cup' },
-      { label: '=', insert: '=' },
-        { label: '≠', insert: '\\neq' },
-      { label: '⊂', insert: '\\subset' },
-      { label: '∈', insert: '\\in' },
+      { label: '\u2265', insert: '\\geq' },
+      { label: '\u2264', insert: '\\leq' },
+      { label: '\u2229', insert: '\\cap' },
+      { label: '\u222A', insert: '\\cup' },
+      { label: '\u2282', insert: '\\subset' },
+      { label: '\u2208', insert: '\\in' },
       { type: 'sep', cols: 4 },
       // GROUP 5 - Symbols (cols: 2)
       { label: '∅', insert: '\\emptyset' },
       { label: '∞', insert: '\\infty' },
       { label: 'π', insert: '\\pi' },
-      { label: 'ℕ', insert: '\\mathbb{N}' },
       { type: 'sep', cols: 2 },
       // GROUP 6 - Clipboard (cols: 3)
       { label: '✂', action: 'CUT', title: 'Cut Formula', cls: 'soft-tool' },
@@ -1269,67 +1265,67 @@ const ORDERED_MATH_GROUPS = [
     id: 'greek',
     label: <TabIcon top="α Ω" compact />,
     items: [
-      { category: 'Lowercase Greek Letters', label: 'α', insert: '\\alpha' },
-      { category: 'Lowercase Greek Letters', label: 'β', insert: '\\beta' },
-      { category: 'Lowercase Greek Letters', label: 'γ', insert: '\\gamma' },
-      { category: 'Lowercase Greek Letters', label: 'δ', insert: '\\delta' },
-      { category: 'Lowercase Greek Letters', label: 'ε', insert: '\\epsilon' },
-      { category: 'Lowercase Greek Letters', label: 'ζ', insert: '\\zeta' },
-      { category: 'Lowercase Greek Letters', label: 'η', insert: '\\eta' },
-      { category: 'Lowercase Greek Letters', label: 'θ', insert: '\\theta' },
-      { category: 'Lowercase Greek Letters', label: 'ϑ', insert: '\\vartheta' },
-      { category: 'Lowercase Greek Letters', label: 'ι', insert: '\\iota' },
-      { category: 'Lowercase Greek Letters', label: 'κ', insert: '\\kappa' },
-      { category: 'Lowercase Greek Letters', label: 'λ', insert: '\\lambda' },
-      { category: 'Lowercase Greek Letters', label: 'μ', insert: '\\mu' },
-      { category: 'Lowercase Greek Letters', label: 'ν', insert: '\\nu' },
-      { category: 'Lowercase Greek Letters', label: 'ξ', insert: '\\xi' },
-      { category: 'Lowercase Greek Letters', label: 'ο', insert: 'ο' },
-      { category: 'Lowercase Greek Letters', label: 'π', insert: '\\pi' },
-      { category: 'Lowercase Greek Letters', label: 'ϖ', insert: '\\varpi' },
-      { category: 'Lowercase Greek Letters', label: 'ρ', insert: '\\rho' },
-      { category: 'Lowercase Greek Letters', label: 'ς', insert: '\\varsigma' },
-      { category: 'Lowercase Greek Letters', label: 'σ', insert: '\\sigma' },
-      { category: 'Lowercase Greek Letters', label: 'τ', insert: '\\tau' },
-      { category: 'Lowercase Greek Letters', label: 'υ', insert: '\\upsilon' },
-      { category: 'Lowercase Greek Letters', label: 'φ', insert: '\\phi' },
-      { category: 'Lowercase Greek Letters', label: 'ϕ', insert: '\\varphi' },
-      { category: 'Lowercase Greek Letters', label: 'χ', insert: '\\chi' },
-      { category: 'Lowercase Greek Letters', label: 'ψ', insert: '\\psi' },
-      { category: 'Lowercase Greek Letters', label: 'ω', insert: '\\omega' },
-      { category: 'Lowercase Greek Letters', label: '|', action: 'GREEK_ITALIC_PICKER', title: 'Italic Uppercase Greek', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool greek-italic-picker-tool' },
+      { category: 'Lowercase Greek Letters', label: '\u03B1', insert: '\\alpha' },
+      { category: 'Lowercase Greek Letters', label: '\u03B2', insert: '\\beta' },
+      { category: 'Lowercase Greek Letters', label: '\u03B3', insert: '\\gamma' },
+      { category: 'Lowercase Greek Letters', label: '\u03B4', insert: '\\delta' },
+      { category: 'Lowercase Greek Letters', label: '\u03B5', insert: '\\epsilon' },
+      { category: 'Lowercase Greek Letters', label: '\u03B6', insert: '\\zeta' },
+      { category: 'Lowercase Greek Letters', label: '\u03B7', insert: '\\eta' },
+      { category: 'Lowercase Greek Letters', label: '\u03B8', insert: '\\theta' },
+      { category: 'Lowercase Greek Letters', label: '\u03D1', insert: '\\vartheta' },
+      { category: 'Lowercase Greek Letters', label: '\u03B9', insert: '\\iota' },
+      { category: 'Lowercase Greek Letters', label: '\u03BA', insert: '\\kappa' },
+      { category: 'Lowercase Greek Letters', label: '\u03BB', insert: '\\lambda' },
+      { category: 'Lowercase Greek Letters', label: '\u03BC', insert: '\\mu' },
+      { category: 'Lowercase Greek Letters', label: '\u03BD', insert: '\\nu' },
+      { category: 'Lowercase Greek Letters', label: '\u03BE', insert: '\\xi' },
+      { category: 'Lowercase Greek Letters', label: '\u03BF', insert: '\u03BF' },
+      { category: 'Lowercase Greek Letters', label: '\u03C0', insert: '\\pi' },
+      { category: 'Lowercase Greek Letters', label: '\u03D6', insert: '\\varpi' },
+      { category: 'Lowercase Greek Letters', label: '\u03C1', insert: '\\rho' },
+      { category: 'Lowercase Greek Letters', label: '\u03C2', insert: '\\varsigma' },
+      { category: 'Lowercase Greek Letters', label: '\u03C3', insert: '\\sigma' },
+      { category: 'Lowercase Greek Letters', label: '\u03C4', insert: '\\tau' },
+      { category: 'Lowercase Greek Letters', label: '\u03C5', insert: '\\upsilon' },
+      { category: 'Lowercase Greek Letters', label: '\u03C6', insert: '\\phi' },
+      { category: 'Lowercase Greek Letters', label: '\u03D5', insert: '\\varphi' },
+      { category: 'Lowercase Greek Letters', label: '\u03C7', insert: '\\chi' },
+      { category: 'Lowercase Greek Letters', label: '\u03C8', insert: '\\psi' },
+      { category: 'Lowercase Greek Letters', label: '\u03C9', insert: '\\omega' },
+      { category: 'Greek Letter Picker', label: '|', action: 'GREEK_ITALIC_PICKER', title: 'Italic Uppercase Greek', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool greek-italic-picker-tool' },
 
-      { category: 'Uppercase Greek Letters', label: 'ℕ', insert: '\\mathbb{N}' },
-      { category: 'Uppercase Greek Letters', label: 'ℤ', insert: '\\mathbb{Z}' },
-      { category: 'Uppercase Greek Letters', label: 'ℚ', insert: '\\mathbb{Q}' },
-      { category: 'Uppercase Greek Letters', label: 'ℂ', insert: '\\mathbb{C}' },
-      { category: 'Uppercase Greek Letters', label: 'ℝ', insert: '\\mathbb{R}' },
-      { category: 'Uppercase Greek Letters', label: 'ℙ', insert: '\\mathbb{P}' },
-      { category: 'Uppercase Greek Letters', label: '|', action: 'BLACKBOARD_BOLD_PICKER', title: 'More Blackboard Bold Letters', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool blackboard-bold-picker-tool' },
+      { category: 'Blackboard Bold / Number Sets', label: '\u2115', insert: '\\mathbb{N}' },
+      { category: 'Blackboard Bold / Number Sets', label: '\u2124', insert: '\\mathbb{Z}' },
+      { category: 'Blackboard Bold / Number Sets', label: '\u211A', insert: '\\mathbb{Q}' },
+      { category: 'Blackboard Bold / Number Sets', label: '\u2102', insert: '\\mathbb{C}' },
+      { category: 'Blackboard Bold / Number Sets', label: '\u211D', insert: '\\mathbb{R}' },
+      { category: 'Blackboard Bold / Number Sets', label: '\u2119', insert: '\\mathbb{P}' },
+      { category: 'Blackboard Bold Picker', label: '|', action: 'BLACKBOARD_BOLD_PICKER', title: 'More Blackboard Bold Letters', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool blackboard-bold-picker-tool' },
 
-      { category: 'Fraktur / Gothic Symbols', label: '𝔄', insert: '\\mathfrak{A}' },
-      { category: 'Fraktur / Gothic Symbols', label: '𝒜', insert: '\\mathscr{A}' },
-      { category: 'Fraktur / Gothic Symbols', label: '𝔅', insert: '\\mathfrak{B}' },
-      { category: 'Fraktur / Gothic Symbols', label: 'ℬ', insert: '\\mathscr{B}' },
-      { category: 'Fraktur / Gothic Symbols', label: 'ℭ', insert: '\\mathfrak{C}' },
-      { category: 'Fraktur / Gothic Symbols', label: '𝒞', insert: '\\mathscr{C}' },
-      { category: 'Fraktur / Gothic Symbols', label: '|', action: 'FRAKTUR_SCRIPT_PICKER', title: 'More Fraktur and Script Letters', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool fraktur-script-picker-tool' },
+      { category: 'Fraktur Symbols', label: '\u{1D504}', insert: '\\mathfrak{A}' },
+      { category: 'Fraktur Symbols', label: '\u{1D505}', insert: '\\mathfrak{B}' },
+      { category: 'Fraktur Symbols', label: '\u{1D50A}', insert: '\\mathfrak{G}' },
+      { category: 'Script Symbols', label: '\u{1D49C}', insert: '\\mathscr{A}' },
+      { category: 'Script Symbols', label: '\u212C', insert: '\\mathscr{B}' },
+      { category: 'Script Symbols', label: '\u{1D49E}', insert: '\\mathscr{C}' },
+      { category: 'Fraktur / Script Picker', label: '|', action: 'FRAKTUR_SCRIPT_PICKER', title: 'More Fraktur and Script Letters', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool fraktur-script-picker-tool' },
 
-      { category: 'Hebrew Mathematical Symbols', label: 'ℑ', insert: '\\Im' },
-      { category: 'Hebrew Mathematical Symbols', label: 'ℜ', insert: '\\Re' },
-      { category: 'Hebrew Mathematical Symbols', label: '𝓁', insert: '\\ell' },
-      { category: 'Hebrew Mathematical Symbols', label: '|', action: 'HEBREW_SYMBOL_PICKER', title: 'More Hebrew Mathematical Symbols', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool hebrew-symbol-picker-tool' },
+      { category: 'Hebrew Mathematical Symbols', label: '\u2111', insert: '\\Im' },
+      { category: 'Hebrew Mathematical Symbols', label: '\u211C', insert: '\\Re' },
+      { category: 'Hebrew Mathematical Symbols', label: '\u2113', insert: '\\ell' },
+      { category: 'Hebrew Symbol Picker', label: '|', action: 'HEBREW_SYMBOL_PICKER', title: 'More Hebrew Mathematical Symbols', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool hebrew-symbol-picker-tool' },
 
-      { category: 'Arabic-Indic Numeral Systems', label: '٤٦', action: 'ARABIC_INDIC_NUMERALS', title: 'Arabic-Indic Numerals', icon: 'arabic-indic-numerals-template-image', cls: 'numeral-mode-tool' },
-      { category: 'Arabic-Indic Numeral Systems', label: '۴۶', action: 'EASTERN_ARABIC_INDIC_NUMERALS', title: 'Eastern Arabic-Indic Numerals (Persian/Urdu)', icon: 'eastern-arabic-indic-numerals-template-image', cls: 'numeral-mode-tool' },
+      { category: 'Arabic-Indic Numeral Systems', label: '\u0664\u0666', action: 'ARABIC_INDIC_NUMERALS', title: 'Arabic-Indic Numerals', icon: 'arabic-indic-numerals-template-image', cls: 'numeral-mode-tool' },
+      { category: 'Arabic-Indic Numeral Systems', label: '\u06F4\u06F6', action: 'EASTERN_ARABIC_INDIC_NUMERALS', title: 'Eastern Arabic-Indic Numerals (Persian/Urdu)', icon: 'eastern-arabic-indic-numerals-template-image', cls: 'numeral-mode-tool' },
 
-      { category: 'Blackboard Bold / Number Sets', label: 'H', insert: 'H' },
-      { category: 'Blackboard Bold / Number Sets', label: 'C', insert: 'C' },
-      { category: 'Blackboard Bold / Number Sets', label: 'N', insert: 'N' },
-      { category: 'Blackboard Bold / Number Sets', label: 'O', insert: 'O' },
-      { category: 'Blackboard Bold / Number Sets', label: 'F', insert: 'F' },
-      { category: 'Blackboard Bold / Number Sets', label: 'S', insert: 'S' },
-      { category: 'Blackboard Bold / Number Sets', label: '|', action: 'PERIODIC_TABLE_PICKER', title: 'Periodic Table', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool periodic-table-picker-tool' },
+      { category: 'Periodic Table Symbols', label: 'H', insert: 'H' },
+      { category: 'Periodic Table Symbols', label: 'C', insert: 'C' },
+      { category: 'Periodic Table Symbols', label: 'N', insert: 'N' },
+      { category: 'Periodic Table Symbols', label: 'O', insert: 'O' },
+      { category: 'Periodic Table Symbols', label: 'F', insert: 'F' },
+      { category: 'Periodic Table Symbols', label: 'S', insert: 'S' },
+      { category: 'Periodic Table Picker', label: '|', action: 'PERIODIC_TABLE_PICKER', title: 'Periodic Table', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool periodic-table-picker-tool' },
     ],
   },
   {
@@ -5758,27 +5754,40 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                 return acc;
               }, {});
               const greekLayouts = {
-                'Lowercase Greek Letters': 10,
-                'Uppercase Greek Letters': 2,
-                'Fraktur / Gothic Symbols': 2,
-                'Hebrew Mathematical Symbols': 1,
-                'Arabic-Indic Numerals': 1,
-                'Eastern Arabic-Indic Numerals': 1,
-                'Blackboard Bold / Number Sets': 2,
+                'Lowercase Greek Letters': { cols: 10, rows: 3 },
+                'Greek Letter Picker': { cols: 1, rows: 3 },
+                'Blackboard Bold / Number Sets': { cols: 2, rows: 3 },
+                'Blackboard Bold Picker': { cols: 1, rows: 3 },
+                'Fraktur Symbols': { cols: 1, rows: 3 },
+                'Script Symbols': { cols: 1, rows: 3 },
+                'Fraktur / Script Picker': { cols: 1, rows: 3 },
+                'Hebrew Mathematical Symbols': { cols: 1, rows: 3 },
+                'Hebrew Symbol Picker': { cols: 1, rows: 3 },
+                'Arabic-Indic Numeral Systems': { cols: 1, rows: 3 },
+                'Periodic Table Symbols': { cols: 2, rows: 3 },
+                'Periodic Table Picker': { cols: 1, rows: 3 },
               };
+
+              const greekEntries = Object.entries(groupedGreekItems);
 
               return (
                 <div className="cme-greek-panel">
-                  {Object.entries(groupedGreekItems).map(([category, items]) => {
-                    const cols = greekLayouts[category] || 2;
+                  {greekEntries.map(([category, items], index) => {
+                    const layout = greekLayouts[category] || { cols: 2, rows: Math.max(1, Math.ceil(items.length / 2)) };
+                    const cols = layout.cols;
+                    const rows = layout.rows;
+                    const isGreekPickerColumn = items.every((entry) => entry.cls?.includes('arrow-picker-tool'));
+                    const nextItems = greekEntries[index + 1]?.[1] || [];
+                    const isBeforeGreekPickerColumn = nextItems.length > 0 && nextItems.every((entry) => entry.cls?.includes('arrow-picker-tool'));
 
                     return (
                       <section
                         key={category}
-                        className={`cme-symbol-subgroup cme-greek-subgroup${isMathMode ? ' cme-symbol-subgroup--compact' : ''}`}
+                        className={`cme-symbol-subgroup cme-greek-subgroup${isGreekPickerColumn ? ' cme-greek-subgroup--picker' : ''}${isBeforeGreekPickerColumn ? ' cme-greek-subgroup--before-picker' : ''}${isMathMode ? ' cme-symbol-subgroup--compact' : ''}`}
                         style={{
                           gridTemplateColumns: `repeat(${cols}, auto)`,
-                          gridTemplateRows: `repeat(${Math.ceil(items.length / cols)}, auto)`,
+                          gridTemplateRows: `repeat(${rows}, auto)`,
+                          '--cme-greek-rows': `repeat(${rows}, auto)`,
                         }}
                       >
                         {items.map((item, i) => {
@@ -5959,6 +5968,114 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                   cols: Math.max(1, Math.ceil(subgroup.items.length / 3)),
                 }));
               }
+
+              if (activeGroupConfig.id === 'roots-main') {
+                const groupedItems = subgroups.map((subgroup) => subgroup.items || []);
+                const [
+                  fractions = [],
+                  scripts = [],
+                  brackets = [],
+                  operators = [],
+                  relations = [],
+                  symbols = [],
+                  clipboard = [],
+                  formatting = [],
+                  rtl = [],
+                  dropdowns = [],
+                ] = groupedItems;
+                const pick = (items, order) => order.map((index) => items[index]).filter(Boolean);
+
+                subgroups = [
+                  {
+                    cols: 2,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-roots-main-subgroup',
+                    items: pick(fractions, [0, 2, 1, 3]),
+                  },
+                  {
+                    cols: 1,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
+                    items: pick(scripts, [0, 1]),
+                  },
+                  {
+                    cols: 2,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-roots-main-subgroup',
+                    items: pick(brackets, [0, 2, 1, 3]),
+                  },
+                  {
+                    cols: 2,
+                    rows: 3,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-roots-main-subgroup',
+                    items: pick(operators, [0, 4, 2, 5, 1, 3]),
+                  },
+                  {
+                    cols: 2,
+                    rows: 3,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-roots-main-subgroup',
+                    items: pick(relations, [0, 1, 5, 4, 3, 2]),
+                  },
+                  {
+                    cols: 1,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
+                    items: [],
+                  },
+                  {
+                    cols: 1,
+                    rows: 3,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
+                    items: pick(symbols, [0, 1, 2]),
+                  },
+                  {
+                    cols: 2,
+                    rows: 3,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-roots-main-subgroup',
+                    items: pick(clipboard, [1, 3, 0, 4, 2, 5]),
+                  },
+                  {
+                    cols: 2,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-roots-main-subgroup cme-roots-main-subgroup--format',
+                    items: pick(formatting, [0, 5, 1, 3, 2, 4]),
+                  },
+                  {
+                    cols: 1,
+                    rows: 1,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
+                    items: pick(rtl, [0]),
+                  },
+                  {
+                    cols: 1,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-roots-main-subgroup cme-roots-main-subgroup--dropdown',
+                    items: pick(dropdowns, [0, 1]),
+                  },
+                ].filter((subgroup) => subgroup.items.length > 0);
+              }
             } else {
               // Legacy grouping for tabs without explicit separators (chunk by 4 items = 2x2 grid)
               const size = 4;
@@ -5973,10 +6090,12 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
             return subgroups.map((subgroup, chunkIndex) => (
               <div
                 key={chunkIndex}
-                className={`cme-symbol-subgroup${isMathMode ? ' cme-symbol-subgroup--compact' : ''}`}
+                className={`cme-symbol-subgroup${subgroup.className || ''}${isMathMode ? ' cme-symbol-subgroup--compact' : ''}`}
                 style={{
-                  gridTemplateColumns: `repeat(${subgroup.cols}, auto)`,
-                  gridTemplateRows: `repeat(${Math.ceil(subgroup.items.length / subgroup.cols)}, auto)`
+                  gridTemplateColumns: `repeat(${subgroup.cols}, ${subgroup.equalColumns ? 'minmax(0, 1fr)' : 'auto'})`,
+                  gridTemplateRows: `repeat(${subgroup.rows || Math.ceil(subgroup.items.length / subgroup.cols)}, auto)`,
+                  gridAutoFlow: subgroup.flow || 'column',
+                  ...(subgroup.rows ? { '--cme-subgroup-rows': `repeat(${subgroup.rows}, minmax(0, 1fr))` } : {}),
                 }}
               >
                 {subgroup.items.map((item, i) => {
@@ -7026,3 +7145,6 @@ function CkEditor({ value, onChange, className = '' }) {
 }
 
 export default CkEditor;
+
+
+

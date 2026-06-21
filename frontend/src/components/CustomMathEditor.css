@@ -274,13 +274,37 @@
   margin: 0;
 }
 
+.cme-toolbar-items--first-tab .cme-roots-main-subgroup {
+  align-self: stretch;
+  height: 100%;
+  align-content: stretch;
+  justify-content: stretch;
+  grid-template-rows: var(--cme-subgroup-rows, repeat(2, minmax(0, 1fr))) !important;
+}
+
+.cme-toolbar-items--first-tab .cme-roots-main-subgroup .cme-btn,
+.cme-toolbar-items--first-tab .cme-roots-main-subgroup .cme-btn--compact,
+.cme-toolbar-items--first-tab .cme-roots-main-subgroup .cme-style-select-trigger {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.cme-toolbar-items--first-tab .cme-roots-main-subgroup--stack {
+  min-width: 26px;
+}
+
+.cme-toolbar-items--first-tab .cme-roots-main-subgroup--dropdown {
+  min-width: 88px;
+}
+
 .cme-toolbar-items--relations {
   overflow: hidden;
   gap: 1px;
 }
 
 .cme-toolbar-items--relations .cme-symbol-subgroup {
-  padding: 0 2px;
+  padding: 0 5px;
   margin: 0;
   align-content: start;
   grid-template-rows: repeat(3, auto) !important;
@@ -294,8 +318,23 @@
 }
 
 .cme-toolbar-items--relations .cme-btn.arrow-picker-tool {
-  min-width: 8px;
-  width: 8px;
+  min-width: 14px;
+  width: 14px;
+  height: 100%;
+  min-height: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  box-shadow: none;
+  grid-row: 1 / -1;
+  align-self: stretch;
+  justify-self: center;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  color: #526a79;
 }
 
 .cme-toolbar-items::-webkit-scrollbar { height: 5px; }
@@ -343,6 +382,22 @@
   margin: 0;
   align-content: start;
   justify-content: start;
+}
+
+.cme-toolbar-items--greek .cme-symbol-subgroup {
+  grid-auto-flow: row;
+  grid-template-rows: var(--cme-greek-rows, repeat(2, auto)) !important;
+}
+
+.cme-toolbar-items--greek .cme-greek-subgroup--picker {
+  align-self: stretch;
+  height: 100%;
+  align-content: stretch;
+  grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
+}
+
+.cme-toolbar-items--greek .cme-greek-subgroup--before-picker {
+  border-right: none;
 }
 
 .cme-greek-btn {
@@ -712,8 +767,9 @@
   align-self: stretch;
   justify-self: center;
   display: inline-flex;
-  align-items: flex-end;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
   color: #526a79;
 }
 
@@ -1971,5 +2027,10 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   transform: none !important;
   transition: none !important;
 }
+
+
+
+
+
 
 
