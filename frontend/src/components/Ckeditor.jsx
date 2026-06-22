@@ -250,14 +250,15 @@ const MATH_GROUPS = [
   {
     label: '□/□', isTemplate: true, items: [
       { label: 'a/b', insert: '\\frac{#0}{#?}', title: 'Fraction', icon: 'fraction-template-image' },
-      { label: '□/□', insert: '{#0}/{#?}', title: 'Bevelled Fraction', cls: 'green-template' },
+      { label: '□/□', insert: '{#0}/{#?}', title: 'Bevelled Fraction', cls: 'green-template black-glyph-template' },
       { label: 'a/b', insert: '{\\scriptstyle \\frac{#0}{#?}}', title: 'Small Fraction', icon: 'fraction-template-image', cls: 'small-template' },
-      { label: '□/□', insert: '{\\scriptstyle {#0}/{#?}}', title: 'Small Bevelled Fraction', cls: 'green-template small-template' },
+      { label: '□/□', insert: '{\\scriptstyle {#0}/{#?}}', title: 'Small Bevelled Fraction', cls: 'green-template small-template black-placeholder-glyph' },
       { type: 'sep', cols: 4 },
       { label: '√x', insert: '\\sqrt{#0}', title: 'Square Root', icon: 'sqrt-template-image' },
       { label: 'ⁿ√x', insert: '\\sqrt[#?]{#0}', title: 'Nth Root', icon: 'nth-root-template-image' },
+      {type: 'sep', cols: 2 },
       { label: 'xⁿ', insert: '#0^{#?}', title: 'Superscript', icon: 'superscript-template-image' },
-     { label: 'ˡ□', insert: '{}^{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript', icon: 'left-sup-template-image' },
+      { label: 'ˡ□', insert: '{}^{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript', icon: 'left-sup-template-image' },
       
       { label: '□^□_□', insert: '#?^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Right Superscript and Subscript', icon: 'right-sup-sub-template-image' },
       { label: 'ˡₗ□', insert: '{}^{#?}_{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript and Subscript', icon: 'left-sup-sub-template-image' },
@@ -277,8 +278,8 @@ const MATH_GROUPS = [
       { label: '▯_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
       { type: 'sep', cols: 3 },
       { label: 'hphantom', insert: '\\hphantom{0}', cls: 'template', directInsert: true, title: 'Horizontal Phantom Space', icon: 'hphantom-space-template-image' },
+      { label: 'negative-space', insert: '\\!', cls: 'template', directInsert: true, title: 'Negative Thin Space', icon: 'negative-thin-space-template-image' }, 
       { label: 'thin-space', insert: '\\,', cls: 'template', directInsert: true, title: 'Thin Space', icon: 'thin-space-template-image' },
-      { label: 'negative-space', insert: '\\!', cls: 'template', directInsert: true, title: 'Negative Thin Space', icon: 'negative-thin-space-template-image' },
     ]
   },
   {
@@ -543,17 +544,17 @@ const RELATION_MORE_PICKERS = {
     { label: '∰', insert: '\\oiiint', title: 'Triple Contour Integral', icon: 'triple-contour-integral-template-image' },
   ],
   trigFunctionExtras: [
-    { label: 'sin⁻¹(□)', insert: '\\sin^{-1}\\left(#0\\right)' },
-    { label: 'csc(□)', insert: '\\csc\\left(#0\\right)' },
-    { label: 'cos⁻¹(□)', insert: '\\cos^{-1}\\left(#0\\right)' },
-    { label: 'sec(□)', insert: '\\sec\\left(#0\\right)' },
-    { label: 'tan⁻¹(□)', insert: '\\tan^{-1}\\left(#0\\right)' },
-    { label: 'cot(□)', insert: '\\cot\\left(#0\\right)' },
+    { label: 'sin⁻¹(□)', insert: '\\sin^{-1}\\left(#0\\right)', cls: 'green-placeholder-glyph' },
+    { label: 'csc(□)', insert: '\\csc\\left(#0\\right)', cls: 'green-placeholder-glyph' },
+    { label: 'cos⁻¹(□)', insert: '\\cos^{-1}\\left(#0\\right)', cls: 'green-placeholder-glyph' },
+    { label: 'sec(□)', insert: '\\sec\\left(#0\\right)', cls: 'green-placeholder-glyph' },
+    { label: 'tan⁻¹(□)', insert: '\\tan^{-1}\\left(#0\\right)', cls: 'green-placeholder-glyph' },
+    { label: 'cot(□)', insert: '\\cot\\left(#0\\right)', cls: 'green-placeholder-glyph' },
   ],
   bracketDelimiterExtras: [
-    { label: '⌊□⌋', insert: '\\left\\lfloor #0 \\right\\rfloor' },
-    { label: '⌈□⌉', insert: '\\left\\lceil #0 \\right\\rceil' },
-    { label: '⟨□|□⟩', insert: '\\left\\langle #0 \\middle| #? \\right\\rangle' },
+    { label: '⌊□⌋', insert: '\\left\\lfloor #0 \\right\\rfloor', cls: 'green-placeholder-glyph' },
+    { label: '⌈□⌉', insert: '\\left\\lceil #0 \\right\\rceil', cls: 'green-placeholder-glyph' },
+    { label: '⟨□|□⟩', insert: '\\left\\langle #0 \\middle| #? \\right\\rangle', cls: 'green-placeholder-glyph' },
   ],
   enclosureFrameExtras: [
     { label: '¯\n▯|', insert: '\\overline{\\left.#?\\right|}', cls: 'template', directInsert: true, title: 'Overline with Right Bar', icon: 'overline-right-bar-template-image' },
@@ -1250,21 +1251,21 @@ const ORDERED_MATH_GROUPS = [
     label: <RootFractionTabIcon />,
     items: [
       // GROUP 1 - Fractions & Roots (cols: 2)
-      { label: '□/□', insert: '\\frac{#0}{#?}', title: 'Fraction', cls: 'green-template', icon: 'stacked-fraction' },
-      { label: '□/□', insert: '{#0}/{#?}', title: 'Bevelled Fraction', cls: 'green-template' },
-      { label: '√□', insert: '\\sqrt{#0}', title: 'Square Root', cls: 'green-template', icon: 'square-root-template' },
-      { label: '□√□', insert: '\\sqrt[#?]{#0}', title: 'Root', cls: 'green-template', icon: 'nth-root-template' },
+      { label: '□/□', insert: '\\frac{#0}{#?}', title: 'Fraction', cls: 'green-template black-glyph-template', icon: 'stacked-fraction' },
+      { label: '□/□', insert: '{#0}/{#?}', title: 'Bevelled Fraction', cls: 'green-template black-glyph-template' },
+      { label: '√□', insert: '\\sqrt{#0}', title: 'Square Root', cls: 'green-template black-glyph-template', icon: 'square-root-template' },
+      { label: '□√□', insert: '\\sqrt[#?]{#0}', title: 'Root', cls: 'green-template black-glyph-template', icon: 'nth-root-template' },
       { type: 'sep', cols: 2 },
       // GROUP 2a - Brackets (cols: 2)
-      { label: '□^□', insert: '#0^{#?}', title: 'Superscript', cls: 'green-template', icon: 'superscript-template' },
-      { label: '□_□', insert: '#0_{#?}', title: 'Subscript', cls: 'green-template', icon: 'subscript-template' },
+      { label: '□^□', insert: '#0^{#?}', title: 'Superscript', cls: 'green-template black-glyph-template', icon: 'superscript-template' },
+      { label: '□_□', insert: '#0_{#?}', title: 'Subscript', cls: 'green-template black-glyph-template', icon: 'subscript-template' },
       
       { type: 'sep', cols: 1 },
       // GROUP 2b - Super/Subscript (cols: 1)
-      { label: '(□)', insert: '\\left(#0\\right)', title: 'Parentheses', cls: 'green-template' },
-      { label: '|□|', insert: '\\left|#0\\right|', title: 'Absolute Value', cls: 'green-template' },
-      { label: '[□]', insert: '\\left[#0\\right]', title: 'Square Brackets', cls: 'green-template' },
-      { label: '{□}', insert: '\\left\\{#0\\right\\}', title: 'Curly Braces', cls: 'green-template' },
+      { label: '(□)', insert: '\\left(#0\\right)', title: 'Parentheses', cls: 'green-template black-placeholder-glyph' },
+      { label: '|□|', insert: '\\left|#0\\right|', title: 'Absolute Value', cls: 'green-template black-placeholder-glyph' },
+      { label: '[□]', insert: '\\left[#0\\right]', title: 'Square Brackets', cls: 'green-template black-placeholder-glyph' },
+      { label: '{□}', insert: '\\left\\{#0\\right\\}', title: 'Curly Braces', cls: 'green-template black-placeholder-glyph' },
       { type: 'sep', cols: 3 },
       // GROUP 3 - Operators (cols: 3)
       { label: '+', insert: '+' },
@@ -1313,7 +1314,7 @@ const ORDERED_MATH_GROUPS = [
     id: 'relations',
     ...MATH_GROUPS[1],
     items: RELATIONS_TAB_ITEMS,
-    label: <TabIcon top="∈∞" compact />,
+    label: <RelationsTabIcon />,
   },
   {
     id: 'arrows',
@@ -1322,7 +1323,7 @@ const ORDERED_MATH_GROUPS = [
   },
   {
     id: 'greek',
-    label: <TabIcon top="α Ω" compact />,
+    label: <GreekTabIcon />,
     items: [
       { category: 'Lowercase Greek Letters', label: '\u03B1', insert: '\\alpha' },
       { category: 'Lowercase Greek Letters', label: '\u03B2', insert: '\\beta' },
@@ -1401,12 +1402,12 @@ const ORDERED_MATH_GROUPS = [
     id: 'brackets',
     label: <BracketsTabIcon />,
     items: [
-      { label: '(□)', insert: '\\left(#0\\right)' },
-      { label: '[□]', insert: '\\left[#0\\right]' },
-      { label: '|□|', insert: '\\left|#0\\right|' },
-      { label: '‖□‖', insert: '\\left\\| #0 \\right\\|' },
-      { label: '⟨□⟩', insert: '\\left\\langle #0 \\right\\rangle' },
-      { label: '{□}', insert: '\\left\\{#0\\right\\}' },
+      { label: '(□)', insert: '\\left(#0\\right)', cls: 'green-placeholder-glyph' },
+      { label: '[□]', insert: '\\left[#0\\right]', cls: 'green-placeholder-glyph' },
+      { label: '|□|', insert: '\\left|#0\\right|', cls: 'green-placeholder-glyph' },
+      { label: '‖□‖', insert: '\\left\\| #0 \\right\\|', cls: 'green-placeholder-glyph' },
+      { label: '⟨□⟩', insert: '\\left\\langle #0 \\right\\rangle', cls: 'green-placeholder-glyph' },
+      { label: '{□}', insert: '\\left\\{#0\\right\\}', cls: 'green-placeholder-glyph' },
       makeRelationMorePicker('bracketDelimiterExtras', 'More Delimiters'),
       { type: 'sep', cols: 2 },
       { label: 'overbrace', insert: '\\overbrace{#0}', cls: 'template', directInsert: true, title: 'Overbrace', icon: 'overbrace-arc-template-image' },
@@ -1481,10 +1482,10 @@ const ORDERED_MATH_GROUPS = [
       { label: 'limit-infinity', insert: '\\lim_{#?\\to\\infty}', cls: 'template', directInsert: true, title: 'Limit to Infinity', icon: 'limit-infinity-template-image' },
       { label: 'limit-generic', insert: '\\lim_{#?}', cls: 'template', directInsert: true, title: 'Limit', icon: 'limit-generic-template-image' },
       { type: 'sep', cols: 2 }, 
-      { label: '∇×□', insert: '\\nabla \\times #?', cls: 'template', directInsert: true, title: 'Curl' },
-      { label: '∇·□', insert: '\\nabla \\cdot #?', cls: 'template', directInsert: true, title: 'Divergence' },
-      { label: '∇□', insert: '\\nabla #?', cls: 'template', directInsert: true, title: 'Gradient' },
-      { label: 'Δ□', insert: '\\Delta #?', cls: 'template', directInsert: true, title: 'Delta Expression' },
+      { label: '∇×□', insert: '\\nabla \\times #?', cls: 'template green-placeholder-glyph', directInsert: true, title: 'Curl' },
+      { label: '∇·□', insert: '\\nabla \\cdot #?', cls: 'template green-placeholder-glyph', directInsert: true, title: 'Divergence' },
+      { label: '∇□', insert: '\\nabla #?', cls: 'template green-placeholder-glyph', directInsert: true, title: 'Gradient' },
+      { label: 'Δ□', insert: '\\Delta #?', cls: 'template green-placeholder-glyph', directInsert: true, title: 'Delta Expression' },
       { type: 'sep', cols: 3 },
       { label: '∫', insert: '\\int', icon: 'single-integral-template-image' },
       { label: '∮', insert: '\\oint', icon: 'contour-integral-template-image' },
@@ -1492,13 +1493,13 @@ const ORDERED_MATH_GROUPS = [
       { label: '∯', insert: '\\oiint', icon: 'double-contour-integral-template-image' },
       makeRelationMorePicker('tripleIntegralExtras', 'More Triple Integrals'),
       { type: 'sep', cols: 2 },
-      { label: 'log(□)', insert: '\\log\\left(#0\\right)' },
+      { label: 'log(□)', insert: '\\log\\left(#0\\right)', cls: 'green-placeholder-glyph' },
       { label: 'log₍□₎(□)', insert: '\\log_{#?}\\left(#?\\right)', cls: 'template', directInsert: true, title: 'Logarithm With Base', icon: 'log-base-template-image' },
       { type: 'sep', cols: 4 },
-      { label: 'sin(□)', insert: '\\sin\\left(#0\\right)' },
-      { label: 'tan(□)', insert: '\\tan\\left(#0\\right)' },
-      { label: 'cos(□)', insert: '\\cos\\left(#0\\right)' },
-      { label: 'ln(□)', insert: '\\ln\\left(#0\\right)' },
+      { label: 'sin(□)', insert: '\\sin\\left(#0\\right)', cls: 'green-placeholder-glyph' },
+      { label: 'tan(□)', insert: '\\tan\\left(#0\\right)', cls: 'green-placeholder-glyph' },
+      { label: 'cos(□)', insert: '\\cos\\left(#0\\right)', cls: 'green-placeholder-glyph' },
+      { label: 'ln(□)', insert: '\\ln\\left(#0\\right)', cls: 'green-placeholder-glyph' },
       makeRelationMorePicker('trigFunctionExtras', 'More Trig Functions'),
     ],
   },
@@ -1685,6 +1686,59 @@ function PowerFracTabIcon() {
     strokeWidth="4"
   />
 </svg>
+    </span>
+  );
+}
+
+function RelationsTabIcon() {
+  return (
+    <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
+      <svg className="cme-tab-svg-icon" viewBox="0 0 56 28" focusable="false">
+        <path
+          d="M18 4 C10 4 6 9 6 14 C6 19 10 24 18 24"
+          fill="none"
+          stroke="#ffffff"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <line
+          x1="8"
+          y1="14"
+          x2="18"
+          y2="14"
+          stroke="#ffffff"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+        />
+        <text
+          x="26"
+          y="24"
+          fill="#ffffff"
+          fontFamily="Cambria Math, serif"
+          fontSize="35" 
+        >
+          ∞
+        </text>
+      </svg>
+    </span>
+  );
+}
+
+function GreekTabIcon() {
+  return (
+    <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
+      <svg className="cme-tab-svg-icon" viewBox="0 0 40 24" focusable="false" >
+        <text
+          x="2"
+          y="20"
+          fill="#ffffff"
+          fontFamily="Segoe UI Symbol, Arial Unicode MS, sans-serif"
+          fontSize="25"
+        >
+          α Ω
+        </text>
+      </svg>
     </span>
   );
 }
@@ -2117,9 +2171,9 @@ function makeArrowLabelToolbarIcon(content) {
 
 const TOOLBAR_ICON_IMAGES = {
   'fraction-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"> 
       <rect x="6.1" y="1.8" width="6" height="4.8" rx="0" fill="none" stroke="#2c8a43" stroke-width="1.6"/>
-      <line x1="3.2" y1="9" x2="14.8" y2="9" stroke="#2c8a43" stroke-width="1.6" stroke-linecap="square"/>
+      <line x1="3.2" y1="9" x2="14.8" y2="9" stroke="#000000" stroke-width="1.6" stroke-linecap="square"/>
       <rect x="6.1" y="11.4" width="6" height="4.8" rx="0" fill="none" stroke="#2c8a43" stroke-width="1.6"/>
     </svg>
   `),
@@ -3854,16 +3908,16 @@ function renderToolbarItemLabel(item, context = {}) {
 
   if (item.icon === 'stacked-fraction') {
     return (
-      <span className="cme-fraction-icon cme-fraction-stack" aria-hidden="true">
+      <span className={`cme-fraction-icon cme-fraction-stack${item.cls?.includes('black-glyph-template') ? ' cme-fraction-stack--black-glyph-template' : ''}`} aria-hidden="true">
         <svg
           className="cme-fraction-svg"
           viewBox="0 0 24 24"
           focusable="false"
           aria-hidden="true"
         >
-          <rect x="7.5" y="2.5" width="9" height="6" rx="0.5" />
+          <rect x="7.5" y="-0.2" width="9" height="9"/> 
           <line x1="5.5" y1="12" x2="18.5" y2="12" />
-          <rect x="7.5" y="15.5" width="9" height="6" rx="0.5" />
+          <rect x="7.5" y="15.3" width="9" height="9"/>
         </svg>
       </span>
     );
@@ -4315,7 +4369,8 @@ function renderToolbarItemLabel(item, context = {}) {
     const isRelations = context.groupId === 'relations';
     const isGreek = context.groupId === 'greek';
     const isChemMode = Boolean(context.isChemMode);
-    const labelLength = String(item.label || '').length;
+    const labelText = String(item.label || '');
+    const labelLength = labelText.length;
 
     if (isChemMode) {
       const isChemScriptLabel = /^(?:[⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ⁿⁱ₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₒₓᵢⱼₙ])+$/u.test(String(item.label || ''));
@@ -4369,7 +4424,13 @@ function renderToolbarItemLabel(item, context = {}) {
 
     return (
       <span className={classNames.join(' ')} aria-hidden="true">
-        {item.label}
+        {(itemClassName.includes('green-placeholder-glyph') || itemClassName.includes('black-glyph-template') || itemClassName.includes('black-placeholder-glyph'))
+          ? Array.from(labelText).map((char, index) => (
+              char === '□'
+                ? <span key={`placeholder-${index}`} className={itemClassName.includes('black-placeholder-glyph') ? 'cme-toolbar-placeholder-box-black' : 'cme-toolbar-placeholder-box-green'}>{char}</span>
+                : <span key={`glyph-${index}`}>{char}</span>
+            ))
+          : item.label}
       </span>
     );
   }
@@ -6153,7 +6214,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                     items: pick(operators, [0, 4, 2, 5, 1, 3]),
                   },
                   {
-                    cols: 2,
+                    cols: 2, 
                     rows: 3,
                     flow: 'row',
                     equalColumns: true,

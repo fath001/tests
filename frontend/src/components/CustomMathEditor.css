@@ -76,6 +76,7 @@
   display: flex;
   flex-wrap: wrap;
   background: linear-gradient(180deg, #8ea3b0 0%, #758d9c 100%);
+  background: #ffffff;
   padding: 6px 6px 0 6px;
   gap: 2px;
   border-bottom: 1px solid #8fa1ae;
@@ -84,7 +85,8 @@
 }
 
 .cme-group-tab {
-  background: linear-gradient(180deg, #7d93a0 0%, #637b8a 100%);
+  background: linear-gradient(180deg, #7d93a0 0%, #556e7b 100%);
+  /* background: #556e7b; */
   border: 1px solid #6f8795;
   border-bottom: none;
   border-top-left-radius: 5px;
@@ -196,7 +198,7 @@
 }
 
 .cme-group-tab.active {
-  background: linear-gradient(180deg, #f3d6d9 0%, #dba8ad 100%);
+  background: linear-gradient(180deg, #f3d6d9 0%, #dc9e9e 100%);
   color: #ffffff;
   border-color: #d79ba2;
   z-index: 2;
@@ -1464,16 +1466,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 24px;
+  width: 28px;
+  height: 30px;
   overflow: hidden;
   flex-shrink: 0;
 }
 
 .cme-matrix-template-svg {
   display: block;
-  width: 22px;
-  height: 24px;
+  width: 28px;
+  height: 30px;
   overflow: hidden;
 }
 
@@ -1656,7 +1658,7 @@
 
 .cme-toolbar-glyph--template {
   font-size: 16.4px;
-  color: #2c8a43;
+  color: #000000;
 }
 
 .cme-toolbar-glyph--tool {
@@ -1896,7 +1898,8 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
-  background: linear-gradient(180deg, #7f97a6 0%, #718997 100%);
+  /* background: linear-gradient(180deg, #7f97a6 0%, #718997 100%); */
+  background: #778D9A;
   color: #ffffff;
   font-weight: 600;
   font-size: 12px;
@@ -1985,7 +1988,8 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
 }
 
 .cme-insert-btn {
-  background: linear-gradient(180deg, #8da2b0 0%, #7690a0 100%);
+  background: linear-gradient(180deg, #8da2b0 0%, #778e9a 100%);
+  /* background: #405B68; */
   color: #ffffff;
   border: 1px solid #7a92a1;
   min-width: 100px;
@@ -2217,11 +2221,32 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   transition: none !important;
 }
 
+.cme-toolbar-items--power-frac {
+  height: 88px;
+  min-height: 68px;
+  max-height: 68px;
+}
 
 
 
 
 
+.cme-toolbar-placeholder-box-green {
+  color: #2ca02c;
+}
 
+.cme-btn.green-template.black-glyph-template {
+  color: #111111;
+}
 
+.cme-fraction-stack--black-glyph-template .cme-fraction-svg rect {
+  stroke: #2c8a43;
+}
 
+.cme-fraction-stack--black-glyph-template .cme-fraction-svg line {
+  stroke: #111111;
+}
+
+.cme-toolbar-placeholder-box-black {
+  color: #2c8a43;
+}
