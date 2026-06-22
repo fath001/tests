@@ -443,36 +443,36 @@ const MATH_GROUPS = [
     ),
     isMatrix: true,
     items: [
-      { label: '□', insert: 'matrix', cls: 'template', icon: 'matrix-grid-template-image' },
-      { label: '[]', insert: 'bmatrix', cls: 'template', icon: 'matrix-brackets-template-image' },
-      { label: '||', insert: 'vmatrix', cls: 'template', icon: 'matrix-bars-template-image' },
-      { label: '()', insert: 'pmatrix', cls: 'template', icon: 'matrix-parens-template-image' },
+      { label: '□', insert: 'matrix', cls: 'template matrix-roomy-template matrix-tall-template', icon: 'matrix-grid-template-image' },
+      { label: '[]', insert: 'bmatrix', cls: 'template matrix-roomy-template matrix-tall-template', icon: 'matrix-brackets-template-image' },
+      { label: '||', insert: 'vmatrix', cls: 'template matrix-roomy-template matrix-tall-template', icon: 'matrix-bars-template-image' },
+      { label: '()', insert: 'pmatrix', cls: 'template matrix-roomy-template matrix-tall-template', icon: 'matrix-parens-template-image' },
       { type: 'sep', cols: 2 },
-      { label: '□ \\ □ \\ □', insert: '\\begin{matrix} #? \\\\ #? \\\\ #? \\end{matrix}', cls: 'template', directInsert: true },
-      { label: '□ □ □', insert: '\\begin{matrix} #? & #? & #? \\end{matrix}', cls: 'template', directInsert: true },
-      { label: '□ \\ □', insert: '\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}', cls: 'template', directInsert: true },
-      { label: '□ & □', insert: '\\begin{bmatrix} #? & #? \\end{bmatrix}', cls: 'template', directInsert: true },
+      { label: '□ \\ □ \\ □', insert: '\\begin{matrix} #? \\\\ #? \\\\ #? \\end{matrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
+      { label: '□ □ □', insert: '\\begin{matrix} #? & #? & #? \\end{matrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
+      { label: '□ \\ □', insert: '\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
+      { label: '□ & □', insert: '\\begin{bmatrix} #? & #? \\end{bmatrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
 
       { type: 'sep', cols: 2 },
-      { label: '□ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}', cls: 'template', directInsert: true },
-      { label: '□ & □', insert: '\\begin{pmatrix} #? & #? \\end{pmatrix}', cls: 'template', directInsert: true },
+      { label: '□ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}', cls: 'template matrix-roomy-template matrix-extra-tall-template', directInsert: true },
+      { label: '□ & □', insert: '\\begin{pmatrix} #? & #? \\end{pmatrix}', cls: 'template matrix-roomy-template matrix-extra-tall-template', directInsert: true },
       // { label: '□ \\ □ \\ □', insert: '\\begin{bmatrix} #? \\\\ #? \\\\ #? \\end{bmatrix}', cls: 'template', directInsert: true },
       // { label: '□ \\ □ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\\\ #? \\end{pmatrix}', cls: 'template', directInsert: true },
 
 
       { type: 'sep', cols: 2 },
-      { label: 'cases', insert: '\\begin{cases} #? \\\\ #? \\end{cases}', cls: 'template', directInsert: true, icon: 'cases-template-image', title: 'Cases' },
-      { label: 'rcases', insert: '\\begin{rcases} #? \\\\ #? \\end{rcases}', cls: 'template', directInsert: true, icon: 'rcases-template-image', title: 'Right Cases' },
-      { label: 'cases-2x2', insert: '\\begin{cases} #? & #? \\\\ #? & #? \\end{cases}', cls: 'template', directInsert: true, icon: 'cases-two-by-two-template-image', title: 'Cases 2x2' },
-      { label: 'aligned', insert: '\\begin{aligned} #? &= #? \\\\ #? &= #? \\end{aligned}', cls: 'template', directInsert: true, icon: 'aligned-equals-template-image', title: 'Aligned Equations' },
+      { label: 'cases', insert: '\\begin{cases} #? \\\\ #? \\end{cases}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-template-image', title: 'Cases' },
+      { label: 'rcases', insert: '\\begin{rcases} #? \\\\ #? \\end{rcases}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'rcases-template-image', title: 'Right Cases' },
+      { label: 'cases-2x2', insert: '\\begin{cases} #? & #? \\\\ #? & #? \\end{cases}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-two-by-two-template-image', title: 'Cases 2x2' },
+      { label: 'aligned', insert: '\\begin{aligned} #? &= #? \\\\ #? &= #? \\end{aligned}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'aligned-equals-template-image', title: 'Aligned Equations' },
       { type: 'sep', cols: 2 },
-      { label: '⋮', insert: '\\vdots', title: 'Vertical ellipsis', icon: 'vertical-ellipsis-template-image', directInsert: true },
-      { label: '⋯', insert: '\\cdots', title: 'Midline ellipsis', icon: 'midline-ellipsis-template-image', directInsert: true },
-      { label: '⋰', insert: '⋰', title: 'Up-right diagonal ellipsis', icon: 'upright-ellipsis-template-image', directInsert: true },
-      { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis', icon: 'downright-ellipsis-template-image', directInsert: true },
+      { label: '⋮', insert: '\\vdots', title: 'Vertical ellipsis', icon: 'vertical-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
+      { label: '⋯', insert: '\\cdots', title: 'Midline ellipsis', icon: 'midline-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
+      { label: '⋰', insert: '⋰', title: 'Up-right diagonal ellipsis', icon: 'upright-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
+      { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis', icon: 'downright-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { type: 'sep', cols: 2 },
-      {label: 'sum-array',insert: '\\frac{\\begin{array}{r}#?\\\\+\\,#?\\end{array}}{\\quad#?}',cls: 'template',directInsert: true,icon: 'sum-array-template-image',title: 'Column Addition'},     
-      { label: 'division', insert: '\\overset{#?}{\\overline{#?\\big)#?}}', cls: 'template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
+      {label: 'sum-array',insert: '\\frac{\\begin{array}{r}#?\\\\+\\,#?\\end{array}}{\\quad#?}',cls: 'template matrix-roomy-template matrix-tall-template',directInsert: true,icon: 'sum-array-template-image',title: 'Column Addition'},     
+      { label: 'division', insert: '\\overset{#?}{\\overline{#?\\big)#?}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
       makeRelationMorePicker('arithmeticLayoutExtras', 'More Arithmetic Layouts'),
     ]
   },
@@ -2842,14 +2842,14 @@ const TOOLBAR_ICON_IMAGES = {
     y="19"
     font-family="Arial, sans-serif"
     font-size="18"
-    font-weight="700"
+    font-weight="500"
     fill="#111"
   >
     log
   </text>
 
   <rect
-    x="29"
+    x="27"
     y="16"
     width="5"
     height="7"
@@ -2869,8 +2869,8 @@ const TOOLBAR_ICON_IMAGES = {
   </text>
 
   <rect
-    x="45"
-    y="7"
+    x="43"
+    y="8"
     width="10"
     height="13"
     fill="none"
@@ -5167,6 +5167,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   const popupPositionRef = useRef(null);
   const dragStateRef = useRef(null);
   const removeDragListenersRef = useRef(() => {});
+  const moveTextStateRef = useRef(null);
   const [activeGroup, setActiveGroup] = useState(0);
   const [activeMatrix, setActiveMatrix] = useState(null); // { type, x, y }
   const [showSpecialChars, setShowSpecialChars] = useState(null); // { x, y } or null
@@ -5732,17 +5733,28 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     const delta = MOVE_TEXT_TEMPLATE_MAP[direction];
     if (!mf || !delta) return;
 
-    mf.focus();
-
-    const hasSelection = mf.selectionIsCollapsed === false;
+    const currentSelection = mf.selection || mf.model?.selection;
+    const hasSelection = Boolean(
+      currentSelection &&
+      Array.isArray(currentSelection.ranges) &&
+      currentSelection.ranges.length > 0 &&
+      currentSelection.ranges.some(([start, end]) => start !== end)
+    );
     if (!hasSelection) {
       moveTextStateRef.current = null;
       return;
     }
 
+    mf.focus();
+    if ('selection' in mf) {
+      try {
+        mf.selection = currentSelection;
+      } catch {}
+    }
+
     const selectedLatex = typeof mf.getValue === 'function'
-      ? mf.getValue(mf.model.selection, 'latex')
-      : mf.model?.getValue?.(mf.model.selection, 'latex') || '';
+      ? (mf.getValue(currentSelection, 'latex') || '')
+      : (mf.model?.getValue?.(currentSelection, 'latex') || '');
     if (!selectedLatex) {
       moveTextStateRef.current = null;
       return;
@@ -5864,7 +5876,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           ))}
         </div>
 
-        <div className={`cme-toolbar-items${activeGroup === 0 && isMathMode ? ' cme-toolbar-items--first-tab' : ''}${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${activeGroupConfig.id === 'relations' ? ' cme-toolbar-items--relations' : ''}${activeGroupConfig.id === 'arrows' ? ' cme-toolbar-items--arrows' : ''}${activeGroupConfig.id === 'brackets' ? ' cme-toolbar-items--brackets' : ''}${isMathMode ? ' cme-toolbar-items--math-compact' : ''}`}>
+        <div className={`cme-toolbar-items${activeGroup === 0 && isMathMode ? ' cme-toolbar-items--first-tab' : ''}${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${activeGroupConfig.id === 'relations' ? ' cme-toolbar-items--relations' : ''}${activeGroupConfig.id === 'arrows' ? ' cme-toolbar-items--arrows' : ''}${activeGroupConfig.id === 'brackets' ? ' cme-toolbar-items--brackets' : ''}${activeGroupConfig.id === 'matrix' ? ' cme-toolbar-items--matrix' : ''}${isMathMode ? ' cme-toolbar-items--math-compact' : ''}`}>
           {(() => {
             const activeItems = activeGroupConfig.items || [];
 

@@ -376,6 +376,25 @@
 }
 
 
+.cme-toolbar-items--matrix .cme-btn.matrix-roomy-template {
+  min-width: 32px;
+  padding: 0 4px;
+}
+
+.cme-toolbar-items--matrix .cme-btn.matrix-roomy-template.matrix-tall-template {
+  height: 37px;
+  min-height: 37px;
+}
+
+.cme-toolbar-items--matrix .cme-btn.matrix-roomy-template.matrix-extra-tall-template {
+  height:37px;
+  min-height: 37px;
+}
+
+.cme-toolbar-items--matrix .cme-btn.matrix-roomy-template .cme-toolbar-icon-image-wrapper {
+  padding: 2px 2px;
+}
+
 .cme-toolbar-items--brackets {
   overflow: hidden;
   gap: 1px;
