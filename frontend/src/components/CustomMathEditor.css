@@ -1,5 +1,5 @@
-/* ============================================================
-   Custom Math & Chemistry Editor  —  Purple Dark Theme
+﻿/* ============================================================
+   Custom Math & Chemistry Editor  â€”  Purple Dark Theme
    ============================================================ */
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
@@ -15,7 +15,7 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* ── Tab Bar ─────────────────────────────────────────────── */
+/* â”€â”€ Tab Bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cme-tabs {
   display: flex;
   background: #1a1a2e;
@@ -61,7 +61,7 @@
   opacity: 0.9;
 }
 
-/* ── Symbol Toolbar ──────────────────────────────────────── */
+/* â”€â”€ Symbol Toolbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cme-toolbar {
   background: linear-gradient(180deg, #dbe4ea 0%, #c7d3dc 100%);
   padding: 0;
@@ -375,6 +375,37 @@
   border-right: none;
 }
 
+
+.cme-toolbar-items--brackets {
+  overflow: hidden;
+  gap: 1px;
+}
+
+.cme-toolbar-items--brackets .cme-brackets-subgroup {
+  align-self: stretch;
+  height: 100%;
+  align-content: stretch;
+  justify-content: stretch;
+  grid-template-rows: var(--cme-subgroup-rows, repeat(2, minmax(0, 1fr))) !important;
+  padding: 0 3px;
+  margin: 0;
+  gap: 0;
+}
+
+.cme-toolbar-items--brackets .cme-brackets-subgroup .cme-btn,
+.cme-toolbar-items--brackets .cme-brackets-subgroup .cme-btn--compact {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.cme-toolbar-items--brackets .cme-brackets-subgroup--picker {
+  min-width: 14px;
+}
+
+.cme-toolbar-items--brackets .cme-brackets-subgroup--before-picker {
+  border-right: none;
+}
 .cme-toolbar-items::-webkit-scrollbar { height: 5px; }
 .cme-toolbar-items::-webkit-scrollbar-track { background: transparent; }
 .cme-toolbar-items::-webkit-scrollbar-thumb { background: #3a3a5c; border-radius: 3px; }
@@ -446,7 +477,7 @@
 
 
 
-/* ── Symbol Buttons ── */
+/* â”€â”€ Symbol Buttons â”€â”€ */
 .cme-btn {
   min-width: 24px;
   height: 24px;
@@ -733,10 +764,111 @@
   display: block;
   width: 100%;
   height: 125%;
-  max-width: 30px;
+  max-width: 41px;
   max-height: 30px;
   object-fit: contain;
   object-position: center;
+}
+
+.cme-toolbar-icon-image-wrapper--log-base-template-image {
+  padding: 1px 0;
+}
+
+.cme-toolbar-icon-image--log-base-template-image {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: fill;
+}
+
+
+/* Brackets-tab accent icons: resize these without affecting other toolbar icons */
+.cme-toolbar-icon-image-wrapper--vec-accent-template-image,
+.cme-toolbar-icon-image-wrapper--overrightarrow-accent-template-image,
+.cme-toolbar-icon-image-wrapper--overleftrightarrow-accent-template-image,
+.cme-toolbar-icon-image-wrapper--overline-accent-template-image,
+.cme-toolbar-icon-image-wrapper--hat-accent-template-image,
+.cme-toolbar-icon-image-wrapper--tilde-accent-template-image,
+.cme-toolbar-icon-image-wrapper--ddot-accent-template-image,
+.cme-toolbar-icon-image-wrapper--dot-accent-template-image {
+  padding: 1px 1px;
+}
+
+.cme-toolbar-icon-image--vec-accent-template-image,
+.cme-toolbar-icon-image--overrightarrow-accent-template-image,
+.cme-toolbar-icon-image--overleftrightarrow-accent-template-image,
+.cme-toolbar-icon-image--overline-accent-template-image,
+.cme-toolbar-icon-image--hat-accent-template-image,
+.cme-toolbar-icon-image--tilde-accent-template-image,
+.cme-toolbar-icon-image--ddot-accent-template-image,
+.cme-toolbar-icon-image--dot-accent-template-image {
+  width: 100%;
+  height: 100%;
+  max-width: 25px;
+  max-height: 20px;
+  object-fit: contain;
+}
+
+/* Brackets-tab brace/paren arc icons */
+.cme-toolbar-icon-image-wrapper--overbrace-arc-template-image,
+.cme-toolbar-icon-image-wrapper--underbrace-arc-template-image,
+.cme-toolbar-icon-image-wrapper--overparen-template-image,
+.cme-toolbar-icon-image-wrapper--underparen-template-image {
+  padding: 1px 1px;
+}
+
+.cme-toolbar-icon-image--overbrace-arc-template-image,
+.cme-toolbar-icon-image--underbrace-arc-template-image,
+.cme-toolbar-icon-image--overparen-template-image,
+.cme-toolbar-icon-image--underparen-template-image {
+  width: 100%;
+  height: 100%;
+  max-width: 33px;
+  max-height: 23px;
+  object-fit: contain;
+}
+
+/* Brackets-tab enclosure/frame icons */
+.cme-toolbar-icon-image-wrapper--overline-frame-template-image,
+.cme-toolbar-icon-image-wrapper--underline-frame-template-image,
+.cme-toolbar-icon-image-wrapper--left-bar-template-image,
+.cme-toolbar-icon-image-wrapper--right-bar-template-image,
+.cme-toolbar-icon-image-wrapper--boxed-square-template-image,
+.cme-toolbar-icon-image-wrapper--paren-frame-template-image {
+  padding: 1px 1px;
+}
+
+.cme-toolbar-icon-image--overline-frame-template-image,
+.cme-toolbar-icon-image--underline-frame-template-image,
+.cme-toolbar-icon-image--left-bar-template-image,
+.cme-toolbar-icon-image--right-bar-template-image,
+.cme-toolbar-icon-image--boxed-square-template-image,
+.cme-toolbar-icon-image--paren-frame-template-image {
+  width: 100%;
+  height: 100%;
+  max-width: 31px;
+  max-height: 25px;
+  object-fit: contain;
+}
+
+/* Brackets-tab strike icons */
+.cme-toolbar-icon-image-wrapper--cancel-diagonal-template-image,
+.cme-toolbar-icon-image-wrapper--bcancel-template-image,
+.cme-toolbar-icon-image-wrapper--sout-template-image,
+.cme-toolbar-icon-image-wrapper--xcancel-template-image {
+  padding: 1px 1px;
+}
+
+.cme-toolbar-icon-image--cancel-diagonal-template-image,
+.cme-toolbar-icon-image--bcancel-template-image,
+.cme-toolbar-icon-image--sout-template-image,
+.cme-toolbar-icon-image--xcancel-template-image {
+  width: 100%;
+  height: 100%;
+  max-width: 30px;
+  max-height: 25px;
+  object-fit: contain;
 }
 
 .cme-fraction-icon.cme-fraction-stack {
@@ -1447,7 +1579,7 @@
 
 .cme-toolbar-glyph--math {
   font-family: "Cambria Math", "STIX Two Math", "Segoe UI Symbol", "Segoe UI", serif;
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 800;
   letter-spacing: -0.01em;
 }
@@ -1557,7 +1689,7 @@
   flex-shrink: 0;
 }
 
-/* ── MathLive Container ───────────────────────────────────── */
+/* â”€â”€ MathLive Container â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cme-mathfield-container {
   background: #ffffff;
   border: 1px solid #97aab7;
@@ -1630,7 +1762,7 @@ math-field.cme-mathfield--rtl::part(container) {
 math-field.cme-mathfield::part(virtual-keyboard-toggle),
 math-field.cme-mathfield::part(menu-toggle) { display: none; }
 
-/* ── Footer ──────────────────────────────────────────────── */
+/* â”€â”€ Footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cme-footer {
   display: flex;
   align-items: center;
@@ -1660,7 +1792,7 @@ math-field.cme-mathfield::part(menu-toggle) { display: none; }
 
 .cme-hint { font-size: 10px; color: #3a3a5c; }
 
-/* ── Main Input Box ──────────────────────────────────────── */
+/* â”€â”€ Main Input Box â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .Input-question-box { padding: 0; background: transparent; width: 100%; }
 
 math-field.cme-main-mathfield {
@@ -1695,7 +1827,7 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
 .question-preview math-field::part(virtual-keyboard-toggle),
 .question-preview math-field::part(menu-toggle) { display: none; }
 
-/* ── Popup ───────────────────────────────────────────────── */
+/* â”€â”€ Popup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cme-editor-popup {
   position: fixed;
   bottom: 24px;
@@ -1885,7 +2017,7 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   }
 }
 
-/* ── Matrix Selector ─────────────────────────────────────── */
+/* â”€â”€ Matrix Selector â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cme-matrix-selector {
   padding: 12px;
   display: flex;
@@ -1908,7 +2040,7 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
 .cme-matrix-cell { width: 20px; height: 20px; border: 1px solid #2a2a45; border-radius: 2px; background: #13131f; cursor: pointer; transition: background 0.1s, border-color 0.1s; }
 .cme-matrix-cell.selected { background: #8b5cf6; border-color: #7c3aed; }
 
-/* ── Matrix Hover ────────────────────────────────────────── */
+/* â”€â”€ Matrix Hover â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cme-matrix-btn-wrapper { position: relative; display: inline-block; }
 
 .cme-matrix-hover-popover {
@@ -2007,7 +2139,7 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
 .cme-counter-btns button { background: linear-gradient(180deg, #ffffff 0%, #e9eef2 100%); border: 1px solid #b8c8d2; border-radius: 3px; color: #47606d; font-size: 10px; font-weight: 700; width: 16px; height: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0; transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease; }
 .cme-counter-btns button:hover { background: linear-gradient(180deg, #f7fcf9 0%, #e2f1e8 100%); border-color: #7faa93; color: #1f593f; }
 
-/* ── CKEditor specific ── */
+/* â”€â”€ CKEditor specific â”€â”€ */
 .cme-matrix-hover-popover.ck-only { width: 136px; min-height: 146px; box-sizing: border-box; padding: 8px; overflow: hidden; gap: 6px; display: flex; flex-direction: column; align-items: stretch; }
 .cme-matrix-hover-popover.ck-only { width: 152px; min-height: 148px; padding: 8px; gap: 8px; }
 .cme-matrix-hover-popover.ck-only .cme-matrix-hover-title-wrap { display: none; }

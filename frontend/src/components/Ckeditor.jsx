@@ -471,13 +471,9 @@ const MATH_GROUPS = [
       { label: '⋰', insert: '⋰', title: 'Up-right diagonal ellipsis', icon: 'upright-ellipsis-template-image', directInsert: true },
       { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis', icon: 'downright-ellipsis-template-image', directInsert: true },
       { type: 'sep', cols: 2 },
-      {label: 'sum-array',insert: '\\frac{\\begin{array}{r}#?\\\\+\\,#?\\end{array}}{\\quad#?}',cls: 'template',directInsert: true,icon: 'sum-array-template-image',title: 'Column Addition'},     { label: 'diff-array', insert: '\\frac{\\begin{array}{r}#?\\\\-\\,#?\\end{array}}{\\quad#?}', directInsert: true, icon: 'difference-array-template-image', title: 'Column Subtraction' },
-      { label: 'stack-line', insert: '\\frac{\\begin{array}{c}#?\\\\#?\\end{array}}{#?}', cls: 'template', directInsert: true, icon: 'stack-line-template-image', title: 'Stacked Line Layout' },
+      {label: 'sum-array',insert: '\\frac{\\begin{array}{r}#?\\\\+\\,#?\\end{array}}{\\quad#?}',cls: 'template',directInsert: true,icon: 'sum-array-template-image',title: 'Column Addition'},     
       { label: 'division', insert: '\\overset{#?}{\\overline{#?\\big)#?}}', cls: 'template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
-      { label: 'product-array', insert: '\\frac{\\begin{array}{r}#?\\\\\\times\\,#?\\end{array}}{\\quad#?}', cls: 'template', directInsert: true, icon: 'product-array-template-image', title: 'Column Multiplication' },
-      { label: 'mixed-fraction', insert: '\\left[\\begin{array}{c|c}#? & #?\\\\#? & #?\\end{array}\\right.', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
-      { label: 'array-cc', insert: '\\left.\\begin{array}{c}#?\\\\#?\\end{array}\\right|\\begin{array}{c}#?\\\\#?\\end{array}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
-      { label: 'division-remainder', insert: '\\begin{array}{r} \\overset{#?}{\\overline{#?\\big)#?}} \\\\ #? \\end{array}', cls: 'template', directInsert: true, icon: 'division-remainder-template-image', title: 'Division With Remainder' },
+      makeRelationMorePicker('arithmeticLayoutExtras', 'More Arithmetic Layouts'),
     ]
   },
 ];
@@ -542,16 +538,52 @@ const RELATION_MORE_PICKERS = {
     { label: '⊘', insert: '⨸', title: 'Circled Divide', icon: 'circled-divide-template-image' },
     { label: '•', insert: '^{\\bullet}', title: 'Raised Bullet', icon: 'raised-bullet-template-image' },
   ],
+  tripleIntegralExtras: [
+    { label: '∭', insert: '\\iiint', title: 'Triple Integral', icon: 'triple-integral-template-image' },
+    { label: '∰', insert: '\\oiiint', title: 'Triple Contour Integral', icon: 'triple-contour-integral-template-image' },
+  ],
+  trigFunctionExtras: [
+    { label: 'sin⁻¹(□)', insert: '\\sin^{-1}\\left(#0\\right)' },
+    { label: 'csc(□)', insert: '\\csc\\left(#0\\right)' },
+    { label: 'cos⁻¹(□)', insert: '\\cos^{-1}\\left(#0\\right)' },
+    { label: 'sec(□)', insert: '\\sec\\left(#0\\right)' },
+    { label: 'tan⁻¹(□)', insert: '\\tan^{-1}\\left(#0\\right)' },
+    { label: 'cot(□)', insert: '\\cot\\left(#0\\right)' },
+  ],
+  bracketDelimiterExtras: [
+    { label: '⌊□⌋', insert: '\\left\\lfloor #0 \\right\\rfloor' },
+    { label: '⌈□⌉', insert: '\\left\\lceil #0 \\right\\rceil' },
+    { label: '⟨□|□⟩', insert: '\\left\\langle #0 \\middle| #? \\right\\rangle' },
+  ],
+  enclosureFrameExtras: [
+    { label: '¯\n▯|', insert: '\\overline{\\left.#?\\right|}', cls: 'template', directInsert: true, title: 'Overline with Right Bar', icon: 'overline-right-bar-template-image' },
+    { label: '▢\n▯', insert: '\\enclose{roundedbox}{#?}', cls: 'template', directInsert: true, title: 'Rounded Boxed', icon: 'boxed-rounded-template-image' },
+  ],
+  strikeDecorationExtras: [
+    { label: '│\n▯', insert: '\\enclose{verticalstrike}{#?}', cls: 'template', directInsert: true, title: 'Vertical Strike', icon: 'vertical-strike-template-image' },
+    { label: ')\n¯', insert: '\\overline{\\left)#?\\right.}', cls: 'template', directInsert: true, title: 'Overline with Curved Left Boundary', icon: 'overline-left-curve-template-image' },
+    { label: '┼\n▯', insert: '\\enclose{verticalstrike horizontalstrike}{#?}', cls: 'template', directInsert: true, title: 'Vertical and Horizontal Strike', icon: 'crosshair-strike-template-image' },
+  ],
+  arithmeticLayoutExtras: [
+    { label: 'diff-array', insert: '\\frac{\\begin{array}{r}#?\\\\-\\,#?\\end{array}}{\\quad#?}', directInsert: true, icon: 'difference-array-template-image', title: 'Column Subtraction' },
+    { label: 'stack-line', insert: '\\frac{\\begin{array}{c}#?\\\\#?\\end{array}}{#?}', cls: 'template', directInsert: true, icon: 'stack-line-template-image', title: 'Stacked Line Layout' },
+    { label: 'product-array', insert: '\\frac{\\begin{array}{r}#?\\\\\\times\\,#?\\end{array}}{\\quad#?}', cls: 'template', directInsert: true, icon: 'product-array-template-image', title: 'Column Multiplication' },
+    { label: 'mixed-fraction', insert: '\\left[\\begin{array}{c|c}#? & #?\\\\#? & #?\\end{array}\\right.', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
+    { label: 'array-cc', insert: '\\left.\\begin{array}{c}#?\\\\#?\\end{array}\\right|\\begin{array}{c}#?\\\\#?\\end{array}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
+    { label: 'division-remainder', insert: '\\begin{array}{r} \\overset{#?}{\\overline{#?\\big)#?}} \\\\ #? \\end{array}', cls: 'template', directInsert: true, icon: 'division-remainder-template-image', title: 'Division With Remainder' },
+  ],
 };
 
-const makeRelationMorePicker = (picker, title = 'More Symbols') => ({
-  label: '|',
-  action: 'RELATION_MORE_PICKER',
-  picker,
-  title,
-  icon: 'vertical-line-picker-template-image',
-  cls: 'arrow-picker-tool relation-more-picker-tool',
-});
+function makeRelationMorePicker(picker, title = 'More Symbols') {
+  return {
+    label: '|',
+    action: 'RELATION_MORE_PICKER',
+    picker,
+    title,
+    icon: 'vertical-line-picker-template-image',
+    cls: 'arrow-picker-tool relation-more-picker-tool',
+  };
+}
 
 const RELATIONS_TAB_ITEMS = [
   { label: 'cancel', insert: '\\cancel{#0}', title: 'Negate / Cross Out', icon: 'negate-template-image' },
@@ -1171,20 +1203,47 @@ const FONT_SIZE_OPTIONS = [
 ];
 
 const MOVE_TEXT_TEMPLATE_MAP = {
-  up: {
-    selection: '\\htmlStyle{display:inline-block;position:relative;top:-0.65em;}{#@}',
-  },
-  right: {
-    selection: '\\htmlStyle{display:inline-block;position:relative;left:0.65em;}{#@}',
-  },
-  left: {
-    selection: '\\htmlStyle{display:inline-block;position:relative;left:-0.65em;}{#@}',
-  },
-  down: {
-    selection: '\\htmlStyle{display:inline-block;position:relative;top:0.65em;}{#@}',
-  },
+  up: { x: 0, y: -1 },
+  right: { x: 1, y: 0 },
+  left: { x: -1, y: 0 },
+  down: { x: 0, y: 1 },
 };
 
+function unwrapMoveTextLatex(latex = '') {
+  let currentLatex = String(latex || '');
+  let offsetX = 0;
+  let offsetY = 0;
+  const moveWrapperPattern = /^\\htmlStyle\{([^}]*)\}\{([\s\S]*)\}$/;
+
+  while (true) {
+    const match = currentLatex.match(moveWrapperPattern);
+    if (!match) break;
+
+    const styleText = match[1] || '';
+    if (!styleText.includes('display:inline-block') || !styleText.includes('position:relative')) {
+      break;
+    }
+
+    const leftMatch = styleText.match(/left:\s*(-?\d+)px/i);
+    const topMatch = styleText.match(/top:\s*(-?\d+)px/i);
+    offsetX += leftMatch ? parseInt(leftMatch[1], 10) : 0;
+    offsetY += topMatch ? parseInt(topMatch[1], 10) : 0;
+    currentLatex = match[2] || '';
+  }
+
+  return {
+    baseLatex: currentLatex,
+    offsetX,
+    offsetY,
+  };
+}
+
+function wrapMoveTextLatex(baseLatex, offsetX, offsetY) {
+  const styles = ['display:inline-block', 'position:relative'];
+  if (offsetX !== 0) styles.push(`left:${offsetX}px`);
+  if (offsetY !== 0) styles.push(`top:${offsetY}px`);
+  return `\\htmlStyle{${styles.join(';')};}{${baseLatex}}`;
+}
 const ORDERED_MATH_GROUPS = [
   {
     id: 'roots-main',
@@ -1348,9 +1407,7 @@ const ORDERED_MATH_GROUPS = [
       { label: '‖□‖', insert: '\\left\\| #0 \\right\\|' },
       { label: '⟨□⟩', insert: '\\left\\langle #0 \\right\\rangle' },
       { label: '{□}', insert: '\\left\\{#0\\right\\}' },
-      { label: '⌊□⌋', insert: '\\left\\lfloor #0 \\right\\rfloor' },
-      { label: '⌈□⌉', insert: '\\left\\lceil #0 \\right\\rceil' },
-      { label: '⟨□|□⟩', insert: '\\left\\langle #0 \\middle| #? \\right\\rangle' },
+      makeRelationMorePicker('bracketDelimiterExtras', 'More Delimiters'),
       { type: 'sep', cols: 2 },
       { label: 'overbrace', insert: '\\overbrace{#0}', cls: 'template', directInsert: true, title: 'Overbrace', icon: 'overbrace-arc-template-image' },
       { label: 'underbrace', insert: '\\underbrace{#0}', cls: 'template', directInsert: true, title: 'Underbrace', icon: 'underbrace-arc-template-image' },
@@ -1372,16 +1429,13 @@ const ORDERED_MATH_GROUPS = [
       { label: '▯\n|', insert: '\\left.#?\\right|', cls: 'template', directInsert: true, title: 'Right Bar', icon: 'right-bar-template-image' },
       { label: '□\n▯', insert: '\\boxed{#?}', cls: 'template', directInsert: true, title: 'Boxed', icon: 'boxed-square-template-image' },
       { label: '(\n▯\n)', insert: '\\enclose{circle}{#?}', cls: 'template', directInsert: true, title: 'Rounded Enclosure', icon: 'paren-frame-template-image' },
-      { label: '¯\n▯|', insert: '\\overline{\\left.#?\\right|}', cls: 'template', directInsert: true, title: 'Overline with Right Bar', icon: 'overline-right-bar-template-image' },
-      { label: '▢\n▯', insert: '\\enclose{roundedbox}{#?}', cls: 'template', directInsert: true, title: 'Rounded Boxed', icon: 'boxed-rounded-template-image' },
+      makeRelationMorePicker('enclosureFrameExtras', 'More Enclosures'),
       { type: 'sep', cols: 2 },
       { label: '╱\n▯', insert: '\\cancel{#?}', cls: 'template', directInsert: true, title: 'Cancel', icon: 'cancel-diagonal-template-image' },
       { label: '╲\n▯', insert: '\\bcancel{#?}', cls: 'template', directInsert: true, title: 'Backward Cancel', icon: 'bcancel-template-image' },
       { label: '─\n▯', insert: '\\enclose{horizontalstrike}{#?}', cls: 'template', directInsert: true, title: 'Strikeout Text', icon: 'sout-template-image' },
       { label: '╳\n▯', insert: '\\xcancel{#?}', cls: 'template', directInsert: true, title: 'Cross Cancel', icon: 'xcancel-template-image' },
-      { label: '│\n▯', insert: '\\enclose{verticalstrike}{#?}', cls: 'template', directInsert: true, title: 'Vertical Strike', icon: 'vertical-strike-template-image' },
-      { label: ')\n¯', insert: '\\overline{\\left)#?\\right.}', cls: 'template', directInsert: true, title: 'Overline with Curved Left Boundary', icon: 'overline-left-curve-template-image' },
-      { label: '┼\n▯', insert: '\\enclose{verticalstrike horizontalstrike}{#?}', cls: 'template', directInsert: true, title: 'Vertical and Horizontal Strike', icon: 'crosshair-strike-template-image' },
+      makeRelationMorePicker('strikeDecorationExtras', 'More Strike Decorations'),
     ],
   },
   {
@@ -1423,6 +1477,7 @@ const ORDERED_MATH_GROUPS = [
       {label: '∂', insert: '∂', cls: 'template', directInsert: true, title: 'Partial Differential'},
       { label: 'first-derivative', insert: '\\frac{d#?}{d#?}', cls: 'template', directInsert: true, title: 'First Derivative', icon: 'first-derivative-template-image' },
       { label: 'partial-derivative', insert: '\\frac{\\partial#?}{\\partial#?}', cls: 'template', directInsert: true, title: 'Partial Derivative', icon: 'partial-derivative-template-image' },
+      { type: 'sep', cols: 2 },
       { label: 'limit-infinity', insert: '\\lim_{#?\\to\\infty}', cls: 'template', directInsert: true, title: 'Limit to Infinity', icon: 'limit-infinity-template-image' },
       { label: 'limit-generic', insert: '\\lim_{#?}', cls: 'template', directInsert: true, title: 'Limit', icon: 'limit-generic-template-image' },
       { type: 'sep', cols: 2 }, 
@@ -1435,22 +1490,16 @@ const ORDERED_MATH_GROUPS = [
       { label: '∮', insert: '\\oint', icon: 'contour-integral-template-image' },
       { label: '∬', insert: '\\iint', icon: 'double-integral-template-image' },
       { label: '∯', insert: '\\oiint', icon: 'double-contour-integral-template-image' },
-      { label: '∭', insert: '\\iiint', icon: 'triple-integral-template-image' },
-      { label: '∰', insert: '\\oiiint', icon: 'triple-contour-integral-template-image' },
+      makeRelationMorePicker('tripleIntegralExtras', 'More Triple Integrals'),
       { type: 'sep', cols: 2 },
       { label: 'log(□)', insert: '\\log\\left(#0\\right)' },
       { label: 'log₍□₎(□)', insert: '\\log_{#?}\\left(#?\\right)', cls: 'template', directInsert: true, title: 'Logarithm With Base', icon: 'log-base-template-image' },
       { type: 'sep', cols: 4 },
       { label: 'sin(□)', insert: '\\sin\\left(#0\\right)' },
-      { label: 'cos(□)', insert: '\\cos\\left(#0\\right)' },
       { label: 'tan(□)', insert: '\\tan\\left(#0\\right)' },
+      { label: 'cos(□)', insert: '\\cos\\left(#0\\right)' },
       { label: 'ln(□)', insert: '\\ln\\left(#0\\right)' },
-      { label: 'sin⁻¹(□)', insert: '\\sin^{-1}\\left(#0\\right)' },
-      { label: 'csc(□)', insert: '\\csc\\left(#0\\right)' },
-      { label: 'cos⁻¹(□)', insert: '\\cos^{-1}\\left(#0\\right)' },
-      { label: 'sec(□)', insert: '\\sec\\left(#0\\right)' },
-      { label: 'tan⁻¹(□)', insert: '\\tan^{-1}\\left(#0\\right)' },
-      { label: 'cot(□)', insert: '\\cot\\left(#0\\right)' },
+      makeRelationMorePicker('trigFunctionExtras', 'More Trig Functions'),
     ],
   },
   {
@@ -2787,49 +2836,55 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'log-base-template-image': makeToolbarIconImage(`
-<svg xmlns="http://www.w3.org/2000/svg" width="90" height="40" viewBox="0 0 90 40">
-  <!-- log -->
-  <text x="2"
-        y="29"
-        font-family="Arial, sans-serif"
-        font-size="22"
-        fill="#111">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 28" preserveAspectRatio="xMidYMid meet">
+  <text
+    x="1"
+    y="19"
+    font-family="Arial, sans-serif"
+    font-size="18"
+    font-weight="700"
+    fill="#111"
+  >
     log
   </text>
 
-  <!-- Base placeholder -->
-  <rect x="34"
-        y="20"
-        width="9"
-        height="12"
-        fill="none"
-        stroke="#2ca02c"
-        stroke-width="2"/>
+  <rect
+    x="29"
+    y="16"
+    width="5"
+    height="7"
+    fill="none"
+    stroke="#2ca02c"
+    stroke-width="1.6"
+  />
 
-  <!-- Left parenthesis -->
-  <text x="43"
-        y="31"
-        font-family="Cambria Math, Times New Roman, serif"
-        font-size="34"
-        fill="#111">
+  <text
+    x="33"
+    y="20"
+    font-family="Cambria Math, Times New Roman, serif"
+    font-size="22"
+    fill="#111"
+  >
     (
   </text>
 
-  <!-- Argument placeholder -->
-  <rect x="58"
-        y="9"
-        width="14"
-        height="20"
-        fill="none"
-        stroke="#2ca02c"
-        stroke-width="2"/>
+  <rect
+    x="45"
+    y="7"
+    width="10"
+    height="13"
+    fill="none"
+    stroke="#2ca02c"
+    stroke-width="1.6"
+  />
 
-  <!-- Right parenthesis -->
-  <text x="72"
-        y="31"
-        font-family="Cambria Math, Times New Roman, serif"
-        font-size="34"
-        fill="#111">
+  <text
+    x="54"
+    y="20"
+    font-family="Cambria Math, Times New Roman, serif"
+    font-size="22"
+    fill="#111"
+  >
     )
   </text>
 </svg>
@@ -3784,9 +3839,12 @@ function renderToolbarItemLabel(item, context = {}) {
 
   if (item.icon && TOOLBAR_ICON_IMAGES[item.icon]) {
     return (
-      <span className="cme-toolbar-icon-image-wrapper" aria-hidden="true">
+      <span
+        className={`cme-toolbar-icon-image-wrapper cme-toolbar-icon-image-wrapper--${item.icon}`}
+        aria-hidden="true"
+      >
         <img
-          className="cme-toolbar-icon-image"
+          className={`cme-toolbar-icon-image cme-toolbar-icon-image--${item.icon}`}
           src={TOOLBAR_ICON_IMAGES[item.icon]}
           alt=""
         />
@@ -4585,13 +4643,41 @@ function ArrowPickerPopover({ position, onInsert }) {
   );
 }
 
-function RelationMorePickerPopover({ position, items = [], onInsert }) {
-  const columns = Math.max(1, Math.min(items.length, 5));
+function RelationMorePickerPopover({ position, items = [], onInsert, popupBounds = null, picker = '' }) {
+  const isWideLayout = picker === 'trigFunctionExtras' || picker === 'bracketDelimiterExtras' || picker === 'enclosureFrameExtras' || picker === 'strikeDecorationExtras' || picker === 'arithmeticLayoutExtras';
+  const columns = isWideLayout ? 2 : Math.max(1, Math.min(items.length, 5));
+  const buttonWidth = isWideLayout ? 88 : 30;
+  const buttonHeight = isWideLayout ? 34 : 30;
+  const gapX = isWideLayout ? 10 : 8;
+  const gapY = isWideLayout ? 8 : 6;
+  const paddingX = isWideLayout ? 18 : 20;
+  const paddingY = isWideLayout ? 18 : 16;
   const rows = Math.max(1, Math.ceil(items.length / columns));
-  const width = (columns * 30) + ((columns - 1) * 8) + 20;
-  const height = (rows * 30) + ((rows - 1) * 6) + 16;
-  const left = Math.min(Math.max(position.x - 6, 8), window.innerWidth - width - 8);
-  const top = Math.min(position.y + 2, window.innerHeight - height - 8);
+  const width = (columns * buttonWidth) + ((columns - 1) * gapX) + paddingX;
+  const height = (rows * buttonHeight) + ((rows - 1) * gapY) + paddingY;
+  const bounds = popupBounds
+    ? {
+        left: popupBounds.left,
+        top: popupBounds.top,
+        right: popupBounds.right,
+        bottom: popupBounds.bottom,
+      }
+    : {
+        left: 8,
+        top: 8,
+        right: window.innerWidth - 8,
+        bottom: window.innerHeight - 8,
+      };
+  const minLeft = bounds.left + 8;
+  const maxLeft = Math.max(minLeft, bounds.right - width - 8);
+  const minTop = bounds.top + 8;
+  const maxTop = Math.max(minTop, bounds.bottom - height - 8);
+  const left = Math.min(Math.max(position.x - 6, minLeft), maxLeft);
+  const preferredTop = position.y + 2;
+  const fallbackTop = position.y - height - 6;
+  const top = preferredTop <= maxTop
+    ? preferredTop
+    : Math.max(minTop, Math.min(fallbackTop, maxTop));
 
   return (
     <div
@@ -4606,7 +4692,11 @@ function RelationMorePickerPopover({ position, items = [], onInsert }) {
     >
       <div
         className="cme-arrow-picker-grid"
-        style={{ gridTemplateColumns: `repeat(${columns}, 30px)` }}
+        style={{
+          gridTemplateColumns: `repeat(${columns}, ${buttonWidth}px)`,
+          gridAutoRows: `${buttonHeight}px`,
+          gap: `${gapY}px ${gapX}px`,
+        }}
       >
         {items.map((item) => (
           <button
@@ -4614,6 +4704,11 @@ function RelationMorePickerPopover({ position, items = [], onInsert }) {
             type="button"
             className={`cme-arrow-picker-btn${item.cls ? ` ${item.cls}` : ''}`}
             title={item.title || item.label}
+            style={{
+              width: `${buttonWidth}px`,
+              height: `${buttonHeight}px`,
+              padding: isWideLayout ? '0 8px' : 0,
+            }}
             onMouseDown={(e) => {
               e.preventDefault();
               onInsert(item.insert);
@@ -5634,24 +5729,51 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
 
   const applyMoveTextAction = useCallback((direction) => {
     const mf = popupMfRef.current;
-    const template = MOVE_TEXT_TEMPLATE_MAP[direction];
-    if (!mf || !template) return;
+    const delta = MOVE_TEXT_TEMPLATE_MAP[direction];
+    if (!mf || !delta) return;
 
     mf.focus();
 
-    if (mf.selectionIsCollapsed) {
+    const hasSelection = mf.selectionIsCollapsed === false;
+    if (!hasSelection) {
+      moveTextStateRef.current = null;
       return;
     }
 
+    const selectedLatex = typeof mf.getValue === 'function'
+      ? mf.getValue(mf.model.selection, 'latex')
+      : mf.model?.getValue?.(mf.model.selection, 'latex') || '';
+    if (!selectedLatex) {
+      moveTextStateRef.current = null;
+      return;
+    }
+
+    const unwrappedSelection = unwrapMoveTextLatex(selectedLatex);
+    const previousMoveState = moveTextStateRef.current;
+    const baseLatex = unwrappedSelection.baseLatex;
+    const isContinuingSameSelection = previousMoveState?.baseLatex === baseLatex;
+    const currentOffsetX = isContinuingSameSelection ? previousMoveState.offsetX : unwrappedSelection.offsetX;
+    const currentOffsetY = isContinuingSameSelection ? previousMoveState.offsetY : unwrappedSelection.offsetY;
+    const nextOffsetX = currentOffsetX + delta.x;
+    const nextOffsetY = currentOffsetY + delta.y;
+    const movedLatex = wrapMoveTextLatex(baseLatex, nextOffsetX, nextOffsetY);
+
+    moveTextStateRef.current = {
+      baseLatex,
+      offsetX: nextOffsetX,
+      offsetY: nextOffsetY,
+    };
+
     if (typeof mf.insert === 'function') {
-      mf.insert(template.selection, {
+      mf.insert(movedLatex, {
+        format: 'latex',
         insertionMode: 'replaceSelection',
-        selectionMode: 'after',
+        selectionMode: 'item',
       });
       return;
     }
 
-    mf.executeCommand(['insert', template.selection]);
+    mf.executeCommand(['insert', movedLatex]);
   }, []);
 
   const handleMatrixInsert = useCallback((type, rows, cols) => {
@@ -5742,7 +5864,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           ))}
         </div>
 
-        <div className={`cme-toolbar-items${activeGroup === 0 && isMathMode ? ' cme-toolbar-items--first-tab' : ''}${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${activeGroupConfig.id === 'relations' ? ' cme-toolbar-items--relations' : ''}${activeGroupConfig.id === 'arrows' ? ' cme-toolbar-items--arrows' : ''}${isMathMode ? ' cme-toolbar-items--math-compact' : ''}`}>
+        <div className={`cme-toolbar-items${activeGroup === 0 && isMathMode ? ' cme-toolbar-items--first-tab' : ''}${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${activeGroupConfig.id === 'relations' ? ' cme-toolbar-items--relations' : ''}${activeGroupConfig.id === 'arrows' ? ' cme-toolbar-items--arrows' : ''}${activeGroupConfig.id === 'brackets' ? ' cme-toolbar-items--brackets' : ''}${isMathMode ? ' cme-toolbar-items--math-compact' : ''}`}>
           {(() => {
             const activeItems = activeGroupConfig.items || [];
 
@@ -6157,6 +6279,96 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                   },
                 ].filter((subgroup) => subgroup && subgroup.items.length > 0);
               }
+
+              if (activeGroupConfig.id === 'brackets') {
+                const groupedItems = subgroups.map((subgroup) => subgroup.items || []);
+                const [
+                  bracketBasics = [],
+                  braceFrames = [],
+                  accents = [],
+                  enclosureFrames = [],
+                  strikeDecorations = [],
+                ] = groupedItems;
+                const pick = (items, order) => order.map((index) => items[index]).filter(Boolean);
+                const splitRelationPicker = (items) => ({
+                  regular: items.filter((item) => item?.action !== 'RELATION_MORE_PICKER'),
+                  picker: items.find((item) => item?.action === 'RELATION_MORE_PICKER') || null,
+                });
+                const bracketSplit = splitRelationPicker(bracketBasics);
+                const enclosureSplit = splitRelationPicker(enclosureFrames);
+                const strikeSplit = splitRelationPicker(strikeDecorations);
+                const accentItems = pick(accents, [0, 1, 2, 3, 4, 5, 6, 7]);
+                if (accentItems[6]) {
+                  accentItems[6] = { ...accentItems[6], gridColumn: '2' };
+                }
+
+                subgroups = [
+                  {
+                    cols: 3,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-brackets-subgroup cme-brackets-subgroup--before-picker',
+                    items: pick(bracketSplit.regular, [0, 2, 4, 1, 3, 5]),
+                  },
+                  bracketSplit.picker ? {
+                    cols: 1,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-brackets-subgroup cme-brackets-subgroup--picker',
+                    items: [bracketSplit.picker],
+                  } : null,
+                  {
+                    cols: 2,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-brackets-subgroup',
+                    items: pick(braceFrames, [0, 2, 1, 3]),
+                  },
+                  {
+                    cols: 3,
+                    rows: 3,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-brackets-subgroup',
+                    items: accentItems,
+                  },
+                  {
+                    cols: 3,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-brackets-subgroup cme-brackets-subgroup--before-picker',
+                    items: pick(enclosureSplit.regular, [0, 2, 4, 1, 3, 5]),
+                  },
+                  enclosureSplit.picker ? {
+                    cols: 1,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-brackets-subgroup cme-brackets-subgroup--picker',
+                    items: [enclosureSplit.picker],
+                  } : null,
+                  {
+                    cols: 2,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-brackets-subgroup cme-brackets-subgroup--before-picker',
+                    items: pick(strikeSplit.regular, [0, 2, 1, 3]),
+                  },
+                  strikeSplit.picker ? {
+                    cols: 1,
+                    rows: 2,
+                    flow: 'row',
+                    equalColumns: true,
+                    className: ' cme-brackets-subgroup cme-brackets-subgroup--picker',
+                    items: [strikeSplit.picker],
+                  } : null,
+                ].filter((subgroup) => subgroup && subgroup.items.length > 0);
+              }
             } else {
               // Legacy grouping for tabs without explicit separators (chunk by 4 items = 2x2 grid)
               const size = 4;
@@ -6223,7 +6435,8 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           width: item.width || '60px',
                           boxSizing: 'border-box',
                           margin: '2px 0',
-                          gridColumn: itemGridColumn || ((subgroup.cols === 3) ? 'span 1' : ((subgroup.cols === 1) ? 'span 1' : 'span 2'))
+                          gridColumn: item.gridColumn || itemGridColumn || ((subgroup.cols === 3) ? 'span 1' : ((subgroup.cols === 1) ? 'span 1' : 'span 2')),
+                          gridRow: item.gridRow,
                         }}
                         onMouseDown={(e) => {
                           e.preventDefault();
@@ -6246,7 +6459,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                     );
                   }
 
-                  if (currentGroup.isMatrix && !item.directInsert) {
+                  if (currentGroup.isMatrix && !item.directInsert && !item.action) {
                     return (
                       <div
                         key={i}
@@ -6309,7 +6522,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                       type="button"
                       className={`cme-btn${currentGroup.isTemplate ? ' template' : ''}${isMathMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${isBtnActive ? ' active' : ''}`}
                       title={item.title || item.insert}
-                      style={itemGridColumn ? { gridColumn: itemGridColumn } : undefined}
+                      style={item.gridColumn || item.gridRow || itemGridColumn ? { gridColumn: item.gridColumn || itemGridColumn, gridRow: item.gridRow } : undefined}
                       onMouseDown={(e) => {
                         e.preventDefault();
                         const mf = popupMfRef.current;
@@ -6599,6 +6812,8 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       {showRelationMorePicker && createPortal(
         <RelationMorePickerPopover
           position={showRelationMorePicker}
+          picker={showRelationMorePicker.picker}
+          popupBounds={popupRef.current?.getBoundingClientRect?.() || null}
           items={RELATION_MORE_PICKERS[showRelationMorePicker.picker] || []}
           onInsert={(latex) => {
             insertAtCursor(latex);
