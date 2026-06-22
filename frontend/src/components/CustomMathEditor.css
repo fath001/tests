@@ -265,9 +265,9 @@
 }
 
 .cme-toolbar-items--first-tab .cme-symbol-subgroup {
-  padding: 0 4px;
+  padding: 0 5px;
   margin: 0;
-  gap: 0;
+  gap: 1px;
 }
 
 .cme-toolbar-items--first-tab .cme-btn,

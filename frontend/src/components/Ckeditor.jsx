@@ -2185,7 +2185,7 @@ const TOOLBAR_ICON_IMAGES = {
   `),
   'sqrt-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-      <path d="M1.9 10.3H3.9L5.6 14.1L8.1 4.3H15.4" fill="none" stroke="#2c8a43" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M1.9 10.3H3.9L5.6 14.1L8.1 4.3H15.4" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       <rect x="9.7" y="5.1" width="4.4" height="6.6" rx="0.55" fill="none" stroke="#2c8a43" stroke-width="1.4"/>
     </svg>
   `),
@@ -2197,8 +2197,8 @@ const TOOLBAR_ICON_IMAGES = {
   `),
   'nth-root-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-      <rect x="1.8" y="2.1" width="2.7" height="3.3" rx="0.35" fill="none" stroke="#2c8a43" stroke-width="1.15"/>
-      <path d="M2 10.3H4L5.7 14.1L8.2 4.3H15.5" fill="none" stroke="#2c8a43" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="1.8" y="2.1" width="2.7" height="3.3" rx="0.35" fill="none" stroke="#2c8a43" stroke-width="1.15"/> 
+      <path d="M2 10.3H4L5.7 14.1L8.2 4.3H15.5" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       <rect x="9.8" y="5.1" width="4.3" height="6.6" rx="0.55" fill="none" stroke="#2c8a43" stroke-width="1.4"/>
     </svg>
   `),
@@ -6247,7 +6247,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                   },
                   {
                     cols: 2,
-                    rows: 2,
+                    rows: 3,
                     flow: 'row',
                     equalColumns: true,
                     className: ' cme-roots-main-subgroup cme-roots-main-subgroup--format',
