@@ -267,7 +267,7 @@
 .cme-toolbar-items--first-tab .cme-symbol-subgroup {
   padding: 0 5px;
   margin: 0;
-  gap: 1px;
+  gap: 6px;
 }
 
 .cme-toolbar-items--first-tab .cme-btn,
@@ -306,7 +306,7 @@
 }
 
 .cme-toolbar-items--relations .cme-symbol-subgroup {
-  padding: 0 5px;
+  padding: 0 3px;
   margin: 0;
   align-content: start;
   grid-template-rows: repeat(3, auto) !important;
@@ -353,9 +353,9 @@
   align-content: stretch;
   justify-content: stretch;
   grid-template-rows: var(--cme-subgroup-rows, repeat(2, minmax(0, 1fr))) !important;
-  padding: 0 4px;
+  padding: 3px 4px;
   margin: 0;
-  gap: 0;
+  gap: 7px;
 }
 
 .cme-toolbar-items--arrows .cme-arrows-subgroup .cme-btn,
@@ -450,8 +450,68 @@
 
 .cme-symbol-subgroup:last-child { border-right: none; }
 
-.cme-symbol-subgroup--compact {
+.cme-symbol-subgroup--compact { 
+  gap: 8px;
+  padding: 0 3px;
+  margin: 0;
+}
+
+.cme-symbol-subgroup--tab-roots-main {
+  gap: 8px;
+  padding: 0 3px;
+  margin: 0;
+}
+
+.cme-symbol-subgroup--tab-relations {
+  gap: 8px;
+  padding: 0 3px;
+  margin: 0;
+}
+
+.cme-symbol-subgroup--tab-arrows {
+  gap: 8px;
+  padding: 0 3px;
+  margin: 0;
+}
+
+.cme-symbol-subgroup--tab-greek {
+  gap: 8px;
+  padding: 0 3px;
+  margin: 0;
+}
+
+.cme-symbol-subgroup--tab-matrix {
+  gap: 8px;
+  padding: 0 3px;
+  margin: 0;
+}
+
+.cme-symbol-subgroup--tab-power-frac {
+  gap: 8px;
+  padding: 0 3px;
+  margin: 0;
+}
+
+.cme-symbol-subgroup--tab-brackets {
+  gap: 8px;
+  padding: 0 3px;
+  margin: 0;
+}
+
+.cme-symbol-subgroup--tab-sets {
+  gap: 8px;
+  padding: 0 3px;
+  margin: 0;
+}
+
+.cme-symbol-subgroup--tab-calc {
   gap: 2px;
+  padding: 0 3px;
+  margin: 0;
+}
+
+.cme-symbol-subgroup--tab-move-text {
+  gap: 8px;
   padding: 0 3px;
   margin: 0;
 }
@@ -917,28 +977,28 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 25px;
+  height: 25px;
   overflow: hidden;
 }
 
 .cme-arrow-label-svg {
   display: block;
-  width: 18px;
-  height: 18px;
+  width: 25px;
+  height: 25px;
   overflow: hidden;
 }
 
 .cme-arrow-label-svg rect {
   stroke: #2c8a43;
-  stroke-width: 1.7;
+  stroke-width: 1;
   fill: none;
 }
 
 .cme-arrow-label-svg line,
 .cme-arrow-label-svg path {
   stroke: #22343d;
-  stroke-width: 1.7;
+  stroke-width: 0.8;
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -1514,59 +1574,58 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 21px;
+  width: 30px;
+  height: 29px;
   overflow: hidden;
   flex-shrink: 0;
 }
 
 .cme-root-svg {
   display: block;
-  width: 22px;
-  height: 21px;
+  width: 30px;
+  height: 29px;
   overflow: hidden;
 }
 
 .cme-root-svg path {
-  stroke: #22343d;
-  stroke-width: 1.15;
+  stroke: #222;
+  stroke-width: 2.5;
   fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  /* stroke-linecap: round;
+  stroke-linejoin: round; */
 }
 
 .cme-root-svg-box {
-  stroke: #2c8a43;
-  stroke-width: 1.1;
+  stroke: #43a047;
+  stroke-width: 2.5;
   fill: none;
 }
 
 .cme-root-svg-box--small {
-  stroke-width: 1;
-  opacity: 0.95;
+  stroke-width: 2.5;
 }
 
 .cme-accent-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 18px;
+  width: 26px;
+  height: 28px;
   overflow: hidden;
   flex-shrink: 0;
 }
 
 .cme-accent-svg {
   display: block;
-  width: 16px;
-  height: 18px;
+  width: 26px;
+  height: 28px;
   overflow: hidden;
 }
 
 .cme-accent-svg line,
 .cme-accent-svg path {
   stroke: #22343d;
-  stroke-width: 1.3;
+  stroke-width: 0.7;
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -1866,6 +1925,7 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   box-sizing: border-box;
   animation: slideUp 0.2s ease-out;
   will-change: top, left;
+  transition: background-color 1s ease, border-color 1s ease, box-shadow 1s ease, color 1s ease, width 0.35s ease, height 0.35s ease, top 0.35s ease, right 0.35s ease, bottom 0.35s ease, left 0.35s ease;
 }
 
 .cme-editor-popup.maximized {
@@ -1885,7 +1945,12 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
 .cme-editor-popup.minimized .cme-toolbar,
 .cme-editor-popup.minimized .cme-mathfield-container,
 .cme-editor-popup.minimized .cme-popup-footer {
-  display: none;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  overflow: hidden;
+  border-width: 0;
 }
 
 @keyframes slideUp {
@@ -1911,6 +1976,45 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   cursor: grab;
   user-select: none;
   touch-action: none;
+}
+.cme-popup-header,
+.cme-toolbar,
+.cme-mathfield-container,
+.cme-popup-footer,
+.cme-toolbar-groups,
+.cme-toolbar-items,
+.cme-group-tab,
+.cme-btn,
+.cme-btn--compact,
+.cme-popup-window-btn,
+.cme-popup-close {
+  transition:
+    background-color 1s ease,
+    border-color 1s ease,
+    box-shadow 1s ease,
+    color 1s ease,
+    opacity 1s ease,
+    transform 1s ease,
+    max-height 1s ease;
+}
+
+.cme-toolbar,
+.cme-mathfield-container,
+.cme-popup-footer {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cme-toolbar {
+  max-height: 260px;
+}
+
+.cme-mathfield-container {
+  max-height: 320px;
+}
+
+.cme-popup-footer {
+  max-height: 80px;
 }
 
 
@@ -2248,5 +2352,39 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
 }
 
 .cme-toolbar-placeholder-box-black {
-  color: #2c8a43;
+  color: #2ca02c;
+}
+
+.cme-arrow-label-picker-popup .cme-arrow-label-svg rect,
+.cme-arrow-label-picker-btn .cme-arrow-label-svg rect {
+  stroke: #2ca02c !important;
+  fill: none;
+}
+.cme-arrow-label-placeholder-box {
+  stroke: #2ca02c !important;
+  fill: none;
+}
+
+/* cme-instant-hover */
+.cme-group-tab,
+.cme-btn,
+.cme-btn--compact,
+.cme-select,
+.cme-style-select-trigger,
+.cme-popup-window-btn,
+.cme-popup-close,
+.cme-arrow-picker-btn,
+.cme-arrow-label-picker-btn,
+.cme-greek-italic-picker-btn,
+.cme-blackboard-bold-picker-btn,
+.cme-fraktur-script-picker-btn,
+.cme-hebrew-symbol-picker-btn,
+.cme-insert-btn,
+.cme-cancel-btn,
+.cme-counter-btns button,
+.cme-style-dropdown-option {
+  transition: none !important;
+}
+.cme-toolbar-items--greek .cme-greek-subgroup--no-right-border {
+  border-right: none;
 }

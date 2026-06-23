@@ -1262,10 +1262,10 @@ const ORDERED_MATH_GROUPS = [
       
       { type: 'sep', cols: 1 },
       // GROUP 2b - Super/Subscript (cols: 1)
-      { label: '(□)', insert: '\\left(#0\\right)', title: 'Parentheses', cls: 'green-template black-placeholder-glyph' },
-      { label: '|□|', insert: '\\left|#0\\right|', title: 'Absolute Value', cls: 'green-template black-placeholder-glyph' },
-      { label: '[□]', insert: '\\left[#0\\right]', title: 'Square Brackets', cls: 'green-template black-placeholder-glyph' },
-      { label: '{□}', insert: '\\left\\{#0\\right\\}', title: 'Curly Braces', cls: 'green-template black-placeholder-glyph' },
+      { label: '(□)', insert: '\\left(#0\\right)', title: 'Parentheses', cls: 'green-template green-placeholder-glyph' },
+      { label: '|□|', insert: '\\left|#0\\right|', title: 'Absolute Value', cls: 'green-template green-placeholder-glyph' },
+      { label: '[□]', insert: '\\left[#0\\right]', title: 'Square Brackets', cls: 'green-template green-placeholder-glyph' },
+      { label: '{□}', insert: '\\left\\{#0\\right\\}', title: 'Curly Braces', cls: 'green-template green-placeholder-glyph' },
       { type: 'sep', cols: 3 },
       // GROUP 3 - Operators (cols: 3)
       { label: '+', insert: '+' },
@@ -1460,7 +1460,7 @@ const ORDERED_MATH_GROUPS = [
       { label: '∏', insert: '\\prod' },
       { label: '∐', insert: '\\coprod' },
       { label: '⨅', insert: '\\sqcap' },
-      { label: '⨆', insert: '\\sqcup' },
+      { label: '⨆', insert: '\\bigsqcup' },
       { label: '∑', insert: '\\sum' },
     ],
   },
@@ -2184,10 +2184,25 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'sqrt-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-      <path d="M1.9 10.3H3.9L5.6 14.1L8.1 4.3H15.4" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <rect x="9.7" y="5.1" width="4.4" height="6.6" rx="0.55" fill="none" stroke="#2c8a43" stroke-width="1.4"/>
-    </svg>
+<svg width="48" height="32" viewBox="-7 0 48 32" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="M4 18 L11 25 L18 4 L38 4"
+    fill="none"
+    stroke="#222"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <rect
+    x="23"   
+    y="9"
+    width="10"
+    height="13"
+    fill="none"
+    stroke="#43A047"
+    stroke-width="2"
+  />
+</svg>  
   `),
   'subscript-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
@@ -2196,11 +2211,39 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'nth-root-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-      <rect x="1.8" y="2.1" width="2.7" height="3.3" rx="0.35" fill="none" stroke="#2c8a43" stroke-width="1.15"/> 
-      <path d="M2 10.3H4L5.7 14.1L8.2 4.3H15.5" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <rect x="9.8" y="5.1" width="4.3" height="6.6" rx="0.55" fill="none" stroke="#2c8a43" stroke-width="1.4"/>
-    </svg>
+<svg width="48" height="32" viewBox="0 0 48 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- index placeholder -->
+  <rect
+    x="11"   
+    y="6"
+    width="6"
+    height="8"
+    fill="none"
+    stroke="#43A047"
+    stroke-width="2"
+  />
+
+  <!-- radical sign -->
+  <path
+    d="M10 18 L17 25 L24 4 L44 4"
+    fill="none"
+    stroke="#222"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- radicand placeholder -->
+  <rect
+    x="30"
+    y="9"
+    width="10"
+    height="13"
+    fill="none"
+    stroke="#43A047"
+    stroke-width="2"
+  />
+</svg> 
   `),
   'slash-fraction-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" fill="none">
@@ -2859,7 +2902,7 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'first-derivative-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 50 50">
       <text x="5" y="18" font-size="18">d</text>
       <rect x="18" y="4" width="8" height="16" fill="none" stroke="#2e8b57" stroke-width="2"/>
       <line x1="2" y1="25" x2="32" y2="25" stroke="#000" stroke-width="2"/>
@@ -2868,7 +2911,7 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'partial-derivative-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 50">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 55 50">
       <text x="4" y="18" font-size="18">∂</text>
       <rect x="20" y="4" width="8" height="16" fill="none" stroke="#2e8b57" stroke-width="2"/>
       <line x1="2" y1="25" x2="34" y2="25" stroke="#000" stroke-width="2"/>
@@ -2877,14 +2920,14 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'limit-infinity-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 40">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 70 40"> 
       <text x="18" y="15" font-size="18">lim</text>
       <rect x="4" y="22" width="8" height="14" fill="none" stroke="#2e8b57" stroke-width="2"/>
       <text x="16" y="33" font-size="16">→∞</text>
     </svg>
   `),
   'limit-generic-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55 40">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 0 55 40">
       <text x="14" y="15" font-size="18">lim</text>
       <rect x="20" y="22" width="8" height="14" fill="none" stroke="#2e8b57" stroke-width="2"/>
     </svg>
@@ -4127,9 +4170,9 @@ function renderToolbarItemLabel(item, context = {}) {
           focusable="false"
           aria-hidden="true"
         >
-          {topBox ? <rect {...topBox} rx="0.45" /> : null}
+          {topBox ? <rect {...topBox} rx="0.45" className="cme-arrow-label-placeholder-box" /> : null}
           {arrowGraphic}
-          {bottomBox ? <rect {...bottomBox} rx="0.45" /> : null}
+          {bottomBox ? <rect {...bottomBox} rx="0.45" className="cme-arrow-label-placeholder-box" /> : null}
         </svg>
       </span>
     );
@@ -4301,27 +4344,27 @@ function renderToolbarItemLabel(item, context = {}) {
       <span className="cme-root-icon" aria-hidden="true">
         <svg
           className="cme-root-svg"
-          viewBox="0 0 18 16"
+          width="48"
+          height="32"
+          viewBox="0 0 46 32"
           focusable="false"
           aria-hidden="true"
         >
           {isNthRoot ? (
             <rect
-              x="2.1"
-              y="1.8"
-              width="2.6"
-              height="3.4"
-              rx="0.35"
+              x="8"
+              y="4"
+              width="8"
+              height="10"
               className="cme-root-svg-box cme-root-svg-box--small"
             />
           ) : null}
-          <path d="M1.8 9.6H3.8L5.5 13.8L8 3.4H15.5" />
+          <path d={isNthRoot ? 'M10 18 L17 25 L24 4 L46 4' : 'M4 18 L11 25 L18 4 L42 4'} />
           <rect
-            x="9.6"
-            y="4.3"
-            width="4.2"
-            height="7"
-            rx="0.4"
+            x={isNthRoot ? '30' : '24'}
+            y="9"
+            width="11"
+            height="15"
             className="cme-root-svg-box"
           />
         </svg>
@@ -5250,6 +5293,9 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   const groups = mode === 'math' ? ORDERED_MATH_GROUPS : CHEM_GROUPS;
   const isMathMode = mode === 'math';
   const activeGroupConfig = groups[activeGroup] || {};
+  const activeMathSubgroupClassName = isMathMode && activeGroupConfig.id
+    ? ` cme-symbol-subgroup--tab-${activeGroupConfig.id}`
+    : '';
   const colorSwatches = useMemo(
     () => COLOR_SWATCHES.map((swatch) => ({
       ...swatch,
@@ -5978,7 +6024,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                     return (
                       <section
                         key={category}
-                        className={`cme-symbol-subgroup cme-greek-subgroup${isGreekPickerColumn ? ' cme-greek-subgroup--picker' : ''}${isBeforeGreekPickerColumn ? ' cme-greek-subgroup--before-picker' : ''}${isMathMode ? ' cme-symbol-subgroup--compact' : ''}`}
+                        className={`cme-symbol-subgroup cme-greek-subgroup${category === 'Fraktur Symbols' ? ' cme-greek-subgroup--no-right-border' : ''}${isGreekPickerColumn ? ' cme-greek-subgroup--picker' : ''}${isBeforeGreekPickerColumn ? ' cme-greek-subgroup--before-picker' : ''}${isMathMode ? ' cme-symbol-subgroup--compact' : ''}${activeMathSubgroupClassName}`}
                         style={{
                           gridTemplateColumns: `repeat(${cols}, auto)`,
                           gridTemplateRows: `repeat(${rows}, auto)`,
@@ -6465,7 +6511,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
               return (
               <div
                 key={chunkIndex}
-                className={`cme-symbol-subgroup${subgroup.className || ''}${isMathMode ? ' cme-symbol-subgroup--compact' : ''}`}
+                className={`cme-symbol-subgroup${subgroup.className || ''}${isMathMode ? ' cme-symbol-subgroup--compact' : ''}${activeMathSubgroupClassName}`}
                 style={{
                   gridTemplateColumns: `repeat(${actualCols}, ${subgroup.equalColumns ? 'minmax(0, 1fr)' : 'auto'})`,
                   gridTemplateRows: `repeat(${subgroup.rows || Math.ceil(subgroup.items.length / baseCols)}, auto)`,
