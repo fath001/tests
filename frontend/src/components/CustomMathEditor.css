@@ -1924,33 +1924,61 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   overflow: hidden;
   box-sizing: border-box;
   animation: slideUp 0.2s ease-out;
-  will-change: top, left;
-  transition: background-color 1s ease, border-color 1s ease, box-shadow 1s ease, color 1s ease, width 0.35s ease, height 0.35s ease, top 0.35s ease, right 0.35s ease, bottom 0.35s ease, left 0.35s ease;
+  will-change: width, height, top, left;
+  transition:
+    width 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    top 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    left 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .cme-editor-popup.maximized {
-  top: 24px;
-  right: 24px;
-  bottom: 24px;
-  left: 24px;
-  width: auto;
-  height: auto;
+  top: 30px;
+  right: auto;
+  bottom: auto;
+  left: 150px;
+  width: 80vw;
+  height: 90vh;
+  height: 90dvh;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
+}
+
+.cme-editor-popup.maximized .cme-popup-header,
+.cme-editor-popup.maximized .cme-toolbar,
+.cme-editor-popup.maximized .cme-popup-footer {
+  flex: 0 0 auto;
+}
+
+.cme-editor-popup.maximized .cme-popup-header {
+  border-radius: 0;
+}
+
+.cme-editor-popup.maximized .cme-mathfield-container {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
 }
 
 .cme-editor-popup.minimized {
-  width: 420px;
-  height: auto;
+  width: min(420px, calc(100vw - 24px));
+  height: 32px;
 }
 
-.cme-editor-popup.minimized .cme-toolbar,
-.cme-editor-popup.minimized .cme-mathfield-container,
-.cme-editor-popup.minimized .cme-popup-footer {
-  max-height: 0;
-  opacity: 0;
-  transform: translateY(-10px);
-  pointer-events: none;
-  overflow: hidden;
-  border-width: 0;
+.cme-editor-popup.dragging {
+  transition: none;
+}
+
+.cme-editor-popup.dragging .cme-popup-header {
+  cursor: grabbing;
+}
+
+.cme-editor-popup.minimized > :not(.cme-popup-header) {
+  display: none;
 }
 
 @keyframes slideUp {

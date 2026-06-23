@@ -5287,6 +5287,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   const [showStyleDropdown, setShowStyleDropdown] = useState(null); // { x, y, type, buttonKey } or null
   const [windowMode, setWindowMode] = useState('normal');
   const [popupPosition, setPopupPosition] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
   const [isRtlInput, setIsRtlInput] = useState(initialDirection === 'rtl');
   const [customColorInput, setCustomColorInput] = useState('');
   const [customColorError, setCustomColorError] = useState('');
@@ -5332,6 +5333,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     removeDragListenersRef.current();
     removeDragListenersRef.current = () => {};
     dragStateRef.current = null;
+    setIsDragging(false);
   }, []);
 
   useEffect(() => () => stopDragging(), [stopDragging]);
@@ -5339,6 +5341,23 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   useEffect(() => {
     popupPositionRef.current = popupPosition;
   }, [popupPosition]);
+
+  useEffect(() => {
+    if (windowMode !== 'minimized') return;
+
+    setActiveMatrix(null);
+    setShowSpecialChars(null);
+    setShowArrowPicker(null);
+    setShowRelationMorePicker(null);
+    setShowArrowLabelPicker(null);
+    setShowGreekItalicPicker(null);
+    setShowBlackboardBoldPicker(null);
+    setShowFrakturScriptPicker(null);
+    setShowHebrewSymbolPicker(null);
+    setShowPeriodicTablePicker(null);
+    setShowColorPicker(null);
+    setShowStyleDropdown(null);
+  }, [windowMode]);
 
   useEffect(() => {
     if (windowMode === 'maximized') return;
@@ -5365,7 +5384,18 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     };
 
     const frameId = requestAnimationFrame(syncPopupPosition);
-    return () => cancelAnimationFrame(frameId);
+    const popupEl = popupRef.current;
+    const handleSizeTransitionEnd = (event) => {
+      if (event.target !== popupEl) return;
+      if (event.propertyName !== 'width' && event.propertyName !== 'height') return;
+      syncPopupPosition();
+    };
+
+    popupEl?.addEventListener('transitionend', handleSizeTransitionEnd);
+    return () => {
+      cancelAnimationFrame(frameId);
+      popupEl?.removeEventListener('transitionend', handleSizeTransitionEnd);
+    };
   }, [clampPopupPosition, windowMode]);
 
   useEffect(() => {
@@ -5392,6 +5422,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     if (!popupEl) return;
 
     event.preventDefault();
+    setIsDragging(true);
 
     const rect = popupEl.getBoundingClientRect();
     const startPosition = popupPositionRef.current || { x: rect.left, y: rect.top };
@@ -5933,7 +5964,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       : undefined;
 
   return (
-    <div ref={popupRef} className={`cme-editor-popup ${windowMode}`} style={popupStyle} onMouseDown={(e) => e.stopPropagation()}>
+    <div ref={popupRef} className={`cme-editor-popup ${windowMode}${isDragging ? ' dragging' : ''}`} style={popupStyle} onMouseDown={(e) => e.stopPropagation()}>
       <div className="cme-popup-header" onPointerDown={handlePopupDragStart}>
         <span>{mode === 'math' ? 'MathType' : 'ChemType'}</span>
         <div className="cme-popup-actions" onPointerDown={(e) => e.stopPropagation()}>
@@ -5951,7 +5982,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
             aria-label={windowMode === 'maximized' ? 'Restore window' : 'Maximize window'}
             onClick={() => setWindowMode((current) => (current === 'maximized' ? 'normal' : 'maximized'))}
           >
-            {windowMode === 'maximized' ? 'o' : '[]'}
+            {windowMode === 'maximized' ? 'o' : '⤢ '}
           </button>
           <button
             type="button"
