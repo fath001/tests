@@ -1,4 +1,4 @@
-/**
+﻿/**
  * CustomMathEditor — A WIRIS/MathType-inspired Math & Chemistry editor
  * powered by MathLive for interactive WYSIWYG visual editing.
  *
@@ -772,10 +772,22 @@ export default function CustomMathEditor({ value = "", onChange }) {
   const insertAtCursor = useCallback((insertText) => {
     const popupMf = popupMfRef.current;
     if (!popupMf) return;
-    popupMf.focus();
-    popupMf.executeCommand(["insert", insertText]);
-  }, []);
 
+    const hasPlaceholders = /#(?:0|\?)/.test(insertText);
+
+    popupMf.focus();
+    if (typeof popupMf.insert === "function") {
+      popupMf.insert(insertText, {
+        format: "latex",
+        insertionMode: "replaceSelection",
+        selectionMode: hasPlaceholders ? "placeholder" : "after",
+      });
+    } else {
+      popupMf.executeCommand(["insert", insertText]);
+    }
+
+    requestAnimationFrame(() => popupMf.focus?.());
+  }, []);
   const handleMatrixInsert = useCallback((type, rows, cols) => {
     let latex = `\\begin{${type}} `;
     for (let i = 0; i < rows; i++) {
@@ -1066,4 +1078,5 @@ export default function CustomMathEditor({ value = "", onChange }) {
     </div>
   );
 }
+
 

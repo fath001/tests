@@ -5839,10 +5839,22 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   const insertAtCursor = useCallback((sym) => {
     const mf = popupMfRef.current;
     if (!mf) return;
-    mf.focus();
-    mf.executeCommand(['insert', sym]);
-  }, []);
 
+    const hasPlaceholders = /#(?:0|\?)/.test(sym);
+
+    mf.focus();
+    if (typeof mf.insert === 'function') {
+      mf.insert(sym, {
+        format: 'latex',
+        insertionMode: 'replaceSelection',
+        selectionMode: hasPlaceholders ? 'placeholder' : 'after',
+      });
+    } else {
+      mf.executeCommand(['insert', sym]);
+    }
+
+    requestAnimationFrame(() => mf.focus?.());
+  }, []);
   const insertSpacingToolAtCursor = useCallback((sym) => {
     const mf = popupMfRef.current;
     if (!mf) return;
@@ -7543,17 +7555,17 @@ function CkEditor({ value, onChange, className = '' }) {
       `}</style>
 
       {/* Insert Options Bar */}
-      <div className="ck-editor-meta">
-        <label className="ck-editor-mode-toggle">
-          <input
-            className="ck-editor-mode-checkbox"
-            type="checkbox"
-            checked={insertAsUnicode}
-            onChange={(e) => setInsertAsUnicode(e.target.checked)}
-          />
-          <span>Insert as plain text instead of LaTeX formatting</span>
-        </label>
-      </div>
+        {/* <div className="ck-editor-meta">
+          <label className="ck-editor-mode-toggle">
+            <input
+              className="ck-editor-mode-checkbox"
+              type="checkbox"
+              checked={insertAsUnicode}
+              onChange={(e) => setInsertAsUnicode(e.target.checked)}
+            />
+            <span>Insert as plain text instead of LaTeX formatting</span>
+          </label>
+        </div> */}
 
       <CKEditor
         editor={ClassicEditor}
@@ -7606,6 +7618,7 @@ function CkEditor({ value, onChange, className = '' }) {
 }
 
 export default CkEditor;
+
 
 
 

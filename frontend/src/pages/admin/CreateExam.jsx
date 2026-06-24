@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AdminTabs from "../../components/AdminTabs";
 import Navbar from "../../components/Navbar";
@@ -23,6 +23,7 @@ export default function CreateExam() {
   const navigate = useNavigate();
   const [students, setStudents] = useState([]);
   const [exams, setExams] = useState([]);
+  const [studentSearch, setStudentSearch] = useState("");
   const [form, setForm] = useState({
     name: "",
     examDate: "",
@@ -69,6 +70,32 @@ export default function CreateExam() {
       ignore = true;
     };
   }, []);
+
+  const filteredStudents = useMemo(() => {
+    const query = studentSearch.trim().toLowerCase();
+    const assigned = new Set(form.assignedStudents);
+
+    return [...students]
+      .filter((student) => {
+        if (!query) {
+          return true;
+        }
+
+        return [student.name, student.email]
+          .filter(Boolean)
+          .some((value) => value.toLowerCase().includes(query));
+      })
+      .sort((a, b) => {
+        const aSelected = assigned.has(a._id);
+        const bSelected = assigned.has(b._id);
+
+        if (aSelected !== bSelected) {
+          return aSelected ? -1 : 1;
+        }
+
+        return (a.name || "").localeCompare(b.name || "");
+      });
+  }, [form.assignedStudents, studentSearch, students]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -157,29 +184,57 @@ export default function CreateExam() {
             </label>
 
             <section className="student-picker admin-student-picker">
-              <div className="admin-section-copy">
-                <span>Assign Students</span>
-                <p>{form.assignedStudents.length} selected for this exam</p>
+              <div className="admin-student-picker-top">
+                <div className="admin-section-copy">
+                  <span>Assign Students</span>
+                  <p>{form.assignedStudents.length} selected for this exam</p>
+                </div>
+                <div className="admin-student-summary">{filteredStudents.length} shown</div>
               </div>
 
               {students.length === 0 ? (
                 <p className="admin-empty-state">No students found.</p>
               ) : (
-                <div className="student-grid admin-student-grid">
-                  {students.map((student) => (
-                    <label className="check-card admin-check-card" key={student._id}>
-                      <input
-                        type="checkbox"
-                        checked={form.assignedStudents.includes(student._id)}
-                        onChange={() => toggleStudent(student._id)}
-                      />
-                      <span>
-                        <strong>{student.name}</strong>
-                        <small>{student.email}</small>
-                      </span>
-                    </label>
-                  ))}
-                </div>
+                <>
+                  <div className="admin-student-tools">
+                    <input
+                      className="admin-student-search"
+                      type="search"
+                      value={studentSearch}
+                      onChange={(event) => setStudentSearch(event.target.value)}
+                      placeholder="Search students by name or email"
+                    />
+                  </div>
+
+                  {filteredStudents.length === 0 ? (
+                    <p className="admin-empty-state">No students match your search.</p>
+                  ) : (
+                    <div className="admin-student-grid-wrap">
+                      <div className="student-grid admin-student-grid">
+                        {filteredStudents.map((student) => {
+                          const isSelected = form.assignedStudents.includes(student._id);
+
+                          return (
+                            <label
+                              className={`check-card admin-check-card${isSelected ? " selected" : ""}`}
+                              key={student._id}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={isSelected}
+                                onChange={() => toggleStudent(student._id)}
+                              />
+                              <span>
+                                <strong>{student.name}</strong>
+                                <small>{student.email}</small>
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
             </section>
 

@@ -1936,13 +1936,13 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
 }
 
 .cme-editor-popup.maximized {
-  top: 30px;
+  top: 75px;
   right: auto;
   bottom: auto;
-  left: 150px;
-  width: 80vw;
-  height: 90vh;
-  height: 90dvh;
+  left: 189px;
+  width: 75vw;
+  height: 80vh;
+  height: 80dvh;
   max-width: none;
   max-height: none;
   border-radius: 0;
