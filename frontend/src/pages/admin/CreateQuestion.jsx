@@ -15,6 +15,7 @@ export default function CreateQuestion() {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState({ A: "", B: "", C: "", D: "" });
   const [correctAnswer, setCorrectAnswer] = useState("A");
+  const [showQuestionPreview, setShowQuestionPreview] = useState(false);
 
   const selectedExam = useMemo(
     () => exams.find((exam) => exam._id === selectedExamId),
@@ -80,6 +81,27 @@ export default function CreateQuestion() {
     };
   }, [selectedExamId]);
 
+  useEffect(() => {
+    if (!showQuestionPreview) {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setShowQuestionPreview(false);
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [showQuestionPreview]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -107,6 +129,7 @@ export default function CreateQuestion() {
       setQuestionType("multiple_choice");
       setOptions({ A: "", B: "", C: "", D: "" });
       setCorrectAnswer("A");
+      setShowQuestionPreview(false);
 
       const res = await API.get(`/questions/exam/${selectedExamId}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -189,6 +212,15 @@ export default function CreateQuestion() {
 
             <div className="admin-form-block">
               <span className="admin-block-label">Question Prompt</span>
+              <div className="admin-preview-action-row">
+                <button
+                  type="button"
+                  className="button secondary admin-preview-launch"
+                  onClick={() => setShowQuestionPreview(true)}
+                >
+                  Preview Question
+                </button>
+              </div>
               <div className="admin-editor-wrap">
                 <CkEditor className="admin-ck-editor" value={question} onChange={setQuestion} />
               </div>
@@ -258,6 +290,49 @@ export default function CreateQuestion() {
           </section>
         </section>
       </main>
+
+      {showQuestionPreview && (
+        <div className="admin-preview-overlay" onClick={() => setShowQuestionPreview(false)}>
+          <div
+            className="admin-preview-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="admin-question-preview-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="admin-preview-modal-header">
+              <strong id="admin-question-preview-title">Question Preview</strong>
+              <button
+                type="button"
+                className="admin-preview-modal-dismiss"
+                aria-label="Close preview"
+                onClick={() => setShowQuestionPreview(false)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="admin-preview-modal-divider" />
+            <div className="admin-preview-modal-body">
+              {question.trim() ? (
+                <div className="question-preview admin-preview-modal-content">
+                  <QuestionPreview value={question} />
+                </div>
+              ) : (
+                <p className="admin-preview-empty">Type your question to preview it here.</p>
+              )}
+            </div>
+            <div className="admin-preview-modal-footer">
+              <button
+                type="button"
+                className="button secondary admin-preview-close"
+                onClick={() => setShowQuestionPreview(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

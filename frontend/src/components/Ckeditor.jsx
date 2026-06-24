@@ -1,4 +1,4 @@
-﻿import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
+import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import {
@@ -1518,15 +1518,22 @@ const ORDERED_MATH_GROUPS = [
 
 const CHEM_GROUPS = [
   {
-    label: 'H-Ne', isChem: true,
+    id: 'chem-period-1',
+    label: <TabIcon top={'H-Ne'} bottom={'elem'} />,
+    isChem: true,
     items: ['H', 'He', 'Li', 'Be', 'B', 'C', 'N', 'O', 'F', 'Ne'].map(el => ({ label: el, insert: el, cls: 'chem-element' }))
   },
   {
-    label: 'Na-Ca', isChem: true,
+    id: 'chem-period-2',
+    label: <TabIcon top={'Na-Ca'} bottom={'elem'} />,
+    isChem: true,
     items: ['Na', 'Mg', 'Al', 'Si', 'P', 'S', 'Cl', 'Ar', 'K', 'Ca'].map(el => ({ label: el, insert: el, cls: 'chem-element' }))
   },
   {
-    label: 'Fe-Zn →⇌', isChem: true, items: [
+    id: 'chem-reactions',
+    label: <TabIcon top={'Fe-Zn'} bottom={'\u2192 \u21cc'} />,
+    isChem: true,
+    items: [
       ...['Fe', 'Cu', 'Zn', 'Mn'].map(el => ({ label: el, insert: el, cls: 'chem-element' })),
       { type: 'sep', cols: 2 },
       ...['Cr', 'Ni', 'Co', 'Ag'].map(el => ({ label: el, insert: el, cls: 'chem-element' })),
@@ -1537,25 +1544,33 @@ const CHEM_GROUPS = [
       { type: 'sep', cols: 2 },
       { label: 'Xe', insert: 'Xe', cls: 'chem-element' },
       { type: 'sep', cols: 5 },
-      { label: '→', insert: '->', cls: 'chem-arrow' }, { label: '⇌', insert: '<=>', cls: 'chem-arrow' },
-      { label: '←', insert: '<-', cls: 'chem-arrow' }, { label: '⇄', insert: '<->', cls: 'chem-arrow' }, { label: '↑', insert: '^', cls: 'chem-arrow' },
+      { label: '\u2192', insert: '->', cls: 'chem-arrow' },
+      { label: '\u21cc', insert: '<=>', cls: 'chem-arrow' },
+      { label: '\u2190', insert: '<-', cls: 'chem-arrow' },
+      { label: '\u21c4', insert: '<->', cls: 'chem-arrow' },
+      { label: '\u2191', insert: '^', cls: 'chem-arrow' },
       { type: 'sep', cols: 4 },
-      { label: '↓', insert: 'v', cls: 'chem-arrow' }, { label: '+', insert: ' + ', cls: 'chem-arrow' },
-      { label: '→(Δ)', insert: '->[\\Delta]', cls: 'chem-arrow' }, { label: '→(aq)', insert: '->[aq]', cls: 'chem-arrow' },
+      { label: '\u2193', insert: 'v', cls: 'chem-arrow' },
+      { label: '+', insert: ' + ', cls: 'chem-arrow' },
+      { label: '\u2192(\u0394)', insert: '->[\\Delta]', cls: 'chem-arrow' },
+      { label: '\u2192(aq)', insert: '->[aq]', cls: 'chem-arrow' },
     ]
   },
   {
-    label: '(s)(l) ⁺/⁻', isChem: true, items: [
+    id: 'chem-states',
+    label: <TabIcon top={'(aq)'} bottom={'\u00b1 \u2082'} />,
+    isChem: true,
+    items: [
       { label: '(s)', insert: '(s)', cls: 'chem-state' }, { label: '(l)', insert: '(l)', cls: 'chem-state' },
       { label: '(g)', insert: '(g)', cls: 'chem-state' }, { label: '(aq)', insert: '(aq)', cls: 'chem-state' },
       { type: 'sep', cols: 2 },
       { label: '(conc)', insert: '(conc)', cls: 'chem-state' },
       { label: '(dil)', insert: '(dil)', cls: 'chem-state' }, { label: '(ppt)', insert: '(ppt)', cls: 'chem-state' },
       { type: 'sep', cols: 2 },
-      { label: '✚', insert: '^{+}', cls: 'chem-element' }, { label: '━', insert: '^{-}', cls: 'chem-element' },
-      { label: '²⁺', insert: '^{2+}', cls: 'chem-element' }, { label: '²⁻', insert: '^{2-}', cls: 'chem-element' },
+      { label: '\u271a', insert: '^{+}', cls: 'chem-element' }, { label: '\u2501', insert: '^{-}', cls: 'chem-element' },
+      { label: '\u00b2\u207a', insert: '^{2+}', cls: 'chem-element' }, { label: '\u00b2\u207b', insert: '^{2-}', cls: 'chem-element' },
       { type: 'sep', cols: 2 },
-      { label: '³⁺', insert: '^{3+}', cls: 'chem-element' }, { label: '³⁻', insert: '^{3-}', cls: 'chem-element' },
+      { label: '\u00b3\u207a', insert: '^{3+}', cls: 'chem-element' }, { label: '\u00b3\u207b', insert: '^{3-}', cls: 'chem-element' },
       { label: '2', insert: '2', cls: 'chem-element' }, { label: '3', insert: '3', cls: 'chem-element' },
       { type: 'sep', cols: 2 },
       { label: '4', insert: '4', cls: 'chem-element' }, { label: '5', insert: '5', cls: 'chem-element' },
@@ -1566,17 +1581,20 @@ const CHEM_GROUPS = [
     ]
   },
   {
-    label: 'H₂O', isChem: true, items: [
-      { label: 'H₂O', insert: 'H2O', cls: 'chem-element' }, { label: 'CO₂', insert: 'CO2', cls: 'chem-element' },
-      { label: 'NH₃', insert: 'NH3', cls: 'chem-element' }, { label: 'H₂SO₄', insert: 'H2SO4', cls: 'chem-element' },
+    id: 'chem-molecules',
+    label: <TabIcon top={'H\u2082O'} bottom={'ions'} />,
+    isChem: true,
+    items: [
+      { label: 'H\u2082O', insert: 'H2O', cls: 'chem-element' }, { label: 'CO\u2082', insert: 'CO2', cls: 'chem-element' },
+      { label: 'NH\u2083', insert: 'NH3', cls: 'chem-element' }, { label: 'H\u2082SO\u2084', insert: 'H2SO4', cls: 'chem-element' },
       { label: 'HCl', insert: 'HCl', cls: 'chem-element' }, { label: 'NaOH', insert: 'NaOH', cls: 'chem-element' },
-      { label: 'NaCl', insert: 'NaCl', cls: 'chem-element' }, { label: 'CaCO₃', insert: 'CaCO3', cls: 'chem-element' },
-      { label: 'HNO₃', insert: 'HNO3', cls: 'chem-element' }, { label: 'H₃PO₄', insert: 'H3PO4', cls: 'chem-element' },
-      { label: 'CH₃COOH', insert: 'CH3COOH', cls: 'chem-element' }, { label: 'C₆H₁₂O₆', insert: 'C6H12O6', cls: 'chem-element' },
-      { label: 'CH₄', insert: 'CH4', cls: 'chem-element' }, { label: 'C₂H₅OH', insert: 'C2H5OH', cls: 'chem-element' },
-      { label: 'CO₃²⁻', insert: 'CO3^{2-}', cls: 'chem-element' }, { label: 'SO₄²⁻', insert: 'SO4^{2-}', cls: 'chem-element' },
-      { label: 'NO₃⁻', insert: 'NO3^-', cls: 'chem-element' }, { label: 'PO₄³⁻', insert: 'PO4^{3-}', cls: 'chem-element' },
-      { label: 'NH₄⁺', insert: 'NH4^+', cls: 'chem-element' }, { label: 'OH⁻', insert: 'OH^-', cls: 'chem-element' },
+      { label: 'NaCl', insert: 'NaCl', cls: 'chem-element' }, { label: 'CaCO\u2083', insert: 'CaCO3', cls: 'chem-element' },
+      { label: 'HNO\u2083', insert: 'HNO3', cls: 'chem-element' }, { label: 'H\u2083PO\u2084', insert: 'H3PO4', cls: 'chem-element' },
+      { label: 'CH\u2083COOH', insert: 'CH3COOH', cls: 'chem-element' }, { label: 'C\u2086H\u2081\u2082O\u2086', insert: 'C6H12O6', cls: 'chem-element' },
+      { label: 'CH\u2084', insert: 'CH4', cls: 'chem-element' }, { label: 'C\u2082H\u2085OH', insert: 'C2H5OH', cls: 'chem-element' },
+      { label: 'CO\u2083\u00b2\u207b', insert: 'CO3^{2-}', cls: 'chem-element' }, { label: 'SO\u2084\u00b2\u207b', insert: 'SO4^{2-}', cls: 'chem-element' },
+      { label: 'NO\u2083\u207b', insert: 'NO3^-', cls: 'chem-element' }, { label: 'PO\u2084\u00b3\u207b', insert: 'PO4^{3-}', cls: 'chem-element' },
+      { label: 'NH\u2084\u207a', insert: 'NH4^+', cls: 'chem-element' }, { label: 'OH\u207b', insert: 'OH^-', cls: 'chem-element' },
     ]
   },
 ];
@@ -1625,18 +1643,18 @@ function MatrixTabIcon() {
       <svg className="cme-tab-svg-icon" viewBox="0 0 210 110" focusable="false">
         <path d="M12 8 H4 V102 H12" fill="none" stroke="currentColor" strokeWidth="7" />
         <path d="M96 8 H104 V102 H96" fill="none" stroke="currentColor" strokeWidth="7" />
-        <rect x="24" y="15" width="22" height="32" fill="none" stroke="#ffffff" strokeWidth="7.5" />
-        <rect x="64" y="15" width="22" height="32" fill="none" stroke="#ffffff" strokeWidth="7.5" />
-        <rect x="24" y="63" width="22" height="32" fill="none" stroke="#ffffff" strokeWidth="7.5" />
-        <rect x="64" y="63" width="22" height="32" fill="none" stroke="#ffffff" strokeWidth="7.5" />
+        <rect x="24" y="15" width="22" height="32" fill="none" stroke="currentColor" strokeWidth="7.5" />
+        <rect x="64" y="15" width="22" height="32" fill="none" stroke="currentColor" strokeWidth="7.5" />
+        <rect x="24" y="63" width="22" height="32" fill="none" stroke="currentColor" strokeWidth="7.5" />
+        <rect x="64" y="63" width="22" height="32" fill="none" stroke="currentColor" strokeWidth="7.5" />
         <path
           d="M142 8 C132 8 132 18 132 28 C132 38 128 45 124 49 C128 53 132 60 132 70 C132 80 132 90 142 102"
           fill="none"
           stroke="currentColor"
           strokeWidth="7"
         />
-        <rect x="154" y="15" width="22" height="32" fill="none" stroke="#ffffff" strokeWidth="7.5" />
-        <rect x="154" y="63" width="22" height="32" fill="none" stroke="#ffffff" strokeWidth="7.5" />
+        <rect x="154" y="15" width="22" height="32" fill="none" stroke="currentColor" strokeWidth="7.5" />
+        <rect x="154" y="63" width="22" height="32" fill="none" stroke="currentColor" strokeWidth="7.5" />
       </svg>
     </span>
   );
@@ -1652,7 +1670,7 @@ function PowerFracTabIcon() {
     width="20"
     height="28"
     fill="none"
-    stroke="#ffffff"
+    stroke="currentColor"
     strokeWidth="4"
   />
 
@@ -1662,7 +1680,7 @@ function PowerFracTabIcon() {
     width="12"
     height="22"
     fill="none"
-    stroke="#ffffff"
+    stroke="currentColor"
     strokeWidth="4"
   />
 
@@ -1672,7 +1690,7 @@ function PowerFracTabIcon() {
     width="8"
     height="10"
     fill="none"
-    stroke="#ffffff"
+    stroke="currentColor"
     strokeWidth="4"
   />
 
@@ -1682,7 +1700,7 @@ function PowerFracTabIcon() {
     width="14"
     height="18"
     fill="none"
-    stroke="#ffffff"
+    stroke="currentColor"
     strokeWidth="4"
   />
 </svg>
@@ -1697,7 +1715,7 @@ function RelationsTabIcon() {
         <path
           d="M18 4 C10 4 6 9 6 14 C6 19 10 24 18 24"
           fill="none"
-          stroke="#ffffff"
+          stroke="currentColor"
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -1707,14 +1725,14 @@ function RelationsTabIcon() {
           y1="14"
           x2="18"
           y2="14"
-          stroke="#ffffff"
+          stroke="currentColor"
           strokeWidth="2.5"
           strokeLinecap="round"
         />
         <text
           x="26"
           y="24"
-          fill="#ffffff"
+          fill="currentColor"
           fontFamily="Cambria Math, serif"
           fontSize="35" 
         >
@@ -1732,7 +1750,7 @@ function GreekTabIcon() {
         <text
           x="2"
           y="20"
-          fill="#ffffff"
+          fill="currentColor"
           fontFamily="Segoe UI Symbol, Arial Unicode MS, sans-serif"
           fontSize="25"
         >
@@ -1752,7 +1770,7 @@ function BracketsTabIcon() {
   <path
     d="M12 8 C4 14,4 36,12 42"
     fill="none"
-    stroke="#ffffff"
+    stroke="currentColor"
     strokeWidth="4"
     strokeLinecap="round"
   />
@@ -1763,14 +1781,14 @@ function BracketsTabIcon() {
     width="18"
     height="30"
     fill="none"
-    stroke="#ffffff"
+    stroke="currentColor"
     strokeWidth="4"
   />
 
   <path
     d="M46 8 C54 14,54 36,46 42"
     fill="none"
-    stroke="#ffffff"
+    stroke="currentColor"
     strokeWidth="4"
     strokeLinecap="round"
   />
@@ -1779,7 +1797,7 @@ function BracketsTabIcon() {
   <path
     d="M65 10 Q75 2 85 10"
     fill="none"
-    stroke="#ffffff"
+    stroke="currentColor"
     strokeWidth="4"
     strokeLinecap="round"
   />
@@ -1790,7 +1808,7 @@ function BracketsTabIcon() {
     width="14"
     height="22"
     fill="none"
-    stroke="#ffffff"
+    stroke="currentColor"
     strokeWidth="4"
   />
 
@@ -1808,7 +1826,7 @@ function CalcTabIcon() {
   <text
     x="2"
     y="40"
-    fill="#ffffff"
+    fill="currentColor"
     fontSize="42"
     fontFamily="Cambria Math, Times New Roman, serif"
     fontWeight="500"
@@ -1823,7 +1841,7 @@ function CalcTabIcon() {
     width="10"
     height="10"
     fill="none"
-    stroke="#ffffff"
+    stroke="currentColor"
     strokeWidth="2.5"
   />
 
@@ -1834,7 +1852,7 @@ function CalcTabIcon() {
     width="10"
     height="10"
     fill="none"
-    stroke="#ffffff"
+    stroke="currentColor"
     strokeWidth="2.5"
   />
 
@@ -1842,7 +1860,7 @@ function CalcTabIcon() {
   <text
     x="45"
     y="36"
-    fill="#ffffff"
+    fill="currentColor"
     fontSize="32"
     fontWeight="500"
     fontFamily="Cambria Math, Times New Roman, serif"
@@ -1908,7 +1926,7 @@ function ArrowTabIcon() {
   return (
     <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
       <svg className="cme-tab-svg-icon" viewBox="0 0 64 24" focusable="false">
-        <g fill="#ffffff">
+        <g fill="currentColor">
           <path d="M4 10h20V5l12 7-12 7v-5H4z" />
           <circle cx="44" cy="18" r="2.5" />
           <circle cx="52" cy="12" r="2.5" />
@@ -2499,11 +2517,25 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'overline-left-curve-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" fill="none">
-      <path d="M16 8 Q8 14 8 20 Q8 26 16 32" stroke="#000000" stroke-width="2" fill="none"/>
-      <line x1="16" y1="8" x2="52" y2="8" stroke="#000000" stroke-width="2"/>
-      <rect x="24" y="12" width="16" height="16" stroke="#1b8f3a" stroke-width="3"/>
-    </svg>
+<svg width="70" height="40" viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Long division bracket -->
+  <path d="M15 5 H65
+           M15 5
+           Q30 25 15 55"
+        fill="none"
+        stroke="black"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- Placeholder box -->
+  <rect x="33" y="20"
+        width="25"
+        height="25" 
+        fill="none"
+        stroke="#2ca02c"
+        stroke-width="5"/>
+</svg>
   `),
   'crosshair-strike-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" fill="none">
@@ -5293,6 +5325,8 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   const [customColorError, setCustomColorError] = useState('');
   const groups = mode === 'math' ? ORDERED_MATH_GROUPS : CHEM_GROUPS;
   const isMathMode = mode === 'math';
+  const isChemMode = mode === 'chem';
+  const isPopupTabMode = isMathMode || isChemMode;
   const activeGroupConfig = groups[activeGroup] || {};
   const activeMathSubgroupClassName = isMathMode && activeGroupConfig.id
     ? ` cme-symbol-subgroup--tab-${activeGroupConfig.id}`
@@ -6014,7 +6048,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           {groups.map((group, index) => (
             <button
               key={group.id || index}
-              className={`cme-group-tab${isMathMode ? ' cme-group-tab--math' : ''}${activeGroup === index ? ' active' : ''}`}
+              className={`cme-group-tab${isPopupTabMode ? ' cme-group-tab--popup' : ''}${isMathMode ? ' cme-group-tab--math' : ''}${isChemMode ? ' cme-group-tab--chem' : ''}${activeGroup === index ? ' active' : ''}`}
               type="button"
               onClick={() => {
                 setActiveGroup(index);
@@ -6026,7 +6060,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           ))}
         </div>
 
-        <div className={`cme-toolbar-items${activeGroup === 0 && isMathMode ? ' cme-toolbar-items--first-tab' : ''}${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${activeGroupConfig.id === 'relations' ? ' cme-toolbar-items--relations' : ''}${activeGroupConfig.id === 'arrows' ? ' cme-toolbar-items--arrows' : ''}${activeGroupConfig.id === 'brackets' ? ' cme-toolbar-items--brackets' : ''}${activeGroupConfig.id === 'matrix' ? ' cme-toolbar-items--matrix' : ''}${isMathMode ? ' cme-toolbar-items--math-compact' : ''}`}>
+        <div className={`cme-toolbar-items${activeGroup === 0 && isMathMode ? ' cme-toolbar-items--first-tab' : ''}${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${activeGroupConfig.id === 'relations' ? ' cme-toolbar-items--relations' : ''}${activeGroupConfig.id === 'arrows' ? ' cme-toolbar-items--arrows' : ''}${activeGroupConfig.id === 'brackets' ? ' cme-toolbar-items--brackets' : ''}${activeGroupConfig.id === 'matrix' ? ' cme-toolbar-items--matrix' : ''}${isPopupTabMode ? ' cme-toolbar-items--popup-compact' : ''}`}>
           {(() => {
             const activeItems = activeGroupConfig.items || [];
 
@@ -6067,7 +6101,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                     return (
                       <section
                         key={category}
-                        className={`cme-symbol-subgroup cme-greek-subgroup${category === 'Fraktur Symbols' ? ' cme-greek-subgroup--no-right-border' : ''}${isGreekPickerColumn ? ' cme-greek-subgroup--picker' : ''}${isBeforeGreekPickerColumn ? ' cme-greek-subgroup--before-picker' : ''}${isMathMode ? ' cme-symbol-subgroup--compact' : ''}${activeMathSubgroupClassName}`}
+                        className={`cme-symbol-subgroup cme-greek-subgroup${category === 'Fraktur Symbols' ? ' cme-greek-subgroup--no-right-border' : ''}${isGreekPickerColumn ? ' cme-greek-subgroup--picker' : ''}${isBeforeGreekPickerColumn ? ' cme-greek-subgroup--before-picker' : ''}${isPopupTabMode ? ' cme-symbol-subgroup--compact' : ''}${activeMathSubgroupClassName}`}
                         style={{
                           gridTemplateColumns: `repeat(${cols}, auto)`,
                           gridTemplateRows: `repeat(${rows}, auto)`,
@@ -6105,7 +6139,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                             <button
                               key={buttonKey}
                               type="button"
-                              className={`cme-btn cme-greek-btn${isMathMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${isTouchedButton ? ' active' : ''}`}
+                              className={`cme-btn cme-greek-btn${isPopupTabMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${isTouchedButton ? ' active' : ''}`}
                               title={item.title || item.insert}
                               onMouseDown={(e) => {
                                 e.preventDefault();
@@ -6215,7 +6249,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                                 insertAtCursor(item.insert);
                               }}
                             >
-                              {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode: !isMathMode })}
+                              {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode })}
                             </button>
                           );
                         })}
@@ -6554,7 +6588,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
               return (
               <div
                 key={chunkIndex}
-                className={`cme-symbol-subgroup${subgroup.className || ''}${isMathMode ? ' cme-symbol-subgroup--compact' : ''}${activeMathSubgroupClassName}`}
+                className={`cme-symbol-subgroup${subgroup.className || ''}${isPopupTabMode ? ' cme-symbol-subgroup--compact' : ''}${activeMathSubgroupClassName}`}
                 style={{
                   gridTemplateColumns: `repeat(${actualCols}, ${subgroup.equalColumns ? 'minmax(0, 1fr)' : 'auto'})`,
                   gridTemplateRows: `repeat(${subgroup.rows || Math.ceil(subgroup.items.length / baseCols)}, auto)`,
@@ -6629,7 +6663,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                       >
                         <button
                           type="button"
-                        className={`cme-btn template${isMathMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${activeMatrix?.type === item.insert ? ' active' : ''}`}
+                        className={`cme-btn template${isPopupTabMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${activeMatrix?.type === item.insert ? ' active' : ''}`}
                           title={item.insert}
                           onMouseDown={(e) => {
                             e.preventDefault();
@@ -6646,7 +6680,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                             }
                           }}
                         >
-                          {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode: !isMathMode })}
+                          {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode })}
                         </button>
                       </div>
                     );
@@ -6682,7 +6716,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                     <button
                       key={`${groupKey}-${chunkIndex * 4 + i}`}
                       type="button"
-                      className={`cme-btn${currentGroup.isTemplate ? ' template' : ''}${isMathMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${isBtnActive ? ' active' : ''}`}
+                      className={`cme-btn${currentGroup.isTemplate ? ' template' : ''}${isPopupTabMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${isBtnActive ? ' active' : ''}`}
                       title={item.title || item.insert}
                       style={item.gridColumn || item.gridRow || itemGridColumn ? { gridColumn: item.gridColumn || itemGridColumn, gridRow: item.gridRow } : undefined}
                       onMouseDown={(e) => {
@@ -6893,7 +6927,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                         }
                       }}
                     >
-                      {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode: !isMathMode })}
+                      {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode })}
                     </button>
                   );
                 })}
@@ -7618,6 +7652,9 @@ function CkEditor({ value, onChange, className = '' }) {
 }
 
 export default CkEditor;
+
+
+
 
 
 

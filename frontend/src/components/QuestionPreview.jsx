@@ -28,8 +28,12 @@ function sanitizeInlineStyle(styleValue = "") {
     .join("; ");
 }
 
-function createPreviewMathField(latex) {
+function createPreviewMathField(latex, tone = "dark") {
   const mf = document.createElement("math-field");
+  const isLightTone = tone === "light";
+  const textColor = isLightTone ? "#22343d" : "#f4f4fb";
+  const accentColor = isLightTone ? "#556e7b" : "#d8b4fe";
+
   mf.setAttribute("read-only", "");
   mf.setAttribute("letter-shape-style", "upright");
   mf.setAttribute(
@@ -44,10 +48,10 @@ function createPreviewMathField(latex) {
       "margin:0 1px",
       "font-size:inherit",
       "min-height:auto",
-      "color:#f4f4fb",
-      "--primary-color:#d8b4fe",
+      `color:${textColor}`,
+      `--primary-color:${accentColor}`,
       "--caret-color:transparent",
-      "--smart-fence-color:#d8b4fe",
+      `--smart-fence-color:${accentColor}`,
     ].join(";"),
   );
 
@@ -62,7 +66,7 @@ function createPreviewMathField(latex) {
   return mf;
 }
 
-function appendHtmlContent(parent, html) {
+function appendHtmlContent(parent, html, tone = "dark") {
   if (!html) {
     return;
   }
@@ -116,7 +120,7 @@ function appendHtmlContent(parent, html) {
             node.getAttribute("data-latex") ||
             node.textContent ||
             "";
-          dest.appendChild(createPreviewMathField(latex));
+          dest.appendChild(createPreviewMathField(latex, tone));
         } else if (tag === "BR") {
           dest.appendChild(document.createElement("br"));
         } else if (tag === "SPAN" && node.classList.contains("math-tex")) {
@@ -167,8 +171,9 @@ function appendHtmlContent(parent, html) {
   }
 }
 
-export default function QuestionPreview({ value = "", className = "" }) {
+export default function QuestionPreview({ value = "", className = "", tone = "dark" }) {
   const containerRef = useRef(null);
+  const previewColor = tone === "light" ? "#22343d" : "#f2f2f8";
 
   useEffect(() => {
     const el = containerRef.current;
@@ -188,31 +193,31 @@ export default function QuestionPreview({ value = "", className = "" }) {
 
     while ((match = regex.exec(value)) !== null) {
       if (match.index > lastIndex) {
-        appendHtmlContent(el, value.slice(lastIndex, match.index));
+        appendHtmlContent(el, value.slice(lastIndex, match.index), tone);
       }
 
-      el.appendChild(createPreviewMathField(match[1]));
+      el.appendChild(createPreviewMathField(match[1], tone));
       lastIndex = match.index + match[0].length;
     }
 
     if (lastIndex < value.length) {
-      appendHtmlContent(el, value.slice(lastIndex));
+      appendHtmlContent(el, value.slice(lastIndex), tone);
     }
 
     el.querySelectorAll("span.math-tex").forEach((span) => {
       const latex = span.getAttribute("data-latex") || span.textContent || "";
 
       if (latex) {
-        span.replaceWith(createPreviewMathField(latex));
+        span.replaceWith(createPreviewMathField(latex, tone));
       }
     });
-  }, [value]);
+  }, [tone, value]);
 
   return (
     <span
       ref={containerRef}
       className={className}
-      style={{ display: "inline", lineHeight: 1.7, verticalAlign: "middle", color: "#f2f2f8" }}
+      style={{ display: "inline", lineHeight: 1.7, verticalAlign: "middle", color: previewColor }}
     />
   );
 }

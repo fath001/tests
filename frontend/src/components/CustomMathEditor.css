@@ -77,7 +77,7 @@
   flex-wrap: wrap;
   background: linear-gradient(180deg, #8ea3b0 0%, #758d9c 100%);
   background: #ffffff;
-  padding: 6px 6px 0 6px;
+  padding: 10px 6px 0 6px;
   gap: 2px;
   border-bottom: 1px solid #8fa1ae;
   min-height: 30px;
@@ -87,15 +87,16 @@
 .cme-group-tab {
   background: linear-gradient(180deg, #7d93a0 0%, #556e7b 100%);
   /* background: #556e7b; */
-  border: 1px solid #6f8795;
-  border-bottom: none;
+  /* border: 1px solid #6f8795; */
+  border: none;
+  border-bottom: 1px solid #556e7b;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   min-width: 54px;
   padding: 0 8px;
   font-size: 10px;
   font-weight: bold;
-  color: #f5f9fc;
+  color: #556e7b;
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
@@ -109,7 +110,7 @@
   box-sizing: border-box;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
-.cme-group-tab--math {
+.cme-group-tab--popup {
   flex: 0 0 56px;
   width: 56px;
   min-width: 56px;
@@ -128,12 +129,12 @@
   overflow: hidden;
 }
 
-.cme-group-tab--math .cme-tab-icon {
+.cme-group-tab--popup .cme-tab-icon {
   width: 100%;
   max-width: 38px;
 }
 
-.cme-group-tab--math .cme-tab-icon--svg,
+.cme-group-tab--popup .cme-tab-icon--svg,
 .cme-group-tab--math .cme-tab-svg-icon {
   width: 38px;
   height: 16px;
@@ -141,7 +142,7 @@
   flex-shrink: 1;
 }
 
-.cme-group-tab--math .cme-tab-icon-top,
+.cme-group-tab--popup .cme-tab-icon-top,
 .cme-group-tab--math .cme-tab-icon-bottom {
   max-width: 100%;
   overflow: hidden;
@@ -194,15 +195,97 @@
 
 .cme-group-tab:hover {
   background: linear-gradient(180deg, #8ca1ad 0%, #6e8694 100%);
+  color: #556e7b;
+}
+
+.cme-group-tab--popup.active {
+  background: #E6EDF2;
+  color: #556e7b;
+  border-color: #9aadb9;
+  border: 1px solid #9aadb9;
+  border-bottom-color: #E6EDF2;
+  z-index: 2;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38);
+  height: 28px;
+  margin-top: -4px;
+}
+
+.cme-group-tab--math:nth-child(-n+9):not(.active),
+.cme-group-tab--math:nth-child(-n+9):not(.active):hover {
   color: #ffffff;
 }
 
-.cme-group-tab.active {
+.cme-group-tab--chem:not(.active),
+.cme-group-tab--chem:not(.active):hover {
+  color: #ffffff;
+}
+
+.cme-group-tab--chem.active,
+.cme-group-tab--chem.active:hover,
+.cme-group-tab--chem.active .cme-group-tab-label,
+.cme-group-tab--chem.active .cme-tab-icon,
+.cme-group-tab--chem.active .cme-tab-svg-icon {
+  color: #556e7b !important;
+}
+
+.cme-group-tab--math:nth-child(2).active,
+.cme-group-tab--math:nth-child(2).active:hover,
+.cme-group-tab--math:nth-child(3).active,
+.cme-group-tab--math:nth-child(3).active:hover,
+.cme-group-tab--math:nth-child(4).active,
+.cme-group-tab--math:nth-child(4).active:hover,
+.cme-group-tab--math:nth-child(5).active,
+.cme-group-tab--math:nth-child(5).active:hover,
+.cme-group-tab--math:nth-child(6).active,
+.cme-group-tab--math:nth-child(6).active:hover,
+.cme-group-tab--math:nth-child(7).active,
+.cme-group-tab--math:nth-child(7).active:hover,
+.cme-group-tab--math:nth-child(9).active,
+.cme-group-tab--math:nth-child(9).active:hover,
+.cme-group-tab--math:nth-child(2).active .cme-group-tab-label,
+.cme-group-tab--math:nth-child(2).active .cme-tab-icon,
+.cme-group-tab--math:nth-child(2).active .cme-tab-svg-icon,
+.cme-group-tab--math:nth-child(3).active .cme-group-tab-label,
+.cme-group-tab--math:nth-child(3).active .cme-tab-icon,
+.cme-group-tab--math:nth-child(3).active .cme-tab-svg-icon,
+.cme-group-tab--math:nth-child(4).active .cme-group-tab-label,
+.cme-group-tab--math:nth-child(4).active .cme-tab-icon,
+.cme-group-tab--math:nth-child(4).active .cme-tab-svg-icon,
+.cme-group-tab--math:nth-child(5).active .cme-group-tab-label,
+.cme-group-tab--math:nth-child(5).active .cme-tab-icon,
+.cme-group-tab--math:nth-child(5).active .cme-tab-svg-icon,
+.cme-group-tab--math:nth-child(6).active .cme-group-tab-label,
+.cme-group-tab--math:nth-child(6).active .cme-tab-icon,
+.cme-group-tab--math:nth-child(6).active .cme-tab-svg-icon,
+.cme-group-tab--math:nth-child(7).active .cme-group-tab-label,
+.cme-group-tab--math:nth-child(7).active .cme-tab-icon,
+.cme-group-tab--math:nth-child(7).active .cme-tab-svg-icon,
+.cme-group-tab--math:nth-child(9).active .cme-group-tab-label,
+.cme-group-tab--math:nth-child(9).active .cme-tab-icon,
+.cme-group-tab--math:nth-child(9).active .cme-tab-svg-icon {
+  color: #556e7b !important;
+}
+
+.cme-group-tab--math:last-child {
+  /* background: #E6EDF2; */
   background: linear-gradient(180deg, #f3d6d9 0%, #dc9e9e 100%);
   color: #ffffff;
-  border-color: #d79ba2;
+  border-color: #9aadb9;
+  border-bottom-color: #E6EDF2;
+  border: none;
   z-index: 2;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38);
+  height: 24px;
+  /* margin-top: -2px; */
+}
+
+.cme-group-tab--math:last-child.active {
+  background: #E6EDF2;
+  color: #556e7b;
+  border: 1px solid #9aadb9;
+  border-color: #9aadb9;
+  border-bottom-color: #E6EDF2;
+  height: 28px;
 }
 
 .cme-toolbar-items {
@@ -229,6 +312,10 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
 }
 
+.cme-toolbar:has(.cme-group-tab--popup.active) .cme-toolbar-items {
+  border-top-color: #E6EDF2;
+}
+
 .cme-toolbar-items--integral-templates {
   height: 112px;
   min-height: 112px;
@@ -251,7 +338,7 @@
   padding: 5px;
 }
 
-.cme-toolbar-items--math-compact {
+.cme-toolbar-items--popup-compact {
   padding: 5px;
   gap: 2px;
 }
@@ -2416,3 +2503,8 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
 .cme-toolbar-items--greek .cme-greek-subgroup--no-right-border {
   border-right: none;
 }
+
+
+
+
+

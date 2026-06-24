@@ -1,4 +1,4 @@
-﻿/**
+/**
  * CustomMathEditor — A WIRIS/MathType-inspired Math & Chemistry editor
  * powered by MathLive for interactive WYSIWYG visual editing.
  *
@@ -139,6 +139,15 @@ function renderToolbarItemLabel(item) {
   }
 
   return item.label;
+}
+
+function TabIcon({ top, bottom = "", compact = false }) {
+  return (
+    <span className={`cme-tab-icon${compact ? " compact" : ""}`} aria-hidden="true">
+      <span className="cme-tab-icon-top">{top}</span>
+      {bottom ? <span className="cme-tab-icon-bottom">{bottom}</span> : null}
+    </span>
+  );
 }
 
 function RootFractionTabIcon() {
@@ -387,43 +396,48 @@ const MATH_GROUPS = [
 
 const CHEM_GROUPS = [
   {
-    label: "H-Ne",
+    id: "chem-period-1",
+    label: <TabIcon top={"H-Ne"} bottom={"elem"} />,
     isChem: true,
     items: ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne"].map((el) => ({
       label: el, insert: el, cls: "chem-element",
     })),
   },
   {
-    label: "Na-Ca",
+    id: "chem-period-2",
+    label: <TabIcon top={"Na-Ca"} bottom={"elem"} />,
     isChem: true,
     items: ["Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca"].map((el) => ({
       label: el, insert: el, cls: "chem-element",
     })),
   },
   {
-    label: "Fe-Zn",
+    id: "chem-metals",
+    label: <TabIcon top={"Fe-Zn"} bottom={"metals"} />,
     isChem: true,
     items: ["Fe", "Cu", "Zn", "Mn", "Cr", "Ni", "Co", "Ag", "Au", "Hg", "Pb", "Sn", "Br", "I", "Ba", "Pt", "Xe"].map(
       (el) => ({ label: el, insert: el, cls: "chem-element" })
     ),
   },
   {
-    label: "→⇌",
+    id: "chem-arrows",
+    label: <TabIcon top={"\u2192 \u21cc"} bottom={"react"} />,
     isChem: true,
     items: [
-      { label: "→", insert: "->", cls: "chem-arrow" },
-      { label: "⇌", insert: "<=>", cls: "chem-arrow" },
-      { label: "←", insert: "<-", cls: "chem-arrow" },
-      { label: "⇄", insert: "<->", cls: "chem-arrow" },
-      { label: "↑", insert: "^", cls: "chem-arrow" },
-      { label: "↓", insert: "v", cls: "chem-arrow" },
+      { label: "\u2192", insert: "->", cls: "chem-arrow" },
+      { label: "\u21cc", insert: "<=>", cls: "chem-arrow" },
+      { label: "\u2190", insert: "<-", cls: "chem-arrow" },
+      { label: "\u21c4", insert: "<->", cls: "chem-arrow" },
+      { label: "\u2191", insert: "^", cls: "chem-arrow" },
+      { label: "\u2193", insert: "v", cls: "chem-arrow" },
       { label: "+", insert: " + ", cls: "chem-arrow" },
-      { label: "→(Δ)", insert: "->[\\Delta]", cls: "chem-arrow" },
-      { label: "→(aq)", insert: "->[aq]", cls: "chem-arrow" },
+      { label: "\u2192(\u0394)", insert: "->[\\Delta]", cls: "chem-arrow" },
+      { label: "\u2192(aq)", insert: "->[aq]", cls: "chem-arrow" },
     ],
   },
   {
-    label: "(s)(l)",
+    id: "chem-states",
+    label: <TabIcon top={"(s)(l)"} bottom={"state"} />,
     isChem: true,
     items: [
       { label: "(s)", insert: "(s)", cls: "chem-state" },
@@ -436,50 +450,52 @@ const CHEM_GROUPS = [
     ],
   },
   {
-    label: "⁺/⁻",
+    id: "chem-charge",
+    label: <TabIcon top={"\u207a \u207b"} bottom={"\u2082 \u2083"} />,
     isChem: true,
     items: [
-      { label: "⁺", insert: "^{+}", cls: "chem-element" },
-      { label: "⁻", insert: "^{-}", cls: "chem-element" },
-      { label: "²⁺", insert: "^{2+}", cls: "chem-element" },
-      { label: "²⁻", insert: "^{2-}", cls: "chem-element" },
-      { label: "³⁺", insert: "^{3+}", cls: "chem-element" },
-      { label: "³⁻", insert: "^{3-}", cls: "chem-element" },
-      { label: "₂", insert: "2", cls: "chem-element" },
-      { label: "₃", insert: "3", cls: "chem-element" },
-      { label: "₄", insert: "4", cls: "chem-element" },
-      { label: "₅", insert: "5", cls: "chem-element" },
-      { label: "₆", insert: "6", cls: "chem-element" },
-      { label: "₇", insert: "7", cls: "chem-element" },
-      { label: "₈", insert: "8", cls: "chem-element" },
-      { label: "ₓ", insert: "x", cls: "chem-element" },
-      { label: "ₙ", insert: "n", cls: "chem-element" },
+      { label: "\u207a", insert: "^{+}", cls: "chem-element" },
+      { label: "\u207b", insert: "^{-}", cls: "chem-element" },
+      { label: "\u00b2\u207a", insert: "^{2+}", cls: "chem-element" },
+      { label: "\u00b2\u207b", insert: "^{2-}", cls: "chem-element" },
+      { label: "\u00b3\u207a", insert: "^{3+}", cls: "chem-element" },
+      { label: "\u00b3\u207b", insert: "^{3-}", cls: "chem-element" },
+      { label: "\u2082", insert: "2", cls: "chem-element" },
+      { label: "\u2083", insert: "3", cls: "chem-element" },
+      { label: "\u2084", insert: "4", cls: "chem-element" },
+      { label: "\u2085", insert: "5", cls: "chem-element" },
+      { label: "\u2086", insert: "6", cls: "chem-element" },
+      { label: "\u2087", insert: "7", cls: "chem-element" },
+      { label: "\u2088", insert: "8", cls: "chem-element" },
+      { label: "\u2093", insert: "x", cls: "chem-element" },
+      { label: "\u2099", insert: "n", cls: "chem-element" },
     ],
   },
   {
-    label: "H₂O",
+    id: "chem-molecules",
+    label: <TabIcon top={"H\u2082O"} bottom={"ions"} />,
     isChem: true,
     items: [
-      { label: "H₂O", insert: "H2O", cls: "chem-element" },
-      { label: "CO₂", insert: "CO2", cls: "chem-element" },
-      { label: "NH₃", insert: "NH3", cls: "chem-element" },
-      { label: "H₂SO₄", insert: "H2SO4", cls: "chem-element" },
+      { label: "H\u2082O", insert: "H2O", cls: "chem-element" },
+      { label: "CO\u2082", insert: "CO2", cls: "chem-element" },
+      { label: "NH\u2083", insert: "NH3", cls: "chem-element" },
+      { label: "H\u2082SO\u2084", insert: "H2SO4", cls: "chem-element" },
       { label: "HCl", insert: "HCl", cls: "chem-element" },
       { label: "NaOH", insert: "NaOH", cls: "chem-element" },
       { label: "NaCl", insert: "NaCl", cls: "chem-element" },
-      { label: "CaCO₃", insert: "CaCO3", cls: "chem-element" },
-      { label: "HNO₃", insert: "HNO3", cls: "chem-element" },
-      { label: "H₃PO₄", insert: "H3PO4", cls: "chem-element" },
-      { label: "CH₃COOH", insert: "CH3COOH", cls: "chem-element" },
-      { label: "C₆H₁₂O₆", insert: "C6H12O6", cls: "chem-element" },
-      { label: "CH₄", insert: "CH4", cls: "chem-element" },
-      { label: "C₂H₅OH", insert: "C2H5OH", cls: "chem-element" },
-      { label: "CO₃²⁻", insert: "CO3^{2-}", cls: "chem-element" },
-      { label: "SO₄²⁻", insert: "SO4^{2-}", cls: "chem-element" },
-      { label: "NO₃⁻", insert: "NO3^-", cls: "chem-element" },
-      { label: "PO₄³⁻", insert: "PO4^{3-}", cls: "chem-element" },
-      { label: "NH₄⁺", insert: "NH4^+", cls: "chem-element" },
-      { label: "OH⁻", insert: "OH^-", cls: "chem-element" },
+      { label: "CaCO\u2083", insert: "CaCO3", cls: "chem-element" },
+      { label: "HNO\u2083", insert: "HNO3", cls: "chem-element" },
+      { label: "H\u2083PO\u2084", insert: "H3PO4", cls: "chem-element" },
+      { label: "CH\u2083COOH", insert: "CH3COOH", cls: "chem-element" },
+      { label: "C\u2086H\u2081\u2082O\u2086", insert: "C6H12O6", cls: "chem-element" },
+      { label: "CH\u2084", insert: "CH4", cls: "chem-element" },
+      { label: "C\u2082H\u2085OH", insert: "C2H5OH", cls: "chem-element" },
+      { label: "CO\u2083\u00b2\u207b", insert: "CO3^{2-}", cls: "chem-element" },
+      { label: "SO\u2084\u00b2\u207b", insert: "SO4^{2-}", cls: "chem-element" },
+      { label: "NO\u2083\u207b", insert: "NO3^-", cls: "chem-element" },
+      { label: "PO\u2084\u00b3\u207b", insert: "PO4^{3-}", cls: "chem-element" },
+      { label: "NH\u2084\u207a", insert: "NH4^+", cls: "chem-element" },
+      { label: "OH\u207b", insert: "OH^-", cls: "chem-element" },
     ],
   },
 ];
@@ -848,6 +864,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
   const groups = mode === "math" ? MATH_GROUPS : CHEM_GROUPS;
   const activeGroupIndex = mode === "math" ? activeMathGroup : activeChemGroup;
   const activeGroup = groups[activeGroupIndex] || {};
+  const isPopupTabMode = mode === "math" || mode === "chem";
   const isIntegralHeroTab =
     mode === "math" &&
     Array.isArray(activeGroup.items) &&
@@ -921,8 +938,8 @@ export default function CustomMathEditor({ value = "", onChange }) {
                 const isActive = mode === "math" ? activeMathGroup === index : activeChemGroup === index;
                 return (
                   <button
-                    key={group.label}
-                    className={`cme-group-tab${mode === "math" ? " cme-group-tab--math" : ""}${isActive ? " active" : ""}`}
+                    key={group.id || index}
+                    className={`cme-group-tab${isPopupTabMode ? " cme-group-tab--popup" : ""}${mode === "math" ? " cme-group-tab--math" : ""}${mode === "chem" ? " cme-group-tab--chem" : ""}${isActive ? " active" : ""}`}
                     type="button"
                     onClick={() => {
                       if (mode === "math") setActiveMathGroup(index);
@@ -936,7 +953,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
               })}
             </div>
             
-            <div className={`cme-toolbar-items${(isIntegralHeroTab || isDerivativeHeroTab) ? " cme-toolbar-items--integral-templates" : ""}`}>
+            <div className={`cme-toolbar-items${(isIntegralHeroTab || isDerivativeHeroTab) ? " cme-toolbar-items--integral-templates" : ""}${isPopupTabMode ? " cme-toolbar-items--popup-compact" : ""}`}>
               {(() => {
                 const activeItems = groups[activeGroupIndex]?.items || [];
                 const size = 4;
@@ -946,7 +963,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
                 }
                 
                 return chunks.map((chunk, chunkIndex) => (
-                  <div key={chunkIndex} className="cme-symbol-subgroup">
+                  <div key={chunkIndex} className={`cme-symbol-subgroup${isPopupTabMode ? " cme-symbol-subgroup--compact" : ""}`}>
                     {chunk.map((item, i) => {
                       const currentGroup = groups[activeGroupIndex];
                       const isTouchedButton = activeMatrix?.type === item.insert;
@@ -958,7 +975,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
                           >
                             <button
                               type="button"
-                              className={`cme-btn template${item.cls ? ` ${item.cls}` : ""}${isTouchedButton ? " active" : ""}`}
+                              className={`cme-btn template${isPopupTabMode ? " cme-btn--compact" : ""}${item.cls ? ` ${item.cls}` : ""}${isTouchedButton ? " active" : ""}`}
                               title={item.insert}
                               onMouseDown={(e) => {
                                 e.preventDefault();
@@ -983,9 +1000,9 @@ export default function CustomMathEditor({ value = "", onChange }) {
 
                       return (
                         <button
-                          key={`${currentGroup.label}-${chunkIndex * size + i}`}
+                          key={`${currentGroup.id || activeGroupIndex}-${chunkIndex * size + i}`}
                           type="button"
-                          className={`cme-btn${currentGroup.isTemplate ? " template" : ""}${item.cls ? ` ${item.cls}` : ""}`}
+                          className={`cme-btn${currentGroup.isTemplate ? " template" : ""}${isPopupTabMode ? " cme-btn--compact" : ""}${item.cls ? ` ${item.cls}` : ""}`}
                           title={item.title || item.insert}
                           onMouseDown={(e) => {
                             e.preventDefault();
