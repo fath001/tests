@@ -2408,8 +2408,10 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
 }
 .cme-counter-input:focus {
   outline: none;
-  border-color: #56a17e;
-  box-shadow: 0 0 0 2px rgba(86, 161, 126, 0.18);
+  border-color: #b8c8d2;
+  /* box-shadow: 0 0 0 2px rgba(86, 161, 126, 0.18); */
+  box-shadow: none;
+  background: #ffffff;
 }
 .cme-counter-input::-webkit-outer-spin-button,
 .cme-counter-input::-webkit-inner-spin-button {

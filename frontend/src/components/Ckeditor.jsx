@@ -328,10 +328,10 @@ const MATH_GROUPS = [
       { label: 'A←B', insert: '\\xleftarrow[#?]{#0}', title: 'Left arrow with labels above and below', icon: 'arrow-label-left-above-below' },
       { label: '|', action: 'ARROW_LABEL_PICKER', title: 'More Labelled Arrows', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool arrow-label-picker-tool' },
 
-      { type: 'sep', cols: 2 },
+      { type: 'sep', cols: 2 }, 
       { label: 'x⇀', insert: '\\overrightharpoon{#0}', title: 'Vector accent', icon: 'accent-harpoon-right' },
-      { label: 'x→', insert: '\\overrightarrow{#0}', title: 'Arrow accent', icon: 'accent-arrow-right' },
       { label: 'x↔', insert: '\\overleftrightarrow{#0}', title: 'Left-right arrow accent', icon: 'accent-arrow-both' },
+      { label: 'x→', insert: '\\overrightarrow{#0}', title: 'Arrow accent', icon: 'accent-arrow-right' },
       { label: 'x̄', insert: '\\overline{#0}', title: 'Bar accent', icon: 'accent-bar' },
     ]
   },
@@ -569,8 +569,8 @@ const RELATION_MORE_PICKERS = {
     { label: 'diff-array', insert: '\\frac{\\begin{array}{r}#?\\\\-\\,#?\\end{array}}{\\quad#?}', directInsert: true, icon: 'difference-array-template-image', title: 'Column Subtraction' },
     { label: 'stack-line', insert: '\\frac{\\begin{array}{c}#?\\\\#?\\end{array}}{#?}', cls: 'template', directInsert: true, icon: 'stack-line-template-image', title: 'Stacked Line Layout' },
     { label: 'product-array', insert: '\\frac{\\begin{array}{r}#?\\\\\\times\\,#?\\end{array}}{\\quad#?}', cls: 'template', directInsert: true, icon: 'product-array-template-image', title: 'Column Multiplication' },
-    { label: 'mixed-fraction', insert: '\\left[\\begin{array}{c|c}#? & #?\\\\#? & #?\\end{array}\\right.', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
-    { label: 'array-cc', insert: '\\left.\\begin{array}{c}#?\\\\#?\\end{array}\\right|\\begin{array}{c}#?\\\\#?\\end{array}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
+    { label: 'mixed-fraction', insert: '#?\\frac{#?}{#?}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
+    { label: 'array-cc', insert: '\\left.\\begin{array}{c}#?\\\\#?\\end{array}\\right|\\frac{#?}{#?}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
     { label: 'division-remainder', insert: '\\begin{array}{r} \\overset{#?}{\\overline{#?\\big)#?}} \\\\ #? \\end{array}', cls: 'template', directInsert: true, icon: 'division-remainder-template-image', title: 'Division With Remainder' },
   ],
 };
@@ -1414,12 +1414,12 @@ const ORDERED_MATH_GROUPS = [
       { label: 'underbrace', insert: '\\underbrace{#0}', cls: 'template', directInsert: true, title: 'Underbrace', icon: 'underbrace-arc-template-image' },
       { label: 'overparen', insert: '\\overparen{#0}', cls: 'template', directInsert: true, title: 'Overparen', icon: 'overparen-template-image' },
       { label: 'underparen', insert: '\\underparen{#0}', cls: 'template', directInsert: true, title: 'Underparen', icon: 'underparen-template-image' },
-      { type: 'sep', cols: 2 },
-      { label: '⃗\n▯', insert: '\\vec{#0}', cls: 'template', directInsert: true, title: 'Vector Accent', icon: 'vec-accent-template-image' },
+      { type: 'sep', cols: 2 },  
+      { label: '⃗\n▯', insert: '\\overrightharpoon{#0}', cls: 'template', directInsert: true, title: 'Vector Accent', icon: 'vec-accent-template-image' },
       { label: '→\n▯', insert: '\\overrightarrow{#?}', cls: 'template', directInsert: true, title: 'Right Arrow Accent', icon: 'overrightarrow-accent-template-image' },
       { label: '↔\n▯', insert: '\\overleftrightarrow{#?}', cls: 'template', directInsert: true, title: 'Left-Right Arrow Accent', icon: 'overleftrightarrow-accent-template-image' },
       { label: '¯\n▯', insert: '\\overline{#?}', cls: 'template', directInsert: true, title: 'Overline Accent', icon: 'overline-accent-template-image' },
-      { label: '^\n▯', insert: '\\hat{#?}', cls: 'template', directInsert: true, title: 'Hat Accent', icon: 'hat-accent-template-image' },
+      { label: '^\n▯', insert: '\\widehat{#?}', cls: 'template', directInsert: true, title: 'Hat Accent', icon: 'hat-accent-template-image' },
       { label: '~\n▯', insert: '\\tilde{#?}', cls: 'template', directInsert: true, title: 'Tilde Accent', icon: 'tilde-accent-template-image' },
       { label: '¨\n▯', insert: '\\ddot{#?}', cls: 'template', directInsert: true, title: 'Double Dot Accent', icon: 'ddot-accent-template-image' },
       { label: '˙\n▯', insert: '\\dot{#?}', cls: 'template', directInsert: true, title: 'Dot Accent', icon: 'dot-accent-template-image' },
@@ -2316,48 +2316,92 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'underbrace-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
-  <!-- Base -->
-  <rect x="14" y="1" width="11" height="10"
-        fill="none" stroke="#2ca02c" stroke-width="2"/>
+  <svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 24 24"
+     fill="none">
 
-  <!-- Underbrace -->
-  <path d="M6 18
-           C10 18,10 14,14 14
-           C18 14,18 18,20 18
-           C22 18,22 14,26 14
-           C30 14,30 18,34 18"
-        fill="none"
-        stroke="#111"
-        stroke-width="1.5"
-        stroke-linecap="round"/>
+  <!-- Top placeholder -->
+  <rect
+    x="8"
+    y="1"
+    width="8"
+    height="8"
+    fill="none"
+    stroke="#218838"
+    stroke-width="1.6"/>
 
-  <!-- Underscript -->
-  <rect x="16" y="24" width="8" height="7"
-        fill="none" stroke="#2ca02c" stroke-width="1.5"/>
+  <!-- Underbrace (move using translate) -->
+  <g transform="translate(0,-1.5)">
+    <path
+      d="M4 13
+         C5.2 13 5.8 15 7.5 15
+         H10.5
+         C11.4 15 11.7 16.2 12 16.8
+         C12.3 16.2 12.6 15 13.5 15
+         H16.5
+         C18.2 15 18.8 13 20 13"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1"
+      stroke-linecap="round"
+      stroke-linejoin="round"/>
+  </g>
+
+  <!-- Bottom placeholder -->
+  <rect
+    x="9"
+    y="18"
+    width="6"
+    height="5"
+    fill="none"
+    stroke="#5A9E57"
+    stroke-width="1.4"/>
+
 </svg>
   `),
   'overbrace-template-image': makeToolbarIconImage(`
- <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
-  <!-- Overscript -->
-  <rect x="16" y="1" width="8" height="7"
-        fill="none" stroke="#2ca02c" stroke-width="1.5"/>
+ <svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 24 24"
+     fill="none">
 
-  <!-- Overbrace -->
-  <path d="M6 14
-           C10 14,10 18,14 18
-           C18 18,18 14,20 14
-           C22 14,22 18,26 18
-           C30 18,30 14,34 14"
-        fill="none"
-        stroke="#111"
-        stroke-width="1.5"
-        stroke-linecap="round"/>
+  <!-- Top placeholder -->
+  <rect
+    x="9"
+    y="1"
+    width="6"
+    height="5"
+    fill="none"
+    stroke="#5A9E57"
+    stroke-width="1.4"/>
 
-  <!-- Base -->
-  <rect x="15" y="21" width="11" height="10"
-        fill="none" stroke="#2ca02c" stroke-width="2"/>
- </svg>
+  <!-- Overbrace (move using translate) -->
+  <g transform="translate(0,1.5)">
+    <path
+      d="M4 11
+         C5.2 11 5.8 9 7.5 9
+         H10.5
+         C11.4 9 11.7 7.8 12 7.2
+         C12.3 7.8 12.6 9 13.5 9
+         H16.5
+         C18.2 9 18.8 11 20 11"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1"
+      stroke-linecap="round"
+      stroke-linejoin="round"/>
+  </g>
+
+  <!-- Bottom placeholder -->
+  <rect
+    x="8"
+    y="15"
+    width="8"
+    height="8"
+    fill="none"
+    stroke="#218838"
+    stroke-width="1.6"/>
+
+</svg>
   `),
   'overbrace-arc-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
@@ -2384,11 +2428,26 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'vec-accent-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
-      <path d="M10 10 H26" stroke="#000000" stroke-width="2"/>
-      <path d="M22 6 L30 10 L22 14" stroke="#000000" stroke-width="2" fill="none"/>
-      <rect x="15" y="18" width="10" height="16" stroke="#1b8f3a" stroke-width="3"/>
-    </svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+  <!-- Right harpoon -->
+  <path
+    d="M10 10 H30 
+       M26 6 L30 10"  
+    stroke="#000000"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"/>
+
+  <!-- Placeholder -->
+  <rect
+    x="15"
+    y="18"
+    width="10"
+    height="16"
+    stroke="#1b8f3a"
+    stroke-width="3"/>
+</svg> 
   `),
   'overrightarrow-accent-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
@@ -3799,7 +3858,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="6"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <line
@@ -3808,7 +3867,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="14"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -3816,7 +3875,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="7,12 4,14 7,16"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -3825,7 +3884,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="17,12 20,14 17,16"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -3838,7 +3897,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="6"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <line
@@ -3847,7 +3906,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="8"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -3855,7 +3914,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="7,6 4,8 7,10"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -3864,7 +3923,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="17,6 20,8 17,10"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -3877,7 +3936,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="6"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <line
@@ -3886,7 +3945,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="11"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -3894,7 +3953,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="7,9 4,11 7,13"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -3903,7 +3962,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="17,9 20,11 17,13"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -3915,7 +3974,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="6"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
   `),
   'left-right-arrows-over': makeArrowLabelToolbarIcon(`
@@ -3926,7 +3985,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="6"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <line
@@ -3935,7 +3994,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="10"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -3943,7 +4002,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="17,8 20,10 17,12"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -3954,7 +4013,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="14"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -3962,7 +4021,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="7,12 4,14 7,16"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -3974,7 +4033,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="8"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -3982,7 +4041,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="17,6 20,8 17,10"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -3993,7 +4052,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="12"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4001,7 +4060,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="7,10 4,12 7,14"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4013,7 +4072,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="6"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 /> 
   `),
   'left-right-arrows-over-under': makeArrowLabelToolbarIcon(`
@@ -4024,7 +4083,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <line
@@ -4033,7 +4092,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="10"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4041,7 +4100,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="17,8 20,10 17,12"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4052,7 +4111,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="14"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4060,7 +4119,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="7,12 4,14 7,16"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4072,7 +4131,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
   `),
   'right-left-stacked-arrows-over': makeArrowLabelToolbarIcon(`
@@ -4083,7 +4142,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <!-- Top arrow (←) -->
@@ -4093,7 +4152,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="10"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4101,7 +4160,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="7,8 4,10 7,12"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4113,7 +4172,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="14"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4121,7 +4180,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="17,12 20,14 17,16"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4133,7 +4192,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="8"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4141,7 +4200,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="7,6 4,8 7,10"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4152,7 +4211,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="12"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4160,7 +4219,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="17,10 20,12 17,14"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4172,7 +4231,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
   `),
   'right-left-stacked-arrows-over-under': makeArrowLabelToolbarIcon(`
@@ -4183,7 +4242,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <!-- Top arrow (←) -->
@@ -4193,7 +4252,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="10"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4201,7 +4260,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="7,8 4,10 7,12"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4213,7 +4272,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="14"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4221,7 +4280,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="17,12 20,14 17,16"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4233,7 +4292,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
   `),
   'left-right-harpoons-over': makeArrowLabelToolbarIcon(`
@@ -4244,7 +4303,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <!-- Top left harpoon -->
@@ -4254,7 +4313,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="10"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4262,7 +4321,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="7,8 4,10 7,10"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4274,7 +4333,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="14"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4282,7 +4341,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="17,14 20,14 17,16"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4295,7 +4354,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="8"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4303,7 +4362,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="7,6 4,8 7,8"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4315,7 +4374,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="12"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4323,7 +4382,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="17,12 20,12 17,14"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4336,7 +4395,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
   `),
   'left-right-harpoons-over-under': makeArrowLabelToolbarIcon(`
@@ -4347,7 +4406,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <!-- Top left harpoon -->
@@ -4357,7 +4416,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="10"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4365,7 +4424,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="7,8 4,10 7,10"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4377,7 +4436,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="14"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4385,7 +4444,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="17,14 20,14 17,16"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4397,7 +4456,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
   `),
   'right-left-harpoons-over': makeArrowLabelToolbarIcon(`
@@ -4408,7 +4467,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <!-- Top right harpoon -->
@@ -4418,14 +4477,14 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="10"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 <polyline
   points="17,8 20,10 17,10"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4437,14 +4496,14 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="14"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 <polyline
   points="7,14 4,14 7,16"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4457,14 +4516,14 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="8"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 <polyline
   points="17,6 20,8 17,8"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4476,14 +4535,14 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="12"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 <polyline
   points="7,12 4,12 7,14"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4496,7 +4555,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
   `),
   'right-left-harpoons-over-under': makeArrowLabelToolbarIcon(`
@@ -4507,7 +4566,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <!-- Top right harpoon -->
@@ -4517,7 +4576,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="20"
   y2="10"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4525,7 +4584,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="17,8 20,10 17,10"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4537,7 +4596,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="14"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4545,7 +4604,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="7,14 4,14 7,16"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4557,7 +4616,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
   `),
   'long-right-short-left-over': makeArrowLabelToolbarIcon(`
@@ -4568,7 +4627,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="6"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <!-- Top right arrow -->
@@ -4578,14 +4637,14 @@ const TOOLBAR_ICON_IMAGES = {
   x2="18"
   y2="12"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 <polyline
   points="15,10 18,12 15,14"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4597,14 +4656,14 @@ const TOOLBAR_ICON_IMAGES = {
   x2="6"
   y2="17"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 <polyline
   points="9,15 6,17 9,19"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4617,14 +4676,14 @@ const TOOLBAR_ICON_IMAGES = {
   x2="18"
   y2="8"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 <polyline
   points="15,6 18,8 15,10"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4636,14 +4695,14 @@ const TOOLBAR_ICON_IMAGES = {
   x2="6"
   y2="13"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 <polyline
   points="9,11 6,13 9,15"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4656,7 +4715,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
   `),
   'long-right-short-left-over-under': makeArrowLabelToolbarIcon(`
@@ -4667,7 +4726,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <!-- Top right arrow -->
@@ -4677,14 +4736,14 @@ const TOOLBAR_ICON_IMAGES = {
   x2="18"
   y2="10"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 <polyline
   points="15,8 18,10 15,12"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4696,14 +4755,14 @@ const TOOLBAR_ICON_IMAGES = {
   x2="6"
   y2="15"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 <polyline
   points="9,13 6,15 9,17"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4715,7 +4774,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="4"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
   `),
   'short-right-long-left-over': makeArrowLabelToolbarIcon(`
@@ -4726,7 +4785,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="6"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <!-- Short right arrow -->
@@ -4736,7 +4795,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="18"
   y2="10"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4744,7 +4803,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="15,8 18,10 15,12"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4756,7 +4815,7 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="15"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 
@@ -4764,7 +4823,7 @@ const TOOLBAR_ICON_IMAGES = {
   points="7,13 4,15 7,17"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4777,7 +4836,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="6"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <!-- Short right arrow -->
@@ -4787,14 +4846,14 @@ const TOOLBAR_ICON_IMAGES = {
   x2="17"
   y2="8"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 <polyline
   points="14,6 17,8 14,10"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4806,14 +4865,14 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="13"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 <polyline
   points="7,11 4,13 7,15"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4826,7 +4885,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="6"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
 
 <!-- Short right arrow -->
@@ -4836,14 +4895,14 @@ const TOOLBAR_ICON_IMAGES = {
   x2="18"
   y2="10"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 <polyline
   points="15,8 18,10 15,12"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4855,14 +4914,14 @@ const TOOLBAR_ICON_IMAGES = {
   x2="4"
   y2="15"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
 />
 <polyline
   points="7,13 4,15 7,17"
   fill="none"
   stroke="currentColor"
-  stroke-width="1.4"
+  stroke-width="0.8"
   stroke-linecap="round"
   stroke-linejoin="round"
 />
@@ -4874,7 +4933,7 @@ const TOOLBAR_ICON_IMAGES = {
   height="6"
   fill="none"
   stroke="#5A9E57"
-  stroke-width="1.4"
+  stroke-width="0.8"
 />
   `),
   'arabic-indic-numerals-template-image': makeToolbarIconImage(`
@@ -5347,9 +5406,9 @@ function renderToolbarItemLabel(item, context = {}) {
     if (item.icon === 'accent-bar') {
       accentGraphic = <line x1="3.5" y1="4.5" x2="14.5" y2="4.5" />;
     } else if (item.icon === 'accent-arrow-both') {
-      accentGraphic = <path d="M5 5.5L3.3 3.9M5 5.5L3.3 7.1M3.5 5.5H14.5M13 3.9L14.7 5.5L13 7.1" />;
+      accentGraphic = <path d="M3.3 5.5L5 3.9M3.3 5.5L5 7.1M3.5 5.5H14.5M13 3.9L14.7 5.5L13 7.1" />;
     } else if (item.icon === 'accent-harpoon-right') {
-      accentGraphic = <path d="M3.5 5.5H14M11.8 3.9H14.7V6.8" />;
+      accentGraphic = <path d="M3.5 5.5H14.5M12 3.9L14.7 5.5M14 5.5V5" />;
     } else {
       accentGraphic = <path d="M3.5 5.5H14.2M11.8 3.9L14.7 5.5L11.8 7.1" />;
     }
