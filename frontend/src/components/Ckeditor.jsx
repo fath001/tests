@@ -563,7 +563,7 @@ const RELATION_MORE_PICKERS = {
   strikeDecorationExtras: [
     { label: '│\n▯', insert: '\\enclose{verticalstrike}{#?}', cls: 'template', directInsert: true, title: 'Vertical Strike', icon: 'vertical-strike-template-image' },
     { label: ')\n¯', insert: '\\overline{\\left)#?\\right.}', cls: 'template', directInsert: true, title: 'Overline with Curved Left Boundary', icon: 'overline-left-curve-template-image' },
-    { label: '┼\n▯', insert: '\\enclose{verticalstrike horizontalstrike}{#?}', cls: 'template', directInsert: true, title: 'Vertical and Horizontal Strike', icon: 'crosshair-strike-template-image' },
+    { label: '?\n?', insert: '\\enclose{verticalstrike}{\\htmlStyle{text-decoration:line-through;text-decoration-skip-ink:none;}{#0}}', cls: 'template', directInsert: true, title: 'Vertical and Horizontal Strike', icon: 'crosshair-strike-template-image' },
   ],
   arithmeticLayoutExtras: [
     { label: 'diff-array', insert: '\\frac{\\begin{array}{r}#?\\\\-\\,#?\\end{array}}{\\quad#?}', directInsert: true, icon: 'difference-array-template-image', title: 'Column Subtraction' },
@@ -711,17 +711,17 @@ const ARROW_PICKER_ITEMS = [
 
 const ARROW_LABEL_PICKER_ITEMS = [
   {
-    insert: '\\xleftrightarrows{#0}',
+    insert: '\\xleftrightarrow{#0}',
     title: 'Right Left Arrows with Overscript',
     icon: 'right-left-arrows-over',
   },
   {
-    insert: '\\xleftrightarrows[#0]{}',
+    insert: '\\xleftrightarrow[#0]{}',
     title: 'Right Left Arrows with Underscript',
     icon: 'right-left-arrows-under',
   },
   {
-    insert: '\\xleftrightarrows[#?]{#0}',
+    insert: '\\xleftrightarrow[#?]{#0}',
     title: 'Right Left Arrows with Under and Overscript',
     icon: 'right-left-arrows-over-under',
   },
@@ -741,7 +741,7 @@ const ARROW_LABEL_PICKER_ITEMS = [
     icon: 'left-right-arrows-over-under',
   },
   {
-    insert: '\\xleftrightarrows{#0}',
+    insert: '\\xleftright arrows{#0}',
     title: 'Right Arrow over Left Arrow with Overscript',
     icon: 'right-left-stacked-arrows-over',
   },
@@ -801,17 +801,17 @@ const ARROW_LABEL_PICKER_ITEMS = [
     icon: 'long-right-short-left-over-under',
   },
   {
-    insert: '\\overset{#0}{\\leftrightarrows}',
+    insert: '\\overset{#0}{\\rightleftarrows}',
     title: 'Short Rightwards Arrow over Leftwards Arrow with Overscript',
     icon: 'short-right-long-left-over',
   },
   {
-    insert: '\\underset{#0}{\\leftrightarrows}',
+    insert: '\\underset{#0}{\\rightleftarrows}',
     title: 'Short Rightwards Arrow over Leftwards Arrow with Underscript',
     icon: 'short-right-long-left-under',
   },
   {
-    insert: '\\overset{#0}{\\underset{#?}{\\leftrightarrows}}',
+    insert: '\\overset{#0}{\\underset{#?}{\\rightleftarrows}}',
     title: 'Short Rightwards Arrow over Leftwards Arrow with Under and Overscript',
     icon: 'short-right-long-left-over-under',
   },
@@ -1434,7 +1434,7 @@ const ORDERED_MATH_GROUPS = [
       { type: 'sep', cols: 2 },
       { label: '╱\n▯', insert: '\\cancel{#?}', cls: 'template', directInsert: true, title: 'Cancel', icon: 'cancel-diagonal-template-image' },
       { label: '╲\n▯', insert: '\\bcancel{#?}', cls: 'template', directInsert: true, title: 'Backward Cancel', icon: 'bcancel-template-image' },
-      { label: '─\n▯', insert: '\\enclose{horizontalstrike}{#?}', cls: 'template', directInsert: true, title: 'Strikeout Text', icon: 'sout-template-image' },
+      { label: '?\n?', insert: '\\htmlStyle{text-decoration:line-through;text-decoration-skip-ink:none;}{#0}', cls: 'template', directInsert: true, title: 'Strikeout Text', icon: 'sout-template-image' },
       { label: '╳\n▯', insert: '\\xcancel{#?}', cls: 'template', directInsert: true, title: 'Cross Cancel', icon: 'xcancel-template-image' },
       makeRelationMorePicker('strikeDecorationExtras', 'More Strike Decorations'),
     ],
@@ -3792,158 +3792,1090 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'right-left-arrows-over': makeArrowLabelToolbarIcon(`
-    <rect x="10" y="1" width="4" height="4"/>
-    <line x1="4" y1="10" x2="20" y2="10"/>
-    <polyline points="17,8 20,10 17,12"/>
-    <line x1="20" y1="14" x2="4" y2="14"/>
-    <polyline points="7,12 4,14 7,16"/>
+<rect
+  x="10"
+  y="1"
+  width="4"
+  height="6"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<line
+  x1="4"
+  y1="14"
+  x2="20"
+  y2="14"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="7,12 4,14 7,16"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<polyline
+  points="17,12 20,14 17,16"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
   `),
   'right-left-arrows-under': makeArrowLabelToolbarIcon(`
-    <line x1="4" y1="8" x2="20" y2="8"/>
-    <polyline points="17,6 20,8 17,10"/>
-    <line x1="20" y1="12" x2="4" y2="12"/>
-    <polyline points="7,10 4,12 7,14"/>
-    <rect x="10" y="18" width="4" height="4"/>
+<rect
+  x="10"
+  y="16"
+  width="4"
+  height="6"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<line
+  x1="4"
+  y1="8"
+  x2="20"
+  y2="8"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="7,6 4,8 7,10"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<polyline
+  points="17,6 20,8 17,10"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
   `),
   'right-left-arrows-over-under': makeArrowLabelToolbarIcon(`
-    <rect x="10" y="1" width="4" height="4"/>
-    <line x1="4" y1="10" x2="20" y2="10"/>
-    <polyline points="17,8 20,10 17,12"/>
-    <line x1="20" y1="14" x2="4" y2="14"/>
-    <polyline points="7,12 4,14 7,16"/>
-    <rect x="10" y="19" width="4" height="4"/>
+<rect
+  x="10"
+  y="1"
+  width="4"
+  height="6"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<line
+  x1="4"
+  y1="11"
+  x2="20"
+  y2="11"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="7,9 4,11 7,13"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<polyline
+  points="17,9 20,11 17,13"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<rect
+  x="10"
+  y="16"
+  width="4"
+  height="6"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
   `),
   'left-right-arrows-over': makeArrowLabelToolbarIcon(`
-    <rect x="10" y="1" width="4" height="4"/>
-    <line x1="20" y1="10" x2="4" y2="10"/>
-    <polyline points="7,8 4,10 7,12"/>
-    <line x1="4" y1="15" x2="20" y2="15"/>
-    <polyline points="17,13 20,15 17,17"/>
+<rect
+  x="10"
+  y="1"
+  width="4"
+  height="6"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<line
+  x1="4"
+  y1="10"
+  x2="20"
+  y2="10"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="17,8 20,10 17,12"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<line
+  x1="20"
+  y1="14"
+  x2="4"
+  y2="14"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="7,12 4,14 7,16"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
   `),
   'left-right-arrows-under': makeArrowLabelToolbarIcon(`
-    <line x1="20" y1="6" x2="4" y2="6"/>
-    <polyline points="7,4 4,6 7,8"/>
-    <line x1="4" y1="11" x2="20" y2="11"/>
-    <polyline points="17,9 20,11 17,13"/>
-    <rect x="10" y="18" width="4" height="4"/>
+<line
+  x1="4"
+  y1="8"
+  x2="20"
+  y2="8"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="17,6 20,8 17,10"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<line
+  x1="20"
+  y1="12"
+  x2="4"
+  y2="12"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="7,10 4,12 7,14"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<rect
+  x="10"
+  y="16"
+  width="4"
+  height="6"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/> 
   `),
   'left-right-arrows-over-under': makeArrowLabelToolbarIcon(`
-    <rect x="10" y="1" width="4" height="4"/>
-    <line x1="20" y1="9" x2="4" y2="9"/>
-    <polyline points="7,7 4,9 7,11"/>
-    <line x1="4" y1="14" x2="20" y2="14"/>
-    <polyline points="17,12 20,14 17,16"/>
-    <rect x="10" y="19" width="4" height="4"/>
+<rect
+  x="10"
+  y="1"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<line
+  x1="4"
+  y1="10"
+  x2="20"
+  y2="10"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="17,8 20,10 17,12"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<line
+  x1="20"
+  y1="14"
+  x2="4"
+  y2="14"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="7,12 4,14 7,16"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<rect
+  x="10"
+  y="18"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
   `),
   'right-left-stacked-arrows-over': makeArrowLabelToolbarIcon(`
-    <rect x="10" y="1" width="4" height="4"/>
-    <line x1="4" y1="10" x2="20" y2="10"/>
-    <polyline points="17,8 20,10 17,12"/>
-    <line x1="20" y1="15" x2="4" y2="15"/>
-    <polyline points="7,13 4,15 7,17"/>
+<rect
+  x="10"
+  y="1"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<!-- Top arrow (←) -->
+<line
+  x1="20"
+  y1="10"
+  x2="4"
+  y2="10"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="7,8 4,10 7,12"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Bottom arrow (→) -->
+<line
+  x1="4"
+  y1="14"
+  x2="20"
+  y2="14"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="17,12 20,14 17,16"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
   `),
   'right-left-stacked-arrows-under': makeArrowLabelToolbarIcon(`
-    <line x1="4" y1="6" x2="20" y2="6"/>
-    <polyline points="17,4 20,6 17,8"/>
-    <line x1="20" y1="11" x2="4" y2="11"/>
-    <polyline points="7,9 4,11 7,13"/>
-    <rect x="10" y="18" width="4" height="4"/>
+<line
+  x1="20"
+  y1="8"
+  x2="4"
+  y2="8"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="7,6 4,8 7,10"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<line
+  x1="4"
+  y1="12"
+  x2="20"
+  y2="12"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="17,10 20,12 17,14"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<rect
+  x="10"
+  y="18"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
   `),
   'right-left-stacked-arrows-over-under': makeArrowLabelToolbarIcon(`
-    <rect x="10" y="1" width="4" height="4"/>
-    <line x1="4" y1="9" x2="20" y2="9"/>
-    <polyline points="17,7 20,9 17,11"/>
-    <line x1="20" y1="14" x2="4" y2="14"/>
-    <polyline points="7,12 4,14 7,16"/>
-    <rect x="10" y="19" width="4" height="4"/>
+<rect
+  x="10"
+  y="1"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<!-- Top arrow (←) -->
+<line
+  x1="20"
+  y1="10"
+  x2="4"
+  y2="10"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="7,8 4,10 7,12"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Bottom arrow (→) -->
+<line
+  x1="4"
+  y1="14"
+  x2="20"
+  y2="14"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="17,12 20,14 17,16"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<rect
+  x="10"
+  y="18"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
   `),
   'left-right-harpoons-over': makeArrowLabelToolbarIcon(`
-    <rect x="10" y="1" width="4" height="4"/>
-    <line x1="20" y1="10" x2="4" y2="10"/>
-    <line x1="4" y1="10" x2="7" y2="7"/>
-    <line x1="4" y1="15" x2="20" y2="15"/>
-    <line x1="20" y1="15" x2="17" y2="12"/>
+<rect
+  x="10"
+  y="1"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<!-- Top left harpoon -->
+<line
+  x1="20"
+  y1="10"
+  x2="4"
+  y2="10"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="7,8 4,10 7,10"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Bottom right harpoon -->
+<line
+  x1="4"
+  y1="14"
+  x2="20"
+  y2="14"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="17,14 20,14 17,16"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
   `),
   'left-right-harpoons-under': makeArrowLabelToolbarIcon(`
-    <line x1="20" y1="6" x2="4" y2="6"/>
-    <line x1="4" y1="6" x2="7" y2="3"/>
-    <line x1="4" y1="11" x2="20" y2="11"/>
-    <line x1="20" y1="11" x2="17" y2="8"/>
-    <rect x="10" y="18" width="4" height="4"/>
+<!-- Top left harpoon -->
+<line
+  x1="20"
+  y1="8"
+  x2="4"
+  y2="8"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="7,6 4,8 7,8"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Bottom right harpoon -->
+<line
+  x1="4"
+  y1="12"
+  x2="20"
+  y2="12"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="17,12 20,12 17,14"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Placeholder -->
+<rect
+  x="10"
+  y="18"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
   `),
   'left-right-harpoons-over-under': makeArrowLabelToolbarIcon(`
-    <rect x="10" y="1" width="4" height="4"/>
-    <line x1="20" y1="9" x2="4" y2="9"/>
-    <line x1="4" y1="9" x2="7" y2="6"/>
-    <line x1="4" y1="14" x2="20" y2="14"/>
-    <line x1="20" y1="14" x2="17" y2="11"/>
-    <rect x="10" y="19" width="4" height="4"/>
+<rect
+  x="10"
+  y="1"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<!-- Top left harpoon -->
+<line
+  x1="20"
+  y1="10"
+  x2="4"
+  y2="10"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="7,8 4,10 7,10"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Bottom right harpoon -->
+<line
+  x1="4"
+  y1="14"
+  x2="20"
+  y2="14"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="17,14 20,14 17,16"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<rect
+  x="10"
+  y="18"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
   `),
   'right-left-harpoons-over': makeArrowLabelToolbarIcon(`
-    <rect x="10" y="1" width="4" height="4"/>
-    <line x1="4" y1="10" x2="20" y2="10"/>
-    <line x1="20" y1="10" x2="17" y2="7"/>
-    <line x1="20" y1="15" x2="4" y2="15"/>
-    <line x1="4" y1="15" x2="7" y2="12"/>
+<rect
+  x="10"
+  y="1"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<!-- Top right harpoon -->
+<line
+  x1="4"
+  y1="10"
+  x2="20"
+  y2="10"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+<polyline
+  points="17,8 20,10 17,10"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Bottom left harpoon -->
+<line
+  x1="20"
+  y1="14"
+  x2="4"
+  y2="14"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+<polyline
+  points="7,14 4,14 7,16"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
   `),
   'right-left-harpoons-under': makeArrowLabelToolbarIcon(`
-    <line x1="4" y1="6" x2="20" y2="6"/>
-    <line x1="20" y1="6" x2="17" y2="3"/>
-    <line x1="20" y1="11" x2="4" y2="11"/>
-    <line x1="4" y1="11" x2="7" y2="8"/>
-    <rect x="10" y="18" width="4" height="4"/>
+<!-- Top right harpoon -->
+<line
+  x1="4"
+  y1="8"
+  x2="20"
+  y2="8"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+<polyline
+  points="17,6 20,8 17,8"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Bottom left harpoon -->
+<line
+  x1="20"
+  y1="12"
+  x2="4"
+  y2="12"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+<polyline
+  points="7,12 4,12 7,14"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Placeholder -->
+<rect
+  x="10"
+  y="18"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
   `),
   'right-left-harpoons-over-under': makeArrowLabelToolbarIcon(`
-    <rect x="10" y="1" width="4" height="4"/>
-    <line x1="4" y1="9" x2="20" y2="9"/>
-    <line x1="20" y1="9" x2="17" y2="6"/>
-    <line x1="20" y1="14" x2="4" y2="14"/>
-    <line x1="4" y1="14" x2="7" y2="11"/>
-    <rect x="10" y="19" width="4" height="4"/>
+<rect
+  x="10"
+  y="1"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<!-- Top right harpoon -->
+<line
+  x1="4"
+  y1="10"
+  x2="20"
+  y2="10"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="17,8 20,10 17,10"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Bottom left harpoon -->
+<line
+  x1="20"
+  y1="14"
+  x2="4"
+  y2="14"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="7,14 4,14 7,16"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<rect
+  x="10"
+  y="18"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
   `),
   'long-right-short-left-over': makeArrowLabelToolbarIcon(`
-    <rect x="10" y="1" width="4" height="4"/>
-    <line x1="3" y1="10" x2="20" y2="10"/>
-    <polyline points="17,8 20,10 17,12"/>
-    <line x1="15" y1="15" x2="8" y2="15"/>
-    <polyline points="11,13 8,15 11,17"/>
+<rect
+  x="10"
+  y="1"
+  width="4"
+  height="6"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<!-- Top right arrow -->
+<line
+  x1="6" 
+  y1="12"
+  x2="18"
+  y2="12"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+<polyline
+  points="15,10 18,12 15,14"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Bottom left arrow -->
+<line
+  x1="12"
+  y1="17"
+  x2="6"
+  y2="17"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+<polyline
+  points="9,15 6,17 9,19"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
   `),
   'long-right-short-left-under': makeArrowLabelToolbarIcon(`
-    <line x1="3" y1="6" x2="20" y2="6"/>
-    <polyline points="17,4 20,6 17,8"/>
-    <line x1="15" y1="11" x2="8" y2="11"/>
-    <polyline points="11,9 8,11 11,13"/>
-    <rect x="10" y="18" width="4" height="4"/>
+<!-- Top right arrow -->
+<line
+  x1="6"
+  y1="8"
+  x2="18"
+  y2="8"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+<polyline
+  points="15,6 18,8 15,10"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Bottom left arrow -->
+<line
+  x1="12"
+  y1="13"
+  x2="6"
+  y2="13"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+<polyline
+  points="9,11 6,13 9,15"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Placeholder -->
+<rect
+  x="10"
+  y="18"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
   `),
   'long-right-short-left-over-under': makeArrowLabelToolbarIcon(`
-    <rect x="10" y="1" width="4" height="4"/>
-    <line x1="3" y1="9" x2="20" y2="9"/>
-    <polyline points="17,7 20,9 17,11"/>
-    <line x1="15" y1="14" x2="8" y2="14"/>
-    <polyline points="11,12 8,14 11,16"/>
-    <rect x="10" y="19" width="4" height="4"/>
+<rect
+  x="10"
+  y="1"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<!-- Top right arrow -->
+<line
+  x1="6"
+  y1="10"
+  x2="18"
+  y2="10"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+<polyline
+  points="15,8 18,10 15,12"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Bottom left arrow -->
+<line
+  x1="12"
+  y1="15"
+  x2="6"
+  y2="15"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+<polyline
+  points="9,13 6,15 9,17"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<rect
+  x="10"
+  y="19"
+  width="4"
+  height="4"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
   `),
   'short-right-long-left-over': makeArrowLabelToolbarIcon(`
-    <rect x="10" y="1" width="4" height="4"/>
-    <line x1="8" y1="10" x2="15" y2="10"/>
-    <polyline points="12,8 15,10 12,12"/>
-    <line x1="20" y1="15" x2="3" y2="15"/>
-    <polyline points="6,13 3,15 6,17"/>
+<rect
+  x="10"
+  y="1"
+  width="4"
+  height="6"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<!-- Short right arrow -->
+<line
+  x1="10"
+  y1="10"
+  x2="18"
+  y2="10"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="15,8 18,10 15,12"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Long left arrow -->
+<line
+  x1="18"
+  y1="15"
+  x2="4"
+  y2="15"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+
+<polyline
+  points="7,13 4,15 7,17"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
   `),
   'short-right-long-left-under': makeArrowLabelToolbarIcon(`
-    <line x1="8" y1="6" x2="15" y2="6"/>
-    <polyline points="12,4 15,6 12,8"/>
-    <line x1="20" y1="11" x2="3" y2="11"/>
-    <polyline points="6,9 3,11 6,13"/>
-    <rect x="10" y="18" width="4" height="4"/>
+<rect
+  x="10"
+  y="17"
+  width="4"
+  height="6"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<!-- Short right arrow -->
+<line
+  x1="9"
+  y1="8"
+  x2="17"
+  y2="8"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+<polyline
+  points="14,6 17,8 14,10"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Long left arrow -->
+<line
+  x1="18"
+  y1="13"
+  x2="4"
+  y2="13"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+<polyline
+  points="7,11 4,13 7,15"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
   `),
   'short-right-long-left-over-under': makeArrowLabelToolbarIcon(`
-    <rect x="10" y="1" width="4" height="4"/>
-    <line x1="8" y1="9" x2="15" y2="9"/>
-    <polyline points="12,7 15,9 12,11"/>
-    <line x1="20" y1="14" x2="3" y2="14"/>
-    <polyline points="6,12 3,14 6,16"/>
-    <rect x="10" y="19" width="4" height="4"/>
+<rect
+  x="10"
+  y="1"
+  width="4"
+  height="6"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
+
+<!-- Short right arrow -->
+<line
+  x1="10"
+  y1="10"
+  x2="18"
+  y2="10"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+<polyline
+  points="15,8 18,10 15,12"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<!-- Long left arrow -->
+<line
+  x1="18"
+  y1="15"
+  x2="4"
+  y2="15"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+/>
+<polyline
+  points="7,13 4,15 7,17"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.4"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+/>
+
+<rect
+  x="10"
+  y="18"
+  width="4"
+  height="6"
+  fill="none"
+  stroke="#5A9E57"
+  stroke-width="1.4"
+/>
   `),
   'arabic-indic-numerals-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
@@ -7652,10 +8584,3 @@ function CkEditor({ value, onChange, className = '' }) {
 }
 
 export default CkEditor;
-
-
-
-
-
-
-

@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    Custom Math & Chemistry Editor  â€”  Purple Dark Theme
    ============================================================ */
 
@@ -2503,8 +2503,3 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
 .cme-toolbar-items--greek .cme-greek-subgroup--no-right-border {
   border-right: none;
 }
-
-
-
-
-
