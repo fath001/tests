@@ -72,8 +72,64 @@ function renderEmptyMathPlaceholders(latex = "") {
     .replace(/_\{\}/g, `_{${EMPTY_MATH_SLOT_LATEX}}`);
 }
 
+const MATH_FIELD_SHADOW_STYLE_ID = "cme-math-field-shadow-style";
+const MATH_FIELD_SHADOW_CSS = `
+.cme-not-identical-symbol {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  padding: 0 0.015em;
+}
+
+.cme-not-identical-symbol::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.11em;
+  height: 1.02em;
+  border-radius: 999px;
+  background: currentColor;
+  transform: translate(-50%, -50%) rotate(17deg);
+  transform-origin: center;
+  pointer-events: none;
+}
+
+.cme-left-right-extensible-arrows svg,
+.cme-right-left-stacked-arrows svg {
+  transform: scaleY(-1);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+`;
+
+function installMathFieldShadowStyles(mathfield) {
+  const shadowRoot = mathfield?.shadowRoot;
+  if (!shadowRoot || shadowRoot.getElementById(MATH_FIELD_SHADOW_STYLE_ID)) return;
+
+  const style = document.createElement("style");
+  style.id = MATH_FIELD_SHADOW_STYLE_ID;
+  style.textContent = MATH_FIELD_SHADOW_CSS;
+  shadowRoot.appendChild(style);
+}
+
+function scheduleMathFieldShadowStyles(mathfield, attempt = 0) {
+  if (!mathfield || typeof window === "undefined") return;
+
+  const apply = () => {
+    installMathFieldShadowStyles(mathfield);
+    if (!mathfield.shadowRoot && attempt < 6) {
+      scheduleMathFieldShadowStyles(mathfield, attempt + 1);
+    }
+  };
+
+  window.requestAnimationFrame(apply);
+}
+
 function createPreviewMathField(latex) {
   const mf = document.createElement("math-field");
+  scheduleMathFieldShadowStyles(mf);
   const displayLatex = renderEmptyMathPlaceholders(latex);
   mf.setAttribute("read-only", "");
   mf.setAttribute(

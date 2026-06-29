@@ -168,7 +168,7 @@ const MATH_GROUPS = [
       // 1. Root & Fraction Group (3 cols)
       { label: '√', insert: '\\sqrt{#0}', title: 'Square Root' },
       { label: '√□', insert: '\\sqrt{#0}', title: 'Root with Placeholder' },
-      { label: 'ⁿ√', insert: '\\sqrt[#?]{#0}', title: 'Nth Root' },
+      { label: 'ⁿ√', insert: '{}^{#?}\\!\\sqrt{#0}', title: 'Nth Root' },
       { label: '□/□', insert: '\\frac{#0}{#?}', title: 'Fraction' },
 
       { type: 'sep', cols: 2 },
@@ -255,7 +255,7 @@ const MATH_GROUPS = [
       { label: '□/□', insert: '{\\scriptstyle {#0}/{#?}}', title: 'Small Bevelled Fraction', cls: 'green-template small-template black-placeholder-glyph' },
       { type: 'sep', cols: 4 },
       { label: '√x', insert: '\\sqrt{#0}', title: 'Square Root', icon: 'sqrt-template-image' },
-      { label: 'ⁿ√x', insert: '\\sqrt[#?]{#0}', title: 'Nth Root', icon: 'nth-root-template-image' },
+      { label: 'ⁿ√x', insert: '{}^{#?}\\!\\sqrt{#0}', title: 'Nth Root', icon: 'nth-root-template-image' },
       {type: 'sep', cols: 2 },
       { label: 'xⁿ', insert: '#0^{#?}', title: 'Superscript', icon: 'superscript-template-image' },
       { label: 'ˡ□', insert: '{}^{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript', icon: 'left-sup-template-image' },
@@ -491,17 +491,17 @@ const RELATION_MORE_PICKERS = {
     { label: '‵', insert: '‵', cls: 'prime-symbol-tool', title: 'Reversed Prime' },
   ],
   notEqualExtras: [
-    { label: '≠', insert: '\\neq', title: 'Not Equal', icon: 'not-equal-template-image' },
-    { label: '≉', insert: '\\not\\approx', title: 'Not Approximately Equal', icon: 'not-approx-equal-template-image' },
-    { label: '≁', insert: '\\nsim', title: 'Not Similar', icon: 'not-similar-template-image' },
-    { label: '≢', insert: '\\not\\equiv', title: 'Not Identical', icon: 'not-identical-template-image' },
+    { label: '≠', insert: '\\text{\u2260}', title: 'Not Equal', icon: 'not-equal-template-image' },
+    { label: '≉', insert: '\u2249', title: 'Not Approximately Equal', icon: 'not-approx-equal-template-image' },
+    { label: '≁', insert: '\u2241', title: 'Not Similar', icon: 'not-similar-template-image' },
+    { label: '\u2262', insert: '\\class{cme-not-identical-symbol}{\\equiv}', title: 'Not Identical', icon: 'not-identical-template-image' },
   ],
   comparisonExtras: [
     { label: '≫', insert: '\\gg', title: 'Much Greater Than', icon: 'much-greater-than-template-image' },
     { label: '≪', insert: '\\ll', title: 'Much Less Than', icon: 'much-less-than-template-image' },
-    { label: '⪇', insert: '\\lneqq', title: 'Less Than But Not Equal' },
+    { label: '⪇', insert: '⪇', title: 'Less Than But Not Equal' },
     { label: '≻', insert: '\\succ', title: 'Succeeds', icon: 'succeeds-template-image' },
-    { label: '⪈', insert: '\\gneqq', title: 'Greater Than But Not Equal', icon: 'greater-than-not-equal-template-image' },
+    { label: '⪈', insert: '⪈', title: 'Greater Than But Not Equal'},
     { label: '∝', insert: '\\propto', title: 'Proportional To', icon: 'proportional-to-template-image' },
     { label: '⊲', insert: '\\lhd', title: 'Normal Subgroup', icon: 'normal-subgroup-template-image' },
     { label: '≺', insert: '\\prec', title: 'Precedes', icon: 'precedes-template-image' },
@@ -509,7 +509,7 @@ const RELATION_MORE_PICKERS = {
   ],
   setExtras: [
     { label: '∉', insert: '\\notin', title: 'Not Element Of', icon: 'not-element-of-template-image' },
-    { label: '∌', insert: '\\not\\ni', title: 'Not Contains Member', icon: 'not-contains-member-template-image' },
+    { label: '∌', insert: '\\notni', title: 'Not Contains Member', icon: 'not-contains-member-template-image' },
     { label: '⊆', insert: '\\subseteq', title: 'Subset Equal', icon: 'subset-equal-template-image' },
     { label: '⊇', insert: '\\supseteq', title: 'Superset Equal', icon: 'superset-equal-template-image' },
     { label: '⊏', insert: '\\sqsubset', title: 'Square Subset', icon: 'square-subset-template-image' },
@@ -527,14 +527,14 @@ const RELATION_MORE_PICKERS = {
     { label: '∦', insert: '\\nparallel', title: 'Not Parallel', icon: 'not-parallel-template-image' },
     { label: '∡', insert: '\\measuredangle', title: 'Measured Angle', icon: 'measured-angle-template-image' },
     { label: '∢', insert: '\\sphericalangle', title: 'Spherical Angle', icon: 'spherical-angle-template-image' },
-    { label: '⋄', insert: '\\diamond', title: 'Diamond', icon: 'diamond-template-image' },
+    { label: '◊', insert: '◊', title: 'Diamond', icon: 'diamond-template-image' },
   ],
   shapeExtras: [
     { label: '▭', insert: '▭', title: 'Rectangle', icon: 'rectangle-template-image' },
     { label: '▱', insert: '\\parallelogram', title: 'Parallelogram', icon: 'parallelogram-template-image' },
   ],
   circledExtras: [
-    { label: '⊖', insert: '\\ominus', title: 'Circled Minus', icon: 'circled-minus-template-image' },
+    { label: '⊖', insert: '\\circleddash', title: 'Circled Minus', icon: 'circled-minus-template-image' },
     { label: '⊛', insert: '\\circledast', title: 'Circled Asterisk', icon: 'circled-asterisk-template-image' },
     { label: '⊘', insert: '⨸', title: 'Circled Divide', icon: 'circled-divide-template-image' },
     { label: '•', insert: '^{\\bullet}', title: 'Raised Bullet', icon: 'raised-bullet-template-image' },
@@ -613,6 +613,7 @@ const RELATIONS_TAB_ITEMS = [
   makeRelationMorePicker('primeExtras', 'More Prime Symbols'),
 
   { type: 'sep', cols: 3 },
+  { label: '\u003D', insert: '=' },
   { label: '~', insert: '\\sim' },
   { label: '\u2243', insert: '\\simeq' },
   { label: '\u2261', insert: '\\equiv' },
@@ -741,17 +742,17 @@ const ARROW_LABEL_PICKER_ITEMS = [
     icon: 'left-right-arrows-over-under',
   },
   {
-    insert: '\\xleftright arrows{#0}',
+    insert: '\\class{cme-right-left-stacked-arrows}{\\xleftrightarrows{#0}}',
     title: 'Right Arrow over Left Arrow with Overscript',
     icon: 'right-left-stacked-arrows-over',
   },
   {
-    insert: '\\xleftrightarrows[#0]{}',
+    insert: '\\class{cme-right-left-stacked-arrows}{\\xleftrightarrows[#0]{}}',
     title: 'Right Arrow over Left Arrow with Underscript',
     icon: 'right-left-stacked-arrows-under',
   },
   {
-    insert: '\\xleftrightarrows[#?]{#0}',
+    insert: '\\class{cme-right-left-stacked-arrows}{\\xleftrightarrows[#?]{#0}}',
     title: 'Right Arrow over Left Arrow with Under and Overscript',
     icon: 'right-left-stacked-arrows-over-under',
   },
@@ -786,39 +787,39 @@ const ARROW_LABEL_PICKER_ITEMS = [
     icon: 'right-left-harpoons-over-under',
   },
   {
-    insert: '\\overset{#0}{\\rightleftarrows}',
+    insert: '\\overset{#?}{\\underset{\\leftarrow}{\\rightarrow}}',
     title: 'Rightwards Arrow over Short Leftwards Arrow with Overscript',
     icon: 'long-right-short-left-over',
   },
   {
-    insert: '\\underset{#0}{\\rightleftarrows}',
+    insert: '\\underset{#?}{\\underset{\\leftarrow}{\\rightarrow}}', 
     title: 'Rightwards Arrow over Short Leftwards Arrow with Underscript',
     icon: 'long-right-short-left-under',
   },
   {
-    insert: '\\overset{#0}{\\underset{#?}{\\rightleftarrows}}',
+    insert: '\\overset{#?}{\\underset{#?}{\\underset{\\leftarrow}{\\rightarrow}}}',
     title: 'Rightwards Arrow over Short Leftwards Arrow with Under and Overscript',
     icon: 'long-right-short-left-over-under',
   },
   {
-    insert: '\\overset{#0}{\\rightleftarrows}',
+    insert: '\\overset{#?}{\\overset{\\rightarrow}{\\leftarrow}}',
     title: 'Short Rightwards Arrow over Leftwards Arrow with Overscript',
     icon: 'short-right-long-left-over',
   },
   {
-    insert: '\\underset{#0}{\\rightleftarrows}',
+    insert: '\\underset{#?}{\\overset{\\rightarrow}{\\leftarrow}}',
     title: 'Short Rightwards Arrow over Leftwards Arrow with Underscript',
     icon: 'short-right-long-left-under',
   },
   {
-    insert: '\\overset{#0}{\\underset{#?}{\\rightleftarrows}}',
+    insert: '\\overset{#?}{\\underset{#?}{\\overset{\\rightarrow}{\\leftarrow}}}',
     title: 'Short Rightwards Arrow over Leftwards Arrow with Under and Overscript',
     icon: 'short-right-long-left-over-under',
   },
 ];
 
 const GREEK_ITALIC_UPPERCASE_ITEMS = [
-  { label: 'Α', insert: '\\mathit{Α}', title: 'Italic Alpha' },
+  { label: 'Α', insert: '\\mathit{Α}', title: 'Italic Alpha' }, 
   { label: 'Β', insert: '\\mathit{Β}', title: 'Italic Beta' },
   { label: 'Γ', insert: '\\varGamma', title: 'Italic Gamma' },
   { label: 'Δ', insert: '\\varDelta', title: 'Italic Delta' },
@@ -1336,7 +1337,7 @@ const ORDERED_MATH_GROUPS = [
       { type: 'sep', cols: 1 },
       { label: 'RTL', action: 'TOGGLE_RTL', cls: 'format-tool rtl-tool', title: 'Right-to-Left Input', icon: 'rtl-input-template-image' },
       { type: 'sep', cols: 1 },
-      { type: 'dropdown', label: 'Font...', width: '92px' },
+      { type: 'dropdown', label: 'Font...', width: '86px' },
       { type: 'dropdown', label: 'Size', width: '86px' },
     ],
   },
@@ -1657,6 +1658,61 @@ function renderEmptyMathPlaceholders(latex = '') {
     .replace(/\\left\\\{\s*\\right\\\}/g, `\\left\\{${EMPTY_MATH_SLOT_LATEX}\\right\\}`)
     .replace(/\^\{\}/g, `^{${EMPTY_MATH_SLOT_LATEX}}`)
     .replace(/_\{\}/g, `_{${EMPTY_MATH_SLOT_LATEX}}`);
+}
+
+const MATH_FIELD_SHADOW_STYLE_ID = 'cme-math-field-shadow-style';
+const MATH_FIELD_SHADOW_CSS = `
+.cme-not-identical-symbol {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  padding: 0 0.015em;
+}
+
+.cme-not-identical-symbol::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.11em;
+  height: 1.02em;
+  border-radius: 999px;
+  background: currentColor;
+  transform: translate(-50%, -50%) rotate(17deg);
+  transform-origin: center;
+  pointer-events: none;
+}
+
+.cme-left-right-extensible-arrows svg,
+.cme-right-left-stacked-arrows svg {
+  transform: scaleY(-1);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+`;
+
+function installMathFieldShadowStyles(mathfield) {
+  const shadowRoot = mathfield?.shadowRoot;
+  if (!shadowRoot || shadowRoot.getElementById(MATH_FIELD_SHADOW_STYLE_ID)) return;
+
+  const style = document.createElement('style');
+  style.id = MATH_FIELD_SHADOW_STYLE_ID;
+  style.textContent = MATH_FIELD_SHADOW_CSS;
+  shadowRoot.appendChild(style);
+}
+
+function scheduleMathFieldShadowStyles(mathfield, attempt = 0) {
+  if (!mathfield || typeof window === 'undefined') return;
+
+  const apply = () => {
+    installMathFieldShadowStyles(mathfield);
+    if (!mathfield.shadowRoot && attempt < 6) {
+      scheduleMathFieldShadowStyles(mathfield, attempt + 1);
+    }
+  };
+
+  window.requestAnimationFrame(apply);
 }
 
 function TabIcon({ top, bottom = '', compact = false }) {
@@ -2061,6 +2117,7 @@ class MathInlinePlugin extends Plugin {
           },
           (domElement) => {
             const mf = document.createElement('math-field');
+            scheduleMathFieldShadowStyles(mf);
             mf.setAttribute('read-only', '');
             mf.setAttribute('math-virtual-keyboard-policy', 'manual');
             mf.setAttribute('tabindex', '-1');
@@ -3273,31 +3330,23 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'not-equal-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-      <line x1="6" y1="9" x2="18" y2="9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-      <line x1="6" y1="15" x2="18" y2="15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-      <line x1="16" y1="5" x2="8" y2="19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="21" fill="currentColor" font-family="Cambria Math, STIX Two Math, Latin Modern Math, Times New Roman, serif">&#x2260;</text>
     </svg>
   `),
   'not-approx-equal-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-      <path d="M6 8C8 6 10 10 12 8C14 6 16 10 18 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-      <path d="M6 14C8 12 10 16 12 14C14 12 16 16 18 14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-      <line x1="16" y1="5" x2="8" y2="19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="21" fill="currentColor" font-family="Cambria Math, STIX Two Math, Latin Modern Math, Times New Roman, serif">&#x2249;</text>
     </svg>
   `),
   'not-similar-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-      <path d="M6 12C8 10 10 14 12 12C14 10 16 14 18 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-      <line x1="16" y1="5" x2="8" y2="19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="21" fill="currentColor" font-family="Cambria Math, STIX Two Math, Latin Modern Math, Times New Roman, serif">&#x2241;</text>
     </svg>
   `),
   'not-identical-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-      <line x1="6" y1="7" x2="18" y2="7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-      <line x1="6" y1="12" x2="18" y2="12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-      <line x1="6" y1="17" x2="18" y2="17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-      <line x1="16" y1="4" x2="8" y2="20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <text x="12" y="17" text-anchor="middle" font-size="21" fill="currentColor" font-family="Cambria Math, STIX Two Math, Latin Modern Math, Times New Roman, serif">&#x2262;</text>
     </svg>
   `),
   'less-than-not-equal-template-image': makeToolbarIconImage(`
@@ -6741,6 +6790,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   useEffect(() => {
     const mf = popupMfRef.current;
     if (!mf) return;
+    scheduleMathFieldShadowStyles(mf);
     mf.defaultMode = mode === 'chem' ? 'text' : 'math';
     mf.letterShapeStyle = 'tex';
 
@@ -7685,11 +7735,12 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                         className={`cme-style-select-trigger cme-select cme-btn template${isFontActive || isSizeActive || isOpenStyleDropdown ? ' active' : ''}`}
                         title={item.label}
                         style={{
-                          width: item.width || '60px',
+                          width: item.width || '60px', 
                           boxSizing: 'border-box',
                           margin: '2px 0',
                           gridColumn: item.gridColumn || itemGridColumn || ((subgroup.cols === 3) ? 'span 1' : ((subgroup.cols === 1) ? 'span 1' : 'span 2')),
                           gridRow: item.gridRow,
+                          paddingLeft: '6px',
                         }}
                         onMouseDown={(e) => {
                           e.preventDefault();
