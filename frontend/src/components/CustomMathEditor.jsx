@@ -29,6 +29,36 @@ function serializeChemValue(value = "") {
   return normalized ? `\\ce{${normalized}}` : "";
 }
 
+
+function hasExpandedMathSelection(selection) {
+  return Boolean(
+    selection &&
+    Array.isArray(selection.ranges) &&
+    selection.ranges.some(([start, end]) => start !== end)
+  );
+}
+
+function countPlaceholdersBeforePrimarySlot(template) {
+  if (!template || !template.includes("#0")) return 0;
+
+  const placeholderTokens = Array.from(template.matchAll(/#(?:0|\?|@)/g));
+  const primarySlotIndex = placeholderTokens.findIndex((match) => match[0] === "#0");
+  if (primarySlotIndex <= 0) return 0;
+
+  return placeholderTokens.slice(0, primarySlotIndex).length;
+}
+
+function moveToNextMathPlaceholder(mathfield, count) {
+  if (!mathfield || !count || typeof mathfield.executeCommand !== "function") return;
+
+  for (let i = 0; i < count; i += 1) {
+    try {
+      mathfield.executeCommand("moveToNextPlaceholder");
+    } catch {
+      break;
+    }
+  }
+}
 function makeToolbarIconImage(svg) {
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
@@ -789,7 +819,12 @@ export default function CustomMathEditor({ value = "", onChange }) {
     const popupMf = popupMfRef.current;
     if (!popupMf) return;
 
-    const hasPlaceholders = /#(?:0|\?)/.test(insertText);
+    const hasPlaceholders = /#(?:0|\?|@)/.test(insertText);
+    const currentSelection = popupMf.selection || popupMf.model?.selection;
+    const shouldAdvanceToPrimarySlot = !hasExpandedMathSelection(currentSelection);
+    const primarySlotAdvanceCount = shouldAdvanceToPrimarySlot
+      ? countPlaceholdersBeforePrimarySlot(insertText)
+      : 0;
 
     popupMf.focus();
     if (typeof popupMf.insert === "function") {
@@ -802,7 +837,10 @@ export default function CustomMathEditor({ value = "", onChange }) {
       popupMf.executeCommand(["insert", insertText]);
     }
 
-    requestAnimationFrame(() => popupMf.focus?.());
+    requestAnimationFrame(() => {
+      popupMf.focus?.();
+      moveToNextMathPlaceholder(popupMf, primarySlotAdvanceCount);
+    });
   }, []);
   const handleMatrixInsert = useCallback((type, rows, cols) => {
     let latex = `\\begin{${type}} `;

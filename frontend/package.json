@@ -3,9 +3,21 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "dist-package/index.cjs",
+  "module": "dist-package/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist-package/index.js",
+      "require": "./dist-package/index.cjs"
+    }
+  },
+  "files": [
+    "dist-package"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:package": "vite build --config vite.package.config.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },

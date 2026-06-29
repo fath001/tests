@@ -569,9 +569,9 @@ const RELATION_MORE_PICKERS = {
     { label: 'diff-array', insert: '\\frac{\\begin{array}{r}#?\\\\-\\,#?\\end{array}}{\\quad#?}', directInsert: true, icon: 'difference-array-template-image', title: 'Column Subtraction' },
     { label: 'stack-line', insert: '\\frac{\\begin{array}{c}#?\\\\#?\\end{array}}{#?}', cls: 'template', directInsert: true, icon: 'stack-line-template-image', title: 'Stacked Line Layout' },
     { label: 'product-array', insert: '\\frac{\\begin{array}{r}#?\\\\\\times\\,#?\\end{array}}{\\quad#?}', cls: 'template', directInsert: true, icon: 'product-array-template-image', title: 'Column Multiplication' },
-    { label: 'mixed-fraction', insert: '#?\\frac{#?}{#?}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
-    { label: 'array-cc', insert: '\\left.\\begin{array}{c}#?\\\\#?\\end{array}\\right|\\frac{#?}{#?}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
-    { label: 'division-remainder', insert: '\\begin{array}{r} \\overset{#?}{\\overline{#?\\big)#?}} \\\\ #? \\end{array}', cls: 'template', directInsert: true, icon: 'division-remainder-template-image', title: 'Division With Remainder' },
+    { label: 'mixed-fraction', insert: '\\begin{array}{r@{}l} #?\\, & \\begin{array}{|@{}l} \\underline{\\;#?\\;\\,} \\end{array} \\\\ & \\; #? \\end{array}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
+    { label: 'array-cc', insert: '\\begin{array}{r@{}l} #?\\, & \\begin{array}{|@{}l} \\underline{\\;#?\\;\\,} \\end{array} \\\\ #?\\, & \\; #? \\end{array}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
+    { label: 'division-remainder', insert: '#?\\, ) \\!\\!\\!\\!\\! \\begin{array}\\overset{\\displaystyle #?}{\\overline{\\vphantom{1}\\;\\;#?\\;}} \\\\ \\;\\;#?\\; \\end{array}', cls: 'template', directInsert: true, icon: 'division-remainder-template-image', title: 'Division With Remainder' },
   ],
 };
 
@@ -1179,13 +1179,13 @@ const PERIODIC_TABLE_PICKER_ITEMS = PERIODIC_TABLE_ROWS.flatMap(({ row, items })
 );
 
 const FONT_OPTIONS = [
-  { label: 'Times', value: 'family:roman', style: { fontFamily: 'roman' } },
-  { label: 'Helvetica', value: 'family:sans-serif', style: { fontFamily: 'sans-serif' } },
-  { label: 'Courier', value: 'family:monospace', style: { fontFamily: 'monospace' } },
-  { label: 'Calligraphic', value: 'variant:calligraphic', style: { variant: 'calligraphic' } },
-  { label: 'Script', value: 'variant:script', style: { variant: 'script' } },
-  { label: 'Fraktur', value: 'variant:fraktur', style: { variant: 'fraktur' } },
-  { label: 'Blackboard', value: 'variant:double-struck', style: { variant: 'double-struck' } },
+  { label: 'Times', value: 'variant:main-up', style: { variant: 'main', variantStyle: 'up', fontFamily: 'none' } },
+  { label: 'Helvetica', value: 'variant:sans-serif', style: { variant: 'sans-serif', fontFamily: 'none' } },
+  { label: 'Courier', value: 'variant:monospace', style: { variant: 'monospace', fontFamily: 'none' } },
+  { label: 'Calligraphic', value: 'variant:calligraphic', style: { variant: 'calligraphic', fontFamily: 'none' } },
+  { label: 'Script', value: 'variant:script', style: { variant: 'script', fontFamily: 'none' } },
+  { label: 'Fraktur', value: 'variant:fraktur', style: { variant: 'fraktur', fontFamily: 'none' } },
+  { label: 'Blackboard', value: 'variant:double-struck', style: { variant: 'double-struck', fontFamily: 'none' } },
 ];
 
 const DEFAULT_FONT_STYLE = { fontFamily: 'none', variant: 'main' };
@@ -1244,6 +1244,36 @@ function wrapMoveTextLatex(baseLatex, offsetX, offsetY) {
   if (offsetX !== 0) styles.push(`left:${offsetX}px`);
   if (offsetY !== 0) styles.push(`top:${offsetY}px`);
   return `\\htmlStyle{${styles.join(';')};}{${baseLatex}}`;
+}
+
+function hasExpandedMathSelection(selection) {
+  return Boolean(
+    selection &&
+    Array.isArray(selection.ranges) &&
+    selection.ranges.some(([start, end]) => start !== end)
+  );
+}
+
+function countPlaceholdersBeforePrimarySlot(template) {
+  if (!template || !template.includes('#0')) return 0;
+
+  const placeholderTokens = Array.from(template.matchAll(/#(?:0|\?|@)/g));
+  const primarySlotIndex = placeholderTokens.findIndex((match) => match[0] === '#0');
+  if (primarySlotIndex <= 0) return 0;
+
+  return placeholderTokens.slice(0, primarySlotIndex).length;
+}
+
+function moveToNextMathPlaceholder(mathfield, count) {
+  if (!mathfield || !count || typeof mathfield.executeCommand !== 'function') return;
+
+  for (let i = 0; i < count; i += 1) {
+    try {
+      mathfield.executeCommand('moveToNextPlaceholder');
+    } catch {
+      break;
+    }
+  }
 }
 const ORDERED_MATH_GROUPS = [
   {
@@ -2010,7 +2040,7 @@ class MathInlinePlugin extends Plugin {
             mf.setAttribute('read-only', '');
             mf.setAttribute('math-virtual-keyboard-policy', 'manual');
             mf.setAttribute('tabindex', '-1');
-            mf.setAttribute('letter-shape-style', 'upright');
+            mf.setAttribute('letter-shape-style', 'tex');
             mf.setAttribute('dir', dir);
             mf.style.display = 'inline-block';
             mf.style.width = 'auto';
@@ -6688,7 +6718,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     const mf = popupMfRef.current;
     if (!mf) return;
     mf.defaultMode = mode === 'chem' ? 'text' : 'math';
-    mf.letterShapeStyle = 'upright';
+    mf.letterShapeStyle = 'tex';
 
     // Pre-fill with existing value when editing
     const prefill = () => {
@@ -6865,7 +6895,12 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     const mf = popupMfRef.current;
     if (!mf) return;
 
-    const hasPlaceholders = /#(?:0|\?)/.test(sym);
+    const hasPlaceholders = /#(?:0|\?|@)/.test(sym);
+    const currentSelection = mf.selection || mf.model?.selection;
+    const shouldAdvanceToPrimarySlot = !hasExpandedMathSelection(currentSelection);
+    const primarySlotAdvanceCount = shouldAdvanceToPrimarySlot
+      ? countPlaceholdersBeforePrimarySlot(sym)
+      : 0;
 
     mf.focus();
     if (typeof mf.insert === 'function') {
@@ -6878,7 +6913,10 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       mf.executeCommand(['insert', sym]);
     }
 
-    requestAnimationFrame(() => mf.focus?.());
+    requestAnimationFrame(() => {
+      mf.focus?.();
+      moveToNextMathPlaceholder(mf, primarySlotAdvanceCount);
+    });
   }, []);
   const insertSpacingToolAtCursor = useCallback((sym) => {
     const mf = popupMfRef.current;
@@ -6979,7 +7017,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   const handleInsert = () => {
     const mf = popupMfRef.current;
     if (!mf) return;
-    let latex = mf.getValue ? mf.getValue() : mf.value;
+    let latex = mf.getValue ? mf.getValue('latex') : mf.value;
     if (!latex || latex.trim() === '') {
       onClose();
       return;
@@ -6987,7 +7025,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     if (mode === 'chem') latex = serializeChemValue(latex);
     onInsert(latex, { direction: isRtlInput ? 'rtl' : 'ltr' });
     if (mf.setValue) mf.setValue(''); else mf.value = '';
-    onClose();
+    onClose({ preserveEditorSelection: true });
   };
 
   const popupStyle =
@@ -7941,7 +7979,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           ref={popupMfRef}
           class={`cme-mathfield${isRtlInput ? ' cme-mathfield--rtl' : ''}`}
           dir={isRtlInput ? 'rtl' : 'ltr'}
-          letter-shape-style="upright"
+          letter-shape-style="tex"
           tabIndex={0}
           math-virtual-keyboard-policy="manual"
           placeholder={mode === 'math' ? '' : ''}
@@ -8431,14 +8469,14 @@ function CkEditor({ value, onChange, className = '' }) {
     setPopup(mode);
   }, []);
 
-  const closePopup = useCallback(() => {
+  const closePopup = useCallback(({ preserveEditorSelection = false } = {}) => {
     popupOpenRef.current = false;
     setPopup(null);
     setEditingWidget(null);
 
     // Clear the selection so that clicking the widget again registers as a change
     const editor = editorRef.current;
-    if (editor) {
+    if (editor && !preserveEditorSelection) {
       editor.model.change(writer => {
         writer.setSelection(null);
       });
@@ -8491,8 +8529,12 @@ function CkEditor({ value, onChange, className = '' }) {
     } else {
       editor.model.change((writer) => {
         const mathElement = writer.createElement('mathInline', mathAttributes);
-        editor.model.insertContent(mathElement);
-        editor.model.insertContent(writer.createText(' '));
+        const insertPosition = editor.model.document.selection.getFirstPosition();
+        const mathRange = editor.model.insertContent(mathElement, insertPosition);
+        const trailingSpace = writer.createText(' ');
+        const afterMath = mathRange?.end || writer.createPositionAfter(mathElement);
+        const spaceRange = editor.model.insertContent(trailingSpace, afterMath);
+        writer.setSelection(spaceRange?.end || writer.createPositionAfter(trailingSpace));
       });
     }
 
@@ -8643,3 +8685,5 @@ function CkEditor({ value, onChange, className = '' }) {
 }
 
 export default CkEditor;
+
+
