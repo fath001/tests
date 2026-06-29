@@ -1284,7 +1284,7 @@ const ORDERED_MATH_GROUPS = [
       { label: '□/□', insert: '\\frac{#0}{#?}', title: 'Fraction', cls: 'green-template black-glyph-template', icon: 'stacked-fraction' },
       { label: '□/□', insert: '{#0}/{#?}', title: 'Bevelled Fraction', cls: 'green-template black-glyph-template' },
       { label: '√□', insert: '\\sqrt{#0}', title: 'Square Root', cls: 'green-template black-glyph-template', icon: 'square-root-template' },
-      { label: '□√□', insert: '\\sqrt[#?]{#0}', title: 'Root', cls: 'green-template black-glyph-template', icon: 'nth-root-template' },
+      { label: '□√□', insert: '{}^{#?}\\!\\sqrt{#0}', title: 'Root', cls: 'green-template black-glyph-template', icon: 'nth-root-template' },
       { type: 'sep', cols: 2 },
       // GROUP 2a - Brackets (cols: 2)
       { label: '□^□', insert: '#0^{#?}', title: 'Superscript', cls: 'green-template black-glyph-template', icon: 'superscript-template' },
@@ -1634,6 +1634,29 @@ function serializeChemValue(latex = '') {
   if (match) return latex;
   const normalized = latex.replace(/\\text\{([^}]*)\}/g, '$1').replace(/\$/g, '').trim();
   return normalized ? `\\ce{${normalized}}` : '';
+}
+
+const EMPTY_MATH_SLOT_LATEX = '\\phantom{0}';
+
+function stripEmptyMathPlaceholders(latex = '') {
+  return String(latex || '')
+    .replace(/\\placeholder\{\}/g, '')
+    .trim();
+}
+
+function renderEmptyMathPlaceholders(latex = '') {
+  const normalized = String(latex || '').replace(/\\placeholder\{\}/g, EMPTY_MATH_SLOT_LATEX);
+  return normalized
+    .replace(/\\frac\{\}\{\}/g, `\\frac{${EMPTY_MATH_SLOT_LATEX}}{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\frac\{\}\{([^{}]*)\}/g, `\\frac{${EMPTY_MATH_SLOT_LATEX}}{$1}`)
+    .replace(/(\\frac\{[^{}]*\})\{\}/g, `$1{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\sqrt\{\}/g, `\\sqrt{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\left\(\s*\\right\)/g, `\\left(${EMPTY_MATH_SLOT_LATEX}\\right)`)
+    .replace(/\\left\[\s*\\right\]/g, `\\left[${EMPTY_MATH_SLOT_LATEX}\\right]`)
+    .replace(/\\left\|\s*\\right\|/g, `\\left|${EMPTY_MATH_SLOT_LATEX}\\right|`)
+    .replace(/\\left\\\{\s*\\right\\\}/g, `\\left\\{${EMPTY_MATH_SLOT_LATEX}\\right\\}`)
+    .replace(/\^\{\}/g, `^{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/_\{\}/g, `_{${EMPTY_MATH_SLOT_LATEX}}`);
 }
 
 function TabIcon({ top, bottom = '', compact = false }) {
@@ -2014,6 +2037,7 @@ class MathInlinePlugin extends Plugin {
       model: 'mathInline',
       view: (modelElement, { writer }) => {
         const latex = modelElement.getAttribute('latex') || '';
+        const displayLatex = renderEmptyMathPlaceholders(latex);
         const dir = modelElement.getAttribute('dir') === 'rtl' ? 'rtl' : 'ltr';
         const widgetId = 'math-' + Math.random().toString(36).substr(2, 9);
 
@@ -2060,8 +2084,8 @@ class MathInlinePlugin extends Plugin {
             mf.style.color = '#ffffff';
 
             const setLatex = () => {
-              if (mf.setValue) mf.setValue(latex, { silenceNotifications: true });
-              else mf.value = latex;
+              if (mf.setValue) mf.setValue(displayLatex, { silenceNotifications: true });
+              else mf.value = displayLatex;
             };
 
             if (customElements.get('math-field')) {
@@ -7018,6 +7042,10 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     const mf = popupMfRef.current;
     if (!mf) return;
     let latex = mf.getValue ? mf.getValue('latex') : mf.value;
+    if (mode === 'math' && !stripEmptyMathPlaceholders(latex)) {
+      onClose();
+      return;
+    }
     if (!latex || latex.trim() === '') {
       onClose();
       return;
@@ -8685,5 +8713,4 @@ function CkEditor({ value, onChange, className = '' }) {
 }
 
 export default CkEditor;
-
 

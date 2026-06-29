@@ -28,11 +28,29 @@ function sanitizeInlineStyle(styleValue = "") {
     .join("; ");
 }
 
+const EMPTY_MATH_SLOT_LATEX = "\\phantom{0}";
+
+function renderEmptyMathPlaceholders(latex = "") {
+  const normalized = String(latex || "").replace(/\\placeholder\{\}/g, EMPTY_MATH_SLOT_LATEX);
+  return normalized
+    .replace(/\\frac\{\}\{\}/g, `\\frac{${EMPTY_MATH_SLOT_LATEX}}{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\frac\{\}\{([^{}]*)\}/g, `\\frac{${EMPTY_MATH_SLOT_LATEX}}{$1}`)
+    .replace(/(\\frac\{[^{}]*\})\{\}/g, `$1{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\sqrt\{\}/g, `\\sqrt{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\left\(\s*\\right\)/g, `\\left(${EMPTY_MATH_SLOT_LATEX}\\right)`)
+    .replace(/\\left\[\s*\\right\]/g, `\\left[${EMPTY_MATH_SLOT_LATEX}\\right]`)
+    .replace(/\\left\|\s*\\right\|/g, `\\left|${EMPTY_MATH_SLOT_LATEX}\\right|`)
+    .replace(/\\left\\\{\s*\\right\\\}/g, `\\left\\{${EMPTY_MATH_SLOT_LATEX}\\right\\}`)
+    .replace(/\^\{\}/g, `^{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/_\{\}/g, `_{${EMPTY_MATH_SLOT_LATEX}}`);
+}
+
 function createPreviewMathField(latex, tone = "dark") {
   const mf = document.createElement("math-field");
   const isLightTone = tone === "light";
   const textColor = isLightTone ? "#22343d" : "#f4f4fb";
   const accentColor = isLightTone ? "#556e7b" : "#d8b4fe";
+  const displayLatex = renderEmptyMathPlaceholders(latex);
 
   mf.setAttribute("read-only", "");
   mf.setAttribute("letter-shape-style", "upright");
@@ -57,9 +75,9 @@ function createPreviewMathField(latex, tone = "dark") {
 
   requestAnimationFrame(() => {
     if (mf.setValue) {
-      mf.setValue(latex);
+      mf.setValue(displayLatex);
     } else {
-      mf.value = latex;
+      mf.value = displayLatex;
     }
   });
 

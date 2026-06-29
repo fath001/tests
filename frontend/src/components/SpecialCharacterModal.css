@@ -50,6 +50,7 @@
 
 .scm-code-input:focus {
   border-color: #597086;
+  background: #fdfefe;
   box-shadow: 0 0 0 2px rgba(125, 152, 170, 0.18);
 }
 
@@ -70,6 +71,7 @@
 
 .scm-category-select:focus {
   border-color: #597086;
+    background: linear-gradient(180deg, #ffffff 0%, #edf1f4 100%);
   box-shadow: 0 0 0 2px rgba(125, 152, 170, 0.18);
 }
 

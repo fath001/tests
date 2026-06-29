@@ -110,6 +110,7 @@
   box-sizing: border-box;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
+
 .cme-group-tab--popup {
   flex: 0 0 56px;
   width: 56px;
@@ -476,7 +477,7 @@
 }
 
 .cme-toolbar-items--matrix .cme-btn.matrix-roomy-template.matrix-extra-tall-template {
-  height:37px;
+  height: 37px;
   min-height: 37px;
 }
 
@@ -514,10 +515,23 @@
 .cme-toolbar-items--brackets .cme-brackets-subgroup--before-picker {
   border-right: none;
 }
-.cme-toolbar-items::-webkit-scrollbar { height: 5px; }
-.cme-toolbar-items::-webkit-scrollbar-track { background: transparent; }
-.cme-toolbar-items::-webkit-scrollbar-thumb { background: #3a3a5c; border-radius: 3px; }
-.cme-toolbar-items::-webkit-scrollbar-thumb:hover { background: #8b5cf6; }
+
+.cme-toolbar-items::-webkit-scrollbar {
+  height: 5px;
+}
+
+.cme-toolbar-items::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cme-toolbar-items::-webkit-scrollbar-thumb {
+  background: #3a3a5c;
+  border-radius: 3px;
+}
+
+.cme-toolbar-items::-webkit-scrollbar-thumb:hover {
+  background: #8b5cf6;
+}
 
 .cme-symbol-subgroup {
   display: grid;
@@ -533,11 +547,13 @@
   justify-content: center;
   align-items: center;
   margin: 1px 0;
-}  
+}
 
-.cme-symbol-subgroup:last-child { border-right: none; }
+.cme-symbol-subgroup:last-child {
+  border-right: none;
+}
 
-.cme-symbol-subgroup--compact { 
+.cme-symbol-subgroup--compact {
   gap: 8px;
   padding: 0 3px;
   margin: 0;
@@ -893,7 +909,9 @@
   max-height: 40px;
 }
 
-.cme-btn.chem-element:hover { border-color: #75b189; }
+.cme-btn.chem-element:hover {
+  border-color: #75b189;
+}
 
 .cme-btn.chem-arrow,
 .cme-btn.chem-state {
@@ -905,7 +923,9 @@
 }
 
 .cme-btn.chem-arrow:hover,
-.cme-btn.chem-state:hover { border-color: #8daab7; }
+.cme-btn.chem-state:hover {
+  border-color: #8daab7;
+}
 
 .cme-fraction-icon {
   display: inline-flex;
@@ -1842,8 +1862,7 @@
   overflow: hidden;
 }
 
-.cme-fraction-mathfield-icon::part(mf)
-{
+.cme-fraction-mathfield-icon::part(mf) {
   padding: 0;
 }
 
@@ -1875,15 +1894,41 @@
   direction: rtl;
 }
 
-.cme-mathfield-container::-webkit-scrollbar { width: 8px; height: 8px; }
-.cme-mathfield-container::-webkit-scrollbar-track { background: #edf2f6; }
-.cme-mathfield-container::-webkit-scrollbar-thumb { background: #9baebb; border-radius: 4px; }
-.cme-mathfield-container::-webkit-scrollbar-thumb:hover { background: #7f98a7; }
+.cme-mathfield-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
 
-math-field.cme-mathfield::-webkit-scrollbar { width: 8px; height: 8px; }
-math-field.cme-mathfield::-webkit-scrollbar-track { background: #edf2f6; }
-math-field.cme-mathfield::-webkit-scrollbar-thumb { background: #9baebb; border-radius: 4px; }
-math-field.cme-mathfield::-webkit-scrollbar-thumb:hover { background: #7f98a7; }
+.cme-mathfield-container::-webkit-scrollbar-track {
+  background: #edf2f6;
+}
+
+.cme-mathfield-container::-webkit-scrollbar-thumb {
+  background: #9baebb;
+  border-radius: 4px;
+}
+
+.cme-mathfield-container::-webkit-scrollbar-thumb:hover {
+  background: #7f98a7;
+}
+
+math-field.cme-mathfield::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+math-field.cme-mathfield::-webkit-scrollbar-track {
+  background: #edf2f6;
+}
+
+math-field.cme-mathfield::-webkit-scrollbar-thumb {
+  background: #9baebb;
+  border-radius: 4px;
+}
+
+math-field.cme-mathfield::-webkit-scrollbar-thumb:hover {
+  background: #7f98a7;
+}
 
 math-field.cme-mathfield {
   display: block;
@@ -1918,16 +1963,25 @@ math-field.cme-mathfield--rtl {
   text-align: right;
 }
 
-math-field.cme-mathfield:focus-within { background: transparent; }
+math-field.cme-mathfield:focus-within {
+  background: transparent;
+}
 
-math-field.cme-mathfield::part(container) { min-height: 40px; align-items: center; }
+math-field.cme-mathfield::part(container) {
+  min-height: 40px;
+  align-items: center;
+}
+
 math-field.cme-mathfield--rtl::part(container) {
   direction: rtl;
   justify-content: flex-end;
   text-align: right;
 }
+
 math-field.cme-mathfield::part(virtual-keyboard-toggle),
-math-field.cme-mathfield::part(menu-toggle) { display: none; }
+math-field.cme-mathfield::part(menu-toggle) {
+  display: none;
+}
 
 /* â”€â”€ Footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cme-footer {
@@ -1954,13 +2008,27 @@ math-field.cme-mathfield::part(menu-toggle) { display: none; }
   flex-shrink: 0;
 }
 
-.cme-mode-badge.math { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; }
-.cme-mode-badge.chem { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+.cme-mode-badge.math {
+  background: rgba(139, 92, 246, 0.2);
+  color: #c4b5fd;
+}
 
-.cme-hint { font-size: 10px; color: #3a3a5c; }
+.cme-mode-badge.chem {
+  background: rgba(52, 211, 153, 0.15);
+  color: #34d399;
+}
+
+.cme-hint {
+  font-size: 10px;
+  color: #3a3a5c;
+}
 
 /* â”€â”€ Main Input Box â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-.Input-question-box { padding: 0; background: transparent; width: 100%; }
+.Input-question-box {
+  padding: 0;
+  background: transparent;
+  width: 100%;
+}
 
 math-field.cme-main-mathfield {
   display: block;
@@ -1987,12 +2055,16 @@ math-field.cme-main-mathfield:focus-within {
 }
 
 math-field.cme-main-mathfield::part(virtual-keyboard-toggle),
-math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
+math-field.cme-main-mathfield::part(menu-toggle) {
+  display: none;
+}
 
 .ck-math-widget math-field::part(virtual-keyboard-toggle),
 .ck-math-widget math-field::part(menu-toggle),
 .question-preview math-field::part(virtual-keyboard-toggle),
-.question-preview math-field::part(menu-toggle) { display: none; }
+.question-preview math-field::part(menu-toggle) {
+  display: none;
+}
 
 /* â”€â”€ Popup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cme-editor-popup {
@@ -2064,13 +2136,20 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   cursor: grabbing;
 }
 
-.cme-editor-popup.minimized > :not(.cme-popup-header) {
+.cme-editor-popup.minimized> :not(.cme-popup-header) {
   display: none;
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .cme-popup-header {
@@ -2092,6 +2171,7 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   user-select: none;
   touch-action: none;
 }
+
 .cme-popup-header,
 .cme-toolbar,
 .cme-mathfield-container,
@@ -2146,7 +2226,7 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
 .cme-popup-close {
   background: transparent;
   border: none;
-  color: rgba(255,255,255,0.92);
+  color: rgba(255, 255, 255, 0.92);
   font-size: 15px;
   line-height: 1;
   cursor: pointer;
@@ -2157,7 +2237,9 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   height: 100%;
 }
 
-.cme-popup-close:hover { color: #fff; }
+.cme-popup-close:hover {
+  color: #fff;
+}
 
 .cme-popup-close::before {
   content: none;
@@ -2220,7 +2302,9 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   transition: filter 0.15s ease;
 }
 
-.cme-insert-btn:hover { filter: brightness(1.05); }
+.cme-insert-btn:hover {
+  filter: brightness(1.05);
+}
 
 .cme-cancel-btn {
   background: linear-gradient(180deg, #fefefe 0%, #e9eef2 100%);
@@ -2250,8 +2334,15 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
     height: min(384px, calc(100vh - 24px));
   }
 
-  .cme-group-tab { padding: 0 6px; font-size: 9px; }
-  .cme-wrapper { --cme-toolbar-panel-height: 68px; }
+  .cme-group-tab {
+    padding: 0 6px;
+    font-size: 9px;
+  }
+
+  .cme-wrapper {
+    --cme-toolbar-panel-height: 68px;
+  }
+
   .cme-insert-btn,
   .cme-cancel-btn {
     min-width: 88px;
@@ -2269,7 +2360,13 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   border-bottom: 1px solid #2a2a45;
 }
 
-.cme-matrix-label { font-size: 13px; font-weight: 600; color: #c4b5fd; margin-bottom: 8px; user-select: none; }
+.cme-matrix-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #c4b5fd;
+  margin-bottom: 8px;
+  user-select: none;
+}
 
 .cme-matrix-grid {
   display: grid;
@@ -2279,11 +2376,26 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   justify-content: center;
 }
 
-.cme-matrix-cell { width: 20px; height: 20px; border: 1px solid #2a2a45; border-radius: 2px; background: #13131f; cursor: pointer; transition: background 0.1s, border-color 0.1s; }
-.cme-matrix-cell.selected { background: #8b5cf6; border-color: #7c3aed; }
+.cme-matrix-cell {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #2a2a45;
+  border-radius: 2px;
+  background: #13131f;
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+}
+
+.cme-matrix-cell.selected {
+  background: #8b5cf6;
+  border-color: #7c3aed;
+}
 
 /* â”€â”€ Matrix Hover â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-.cme-matrix-btn-wrapper { position: relative; display: inline-block; }
+.cme-matrix-btn-wrapper {
+  position: relative;
+  display: inline-block;
+}
 
 .cme-matrix-hover-popover {
   position: fixed;
@@ -2342,7 +2454,12 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   border: 1px solid #b8c8d2;
   overflow: hidden;
 }
-.cme-matrix-hover-row { display: flex; gap: 0; }
+
+.cme-matrix-hover-row {
+  display: flex;
+  gap: 0;
+}
+
 .cme-matrix-hover-cell {
   width: 12px;
   height: 12px;
@@ -2352,10 +2469,12 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   cursor: pointer;
   transition: background-color 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
 }
+
 .cme-matrix-hover-cell:hover {
   background-color: #eef7f1;
   border-color: #78aa8e;
 }
+
 .cme-matrix-hover-cell.selected {
   background: linear-gradient(180deg, #dff2e8 0%, #cce8d8 100%);
   border-color: #56a17e;
@@ -2373,24 +2492,122 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   margin-top: 0;
 }
 
-.cme-matrix-counter { display: flex; align-items: center; gap: 4px; }
-.cme-counter-label { font-size: 10px; font-weight: 700; color: #5c7482; }
-.cme-counter-val { min-width: 18px; text-align: center; background: #ffffff; border-radius: 4px; padding: 2px 4px; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 11px; font-weight: 700; color: #21363f; border: 1px solid #b8c8d2; }
+.cme-matrix-counter {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
 
-.cme-counter-btns { display: flex; flex-direction: column; gap: 1px; }
-.cme-counter-btns button { background: linear-gradient(180deg, #ffffff 0%, #e9eef2 100%); border: 1px solid #b8c8d2; border-radius: 3px; color: #47606d; font-size: 10px; font-weight: 700; width: 16px; height: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0; transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease; }
-.cme-counter-btns button:hover { background: linear-gradient(180deg, #f7fcf9 0%, #e2f1e8 100%); border-color: #7faa93; color: #1f593f; }
+.cme-counter-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #5c7482;
+}
+
+.cme-counter-val {
+  min-width: 18px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #21363f;
+  border: 1px solid #b8c8d2;
+}
+
+.cme-counter-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cme-counter-btns button {
+  background: linear-gradient(180deg, #ffffff 0%, #e9eef2 100%);
+  border: 1px solid #b8c8d2;
+  border-radius: 3px;
+  color: #47606d;
+  font-size: 10px;
+  font-weight: 700;
+  width: 16px;
+  height: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.cme-counter-btns button:hover {
+  background: linear-gradient(180deg, #f7fcf9 0%, #e2f1e8 100%);
+  border-color: #7faa93;
+  color: #1f593f;
+}
 
 /* â”€â”€ CKEditor specific â”€â”€ */
-.cme-matrix-hover-popover.ck-only { width: 136px; min-height: 146px; box-sizing: border-box; padding: 8px; overflow: hidden; gap: 6px; display: flex; flex-direction: column; align-items: stretch; }
-.cme-matrix-hover-popover.ck-only { width: 152px; min-height: 148px; padding: 8px; gap: 8px; }
-.cme-matrix-hover-popover.ck-only .cme-matrix-hover-title-wrap { display: none; }
-.cme-matrix-hover-popover.ck-only .cme-matrix-hover-grid { width: 100%; display: flex; flex-direction: column; padding: 3px; gap: 2px; border-radius: 4px; overflow: hidden; }
-.cme-matrix-hover-popover.ck-only .cme-matrix-hover-row { width: 100%; display: flex; gap: 2px; }
-.cme-matrix-hover-popover.ck-only .cme-matrix-hover-cell { flex: 1; height: 14px; border-radius: 2px; }
-.cme-matrix-hover-popover.ck-only .cme-matrix-hover-footer { margin-top: auto; gap: 8px; }
-.cme-matrix-hover-popover.ck-only .cme-matrix-counter { gap: 3px; }
-.cme-matrix-hover-popover.ck-only .cme-counter-btns button { width: 15px; height: 11px; font-size: 9px; }
+.cme-matrix-hover-popover.ck-only {
+  width: 136px;
+  min-height: 146px;
+  box-sizing: border-box;
+  padding: 8px;
+  overflow: hidden;
+  gap: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.cme-matrix-hover-popover.ck-only {
+  width: 152px;
+  min-height: 148px;
+  padding: 8px;
+  gap: 8px;
+}
+
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-title-wrap {
+  display: none;
+}
+
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-grid {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 3px;
+  gap: 2px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-row {
+  width: 100%;
+  display: flex;
+  gap: 2px;
+}
+
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-cell {
+  flex: 1;
+  height: 14px;
+  border-radius: 2px;
+}
+
+.cme-matrix-hover-popover.ck-only .cme-matrix-hover-footer {
+  margin-top: auto;
+  gap: 8px;
+}
+
+.cme-matrix-hover-popover.ck-only .cme-matrix-counter {
+  gap: 3px;
+}
+
+.cme-matrix-hover-popover.ck-only .cme-counter-btns button {
+  width: 15px;
+  height: 11px;
+  font-size: 9px;
+}
+
 .cme-counter-input {
   width: 34px;
   min-width: 34px;
@@ -2406,6 +2623,7 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   text-align: center;
   box-sizing: border-box;
 }
+
 .cme-counter-input:focus {
   outline: none;
   border-color: #b8c8d2;
@@ -2413,6 +2631,7 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   box-shadow: none;
   background: #ffffff;
 }
+
 .cme-counter-input::-webkit-outer-spin-button,
 .cme-counter-input::-webkit-inner-spin-button {
   margin: 0;
@@ -2477,6 +2696,7 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
   stroke: #2ca02c !important;
   fill: none;
 }
+
 .cme-arrow-label-placeholder-box {
   stroke: #2ca02c !important;
   fill: none;
@@ -2502,6 +2722,7 @@ math-field.cme-main-mathfield::part(menu-toggle) { display: none; }
 .cme-style-dropdown-option {
   transition: none !important;
 }
+
 .cme-toolbar-items--greek .cme-greek-subgroup--no-right-border {
   border-right: none;
 }

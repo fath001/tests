@@ -1133,4 +1133,3 @@ export default function CustomMathEditor({ value = "", onChange }) {
     </div>
   );
 }
-
