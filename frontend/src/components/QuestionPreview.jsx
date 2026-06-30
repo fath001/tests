@@ -30,8 +30,17 @@ function sanitizeInlineStyle(styleValue = "") {
 
 const EMPTY_MATH_SLOT_LATEX = "\\phantom{0}";
 
+const BEVELLED_FRACTION_SLASH_LATEX_PATTERN = /\\htmlStyle\{display:inline-block;position:relative;top:0\.02em;font-size:1\.3em;line-height:0\.9;padding:0;color:#(?:111|fff);\}\{\/\}/g;
+const BEVELLED_FRACTION_SLASH_LATEX = "\\class{cme-bevelled-fraction-slash}{\\htmlStyle{display:inline-block;position:relative;top:0.02em;font-size:1.3em;line-height:0.9;padding:0;color:#fff;}{/}}";
+
+function normalizeBevelledFractionSlash(latex = "") {
+  const value = String(latex || "");
+  if (value.includes("\\class{cme-bevelled-fraction-slash}{")) return value;
+  return value.replace(BEVELLED_FRACTION_SLASH_LATEX_PATTERN, BEVELLED_FRACTION_SLASH_LATEX);
+}
+
 function renderEmptyMathPlaceholders(latex = "") {
-  const normalized = String(latex || "").replace(/\\placeholder\{\}/g, EMPTY_MATH_SLOT_LATEX);
+  const normalized = normalizeBevelledFractionSlash(latex).replace(/\\placeholder\{\}/g, EMPTY_MATH_SLOT_LATEX);
   return normalized
     .replace(/\\frac\{\}\{\}/g, `\\frac{${EMPTY_MATH_SLOT_LATEX}}{${EMPTY_MATH_SLOT_LATEX}}`)
     .replace(/\\frac\{\}\{([^{}]*)\}/g, `\\frac{${EMPTY_MATH_SLOT_LATEX}}{$1}`)
@@ -68,11 +77,36 @@ const MATH_FIELD_SHADOW_CSS = `
   pointer-events: none;
 }
 
+.cme-not-approx-equal-symbol {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  padding: 0 0.015em;
+}
+
+.cme-not-approx-equal-symbol::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.11em;
+  height: 1.04em;
+  border-radius: 999px;
+  background: currentColor;
+  transform: translate(-50%, -50%) rotate(17deg);
+  transform-origin: center;
+  pointer-events: none;
+}
+
 .cme-left-right-extensible-arrows svg,
 .cme-right-left-stacked-arrows svg {
   transform: scaleY(-1);
   transform-box: fill-box;
   transform-origin: center;
+}
+
+.cme-bevelled-fraction-slash {
+  color: #ffffff !important;
 }
 
 `;

@@ -485,6 +485,37 @@
   padding: 2px 2px;
 }
 
+.cme-toolbar-items--matrix .cme-btn:has(.cme-toolbar-icon-image--bmatrix-two-row-template-image),
+.cme-toolbar-items--matrix .cme-btn:has(.cme-toolbar-icon-image--pmatrix-two-row-template-image) {
+  min-width: 42px;
+  height: 56px;
+  min-height: 56px;
+}
+
+.cme-toolbar-items--matrix .cme-btn:has(.cme-toolbar-icon-image--bmatrix-two-column-template-image),
+.cme-toolbar-items--matrix .cme-btn:has(.cme-toolbar-icon-image--pmatrix-two-column-template-image) {
+  min-width: 46px;
+}
+
+.cme-toolbar-icon-image-wrapper--bmatrix-two-row-template-image,
+.cme-toolbar-icon-image-wrapper--pmatrix-two-row-template-image {
+  padding: 1px 0;
+}
+
+.cme-toolbar-icon-image--bmatrix-two-row-template-image,
+.cme-toolbar-icon-image--pmatrix-two-row-template-image {
+  width: 100%;
+  height: 100%;
+  max-width: 40px;
+  max-height: 52px;
+}
+
+.cme-toolbar-icon-image--bmatrix-two-column-template-image,
+.cme-toolbar-icon-image--pmatrix-two-column-template-image {
+  max-width: 56px;
+  max-height: 28px;
+}
+
 .cme-toolbar-items--brackets {
   overflow: hidden;
   gap: 1px;
