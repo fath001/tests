@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
+﻿import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import {
@@ -29,6 +29,24 @@ import SpecialCharacterModal from './SpecialCharacterModal';
 // Global map + handler ref for widget click → edit popup
 window.__ckMathWidgets = window.__ckMathWidgets || new Map();
 window.__ckMathWidgetClickHandler = null;
+
+const BLACKBOARD_SYMBOL_INSERT_STYLE = {
+  variant: 'double-struck',
+  variantStyle: 'bold',
+  fontFamily: 'none',
+  fontSeries: 'b',
+  fontShape: 'n',
+};
+
+const BLACKBOARD_SYMBOL_INSERT_OPTIONS = {
+  preserveMathStyle: true,
+  insertStyle: BLACKBOARD_SYMBOL_INSERT_STYLE,
+};
+
+function makeBlackboardSymbolLatex(label) {
+  return `\\htmlStyle{font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-weight:800;font-style:normal;}{\\textbf{${label}}}`;
+}
+
 
 function findMathWidgetFromEventTarget(target) {
   if (!target) return null;
@@ -248,14 +266,14 @@ const MATH_GROUPS = [
     ]
   },
   {
-    label: '□/□', isTemplate: true, items: [
+    label: '□/□', isTemplate: true, items: [    
       { label: 'a/b', insert: '\\frac{#0}{#?}', title: 'Fraction', icon: 'fraction-template-image' },
-      { label: '□/□', insert: '{#0}/{#?}', title: 'Bevelled Fraction', cls: 'green-template black-glyph-template' },
-      { label: 'a/b', insert: '{\\scriptstyle \\frac{#0}{#?}}', title: 'Small Fraction', icon: 'fraction-template-image', cls: 'small-template' },
-      { label: '□/□', insert: '{\\scriptstyle {#0}/{#?}}', title: 'Small Bevelled Fraction', cls: 'green-template small-template black-placeholder-glyph' },
-      { type: 'sep', cols: 4 },
+      { label: '□/□', insert: '\\htmlStyle{display:inline-block;position:relative;top:-0.28em;padding:0 0.06em;min-width:0.54em;line-height:1;text-align:center;}{#0}\\htmlStyle{display:inline-block;position:relative;top:0.02em;font-size:1.3em;line-height:0.9;padding:0;color:#111;}{/}\\htmlStyle{display:inline-block;position:relative;top:0.28em;padding:0 0.06em;min-width:0.54em;line-height:1;text-align:center;}{#?}', title: 'Bevelled Fraction', cls: 'green-template black-glyph-template', icon: 'bevelled-fraction-offset-template-image' },
+      { label: 'a/b', insert: '\\htmlStyle{font-size:0.68em;}{\\frac{#0}{#?}}', title: 'Small Fraction', icon: 'small-fraction-template-image' },
+      {label: '□/□',insert: '\\htmlStyle{display:inline-block;position:relative;top:-0.18em;padding:0 0.03em;min-width:0.38em;line-height:1;font-size:0.78em;text-align:center;}{#0}\\htmlStyle{display:inline-block;position:relative;top:0.01em;font-size:1.05em;line-height:0.9;padding:0;color:#111;}{/}\\htmlStyle{display:inline-block;position:relative;top:0.18em;padding:0 0.03em;min-width:0.38em;line-height:1;font-size:0.78em;text-align:center;}{#?}',title: 'Small Bevelled Fraction',cls: 'green-template black-placeholder-glyph',icon: 'small-bevelled-fraction-template-image'},
+            { type: 'sep', cols: 4 },
       { label: '√x', insert: '\\sqrt{#0}', title: 'Square Root', icon: 'sqrt-template-image' },
-      { label: 'ⁿ√x', insert: '{}^{#?}\\!\\sqrt{#0}', title: 'Nth Root', icon: 'nth-root-template-image' },
+      { label: 'ⁿ√x', insert: '{}^{#?}\\!\\sqrt{#0}', title: 'Nth Root', icon: 'nth-root-template-image', focusFirstPlaceholder: true },
       {type: 'sep', cols: 2 },
       { label: 'xⁿ', insert: '#0^{#?}', title: 'Superscript', icon: 'superscript-template-image' },
       { label: 'ˡ□', insert: '{}^{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript', icon: 'left-sup-template-image' },
@@ -396,9 +414,9 @@ const MATH_GROUPS = [
     label: 'π,e', items: [
       { label: 'e', insert: 'e' }, { label: 'i', insert: 'i' },
       { label: 'π', insert: '\\pi' },
-      { label: 'ℝ', insert: '\\mathbb{R}' }, { label: 'ℤ', insert: '\\mathbb{Z}' },
-      { label: 'ℕ', insert: '\\mathbb{N}' }, { label: 'ℚ', insert: '\\mathbb{Q}' },
-      { label: 'ℂ', insert: '\\mathbb{C}' }, { label: '∅', insert: '\\emptyset' },
+      { label: '\u211D', insert: makeBlackboardSymbolLatex('\u211D'), ...BLACKBOARD_SYMBOL_INSERT_OPTIONS }, { label: '\u2124', insert: makeBlackboardSymbolLatex('\u2124'), ...BLACKBOARD_SYMBOL_INSERT_OPTIONS },
+      { label: '\u2115', insert: makeBlackboardSymbolLatex('\u2115'), ...BLACKBOARD_SYMBOL_INSERT_OPTIONS }, { label: '\u211A', insert: makeBlackboardSymbolLatex('\u211A'), ...BLACKBOARD_SYMBOL_INSERT_OPTIONS },
+      { label: '\u2102', insert: makeBlackboardSymbolLatex('\u2102'), ...BLACKBOARD_SYMBOL_INSERT_OPTIONS }, { label: '∅', insert: '\\emptyset' },
       { label: 'ℵ₀', insert: '\\aleph_0' },
       { label: 'ξ', insert: '\\xi' },
       { label: 'ρ', insert: '\\rho' }, { label: 'σ', insert: '\\sigma' },
@@ -443,7 +461,7 @@ const MATH_GROUPS = [
       </>
     ),
     isMatrix: true,
-    items: [
+    items: [ 
       { label: '□', insert: 'matrix', cls: 'template matrix-roomy-template matrix-tall-template', icon: 'matrix-grid-template-image' },
       { label: '[]', insert: 'bmatrix', cls: 'template matrix-roomy-template matrix-tall-template', icon: 'matrix-brackets-template-image' },
       { label: '||', insert: 'vmatrix', cls: 'template matrix-roomy-template matrix-tall-template', icon: 'matrix-bars-template-image' },
@@ -451,8 +469,7 @@ const MATH_GROUPS = [
       { type: 'sep', cols: 2 },
       { label: '□ \\ □ \\ □', insert: '\\begin{matrix} #? \\\\ #? \\\\ #? \\end{matrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '□ □ □', insert: '\\begin{matrix} #? & #? & #? \\end{matrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
-      { label: '□ \\ □', insert: '\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
-      { label: '□ & □', insert: '\\begin{bmatrix} #? & #? \\end{bmatrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
+      { label: (<svg width="26" height="26" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="3" style={{ display: 'inline-block', verticalAlign: 'middle', color: '#2E7D32' }}><path d="M18 6H12V58H18" stroke="#222" strokeWidth="4" fill="none" /><path d="M46 6H52V58H46" stroke="#222" strokeWidth="4" fill="none" /><rect x="28" y="10" width="8" height="14" rx="1" /><rect x="28" y="38" width="8" height="14" rx="1" /></svg>), insert: '\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}', cls: 'template', directInsert: true, action: 'INSERT_CUSTOM', title: '2×1 Matrix' },      { label: '□ & □', insert: '\\begin{bmatrix} #? & #? \\end{bmatrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
 
       { type: 'sep', cols: 2 },
       { label: '□ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}', cls: 'template matrix-roomy-template matrix-extra-tall-template', directInsert: true },
@@ -845,7 +862,11 @@ const GREEK_ITALIC_UPPERCASE_ITEMS = [
   { label: 'Ω', insert: '\\varOmega', title: 'Italic Omega' },
 ];
 
-const BLACKBOARD_BOLD_LETTERS = [
+function makeGreekItalicHelveticaLatex(label) {
+  return `\\htmlStyle{font-family:Helvetica, Arial, sans-serif;font-style:italic;}{${label}}`;
+}
+
+const BLACKBOARD_BOLD_LETTERS = [  
   ['𝔸', 'A'], ['𝔹', 'B'], ['ℂ', 'C'], ['𝔻', 'D'], ['𝔼', 'E'], ['𝔽', 'F'],
   ['𝔾', 'G'], ['ℍ', 'H'], ['𝕀', 'I'], ['𝕁', 'J'], ['𝕂', 'K'], ['𝕃', 'L'],
   ['𝕄', 'M'], ['ℕ', 'N'], ['𝕆', 'O'], ['ℙ', 'P'], ['ℚ', 'Q'], ['ℝ', 'R'],
@@ -860,123 +881,127 @@ const BLACKBOARD_BOLD_LETTERS = [
 
 const BLACKBOARD_BOLD_PICKER_ITEMS = BLACKBOARD_BOLD_LETTERS.map(([label, letter]) => ({
   label,
-  insert: `\\mathbb{${letter}}`,
+  insert: makeBlackboardSymbolLatex(label),
   title: `Blackboard Bold ${letter}`,
+  ...BLACKBOARD_SYMBOL_INSERT_OPTIONS,
 }));
 
 const FRAKTUR_SCRIPT_PICKER_ITEMS = [
-  ['𝔄', '\\mathfrak{A}', 'Fraktur A'],
-  ['𝔅', '\\mathfrak{B}', 'Fraktur B'],
-  ['ℭ', '\\mathfrak{C}', 'Fraktur C'],
-  ['𝔇', '\\mathfrak{D}', 'Fraktur D'],
-  ['𝔈', '\\mathfrak{E}', 'Fraktur E'],
-  ['𝔉', '\\mathfrak{F}', 'Fraktur F'],
-  ['𝔊', '\\mathfrak{G}', 'Fraktur G'],
-  ['ℌ', '\\mathfrak{H}', 'Fraktur H'],
-  ['ℑ', '\\mathfrak{I}', 'Fraktur I'],
-  ['𝔍', '\\mathfrak{J}', 'Fraktur J'],
-  ['𝔎', '\\mathfrak{K}', 'Fraktur K'],
-  ['𝔏', '\\mathfrak{L}', 'Fraktur L'],
-  ['𝔐', '\\mathfrak{M}', 'Fraktur M'],
-  ['𝔑', '\\mathfrak{N}', 'Fraktur N'],
-  ['𝔒', '\\mathfrak{O}', 'Fraktur O'],
-  ['𝔓', '\\mathfrak{P}', 'Fraktur P'],
-  ['𝔔', '\\mathfrak{Q}', 'Fraktur Q'],
-  ['ℜ', '\\mathfrak{R}', 'Fraktur R'],
-  ['𝔖', '\\mathfrak{S}', 'Fraktur S'],
-  ['𝔗', '\\mathfrak{T}', 'Fraktur T'],
-  ['𝔘', '\\mathfrak{U}', 'Fraktur U'],
-  ['𝔙', '\\mathfrak{V}', 'Fraktur V'],
-  ['𝔚', '\\mathfrak{W}', 'Fraktur W'],
-  ['𝔛', '\\mathfrak{X}', 'Fraktur X'],
-  ['𝔜', '\\mathfrak{Y}', 'Fraktur Y'],
-  ['ℨ', '\\mathfrak{Z}', 'Fraktur Z'],
-  ['𝔞', '\\mathfrak{a}', 'Fraktur a'],
-  ['𝔟', '\\mathfrak{b}', 'Fraktur b'],
-  ['𝔠', '\\mathfrak{c}', 'Fraktur c'],
-  ['𝔡', '\\mathfrak{d}', 'Fraktur d'],
-  ['𝔢', '\\mathfrak{e}', 'Fraktur e'],
-  ['𝔣', '\\mathfrak{f}', 'Fraktur f'],
-  ['𝔤', '\\mathfrak{g}', 'Fraktur g'],
-  ['𝔥', '\\mathfrak{h}', 'Fraktur h'],
-  ['𝔦', '\\mathfrak{i}', 'Fraktur i'],
-  ['𝔧', '\\mathfrak{j}', 'Fraktur j'],
-  ['𝔨', '\\mathfrak{k}', 'Fraktur k'],
-  ['𝔩', '\\mathfrak{l}', 'Fraktur l'],
-  ['𝔪', '\\mathfrak{m}', 'Fraktur m'],
-  ['𝔫', '\\mathfrak{n}', 'Fraktur n'],
-  ['𝔬', '\\mathfrak{o}', 'Fraktur o'],
-  ['𝔭', '\\mathfrak{p}', 'Fraktur p'],
-  ['𝔮', '\\mathfrak{q}', 'Fraktur q'],
-  ['𝔯', '\\mathfrak{r}', 'Fraktur r'],
-  ['𝔰', '\\mathfrak{s}', 'Fraktur s'],
-  ['𝔱', '\\mathfrak{t}', 'Fraktur t'],
-  ['𝔲', '\\mathfrak{u}', 'Fraktur u'],
-  ['𝔳', '\\mathfrak{v}', 'Fraktur v'],
-  ['𝔴', '\\mathfrak{w}', 'Fraktur w'],
-  ['𝔵', '\\mathfrak{x}', 'Fraktur x'],
-  ['𝔶', '\\mathfrak{y}', 'Fraktur y'],
-  ['𝔷', '\\mathfrak{z}', 'Fraktur z'],
-  ['𝒜', '\\mathscr{A}', 'Script A'],
-  ['ℬ', '\\mathscr{B}', 'Script B'],
-  ['𝒞', '\\mathscr{C}', 'Script C'],
-  ['𝒟', '\\mathscr{D}', 'Script D'],
-  ['ℰ', '\\mathscr{E}', 'Script E'],
-  ['ℱ', '\\mathscr{F}', 'Script F'],
-  ['𝒢', '\\mathscr{G}', 'Script G'],
-  ['ℋ', '\\mathscr{H}', 'Script H'],
-  ['ℐ', '\\mathscr{I}', 'Script I'],
-  ['𝒥', '\\mathscr{J}', 'Script J'],
-  ['𝒦', '\\mathscr{K}', 'Script K'],
-  ['ℒ', '\\mathscr{L}', 'Script L'],
-  ['ℳ', '\\mathscr{M}', 'Script M'],
-  ['𝒩', '\\mathscr{N}', 'Script N'],
-  ['𝒪', '\\mathscr{O}', 'Script O'],
-  ['𝒫', '\\mathscr{P}', 'Script P'],
-  ['𝒬', '\\mathscr{Q}', 'Script Q'],
-  ['ℛ', '\\mathscr{R}', 'Script R'],
-  ['𝒮', '\\mathscr{S}', 'Script S'],
-  ['𝒯', '\\mathscr{T}', 'Script T'],
-  ['𝒰', '\\mathscr{U}', 'Script U'],
-  ['𝒱', '\\mathscr{V}', 'Script V'],
-  ['𝒲', '\\mathscr{W}', 'Script W'],
-  ['𝒳', '\\mathscr{X}', 'Script X'],
-  ['𝒴', '\\mathscr{Y}', 'Script Y'],
-  ['𝒵', '\\mathscr{Z}', 'Script Z'],
-  ['𝒶', '\\mathscr{a}', 'Script a'],
-  ['𝒷', '\\mathscr{b}', 'Script b'],
-  ['𝒸', '\\mathscr{c}', 'Script c'],
-  ['𝒹', '\\mathscr{d}', 'Script d'],
-  ['ℯ', '\\mathscr{e}', 'Script e'],
-  ['𝒻', '\\mathscr{f}', 'Script f'],
-  ['ℊ', '\\mathscr{g}', 'Script g'],
-  ['𝒽', '\\mathscr{h}', 'Script h'],
-  ['𝒾', '\\mathscr{i}', 'Script i'],
-  ['𝒿', '\\mathscr{j}', 'Script j'],
-  ['𝓀', '\\mathscr{k}', 'Script k'],
-  ['𝓁', '\\mathscr{l}', 'Script l'],
-  ['𝓂', '\\mathscr{m}', 'Script m'],
-  ['𝓃', '\\mathscr{n}', 'Script n'],
-  ['ℴ', '\\mathscr{o}', 'Script o'],
-  ['𝓅', '\\mathscr{p}', 'Script p'],
-  ['𝓆', '\\mathscr{q}', 'Script q'],
-  ['𝓇', '\\mathscr{r}', 'Script r'],
-  ['𝓈', '\\mathscr{s}', 'Script s'],
-  ['𝓉', '\\mathscr{t}', 'Script t'],
-  ['𝓊', '\\mathscr{u}', 'Script u'],
-  ['𝓋', '\\mathscr{v}', 'Script v'],
-  ['𝓌', '\\mathscr{w}', 'Script w'],
-  ['𝓍', '\\mathscr{x}', 'Script x'],
-  ['𝓎', '\\mathscr{y}', 'Script y'],
-  ['𝓏', '\\mathscr{z}', 'Script z'],
+  ['𝔄', '𝔄', 'Fraktur A'],
+  ['𝔅', '𝔅', 'Fraktur B'],
+  ['ℭ', 'ℭ', 'Fraktur C'],
+  ['𝔇', '𝔇', 'Fraktur D'],
+  ['𝔈', '𝔈', 'Fraktur E'],
+  ['𝔉', '𝔉', 'Fraktur F'],
+  ['𝔊', '𝔊', 'Fraktur G'],
+  ['ℌ', 'ℌ', 'Fraktur H'],
+  ['ℑ', 'ℑ', 'Fraktur I'],
+  ['𝔍', '𝔍', 'Fraktur J'],
+  ['𝔎', '𝔎', 'Fraktur K'],
+  ['𝔏', '𝔏', 'Fraktur L'],
+  ['𝔐', '𝔐', 'Fraktur M'],
+  ['𝔑', '𝔑', 'Fraktur N'],
+  ['𝔒', '𝔒', 'Fraktur O'],
+  ['𝔓', '𝔓', 'Fraktur P'],
+  ['𝔔', '𝔔', 'Fraktur Q'],
+  ['ℜ', 'ℜ', 'Fraktur R'],
+  ['𝔖', '𝔖', 'Fraktur S'],
+  ['𝔗', '𝔗', 'Fraktur T'],
+  ['𝔘', '𝔘', 'Fraktur U'],
+  ['𝔙', '𝔙', 'Fraktur V'],
+  ['𝔚', '𝔚', 'Fraktur W'],
+  ['𝔛', '𝔛', 'Fraktur X'],
+  ['𝔜', '𝔜', 'Fraktur Y'],
+  ['ℨ', 'ℨ', 'Fraktur Z'],
+  ['𝔞', '𝔞', 'Fraktur a'],
+  ['𝔟', '𝔟', 'Fraktur b'],
+  ['𝔠', '𝔠', 'Fraktur c'],
+  ['𝔡', '𝔡', 'Fraktur d'],
+  ['𝔢', '𝔢', 'Fraktur e'],
+  ['𝔣', '𝔣', 'Fraktur f'],
+  ['𝔤', '𝔤', 'Fraktur g'],
+  ['𝔥', '𝔥', 'Fraktur h'],
+  ['𝔦', '𝔦', 'Fraktur i'],
+  ['𝔧', '𝔧', 'Fraktur j'],
+  ['𝔨', '𝔨', 'Fraktur k'],
+  ['𝔩', '𝔩', 'Fraktur l'],
+  ['𝔪', '𝔪', 'Fraktur m'],
+  ['𝔫', '𝔫', 'Fraktur n'],
+  ['𝔬', '𝔬', 'Fraktur o'],
+  ['𝔭', '𝔭', 'Fraktur p'],
+  ['𝔮', '𝔮', 'Fraktur q'],
+  ['𝔯', '𝔯', 'Fraktur r'],
+  ['𝔰', '𝔰', 'Fraktur s'],
+  ['𝔱', '𝔱', 'Fraktur t'],
+  ['𝔲', '𝔲', 'Fraktur u'],
+  ['𝔳', '𝔳', 'Fraktur v'],
+  ['𝔴', '𝔴', 'Fraktur w'],
+  ['𝔵', '𝔵', 'Fraktur x'],
+  ['𝔶', '𝔶', 'Fraktur y'],
+  ['𝔷', '𝔷', 'Fraktur z'],
+  ['𝒜', '𝒜', 'Script A'],
+  ['ℬ', 'ℬ', 'Script B'],
+  ['𝒞', '𝒞', 'Script C'],
+  ['𝒟', '𝒟', 'Script D'],
+  ['ℰ', 'ℰ', 'Script E'],
+  ['ℱ', 'ℱ', 'Script F'],
+  ['𝒢', '𝒢', 'Script G'],
+  ['ℋ', 'ℋ', 'Script H'],
+  ['ℐ', 'ℐ', 'Script I'],
+  ['𝒥', '𝒥', 'Script J'],
+  ['𝒦', '𝒦', 'Script K'],
+  ['ℒ', 'ℒ', 'Script L'],
+  ['ℳ', 'ℳ', 'Script M'],
+  ['𝒩', '𝒩', 'Script N'],
+  ['𝒪', '𝒪', 'Script O'],
+  ['𝒫', '𝒫', 'Script P'],
+  ['𝒬', '𝒬', 'Script Q'],
+  ['ℛ', 'ℛ', 'Script R'],
+  ['𝒮', '𝒮', 'Script S'],
+  ['𝒯', '𝒯', 'Script T'],
+  ['𝒰', '𝒰', 'Script U'],
+  ['𝒱', '𝒱', 'Script V'],
+  ['𝒲', '𝒲', 'Script W'],
+  ['𝒳', '𝒳', 'Script X'],
+  ['𝒴', '𝒴', 'Script Y'],
+  ['𝒵', '𝒵', 'Script Z'],
+  ['𝒶', '𝒶', 'Script a'],
+  ['𝒷', '𝒷', 'Script b'],
+  ['𝒸', '𝒸', 'Script c'],
+  ['𝒹', '𝒹', 'Script d'],
+  ['ℯ', 'ℯ', 'Script e'],
+  ['𝒻', '𝒻', 'Script f'],
+  ['ℊ', 'ℊ', 'Script g'],
+  ['𝒽', '𝒽', 'Script h'],
+  ['𝒾', '𝒾', 'Script i'],
+  ['𝒿', '𝒿', 'Script j'],
+  ['𝓀', '𝓀', 'Script k'],
+  ['𝓁', '𝓁', 'Script l'],
+  ['𝓂', '𝓂', 'Script m'],
+  ['𝓃', '𝓃', 'Script n'],
+  ['ℴ', 'ℴ', 'Script o'],
+  ['𝓅', '𝓅', 'Script p'],
+  ['𝓆', '𝓆', 'Script q'],
+  ['𝓇', '𝓇', 'Script r'],
+  ['𝓈', '𝓈', 'Script s'],
+  ['𝓉', '𝓉', 'Script t'],
+  ['𝓊', '𝓊', 'Script u'],
+  ['𝓋', '𝓋', 'Script v'],
+  ['𝓌', '𝓌', 'Script w'],
+  ['𝓍', '𝓍', 'Script x'],
+  ['𝓎', '𝓎', 'Script y'],
+  ['𝓏', '𝓏', 'Script z'],
 ].map(([label, insert, title]) => ({ label, insert, title }));
+
+const FRAKTUR_PICKER_ITEMS = FRAKTUR_SCRIPT_PICKER_ITEMS.filter(({ title }) => title.startsWith('Fraktur '));
+const SCRIPT_PICKER_ITEMS = FRAKTUR_SCRIPT_PICKER_ITEMS.filter(({ title }) => title.startsWith('Script '));
 
 const HEBREW_SYMBOL_PICKER_ITEMS = [
   { label: 'ℵ', insert: '\\aleph', title: 'Aleph' },
-  { label: 'ℒ', insert: '\\mathscr{L}', title: 'Script L' },
+  { label: 'ℒ', insert: 'ℒ', title: 'Script L' },
   { label: '℘', insert: '\\wp', title: 'Weierstrass p' },
-  { label: '𝒵', insert: '\\mathscr{Z}', title: 'Script Z' },
-  { label: 'ℱ', insert: '\\mathscr{F}', title: 'Script F' },
+  { label: '𝒵', insert: '𝒵', title: 'Script Z' },
+  { label: 'ℱ', insert: 'ℱ', title: 'Script F' },
 ];
 
 const ARABIC_INDIC_DIGITS = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
@@ -1283,9 +1308,9 @@ const ORDERED_MATH_GROUPS = [
     items: [
       // GROUP 1 - Fractions & Roots (cols: 2)
       { label: '□/□', insert: '\\frac{#0}{#?}', title: 'Fraction', cls: 'green-template black-glyph-template', icon: 'stacked-fraction' },
-      { label: '□/□', insert: '{#0}/{#?}', title: 'Bevelled Fraction', cls: 'green-template black-glyph-template' },
+      { label: '□/□', insert: '\\htmlStyle{display:inline-block;position:relative;top:-0.28em;padding:0 0.06em;min-width:0.54em;line-height:1;text-align:center;}{#0}\\htmlStyle{display:inline-block;position:relative;top:0.02em;font-size:1.3em;line-height:0.9;padding:0;color:#111;}{/}\\htmlStyle{display:inline-block;position:relative;top:0.28em;padding:0 0.06em;min-width:0.54em;line-height:1;text-align:center;}{#?}', title: 'Bevelled Fraction', cls: 'green-template black-glyph-template', icon: 'bevelled-fraction-offset-template-image' },
       { label: '√□', insert: '\\sqrt{#0}', title: 'Square Root', cls: 'green-template black-glyph-template', icon: 'square-root-template' },
-      { label: '□√□', insert: '{}^{#?}\\!\\sqrt{#0}', title: 'Root', cls: 'green-template black-glyph-template', icon: 'nth-root-template' },
+      { label: '□√□', insert: '{}^{#?}\\!\\sqrt{#0}', title: 'Root', cls: 'green-template black-glyph-template', icon: 'nth-root-template', focusFirstPlaceholder: true },
       { type: 'sep', cols: 2 },
       // GROUP 2a - Brackets (cols: 2)
       { label: '□^□', insert: '#0^{#?}', title: 'Superscript', cls: 'green-template black-glyph-template', icon: 'superscript-template' },
@@ -1386,21 +1411,22 @@ const ORDERED_MATH_GROUPS = [
       { category: 'Lowercase Greek Letters', label: '\u03C9', insert: '\\omega' },
       { category: 'Greek Letter Picker', label: '|', action: 'GREEK_ITALIC_PICKER', title: 'Italic Uppercase Greek', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool greek-italic-picker-tool' },
 
-      { category: 'Blackboard Bold / Number Sets', label: '\u2115', insert: '\\mathbb{N}' },
-      { category: 'Blackboard Bold / Number Sets', label: '\u2124', insert: '\\mathbb{Z}' },
-      { category: 'Blackboard Bold / Number Sets', label: '\u211A', insert: '\\mathbb{Q}' },
-      { category: 'Blackboard Bold / Number Sets', label: '\u2102', insert: '\\mathbb{C}' },
-      { category: 'Blackboard Bold / Number Sets', label: '\u211D', insert: '\\mathbb{R}' },
-      { category: 'Blackboard Bold / Number Sets', label: '\u2119', insert: '\\mathbb{P}' },
+      { label: 'ℕ',insert: '\\mathbb{N}', title: 'Mathbb N' }, 
+      { label: 'ℤ', insert: 'ℤ', title: 'Mathbb Z' },
+      { label: 'ℚ', insert: 'ℚ', title: 'Mathbb Q' },
+      { label: 'ℂ', insert: 'ℂ', title: 'Mathbb C' },
+      { label: 'ℝ', insert: 'ℝ', title: 'Mathbb R' },
+      { label: 'ℙ', insert: 'ℙ', title: 'Mathbb P' },    
       { category: 'Blackboard Bold Picker', label: '|', action: 'BLACKBOARD_BOLD_PICKER', title: 'More Blackboard Bold Letters', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool blackboard-bold-picker-tool' },
 
-      { category: 'Fraktur Symbols', label: '\u{1D504}', insert: '\\mathfrak{A}' },
-      { category: 'Fraktur Symbols', label: '\u{1D505}', insert: '\\mathfrak{B}' },
-      { category: 'Fraktur Symbols', label: '\u{1D50A}', insert: '\\mathfrak{G}' },
-      { category: 'Script Symbols', label: '\u{1D49C}', insert: '\\mathscr{A}' },
-      { category: 'Script Symbols', label: '\u212C', insert: '\\mathscr{B}' },
-      { category: 'Script Symbols', label: '\u{1D49E}', insert: '\\mathscr{C}' },
-      { category: 'Fraktur / Script Picker', label: '|', action: 'FRAKTUR_SCRIPT_PICKER', title: 'More Fraktur and Script Letters', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool fraktur-script-picker-tool' },
+      { category: 'Fraktur Symbols', label: '\u{1D504}', insert: '𝔄' },
+      { category: 'Fraktur Symbols', label: '\u{1D505}', insert: '𝔅' },
+      { category: 'Fraktur Symbols', label: '\u{1D50A}', insert: '𝔊' },
+      { category: 'Fraktur Picker', label: '|', action: 'FRAKTUR_SCRIPT_PICKER', picker: 'fraktur', title: 'More Fraktur Letters', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool fraktur-script-picker-tool' },
+      { category: 'Script Symbols', label: '\u{1D49C}', insert: '𝒜' },
+      { category: 'Script Symbols', label: '\u212C', insert: 'ℬ' },
+      { category: 'Script Symbols', label: '\u{1D49E}', insert: '𝒞' },
+      { category: 'Fraktur / Script Picker', label: '|', action: 'FRAKTUR_SCRIPT_PICKER', picker: 'script', title: 'More Fraktur and Script Letters', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool fraktur-script-picker-tool' },
 
       { category: 'Hebrew Mathematical Symbols', label: '\u2111', insert: '\\Im' },
       { category: 'Hebrew Mathematical Symbols', label: '\u211C', insert: '\\Re' },
@@ -1550,7 +1576,7 @@ const ORDERED_MATH_GROUPS = [
 const CHEM_GROUPS = [
   {
     id: 'chem-period-1',
-    label: <TabIcon top={'H-Ne'} bottom={'elem'} />,
+    label: <TabIcon top={'H-Ne'} bottom={'elem'} />, 
     isChem: true,
     items: ['H', 'He', 'Li', 'Be', 'B', 'C', 'N', 'O', 'F', 'Ne'].map(el => ({ label: el, insert: el, cls: 'chem-element' }))
   },
@@ -2306,7 +2332,30 @@ const TOOLBAR_ICON_IMAGES = {
       <rect x="6.1" y="11.4" width="6" height="4.8" rx="0" fill="none" stroke="#2c8a43" stroke-width="1.6"/>
     </svg>
   `),
-  'superscript-template-image': makeToolbarIconImage(`
+  'small-fraction-template-image': makeToolbarIconImage(`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"> 
+      <rect x="6.1" y="3.8" width="4" height="2.8" rx="0" fill="none" stroke="#2c8a43" stroke-width="0.8"/> 
+      <line x1="4.2" y1="9" x2="12" y2="9" stroke="#000000" stroke-width="0.8" stroke-linecap="square"/>
+      <rect x="6.1" y="11.4" width="4" height="2.8" rx="0" fill="none" stroke="#2c8a43" stroke-width="0.8"/>
+    </svg>
+  `),
+  'bevelled-fraction-offset-template-image': makeToolbarIconImage(` 
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -10 64 56" width="64" height="56" fill="none">
+      <rect x="8" y="3" width="14" height="15" stroke="#0B7D1E" stroke-width="3.5"/>
+      <path d="M24 30 L39 2" stroke="#111" stroke-width="3" stroke-linecap="square"/>
+      <rect x="42" y="16" width="14" height="15" stroke="#0B7D1E" stroke-width="3.5"/>
+    </svg>
+  `),
+  'small-bevelled-fraction-template-image': makeToolbarIconImage(`
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -15 79 56" width="64" height="56" fill="none">
+  <g transform="translate(-1.6,-1) scale(0.9)">
+    <rect x="8" y="3" width="16" height="16" stroke="#0B7D1E" stroke-width="3.5"/>
+    <path d="M24 30 L39 2" stroke="#111" stroke-width="3" stroke-linecap="square"/>
+    <rect x="42" y="16" width="16" height="16" stroke="#0B7D1E" stroke-width="3.5"/>
+  </g>
+</svg>
+  `),
+  'superscript-template-image': makeToolbarIconImage(` 
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
       <rect x="3.1" y="7.3" width="6.5" height="7.4" rx="0.6" fill="none" stroke="#2c8a43" stroke-width="1.5"/>
       <rect x="10.3" y="3.2" width="4.6" height="5.6" rx="0.6" fill="none" stroke="#2c8a43" stroke-width="1.5"/>
@@ -6029,7 +6078,7 @@ function GreekItalicPickerPopover({ position, onInsert }) {
             title={item.title}
             onMouseDown={(e) => {
               e.preventDefault();
-              onInsert(item.insert);
+              onInsert(item);
             }}
           >
             <span className="cme-greek-italic-picker-glyph" aria-hidden="true">
@@ -6066,7 +6115,7 @@ function BlackboardBoldPickerPopover({ position, onInsert }) {
             title={item.title}
             onMouseDown={(e) => {
               e.preventDefault();
-              onInsert(item.insert);
+              onInsert(item);
             }}
           >
             <span className="cme-blackboard-bold-picker-glyph" aria-hidden="true">
@@ -6079,7 +6128,7 @@ function BlackboardBoldPickerPopover({ position, onInsert }) {
   );
 }
 
-function FrakturScriptPickerPopover({ position, onInsert }) {
+function FrakturScriptPickerPopover({ position, onInsert, items = SCRIPT_PICKER_ITEMS }) {
   const left = Math.min(Math.max(position.x - 8, 8), window.innerWidth - 356);
   const top = Math.min(position.y + 2, window.innerHeight - 348);
 
@@ -6095,7 +6144,7 @@ function FrakturScriptPickerPopover({ position, onInsert }) {
       onMouseDown={(e) => e.stopPropagation()}
     >
       <div className="cme-fraktur-script-picker-grid">
-        {FRAKTUR_SCRIPT_PICKER_ITEMS.map((item) => (
+        {items.map((item) => (
           <button
             key={item.insert}
             type="button"
@@ -6866,6 +6915,18 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
         !e.metaKey &&
         !e.altKey;
 
+      if (mode === 'math' && e.key === 'Tab') {
+        e.preventDefault();
+        const placeholderCommand = e.shiftKey ? 'moveToPreviousPlaceholder' : 'moveToNextPlaceholder';
+        if (typeof mf.executeCommand === 'function') {
+          try {
+            mf.executeCommand(placeholderCommand);
+          } catch {}
+        }
+        requestAnimationFrame(updateActiveStyles);
+        return;
+      }
+
       if (spacingMode === 'negativeThin' && isPlainTypingKey) {
         e.preventDefault();
         const typedValue =
@@ -6927,8 +6988,8 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
         writeValue(`${e.key}${readValue()}`);
       }
     };
-    mf.addEventListener('keydown', handleKeyDown);
-    return () => mf.removeEventListener('keydown', handleKeyDown);
+    mf.addEventListener('keydown', handleKeyDown, true);
+    return () => mf.removeEventListener('keydown', handleKeyDown, true);
   }, [mode, activeStyles, applyCurrentTypingStyles, updateActiveStyles, isRtlInput, numeralMode, spacingMode]);
 
 
@@ -6965,13 +7026,17 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     };
   }, [updateActiveStyles]);
 
-  const insertAtCursor = useCallback((sym) => {
+  const insertAtCursor = useCallback((sym, options = {}) => {
     const mf = popupMfRef.current;
     if (!mf) return;
 
+    const preserveMathStyle = Boolean(options.preserveMathStyle);
+    const allowSelectedFontForInsert = preserveMathStyle || (mode === 'math' && activeGroupConfig.id === 'greek');
+    const insertStyle = options.insertStyle || (allowSelectedFontForInsert ? null : DEFAULT_FONT_STYLE);
+
     const hasPlaceholders = /#(?:0|\?|@)/.test(sym);
     const currentSelection = mf.selection || mf.model?.selection;
-    const shouldAdvanceToPrimarySlot = !hasExpandedMathSelection(currentSelection);
+    const shouldAdvanceToPrimarySlot = !options.focusFirstPlaceholder && !hasExpandedMathSelection(currentSelection);
     const primarySlotAdvanceCount = shouldAdvanceToPrimarySlot
       ? countPlaceholdersBeforePrimarySlot(sym)
       : 0;
@@ -6982,6 +7047,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
         format: 'latex',
         insertionMode: 'replaceSelection',
         selectionMode: hasPlaceholders ? 'placeholder' : 'after',
+        ...(insertStyle ? { style: insertStyle } : {}),
       });
     } else {
       mf.executeCommand(['insert', sym]);
@@ -6990,8 +7056,11 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     requestAnimationFrame(() => {
       mf.focus?.();
       moveToNextMathPlaceholder(mf, primarySlotAdvanceCount);
+      if (!preserveMathStyle) {
+        applyCurrentTypingStyles(activeStyles);
+      }
     });
-  }, []);
+  }, [activeGroupConfig.id, activeStyles, applyCurrentTypingStyles, mode]);
   const insertSpacingToolAtCursor = useCallback((sym) => {
     const mf = popupMfRef.current;
     if (!mf) return;
@@ -7185,6 +7254,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                 'Blackboard Bold Picker': { cols: 1, rows: 3 },
                 'Fraktur Symbols': { cols: 1, rows: 3 },
                 'Script Symbols': { cols: 1, rows: 3 },
+                'Fraktur Picker': { cols: 1, rows: 3 },
                 'Fraktur / Script Picker': { cols: 1, rows: 3 },
                 'Hebrew Mathematical Symbols': { cols: 1, rows: 3 },
                 'Hebrew Symbol Picker': { cols: 1, rows: 3 },
@@ -7231,7 +7301,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                             : isBlackboardBoldPickerBtn
                               ? !!showBlackboardBoldPicker
                               : isFrakturScriptPickerBtn
-                                ? !!showFrakturScriptPicker
+                                ? showFrakturScriptPicker?.picker === (item.picker || 'script')
                                 : isHebrewSymbolPickerBtn
                                   ? !!showHebrewSymbolPicker
                                   : isPeriodicTablePickerBtn
@@ -7291,7 +7361,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                                   setShowHebrewSymbolPicker(null);
                                   setShowPeriodicTablePicker(null);
                                   setShowFrakturScriptPicker((prev) => (
-                                    prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                                    prev?.picker === (item.picker || 'script') ? null : { x: rect.left, y: rect.bottom + 4, picker: item.picker || 'script' }
                                   ));
                                   return;
                                 }
@@ -7353,7 +7423,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                                   requestAnimationFrame(() => popupMfRef.current?.focus?.());
                                   return;
                                 }
-                                insertAtCursor(item.insert);
+                                insertAtCursor(item.insert, { preserveMathStyle: item.preserveMathStyle, insertStyle: item.insertStyle, focusFirstPlaceholder: item.focusFirstPlaceholder });
                               }}
                             >
                               {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode })}
@@ -7815,7 +7885,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                     (isRelationMorePickerBtn && showRelationMorePicker?.picker === item.picker) ||
                     (isArrowLabelPickerBtn && !!showArrowLabelPicker) ||
                     (isBlackboardBoldPickerBtn && !!showBlackboardBoldPicker) ||
-                    (isFrakturScriptPickerBtn && !!showFrakturScriptPicker) ||
+                    (isFrakturScriptPickerBtn && showFrakturScriptPicker?.picker === (item.picker || 'script')) ||
                     (isHebrewSymbolPickerBtn && !!showHebrewSymbolPicker) ||
                     (isPeriodicTablePickerBtn && !!showPeriodicTablePicker) ||
                     (isColorBtn && activeStyles.color !== 'none');
@@ -7910,7 +7980,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           setShowHebrewSymbolPicker(null);
                           setShowPeriodicTablePicker(null);
                           setShowFrakturScriptPicker((prev) => (
-                            prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                            prev?.picker === (item.picker || 'script') ? null : { x: rect.left, y: rect.bottom + 4, picker: item.picker || 'script' }
                           ));
                         } else if (item.action === 'HEBREW_SYMBOL_PICKER') {
                           const rect = e.currentTarget.getBoundingClientRect();
@@ -8002,7 +8072,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                         } else if (item.action === 'MOVE_TEXT_DOWN') {
                           applyMoveTextAction('down');
                         } else if (item.action === 'BLACKBOARD') {
-                          insertAtCursor('\\mathbb{#0}');
+                          insertAtCursor('\\mathbb{#0}', { preserveMathStyle: true });
                         } else if (item.action === 'GREEK') {
                           insertAtCursor('\\Omega');
                         } else if (item.action === 'TILDE') {
@@ -8031,7 +8101,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                         ) {
                           insertSpacingToolAtCursor(item.insert);
                         } else {
-                          insertAtCursor(item.insert);
+                          insertAtCursor(item.insert, { preserveMathStyle: item.preserveMathStyle, insertStyle: item.insertStyle, focusFirstPlaceholder: item.focusFirstPlaceholder });
                         }
                       }}
                     >
@@ -8141,8 +8211,8 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       {showGreekItalicPicker && createPortal(
         <GreekItalicPickerPopover
           position={showGreekItalicPicker}
-          onInsert={(latex) => {
-            insertAtCursor(latex);
+          onInsert={(item) => {
+            insertAtCursor(makeGreekItalicHelveticaLatex(item.label));
             setShowGreekItalicPicker(null);
           }}
         />,
@@ -8152,8 +8222,8 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       {showBlackboardBoldPicker && createPortal(
         <BlackboardBoldPickerPopover
           position={showBlackboardBoldPicker}
-          onInsert={(latex) => {
-            insertAtCursor(latex);
+          onInsert={(item) => {
+            insertAtCursor(item.insert, { preserveMathStyle: item.preserveMathStyle, insertStyle: item.insertStyle, focusFirstPlaceholder: item.focusFirstPlaceholder });
             setShowBlackboardBoldPicker(null);
           }}
         />,
@@ -8163,6 +8233,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       {showFrakturScriptPicker && createPortal(
         <FrakturScriptPickerPopover
           position={showFrakturScriptPicker}
+          items={showFrakturScriptPicker?.picker === 'fraktur' ? FRAKTUR_PICKER_ITEMS : SCRIPT_PICKER_ITEMS}
           onInsert={(latex) => {
             insertAtCursor(latex);
             setShowFrakturScriptPicker(null);
@@ -8540,6 +8611,7 @@ function CkEditor({ value, onChange, className = '' }) {
 
   useEffect(() => () => {
     window.__ckMathWidgetClickHandler = null;
+
   }, []);
 
   const openPopup = useCallback((mode) => {

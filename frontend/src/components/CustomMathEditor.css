@@ -1254,6 +1254,7 @@
   border-radius: 10px;
   background: linear-gradient(180deg, #f8fbfe 0%, #dbe7ef 100%);
   box-shadow: 0 10px 18px rgba(59, 88, 107, 0.16);
+  
 }
 
 .cme-greek-italic-picker-grid {
@@ -1261,6 +1262,7 @@
   grid-template-columns: repeat(8, 36px);
   grid-auto-rows: 34px;
   gap: 4px;
+
 }
 
 .cme-greek-italic-picker-btn {
@@ -1275,6 +1277,7 @@
   justify-content: center;
   cursor: pointer;
   transition: background 0.12s, border-color 0.12s, box-shadow 0.12s;
+  
 }
 
 .cme-greek-italic-picker-btn:hover {
@@ -1289,8 +1292,7 @@
 }
 
 .cme-greek-italic-picker-glyph {
-  font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
-  font-size: 20px;
+  font-family: Helvetica, Arial, sans-serif;  font-size: 20px;
   font-style: italic;
   line-height: 1;
 }
@@ -1781,6 +1783,19 @@
 .cme-toolbar-glyph--greek {
   font-size: 16px;
   letter-spacing: -0.02em;
+}
+
+
+.cme-blackboard-bold-picker-glyph,
+.cme-toolbar-glyph--blackboard-bold {
+  font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+  font-weight: 800;
+  font-style: normal;
+  letter-spacing: 0;
+}
+
+.cme-toolbar-glyph--blackboard-bold {
+  font-size: 20px;
 }
 
 .cme-toolbar-glyph--chem {
