@@ -333,7 +333,7 @@ const MATH_GROUPS = [
       { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis' },
       { label: '⋯', insert: '\\cdots', title: 'Midline ellipsis' },
       { type: 'sep', cols: 3 },
-      { label: '-', insert: '-', title: 'Short dash' },
+      { label: '-', insert: '\\text{-}', title: 'Short dash' },
       { label: '–', insert: '–', title: 'Dash' },
       { label: '—', insert: '—', title: 'Long dash' },
 
@@ -342,8 +342,8 @@ const MATH_GROUPS = [
       { label: 'A←', insert: '\\xleftarrow{#0}', title: 'Left arrow with label above', icon: 'arrow-label-left-above' },
       { label: '→A', insert: '\\xrightarrow[#?]{}', title: 'Arrow with label below', icon: 'arrow-label-right-below' },
       { label: '←A', insert: '\\xleftarrow[#?]{}', title: 'Left arrow with label below', icon: 'arrow-label-left-below' },
-      { label: 'A→B', insert: '\\xrightarrow[#?]{#0}', title: 'Arrow with labels above and below', icon: 'arrow-label-right-above-below' },
-      { label: 'A←B', insert: '\\xleftarrow[#?]{#0}', title: 'Left arrow with labels above and below', icon: 'arrow-label-left-above-below' },
+      { label: 'A→B', insert: '\\xrightarrow[#?]{#0}', title: 'Arrow with labels above and below', icon: 'arrow-label-right-above-below', focusFirstPlaceholder: true },
+      { label: 'A←B', insert: '\\xleftarrow[#?]{#0}', title: 'Left arrow with labels above and below', icon: 'arrow-label-left-above-below', focusFirstPlaceholder: true },
       { label: '|', action: 'ARROW_LABEL_PICKER', title: 'More Labelled Arrows', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool arrow-label-picker-tool' },
 
       { type: 'sep', cols: 2 }, 
@@ -713,16 +713,16 @@ const ARROW_PICKER_ITEMS = [
   { label: '⥮', insert: '⥮', title: 'Upwards Harpoon with Barb Left beside Downwards Harpoon with Barb Right' },
   { label: '⥯', insert: '⥯', title: 'Downwards Harpoon with Barb Left beside Upwards Harpoon with Barb Right' },
   {
-    label: '⇄',
-    insert: '\\rightleftarrows',
+    label: '⥂', 
+    insert: '⥂',
     title: 'Rightwards Arrow over Short Leftwards Arrow',
-    preview: 'rightleft-short-left'
+    // preview: 'rightleft-short-left'
   },
   {
-    label: '→\n←',
-    insert: '\\overset{\\to}{\\longleftarrow}',
+    label: '⥄ ',
+    insert: '⥄ ',
     title: 'Short Rightwards Arrow over Leftwards Arrow',
-    preview: 'right-short-over-left-long'
+    // preview: 'right-short-over-left-long'
   },
   { label: '↕', insert: '\\updownarrow', title: 'Up Down Arrow' },
   { label: '⇕', insert: '\\Updownarrow', title: 'Double Up Down Arrow' },
@@ -744,6 +744,7 @@ const ARROW_LABEL_PICKER_ITEMS = [
     insert: '\\xleftrightarrow[#?]{#0}',
     title: 'Right Left Arrows with Under and Overscript',
     icon: 'right-left-arrows-over-under',
+    focusFirstPlaceholder: true,
   },
   {
     insert: '\\xleftrightarrows{#0}',
@@ -759,6 +760,7 @@ const ARROW_LABEL_PICKER_ITEMS = [
     insert: '\\xleftrightarrows[#?]{#0}',
     title: 'Left Arrow over Right Arrow with Under and Overscript',
     icon: 'left-right-arrows-over-under',
+    focusFirstPlaceholder: true,
   },
   {
     insert: '\\class{cme-right-left-stacked-arrows}{\\xleftrightarrows{#0}}',
@@ -774,6 +776,7 @@ const ARROW_LABEL_PICKER_ITEMS = [
     insert: '\\class{cme-right-left-stacked-arrows}{\\xleftrightarrows[#?]{#0}}',
     title: 'Right Arrow over Left Arrow with Under and Overscript',
     icon: 'right-left-stacked-arrows-over-under',
+    focusFirstPlaceholder: true,
   },
   {
     insert: '\\xleftrightharpoons{#0}',
@@ -789,6 +792,7 @@ const ARROW_LABEL_PICKER_ITEMS = [
     insert: '\\xleftrightharpoons[#?]{#0}',
     title: 'Left Harpoon over Right Harpoon with Under and Overscript',
     icon: 'left-right-harpoons-over-under',
+    focusFirstPlaceholder: true,
   },
   {
     insert: '\\xrightleftharpoons{#0}',
@@ -804,6 +808,7 @@ const ARROW_LABEL_PICKER_ITEMS = [
     insert: '\\xrightleftharpoons[#?]{#0}',
     title: 'Right Harpoon over Left Harpoon with Under and Overscript',
     icon: 'right-left-harpoons-over-under',
+    focusFirstPlaceholder: true,
   },
   {
     insert: '\\overset{#?}{\\underset{\\leftarrow}{\\rightarrow}}',
@@ -816,9 +821,10 @@ const ARROW_LABEL_PICKER_ITEMS = [
     icon: 'long-right-short-left-under',
   },
   {
-    insert: '\\overset{#?}{\\underset{#?}{\\underset{\\leftarrow}{\\rightarrow}}}',
+    insert: '\\overset{#0}{\\underset{#?}{\\underset{\\leftarrow}{\\rightarrow}}}',
     title: 'Rightwards Arrow over Short Leftwards Arrow with Under and Overscript',
     icon: 'long-right-short-left-over-under',
+    focusFirstPlaceholder: true,
   },
   {
     insert: '\\overset{#?}{\\overset{\\rightarrow}{\\leftarrow}}',
@@ -831,9 +837,10 @@ const ARROW_LABEL_PICKER_ITEMS = [
     icon: 'short-right-long-left-under',
   },
   {
-    insert: '\\overset{#?}{\\underset{#?}{\\overset{\\rightarrow}{\\leftarrow}}}',
+    insert: '\\overset{#0}{\\underset{#?}{\\overset{\\rightarrow}{\\leftarrow}}}',
     title: 'Short Rightwards Arrow over Leftwards Arrow with Under and Overscript',
     icon: 'short-right-long-left-over-under',
+    focusFirstPlaceholder: true,
   },
 ];
 
@@ -5908,8 +5915,17 @@ function ArrowGlyphIcon({ type, size = 24 }) {
 }
 
 function ArrowPickerPopover({ position, onInsert }) {
-  const left = Math.min(Math.max(position.x - 6, 8), window.innerWidth - 348);
-  const top = Math.min(position.y + 2, window.innerHeight - 148);
+  const columns = 11;
+  const rows = 3;
+  const buttonWidth = 30;
+  const buttonHeight = 30;
+  const gap = 8;
+  const paddingX = 20;
+  const paddingY = 16;
+  const popupWidth = (columns * buttonWidth) + ((columns - 1) * gap) + paddingX;
+  const popupHeight = (rows * buttonHeight) + ((rows - 1) * gap) + paddingY;
+  const left = Math.min(Math.max(position.x - 6, 8), Math.max(8, window.innerWidth - popupWidth - 8));
+  const top = Math.min(position.y + 2, Math.max(8, window.innerHeight - popupHeight - 8));
 
   const renderArrowPickerItem = (item) => {
     if (item.preview === 'rightleft-short-left') {
@@ -5980,7 +5996,15 @@ function ArrowPickerPopover({ position, onInsert }) {
       }}
       onMouseDown={(e) => e.stopPropagation()}
     >
-      <div className="cme-arrow-picker-grid">
+      <div
+        className="cme-arrow-picker-grid"
+        style={{
+          gridTemplateColumns: `repeat(${columns}, ${buttonWidth}px)`,
+          gridTemplateRows: `repeat(${rows}, ${buttonHeight}px)`,
+          gridAutoRows: `${buttonHeight}px`,
+          gap: `${gap}px`,
+        }}
+      >
         {ARROW_PICKER_ITEMS.map((item) => (
           <button
             key={`${item.insert}-${item.title || item.label}`}
@@ -6095,13 +6119,13 @@ function RelationMorePickerPopover({ position, items = [], onInsert, popupBounds
 }
 
 function ArrowLabelPickerPopover({ position, onInsert }) {
-  const columns = 4;
+  const columns = 11;
+  const rows = 2;
   const buttonWidth = 48;
   const buttonHeight = 34;
   const gap = 4;
   const paddingX = 16;
   const paddingY = 12;
-  const rows = Math.ceil(ARROW_LABEL_PICKER_ITEMS.length / columns);
   const popupWidth = (columns * buttonWidth) + ((columns - 1) * gap) + paddingX;
   const popupHeight = (rows * buttonHeight) + ((rows - 1) * gap) + paddingY;
   const left = Math.min(
@@ -6126,7 +6150,11 @@ function ArrowLabelPickerPopover({ position, onInsert }) {
     >
       <div
         className="cme-arrow-label-picker-grid"
-        style={{ gridTemplateColumns: `repeat(${columns}, ${buttonWidth}px)` }}
+        style={{
+          gridTemplateColumns: `repeat(${columns}, ${buttonWidth}px)`,
+          gridTemplateRows: `repeat(${rows}, ${buttonHeight}px)`,
+          gridAutoRows: `${buttonHeight}px`,
+        }}
       >
         {ARROW_LABEL_PICKER_ITEMS.map((item) => (
           <button
@@ -6136,7 +6164,7 @@ function ArrowLabelPickerPopover({ position, onInsert }) {
             title={item.title}
             onMouseDown={(e) => {
               e.preventDefault();
-              onInsert(item.insert);
+              onInsert(item);
             }}
           >
             {renderToolbarItemLabel(item, { groupId: 'arrows', isMathMode: true, isChemMode: false })}
@@ -8293,8 +8321,8 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       {showArrowLabelPicker && createPortal(
         <ArrowLabelPickerPopover
           position={showArrowLabelPicker}
-          onInsert={(latex) => {
-            insertAtCursor(latex);
+          onInsert={(item) => {
+            insertAtCursor(item.insert, { focusFirstPlaceholder: item.focusFirstPlaceholder });
             setShowArrowLabelPicker(null);
           }}
         />,
