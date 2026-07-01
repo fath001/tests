@@ -633,8 +633,8 @@ const RELATION_MORE_PICKERS = {
     { label: 'diff-array', insert: '\\frac{\\begin{array}{r}#?\\\\-\\,#?\\end{array}}{\\hskip10px#?}', directInsert: true, icon: 'difference-array-template-image', title: 'Column Subtraction' },
     { label: 'stack-line', insert: '\\frac{\\begin{array}{c}#?\\\\#?\\end{array}}{#?}', cls: 'template', directInsert: true, icon: 'stack-line-template-image', title: 'Stacked Line Layout' },
     { label: 'product-array', insert: '\\frac{\\begin{array}{r}#?\\\\\\times\\,#?\\end{array}}{\\hskip10px#?}', cls: 'template', directInsert: true, icon: 'product-array-template-image', title: 'Column Multiplication' },
-    { label: 'mixed-fraction', insert: '\\begin{array}{l}#?\\,\\raise{-1px}{\\left|\\kern-2px\\underline{\\;#?\\;\\,}\\right.}\\\\\\hspace{1.3em}#?\\end{array}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
-    { label: 'array-cc', insert: '\\begin{array}{rl}#?\\, & \\kern-10mu\\raise{-1px}{\\left|\\kern-2px\\underline{\\;#?\\;\\,}\\right.}\\\\#?\\, & \\kern-10mu\\;#?\\end{array}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
+    { label: 'mixed-fraction', insert: '\\begin{array}{rl}\\class{cme-mixed-fraction-whole}{#?}\\, & \\kern-10mu\\class{cme-mixed-fraction-slot}{#?}\\\\\\kern0pt & \\kern-10mu\\class{cme-mixed-fraction-denominator}{#?}\\end{array}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
+    { label: 'array-cc', insert: '\\begin{array}{rl}\\class{cme-split-fraction-left}{#?}\\, & \\kern-10mu\\class{cme-split-fraction-slot}{#?}\\\\\\class{cme-split-fraction-left}{#?}\\, & \\kern-10mu\\class{cme-split-fraction-denominator}{#?}\\end{array}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
     { label: 'division-remainder', insert: '\\raise{-2px}{#?}\\, ) \\!\\!\\!\\!\\! \\begin{array}{l}\\overset{\\displaystyle\\hskip4px#?}{\\raise{-2px}{\\overline{\\vphantom{1}\\;\\;\\raise{-2px}{#?}\\;}}}\\\\\\;\\;\\raise{-2px}{#?}\\;\\end{array}', cls: 'template', cls: 'template', directInsert: true, icon: 'division-remainder-template-image', title: 'Division With Remainder' },
   ],
 };
@@ -1393,6 +1393,135 @@ function moveToNextMathPlaceholder(mathfield, count) {
     }
   }
 }
+
+const MIXED_FRACTION_SLOT_CLASSES = [
+  'cme-mixed-fraction-whole',
+  'cme-mixed-fraction-slot',
+  'cme-mixed-fraction-denominator',
+];
+
+function getMathAtomClassNames(atom) {
+  const classText = atom?.args?.[0] || (Array.isArray(atom?.classes) ? atom.classes.join(' ') : '');
+  return typeof classText === 'string' ? classText.split(/\s+/).filter(Boolean) : [];
+}
+
+function findAncestorWithMathClass(atom, classNames) {
+  let current = atom;
+  while (current) {
+    const currentClasses = getMathAtomClassNames(current);
+    if (currentClasses.some((className) => classNames.includes(className))) return current;
+    current = current.parent;
+  }
+  return null;
+}
+
+function findImmediateChildByMathClass(atoms = [], className) {
+  return atoms.find((atom) => getMathAtomClassNames(atom).includes(className)) || null;
+}
+
+function getMixedFractionSlotAtoms(arrayAtom) {
+  if (!arrayAtom || arrayAtom.type !== 'array') return null;
+
+  const slots = MIXED_FRACTION_SLOT_CLASSES.map((slotClass) => {
+    for (let row = 0; row < arrayAtom.rowCount; row += 1) {
+      for (let col = 0; col < arrayAtom.colCount; col += 1) {
+        const slotAtom = findImmediateChildByMathClass(arrayAtom.branch([row, col]), slotClass);
+        if (slotAtom) return slotAtom;
+      }
+    }
+    return null;
+  });
+
+  return slots.every(Boolean) ? slots : null;
+}
+
+function findAncestorMixedFractionArray(atom) {
+  let current = atom;
+  while (current) {
+    if (current.type === 'array' && getMixedFractionSlotAtoms(current)) return current;
+    current = current.parent;
+  }
+  return null;
+}
+
+function selectMixedFractionSlot(mathfield, slotAtom) {
+  const model = mathfield?.model;
+  const body = slotAtom?.body || [];
+  if (!model || !slotAtom || !Array.isArray(body)) return false;
+
+  const contentAtoms = body.filter((atom) => atom.type !== 'first');
+  const placeholder = contentAtoms.find((atom) => atom.type === 'placeholder');
+
+  if (placeholder) {
+    const placeholderOffset = model.offsetOf(placeholder);
+    if (placeholderOffset >= 0) {
+      if (typeof model.setPositionHandlingPlaceholder === 'function') {
+        model.setPositionHandlingPlaceholder(placeholderOffset);
+      } else {
+        model.setSelection(placeholderOffset - 1, placeholderOffset);
+      }
+      mathfield.focus?.();
+      return true;
+    }
+  }
+
+  if (contentAtoms.length > 0) {
+    const first = contentAtoms[0];
+    const last = contentAtoms[contentAtoms.length - 1];
+    const selectionStartAtom = first.leftSibling || first;
+    const startOffset = model.offsetOf(selectionStartAtom);
+    const endOffset = model.offsetOf(last);
+    if (startOffset >= 0 && endOffset >= 0) {
+      model.setSelection(startOffset, endOffset);
+      mathfield.focus?.();
+      return true;
+    }
+  }
+
+  const firstAtom = body.find((atom) => atom.type === 'first');
+  const firstOffset = model.offsetOf(firstAtom);
+  if (firstOffset >= 0) {
+    model.position = firstOffset;
+    mathfield.focus?.();
+    return true;
+  }
+
+  return false;
+}
+
+function moveWithinMixedFractionSlots(mathfield, isBackward = false) {
+  const model = mathfield?.model;
+  if (!model) return false;
+
+  const anchor = Number.isFinite(model.anchor) ? model.anchor : model.position;
+  const position = Number.isFinite(model.position) ? model.position : anchor;
+  const candidateAtoms = [
+    model.at(Math.max(anchor, position)),
+    model.at(Math.min(anchor, position)),
+    model.at(position - 1),
+    model.at(position + 1),
+  ].filter(Boolean);
+
+  const currentSlot = candidateAtoms
+    .map((atom) => findAncestorWithMathClass(atom, MIXED_FRACTION_SLOT_CLASSES))
+    .find(Boolean);
+  const currentSlotArray = currentSlot?.parent?.type === 'array'
+    ? currentSlot.parent
+    : findAncestorMixedFractionArray(currentSlot);
+  const arrayAtom = currentSlotArray || candidateAtoms
+    .map((atom) => findAncestorMixedFractionArray(atom))
+    .find(Boolean);
+  const slots = getMixedFractionSlotAtoms(arrayAtom);
+  if (!slots) return false;
+
+  const currentIndex = currentSlot ? slots.findIndex((slotAtom) => slotAtom === currentSlot) : -1;
+  const nextIndex = currentIndex >= 0
+    ? (currentIndex + (isBackward ? -1 : 1) + slots.length) % slots.length
+    : (isBackward ? slots.length - 1 : 0);
+
+  return selectMixedFractionSlot(mathfield, slots[nextIndex]);
+}
+
 const ORDERED_MATH_GROUPS = [
   {
     id: 'roots-main', 
@@ -1868,6 +1997,106 @@ const MATH_FIELD_SHADOW_CSS = `
   background: currentColor;
   clip-path: polygon(0 100%, 50% 0, 100% 100%, calc(100% - 0.08em) 100%, 50% 0.16em, 0.08em 100%);
   pointer-events: none;
+}
+.cme-mixed-fraction-whole,
+.cme-mixed-fraction-slot,
+.cme-mixed-fraction-denominator {
+  display: inline-block;
+  position: relative;
+  min-width: 0.9em;
+  padding-right: 0.22em;
+  padding-left: 0.42em;
+  line-height: 1.05;
+  text-align: center;
+  box-sizing: content-box;
+}
+
+.cme-mixed-fraction-slot {
+  padding-top: 0.02em;
+  padding-bottom: 0.16em;
+}
+
+.cme-mixed-fraction-denominator {
+  padding-top: 0.12em;
+  padding-bottom: 0;
+}
+
+.cme-mixed-fraction-slot::before,
+.cme-mixed-fraction-slot::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  pointer-events: none;
+}
+
+.cme-mixed-fraction-slot::before {
+  left: 0.1em;
+  top: -0.38em;
+  bottom: 0.05em;
+  width: 0.06em;
+  border-radius: 999px;
+}
+
+.cme-mixed-fraction-slot::after {
+  left: 0.1em;
+  right: 0.02em;
+  bottom: 0.05em;
+  height: 0.06em;
+  border-radius: 999px;
+}
+.cme-split-fraction-left {
+  display: inline-block;
+  min-width: 0.9em;
+  padding-right: 0.12em;
+  line-height: 1.05;
+  text-align: right;
+  box-sizing: content-box;
+}
+
+.cme-split-fraction-slot,
+.cme-split-fraction-denominator {
+  display: inline-block;
+  position: relative;
+  min-width: 0.9em;
+  padding-right: 0.22em;
+  padding-left: 0.42em;
+  line-height: 1.05;
+  text-align: center;
+  box-sizing: content-box;
+}
+
+.cme-split-fraction-slot {
+  padding-top: 0.02em;
+  padding-bottom: 0.16em;
+}
+
+.cme-split-fraction-denominator {
+  padding-top: 0.12em;
+  padding-bottom: 0;
+}
+
+.cme-split-fraction-slot::before,
+.cme-split-fraction-slot::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  pointer-events: none;
+}
+
+.cme-split-fraction-slot::before {
+  left: 0.1em;
+  top: -0.38em;
+  bottom: 0.05em;
+  width: 0.06em;
+  border-radius: 999px;
+}
+
+.cme-split-fraction-slot::after {
+  left: 0.1em;
+  right: 0.02em;
+  bottom: 0.05em;
+  height: 0.06em;
+  border-radius: 999px;
 }
 .cme-vmatrix-template {
   display: inline-block;
@@ -7434,11 +7663,13 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
 
       if (mode === 'math' && e.key === 'Tab') {
         e.preventDefault();
-        const placeholderCommand = e.shiftKey ? 'moveToPreviousPlaceholder' : 'moveToNextPlaceholder';
-        if (typeof mf.executeCommand === 'function') {
-          try {
-            mf.executeCommand(placeholderCommand);
-          } catch {}
+        if (!moveWithinMixedFractionSlots(mf, e.shiftKey)) {
+          const placeholderCommand = e.shiftKey ? 'moveToPreviousPlaceholder' : 'moveToNextPlaceholder';
+          if (typeof mf.executeCommand === 'function') {
+            try {
+              mf.executeCommand(placeholderCommand);
+            } catch {}
+          }
         }
         requestAnimationFrame(updateActiveStyles);
         return;

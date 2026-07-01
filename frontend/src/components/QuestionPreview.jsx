@@ -105,6 +105,106 @@ const MATH_FIELD_SHADOW_CSS = `
   transform-origin: center;
 }
 
+.cme-mixed-fraction-whole,
+.cme-mixed-fraction-slot,
+.cme-mixed-fraction-denominator {
+  display: inline-block;
+  position: relative;
+  min-width: 0.9em;
+  padding-right: 0.22em;
+  padding-left: 0.42em;
+  line-height: 1.05;
+  text-align: center;
+  box-sizing: content-box;
+}
+
+.cme-mixed-fraction-slot {
+  padding-top: 0.02em;
+  padding-bottom: 0.16em;
+}
+
+.cme-mixed-fraction-denominator {
+  padding-top: 0.12em;
+  padding-bottom: 0;
+}
+
+.cme-mixed-fraction-slot::before,
+.cme-mixed-fraction-slot::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  pointer-events: none;
+}
+
+.cme-mixed-fraction-slot::before {
+  left: 0.1em;
+  top: -0.38em;
+  bottom: 0.05em;
+  width: 0.06em;
+  border-radius: 999px;
+}
+
+.cme-mixed-fraction-slot::after {
+  left: 0.1em;
+  right: 0.02em;
+  bottom: 0.05em;
+  height: 0.06em;
+  border-radius: 999px;
+}
+.cme-split-fraction-left {
+  display: inline-block;
+  min-width: 0.9em;
+  padding-right: 0.12em;
+  line-height: 1.05;
+  text-align: right;
+  box-sizing: content-box;
+}
+
+.cme-split-fraction-slot,
+.cme-split-fraction-denominator {
+  display: inline-block;
+  position: relative;
+  min-width: 0.9em;
+  padding-right: 0.22em;
+  padding-left: 0.42em;
+  line-height: 1.05;
+  text-align: center;
+  box-sizing: content-box;
+}
+
+.cme-split-fraction-slot {
+  padding-top: 0.02em;
+  padding-bottom: 0.16em;
+}
+
+.cme-split-fraction-denominator {
+  padding-top: 0.12em;
+  padding-bottom: 0;
+}
+
+.cme-split-fraction-slot::before,
+.cme-split-fraction-slot::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  pointer-events: none;
+}
+
+.cme-split-fraction-slot::before {
+  left: 0.1em;
+  top: -0.38em;
+  bottom: 0.05em;
+  width: 0.06em;
+  border-radius: 999px;
+}
+
+.cme-split-fraction-slot::after {
+  left: 0.1em;
+  right: 0.02em;
+  bottom: 0.05em;
+  height: 0.06em;
+  border-radius: 999px;
+}
 .cme-vmatrix-template {
   display: inline-block;
   position: relative;
