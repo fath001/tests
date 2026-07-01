@@ -536,7 +536,7 @@ const MATH_GROUPS = [
       { label: '⋰', insert: '⋰', title: 'Up-right diagonal ellipsis', icon: 'upright-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis', icon: 'downright-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { type: 'sep', cols: 2 },
-      {label: 'sum-array',insert: '\\frac{\\begin{array}{r}#?\\\\+\\,#?\\end{array}}{\\hskip10px#?}',cls: 'template matrix-roomy-template matrix-tall-template',directInsert: true,icon: 'sum-array-template-image',title: 'Column Addition'},     
+      {label: 'sum-array',insert: '\\frac{\\begin{array}{r}\\class{cme-column-layout-slot-1}{#0}\\\\+\\,\\class{cme-column-layout-slot-2}{#?}\\end{array}}{\\hskip10px\\class{cme-column-layout-slot-3}{#?}}',cls: 'template matrix-roomy-template matrix-tall-template',directInsert: true, focusSlotGroup: 'column-layout',icon: 'sum-array-template-image',title: 'Column Addition'},     
       { label: 'division', insert: '\\raise{-2px}{#?}\\, ) \\!\\!\\!\\!\\! \\overset{\\displaystyle\\kern11px#?}{\\kern5px\\raise{-2px}{\\overline{\\vphantom{1}\\;\\;\\kern3px\\raise{-2px}{#?}\\;}}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
       makeRelationMorePicker('arithmeticLayoutExtras', 'More Arithmetic Layouts'),
     ]
@@ -630,10 +630,10 @@ const RELATION_MORE_PICKERS = {
     { label: '?\n?', insert: '\\enclose{verticalstrike}{\\htmlStyle{text-decoration:line-through;text-decoration-skip-ink:none;}{#0}}', cls: 'template', directInsert: true, title: 'Vertical and Horizontal Strike', icon: 'crosshair-strike-template-image' },
   ],
   arithmeticLayoutExtras: [
-    { label: 'diff-array', insert: '\\frac{\\begin{array}{r}#?\\\\-\\,#?\\end{array}}{\\hskip10px#?}', directInsert: true, icon: 'difference-array-template-image', title: 'Column Subtraction' },
-    { label: 'stack-line', insert: '\\frac{\\begin{array}{c}#?\\\\#?\\end{array}}{#?}', cls: 'template', directInsert: true, icon: 'stack-line-template-image', title: 'Stacked Line Layout' },
-    { label: 'product-array', insert: '\\frac{\\begin{array}{r}#?\\\\\\times\\,#?\\end{array}}{\\hskip10px#?}', cls: 'template', directInsert: true, icon: 'product-array-template-image', title: 'Column Multiplication' },
-    { label: 'mixed-fraction', insert: '\\begin{array}{rl}\\class{cme-mixed-fraction-whole}{#?}\\, & \\kern-10mu\\class{cme-mixed-fraction-slot}{#?}\\\\\\kern0pt & \\kern-10mu\\class{cme-mixed-fraction-denominator}{#?}\\end{array}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
+    { label: 'diff-array', insert: '\\frac{\\begin{array}{r}\\class{cme-column-layout-slot-1}{#0}\\\\-\\,\\class{cme-column-layout-slot-2}{#?}\\end{array}}{\\hskip10px\\class{cme-column-layout-slot-3}{#?}}', directInsert: true, focusSlotGroup: 'column-layout', icon: 'difference-array-template-image', title: 'Column Subtraction' },
+    { label: 'stack-line', insert: '\\frac{\\begin{array}{c}\\class{cme-column-layout-slot-1}{#0}\\\\\\class{cme-column-layout-slot-2}{#?}\\end{array}}{\\class{cme-column-layout-slot-3}{#?}}', cls: 'template', directInsert: true, focusSlotGroup: 'column-layout', icon: 'stack-line-template-image', title: 'Stacked Line Layout' },
+    { label: 'product-array', insert: '\\frac{\\begin{array}{r}\\class{cme-column-layout-slot-1}{#0}\\\\\\times\\,\\class{cme-column-layout-slot-2}{#?}\\end{array}}{\\hskip10px\\class{cme-column-layout-slot-3}{#?}}', cls: 'template', directInsert: true, focusSlotGroup: 'column-layout', icon: 'product-array-template-image', title: 'Column Multiplication' },
+    { label: 'mixed-fraction', insert: '\\begin{array}{@{\\hspace{3px}}rl}\\class{cme-mixed-fraction-whole}{#?}\\, & \\kern-10mu\\class{cme-mixed-fraction-slot}{#?}\\\\\\kern0pt & \\kern-10mu\\class{cme-mixed-fraction-denominator}{#?}\\end{array}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
     { label: 'array-cc', insert: '\\begin{array}{rl}\\class{cme-split-fraction-left}{#?}\\, & \\kern-10mu\\class{cme-split-fraction-slot}{#?}\\\\\\class{cme-split-fraction-left}{#?}\\, & \\kern-10mu\\class{cme-split-fraction-denominator}{#?}\\end{array}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
     { label: 'division-remainder', insert: '\\raise{-2px}{#?}\\, ) \\!\\!\\!\\!\\! \\begin{array}{l}\\overset{\\displaystyle\\hskip4px#?}{\\raise{-2px}{\\overline{\\vphantom{1}\\;\\;\\raise{-2px}{#?}\\;}}}\\\\\\;\\;\\raise{-2px}{#?}\\;\\end{array}', cls: 'template', cls: 'template', directInsert: true, icon: 'division-remainder-template-image', title: 'Division With Remainder' },
   ],
@@ -1400,6 +1400,16 @@ const MIXED_FRACTION_SLOT_CLASSES = [
   'cme-mixed-fraction-denominator',
 ];
 
+const COLUMN_LAYOUT_SLOT_CLASSES = [
+  'cme-column-layout-slot-1',
+  'cme-column-layout-slot-2',
+  'cme-column-layout-slot-3',
+];
+
+const TEMPLATE_SLOT_CLASS_GROUPS = {
+  'column-layout': COLUMN_LAYOUT_SLOT_CLASSES,
+};
+
 function getMathAtomClassNames(atom) {
   const classText = atom?.args?.[0] || (Array.isArray(atom?.classes) ? atom.classes.join(' ') : '');
   return typeof classText === 'string' ? classText.split(/\s+/).filter(Boolean) : [];
@@ -1417,6 +1427,88 @@ function findAncestorWithMathClass(atom, classNames) {
 
 function findImmediateChildByMathClass(atoms = [], className) {
   return atoms.find((atom) => getMathAtomClassNames(atom).includes(className)) || null;
+}
+function getTemplateSlotClasses(slotGroup) {
+  return TEMPLATE_SLOT_CLASS_GROUPS[slotGroup] || null;
+}
+
+function getMathModelCandidateAtoms(model) {
+  const anchor = Number.isFinite(model?.anchor) ? model.anchor : model?.position;
+  const position = Number.isFinite(model?.position) ? model.position : anchor;
+  if (!Number.isFinite(position)) return [];
+
+  return [
+    model.at(Math.max(anchor, position)),
+    model.at(Math.min(anchor, position)),
+    model.at(position - 1),
+    model.at(position + 1),
+  ].filter(Boolean);
+}
+
+function isAtomDescendantOf(atom, ancestor) {
+  let current = atom;
+  while (current) {
+    if (current === ancestor) return true;
+    current = current.parent;
+  }
+  return false;
+}
+
+function getTemplateSlotAtomsInContainer(model, containerAtom, slotClasses) {
+  if (!model || !containerAtom || !Array.isArray(slotClasses)) return null;
+  const atoms = Array.isArray(model.atoms) ? model.atoms : [];
+  const slots = slotClasses.map((slotClass) => atoms.find((atom) => (
+    getMathAtomClassNames(atom).includes(slotClass) && isAtomDescendantOf(atom, containerAtom)
+  )) || null);
+
+  return slots.every(Boolean) ? slots : null;
+}
+
+function findTemplateSlotContext(model, slotClasses) {
+  const candidateAtoms = getMathModelCandidateAtoms(model);
+  const currentSlot = candidateAtoms
+    .map((atom) => findAncestorWithMathClass(atom, slotClasses))
+    .find(Boolean) || null;
+  const searchAtoms = currentSlot ? [currentSlot, ...candidateAtoms] : candidateAtoms;
+
+  for (const atom of searchAtoms) {
+    let current = atom;
+    while (current) {
+      const slots = getTemplateSlotAtomsInContainer(model, current, slotClasses);
+      if (slots) return { currentSlot, slots };
+      current = current.parent;
+    }
+  }
+
+  return null;
+}
+
+function moveWithinTemplateSlotGroup(mathfield, slotClasses, isBackward = false) {
+  const model = mathfield?.model;
+  if (!model || !Array.isArray(slotClasses)) return false;
+
+  const context = findTemplateSlotContext(model, slotClasses);
+  if (!context) return false;
+
+  const currentIndex = context.currentSlot
+    ? context.slots.findIndex((slotAtom) => slotAtom === context.currentSlot)
+    : -1;
+  const nextIndex = currentIndex >= 0
+    ? (currentIndex + (isBackward ? -1 : 1) + context.slots.length) % context.slots.length
+    : (isBackward ? context.slots.length - 1 : 0);
+
+  return selectMixedFractionSlot(mathfield, context.slots[nextIndex]);
+}
+
+function focusTemplateSlotGroup(mathfield, slotClasses, slotIndex = 0) {
+  const model = mathfield?.model;
+  if (!model || !Array.isArray(slotClasses)) return false;
+
+  const context = findTemplateSlotContext(model, slotClasses);
+  if (!context) return false;
+
+  const targetSlot = context.slots[Math.min(Math.max(slotIndex, 0), context.slots.length - 1)];
+  return selectMixedFractionSlot(mathfield, targetSlot);
 }
 
 function getMixedFractionSlotAtoms(arrayAtom) {
@@ -6668,7 +6760,7 @@ function RelationMorePickerPopover({ position, items = [], onInsert, popupBounds
             }}
             onMouseDown={(e) => {
               e.preventDefault();
-              onInsert(item.insert);
+              onInsert(item);
             }}
           >
             {renderToolbarItemLabel(item, { groupId: 'relations', isMathMode: true, isChemMode: false })}
@@ -7663,7 +7755,10 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
 
       if (mode === 'math' && e.key === 'Tab') {
         e.preventDefault();
-        if (!moveWithinMixedFractionSlots(mf, e.shiftKey)) {
+        if (
+          !moveWithinMixedFractionSlots(mf, e.shiftKey) &&
+          !moveWithinTemplateSlotGroup(mf, COLUMN_LAYOUT_SLOT_CLASSES, e.shiftKey)
+        ) {
           const placeholderCommand = e.shiftKey ? 'moveToPreviousPlaceholder' : 'moveToNextPlaceholder';
           if (typeof mf.executeCommand === 'function') {
             try {
@@ -7788,6 +7883,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     const primarySlotAdvanceCount = shouldAdvanceToPrimarySlot
       ? countPlaceholdersBeforePrimarySlot(sym)
       : 0;
+    const focusSlotClasses = getTemplateSlotClasses(options.focusSlotGroup);
 
     mf.focus();
     if (typeof mf.insert === 'function') {
@@ -7803,7 +7899,10 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
 
     requestAnimationFrame(() => {
       mf.focus?.();
-      moveToNextMathPlaceholder(mf, primarySlotAdvanceCount);
+      const didFocusTemplateSlot = focusSlotClasses ? focusTemplateSlotGroup(mf, focusSlotClasses, 0) : false;
+      if (!didFocusTemplateSlot) {
+        moveToNextMathPlaceholder(mf, primarySlotAdvanceCount);
+      }
       if (!preserveMathStyle) {
         applyCurrentTypingStyles(activeStyles);
       }
@@ -8162,7 +8261,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                                   requestAnimationFrame(() => popupMfRef.current?.focus?.());
                                   return;
                                 }
-                                insertAtCursor(item.insert, { preserveMathStyle: item.preserveMathStyle, insertStyle: item.insertStyle, focusFirstPlaceholder: item.focusFirstPlaceholder });
+                                insertAtCursor(item.insert, { preserveMathStyle: item.preserveMathStyle, insertStyle: item.insertStyle, focusFirstPlaceholder: item.focusFirstPlaceholder, focusSlotGroup: item.focusSlotGroup });
                               }}
                             >
                               {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode })}
@@ -8840,7 +8939,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                         ) {
                           insertSpacingToolAtCursor(item.insert);
                         } else {
-                          insertAtCursor(item.insert, { preserveMathStyle: item.preserveMathStyle, insertStyle: item.insertStyle, focusFirstPlaceholder: item.focusFirstPlaceholder });
+                          insertAtCursor(item.insert, { preserveMathStyle: item.preserveMathStyle, insertStyle: item.insertStyle, focusFirstPlaceholder: item.focusFirstPlaceholder, focusSlotGroup: item.focusSlotGroup });
                         }
                       }}
                     >
@@ -8928,8 +9027,14 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           picker={showRelationMorePicker.picker}
           popupBounds={popupRef.current?.getBoundingClientRect?.() || null}
           items={RELATION_MORE_PICKERS[showRelationMorePicker.picker] || []}
-          onInsert={(latex) => {
-            insertAtCursor(latex);
+          onInsert={(item) => {
+            const insert = typeof item === 'string' ? item : item.insert;
+            insertAtCursor(insert, {
+              preserveMathStyle: item?.preserveMathStyle,
+              insertStyle: item?.insertStyle,
+              focusFirstPlaceholder: item?.focusFirstPlaceholder,
+              focusSlotGroup: item?.focusSlotGroup,
+            });
             setShowRelationMorePicker(null);
           }}
         />,
@@ -8940,7 +9045,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
         <ArrowLabelPickerPopover
           position={showArrowLabelPicker}
           onInsert={(item) => {
-            insertAtCursor(item.insert, { focusFirstPlaceholder: item.focusFirstPlaceholder });
+            insertAtCursor(item.insert, { focusFirstPlaceholder: item.focusFirstPlaceholder, focusSlotGroup: item.focusSlotGroup });
             setShowArrowLabelPicker(null);
           }}
         />,
@@ -8962,7 +9067,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
         <BlackboardBoldPickerPopover
           position={showBlackboardBoldPicker}
           onInsert={(item) => {
-            insertAtCursor(item.insert, { preserveMathStyle: item.preserveMathStyle, insertStyle: item.insertStyle, focusFirstPlaceholder: item.focusFirstPlaceholder });
+            insertAtCursor(item.insert, { preserveMathStyle: item.preserveMathStyle, insertStyle: item.insertStyle, focusFirstPlaceholder: item.focusFirstPlaceholder, focusSlotGroup: item.focusSlotGroup });
             setShowBlackboardBoldPicker(null);
           }}
         />,
