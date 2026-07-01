@@ -102,6 +102,56 @@ const MATH_FIELD_SHADOW_CSS = `
   transform-origin: center;
 }
 
+.cme-two-row-matrix-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+  padding-left: 0.72em;
+  padding-right: 0.72em;
+}
+
+.cme-two-row-matrix-template .ML__arraycolsep {
+  width: 0.16em !important;
+}
+
+.cme-bmatrix-two-row-template::before,
+.cme-bmatrix-two-row-template::after,
+.cme-pmatrix-two-row-template::before,
+.cme-pmatrix-two-row-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  height: 2.75em;
+  background: currentColor;
+  pointer-events: none;
+}
+
+.cme-bmatrix-two-row-template::before,
+.cme-bmatrix-two-row-template::after {
+  width: 0.55em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M12 6 H3 V66 H12' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M12 6 H3 V66 H12' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-pmatrix-two-row-template::before,
+.cme-pmatrix-two-row-template::after {
+  width: 0.58em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 72'%3E%3Cpath d='M16 6 C6 18 6 54 16 66' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 72'%3E%3Cpath d='M16 6 C6 18 6 54 16 66' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-bmatrix-two-row-template::before,
+.cme-pmatrix-two-row-template::before {
+  left: 0.04em;
+  transform: translateY(-50%);
+}
+
+.cme-bmatrix-two-row-template::after,
+.cme-pmatrix-two-row-template::after {
+  right: 0.04em;
+  transform: translateY(-50%) scaleX(-1);
+}
 .cme-cases-left-template,
 .cme-cases-right-template {
   display: inline-block;
