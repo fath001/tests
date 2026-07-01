@@ -536,8 +536,8 @@ const MATH_GROUPS = [
       { label: '⋰', insert: '⋰', title: 'Up-right diagonal ellipsis', icon: 'upright-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis', icon: 'downright-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { type: 'sep', cols: 2 },
-      {label: 'sum-array',insert: '\\frac{\\begin{array}{r}#?\\\\+\\,#?\\end{array}}{\\quad#?}',cls: 'template matrix-roomy-template matrix-tall-template',directInsert: true,icon: 'sum-array-template-image',title: 'Column Addition'},     
-      { label: 'division', insert: '\\overset{#?}{\\overline{#?\\big)#?}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
+      {label: 'sum-array',insert: '\\frac{\\begin{array}{r}#?\\\\+\\,#?\\end{array}}{\\hskip10px#?}',cls: 'template matrix-roomy-template matrix-tall-template',directInsert: true,icon: 'sum-array-template-image',title: 'Column Addition'},     
+      { label: 'division', insert: '\\raise{-2px}{#?}\\, ) \\!\\!\\!\\!\\! \\overset{\\displaystyle\\kern11px#?}{\\kern5px\\raise{-2px}{\\overline{\\vphantom{1}\\;\\;\\kern3px\\raise{-2px}{#?}\\;}}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
       makeRelationMorePicker('arithmeticLayoutExtras', 'More Arithmetic Layouts'),
     ]
   },
@@ -630,12 +630,12 @@ const RELATION_MORE_PICKERS = {
     { label: '?\n?', insert: '\\enclose{verticalstrike}{\\htmlStyle{text-decoration:line-through;text-decoration-skip-ink:none;}{#0}}', cls: 'template', directInsert: true, title: 'Vertical and Horizontal Strike', icon: 'crosshair-strike-template-image' },
   ],
   arithmeticLayoutExtras: [
-    { label: 'diff-array', insert: '\\frac{\\begin{array}{r}#?\\\\-\\,#?\\end{array}}{\\quad#?}', directInsert: true, icon: 'difference-array-template-image', title: 'Column Subtraction' },
+    { label: 'diff-array', insert: '\\frac{\\begin{array}{r}#?\\\\-\\,#?\\end{array}}{\\hskip10px#?}', directInsert: true, icon: 'difference-array-template-image', title: 'Column Subtraction' },
     { label: 'stack-line', insert: '\\frac{\\begin{array}{c}#?\\\\#?\\end{array}}{#?}', cls: 'template', directInsert: true, icon: 'stack-line-template-image', title: 'Stacked Line Layout' },
-    { label: 'product-array', insert: '\\frac{\\begin{array}{r}#?\\\\\\times\\,#?\\end{array}}{\\quad#?}', cls: 'template', directInsert: true, icon: 'product-array-template-image', title: 'Column Multiplication' },
-    { label: 'mixed-fraction', insert: '\\begin{array}{r@{}l} #?\\, & \\begin{array}{|@{}l} \\underline{\\;#?\\;\\,} \\end{array} \\\\ & \\; #? \\end{array}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
-    { label: 'array-cc', insert: '\\begin{array}{r@{}l} #?\\, & \\begin{array}{|@{}l} \\underline{\\;#?\\;\\,} \\end{array} \\\\ #?\\, & \\; #? \\end{array}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
-    { label: 'division-remainder', insert: '#?\\, ) \\!\\!\\!\\!\\! \\begin{array}\\overset{\\displaystyle #?}{\\overline{\\vphantom{1}\\;\\;#?\\;}} \\\\ \\;\\;#?\\; \\end{array}', cls: 'template', directInsert: true, icon: 'division-remainder-template-image', title: 'Division With Remainder' },
+    { label: 'product-array', insert: '\\frac{\\begin{array}{r}#?\\\\\\times\\,#?\\end{array}}{\\hskip10px#?}', cls: 'template', directInsert: true, icon: 'product-array-template-image', title: 'Column Multiplication' },
+    { label: 'mixed-fraction', insert: '\\begin{array}{l}#?\\,\\raise{-1px}{\\left|\\kern-2px\\underline{\\;#?\\;\\,}\\right.}\\\\\\hspace{1.3em}#?\\end{array}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
+    { label: 'array-cc', insert: '\\begin{array}{rl}#?\\, & \\kern-10mu\\raise{-1px}{\\left|\\kern-2px\\underline{\\;#?\\;\\,}\\right.}\\\\#?\\, & \\kern-10mu\\;#?\\end{array}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
+    { label: 'division-remainder', insert: '\\raise{-2px}{#?}\\, ) \\!\\!\\!\\!\\! \\begin{array}{l}\\overset{\\displaystyle\\hskip4px#?}{\\raise{-2px}{\\overline{\\vphantom{1}\\;\\;\\raise{-2px}{#?}\\;}}}\\\\\\;\\;\\raise{-2px}{#?}\\;\\end{array}', cls: 'template', cls: 'template', directInsert: true, icon: 'division-remainder-template-image', title: 'Division With Remainder' },
   ],
 };
 
