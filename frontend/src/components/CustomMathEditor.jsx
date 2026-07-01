@@ -38,6 +38,37 @@ function hasExpandedMathSelection(selection) {
   );
 }
 
+const MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT =
+  "\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}";
+const MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT =
+  "\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}";
+
+function buildMatrixInsertLatex(type, rows, cols) {
+  if (cols === 1) {
+    const body = Array.from({ length: rows }, () => "#?").join(" \\\\ ");
+    switch (type) {
+      case "bmatrix":
+        return `\\begin{bmatrix}${body}\\end{bmatrix}`;
+      case "pmatrix":
+        return `\\begin{pmatrix}${body}\\end{pmatrix}`;
+      case "vmatrix":
+        return `\\begin{vmatrix}${body}\\end{vmatrix}`;
+      default:
+        return `\\begin{${type}}${body}\\end{${type}}`;
+    }
+  }
+
+  let latex = `\\begin{${type}}`;
+  for (let i = 0; i < rows; i += 1) {
+    for (let j = 0; j < cols; j += 1) {
+      latex += "#?";
+      if (j < cols - 1) latex += " & ";
+    }
+    if (i < rows - 1) latex += "\\\\";
+  }
+  return `${latex}\\end{${type}}`;
+}
+
 function countPlaceholdersBeforePrimarySlot(template) {
   if (!template || !template.includes("#0")) return 0;
 
@@ -416,9 +447,9 @@ const MATH_GROUPS = [
       { label: "()", insert: "pmatrix", cls: "template" },
       { label: "||", insert: "vmatrix", cls: "template" },
       { label: "3 column row", insert: "\\begin{matrix} #? & #? & #? \\end{matrix}", cls: "template", directInsert: true },
-      { label: "2 row column []", insert: "\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}", cls: "template", directInsert: true },
+      { label: "2 row column []", insert: MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT, cls: "template", directInsert: true },
       { label: "2 column row []", insert: "\\begin{bmatrix} #? & #? \\end{bmatrix}", cls: "template", directInsert: true },
-      { label: "2 row column ()", insert: "\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}", cls: "template", directInsert: true },
+      { label: "2 row column ()", insert: MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT, cls: "template", directInsert: true },
       { label: "2 column row ()", insert: "\\begin{pmatrix} #? & #? \\end{pmatrix}", cls: "template", directInsert: true },
     ],
   },
@@ -843,16 +874,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
     });
   }, []);
   const handleMatrixInsert = useCallback((type, rows, cols) => {
-    let latex = `\\begin{${type}} `;
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        latex += '#?';
-        if (j < cols - 1) latex += ' & ';
-      }
-      if (i < rows - 1) latex += ' \\\\ ';
-    }
-    latex += ` \\end{${type}}`;
-    insertAtCursor(latex);
+    insertAtCursor(buildMatrixInsertLatex(type, rows, cols));
   }, [insertAtCursor]);
 
   const toggleEditor = (newMode) => {

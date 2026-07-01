@@ -177,6 +177,37 @@ function bindWidgetClickTarget(editor, container) {
   container.addEventListener('click', onPointerDown, true);
 }
 
+const MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT =
+  '\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}';
+const MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT =
+  '\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}';
+
+function buildMatrixInsertLatex(type, rows, cols) {
+  if (cols === 1) {
+    const body = Array.from({ length: rows }, () => '#?').join(' \\\\ ');
+    switch (type) {
+      case 'bmatrix':
+        return `\\begin{bmatrix}${body}\\end{bmatrix}`;
+      case 'pmatrix':
+        return `\\begin{pmatrix}${body}\\end{pmatrix}`;
+      case 'vmatrix':
+        return `\\begin{vmatrix}${body}\\end{vmatrix}`;
+      default:
+        return `\\begin{${type}}${body}\\end{${type}}`;
+    }
+  }
+
+  let latex = `\\begin{${type}}`;
+  for (let i = 0; i < rows; i += 1) {
+    for (let j = 0; j < cols; j += 1) {
+      latex += '#?';
+      if (j < cols - 1) latex += ' & ';
+    }
+    if (i < rows - 1) latex += '\\\\';
+  }
+  return `${latex}\\end{${type}}`;
+}
+
 /* ══════════════════════════════════════════════════════════
    Symbol groups — same as CustomMathEditor.jsx
 ══════════════════════════════════════════════════════════ */
@@ -469,9 +500,9 @@ const MATH_GROUPS = [
       { type: 'sep', cols: 2 },
       { label: '□ \\ □ \\ □', insert: '\\begin{matrix} #? \\\\ #? \\\\ #? \\end{matrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '□ □ □', insert: '\\begin{matrix} #? & #? & #? \\end{matrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
-      { label: '□ \\ □', insert: '\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'bmatrix-two-row-template-image' },
+      { label: '□ \\ □', insert: MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT, cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'bmatrix-two-row-template-image' },
       { label: '□ & □', insert: '\\begin{bmatrix} #? & #? \\end{bmatrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true , icon: 'bmatrix-two-column-template-image' },
-      { label: '□ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}', cls: 'template matrix-roomy-template matrix-extra-tall-template', directInsert: true, icon: 'pmatrix-two-row-template-image' },
+      { label: '□ \\ □', insert: MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT, cls: 'template matrix-roomy-template matrix-extra-tall-template', directInsert: true, icon: 'pmatrix-two-row-template-image' },
       { label: '□ & □', insert: '\\begin{pmatrix} #? & #? \\end{pmatrix}', cls: 'template matrix-roomy-template matrix-extra-tall-template', directInsert: true, icon: 'pmatrix-two-column-template-image' },
 
 
@@ -481,9 +512,9 @@ const MATH_GROUPS = [
 
 
       { type: 'sep', cols: 2 },  
-    { label: 'cases', insert: '\\left\\{\\begin{array}{c}\\mathstrut #? \\\\ \\mathstrut #?\\end{array}\\right.', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-template-image', title: 'Cases' },
-    { label: 'rcases', insert: '\\left.\\begin{array}{c}\\mathstrut #? \\\\ \\mathstrut #?\\end{array}\\right\\}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'rcases-template-image', title: 'Right Cases' },
-     { label: 'cases-2x2', insert: '\\left\\{\\begin{array}{cc}\\mathstrut #? & #? \\\\ \\mathstrut #? & #?\\end{array}\\right.', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-two-by-two-template-image', title: 'Cases 2x2' },
+    { label: 'cases', insert: '\\class{cme-cases-left-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-template-image', title: 'Cases' },
+    { label: 'rcases', insert: '\\class{cme-cases-right-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'rcases-template-image', title: 'Right Cases' },
+     { label: 'cases-2x2', insert: '\\class{cme-cases-left-template cme-cases-2x2-template}{\\begin{array}{cc} #? & #? \\\\[0.18em] #? & #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-two-by-two-template-image', title: 'Cases 2x2' },
     { label: 'aligned', insert: '\\begin{aligned} #? &= #? \\\\ #? &= #? \\end{aligned}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'aligned-equals-template-image', title: 'Aligned Equations' },
       { label: '⋮', insert: '\\vdots', title: 'Vertical ellipsis', icon: 'vertical-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '⋯', insert: '\\cdots', title: 'Midline ellipsis', icon: 'midline-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
@@ -1784,6 +1815,53 @@ const MATH_FIELD_SHADOW_CSS = `
   background: currentColor;
   clip-path: polygon(0 100%, 50% 0, 100% 100%, calc(100% - 0.08em) 100%, 50% 0.16em, 0.08em 100%);
   pointer-events: none;
+}
+.cme-cases-left-template,
+.cme-cases-right-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: -0.74em;
+}
+
+.cme-cases-left-template {
+  padding-left: 0.62em;
+}
+
+.cme-cases-right-template {
+  padding-right: 0.62em;
+}
+
+.cme-cases-left-template .ML__arraycolsep,
+.cme-cases-right-template .ML__arraycolsep {
+  width: 0.18em !important;
+}
+
+.cme-cases-2x2-template .ML__arraycolsep {
+  width: 0.36em !important;
+}
+
+.cme-cases-left-template::before,
+.cme-cases-right-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0.48em;
+  height: 2.55em;
+  background: currentColor;
+  pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 48'%3E%3Cpath d='M9 2 C4 2 4 5 4 8 L4 16 C4 19 3 21 1 24 C3 27 4 29 4 32 L4 40 C4 43 4 46 9 46' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 48'%3E%3Cpath d='M9 2 C4 2 4 5 4 8 L4 16 C4 19 3 21 1 24 C3 27 4 29 4 32 L4 40 C4 43 4 46 9 46' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-cases-left-template::before {
+  left: 0.04em;
+  transform: translateY(-50%);
+}
+
+.cme-cases-right-template::after {
+  right: 0.04em;
+  transform: translateY(-50%) scaleX(-1);
 }
 .cme-bevelled-fraction-slash {
   color: #ffffff !important;
@@ -5524,7 +5602,7 @@ function renderToolbarItemLabel(item, context = {}) {
       frame: 'none',
       cells: [[2.15, 7.05], [6.85, 7.05], [11.55, 7.05]]
     },
-    '\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}': {
+    [MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT]: {
       frame: 'brackets',
       cells: [[7.05, 3.25], [7.05, 10.2]]
     },
@@ -5532,7 +5610,7 @@ function renderToolbarItemLabel(item, context = {}) {
       frame: 'brackets',
       cells: [[4.85, 7.05], [9.25, 7.05]]
     },
-    '\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}': {
+    [MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT]: {
       frame: 'parentheses',
       cells: [[7.05, 3.25], [7.05, 10.2]]
     },
@@ -7288,16 +7366,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   }, []);
 
   const handleMatrixInsert = useCallback((type, rows, cols) => {
-    let latex = `\\begin{${type}} `;
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        latex += '#?';
-        if (j < cols - 1) latex += ' & ';
-      }
-      if (i < rows - 1) latex += ' \\\\ ';
-    }
-    latex += ` \\end{${type}}`;
-    insertAtCursor(latex);
+    insertAtCursor(buildMatrixInsertLatex(type, rows, cols));
   }, [insertAtCursor]);
 
   const handleInsert = () => {
