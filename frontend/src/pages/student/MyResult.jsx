@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import "mathlive";
 import Navbar from "../../components/Navbar";
@@ -102,6 +102,53 @@ const MATH_FIELD_SHADOW_CSS = `
   transform-origin: center;
 }
 
+.cme-cases-left-template,
+.cme-cases-right-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+}
+
+.cme-cases-left-template {
+  padding-left: 0.62em;
+}
+
+.cme-cases-right-template {
+  padding-right: 0.62em;
+}
+
+.cme-cases-left-template .ML__arraycolsep,
+.cme-cases-right-template .ML__arraycolsep {
+  width: 0.18em !important;
+}
+
+.cme-cases-2x2-template .ML__arraycolsep {
+  width: 0.36em !important;
+}
+
+.cme-cases-left-template::before,
+.cme-cases-right-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0.48em;
+  height: 2.55em;
+  background: currentColor;
+  pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 48'%3E%3Cpath d='M9 2 C4 2 4 5 4 8 L4 16 C4 19 3 21 1 24 C3 27 4 29 4 32 L4 40 C4 43 4 46 9 46' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 48'%3E%3Cpath d='M9 2 C4 2 4 5 4 8 L4 16 C4 19 3 21 1 24 C3 27 4 29 4 32 L4 40 C4 43 4 46 9 46' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-cases-left-template::before {
+  left: 0.04em;
+  transform: translateY(-50%);
+}
+
+.cme-cases-right-template::after {
+  right: 0.04em;
+  transform: translateY(-50%) scaleX(-1);
+}
 `;
 
 function installMathFieldShadowStyles(mathfield) {
