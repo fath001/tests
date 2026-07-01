@@ -290,7 +290,7 @@ const MATH_GROUPS = [
       { label: '□⏟□', insert: '\\underbrace{#?}_{#?}', cls: 'template', directInsert: true, title: 'Underbrace', icon: 'underbrace-template-image' },
       { label: '□⏞□', insert: '\\overbrace{#?}^{#?}', cls: 'template', directInsert: true, title: 'Overbrace', icon: 'overbrace-template-image' },
       { type: 'sep', cols: 4 },
-      { label: '□\n▯\n□', insert: '\\displaystyle{\\underset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.34em;line-height:1.15}{#?}}{\\overset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-bottom:0.34em;line-height:1.15}{#?}}{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}}}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image', focusFirstPlaceholder: true },
+      { label: '□\n▯\n□', insert: '\\displaystyle{\\begin{array}{c}\\htmlStyle{font-size:1.05em;display:inline-block;padding-bottom:0.18em;line-height:1.05}{#?}\\\\\\htmlStyle{font-size:1.45em;display:inline-block;padding:0.12em 0;line-height:1.05}{#0}\\\\\\htmlStyle{font-size:1.05em;display:inline-block;padding-top:0.18em;line-height:1.05}{#?}\\end{array}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image', focusFirstPlaceholder: true },
       { label: '▯\n□', insert: '\\displaystyle{\\underset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.34em;line-height:1.15}{#?}}{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}}}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image', focusFirstPlaceholder: true },
       { label: '▯^□_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}^{\\htmlStyle{font-size:1.1em;display:inline-block;padding-bottom:0.26em;line-height:1.15}{#?}}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
       { label: '▯_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
@@ -469,9 +469,9 @@ const MATH_GROUPS = [
       { type: 'sep', cols: 2 },
       { label: '□ \\ □ \\ □', insert: '\\begin{matrix} #? \\\\ #? \\\\ #? \\end{matrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '□ □ □', insert: '\\begin{matrix} #? & #? & #? \\end{matrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
-      { label: '□ \\ □', insert: '\\begin{bmatrix}#?\\\\#?\\end{bmatrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'bmatrix-two-row-template-image' },
+      { label: '□ \\ □', insert: '\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'bmatrix-two-row-template-image' },
       { label: '□ & □', insert: '\\begin{bmatrix} #? & #? \\end{bmatrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true , icon: 'bmatrix-two-column-template-image' },
-      { label: '□ \\ □', insert: '\\begin{pmatrix}\\vphantom{\\Large A}#?\\\\\\vphantom{\\Large A}#?\\end{pmatrix}', cls: 'template matrix-roomy-template matrix-extra-tall-template', directInsert: true, icon: 'pmatrix-two-row-template-image' },
+      { label: '□ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}', cls: 'template matrix-roomy-template matrix-extra-tall-template', directInsert: true, icon: 'pmatrix-two-row-template-image' },
       { label: '□ & □', insert: '\\begin{pmatrix} #? & #? \\end{pmatrix}', cls: 'template matrix-roomy-template matrix-extra-tall-template', directInsert: true, icon: 'pmatrix-two-column-template-image' },
 
 
@@ -480,12 +480,11 @@ const MATH_GROUPS = [
       // { label: '□ \\ □ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\\\ #? \\end{pmatrix}', cls: 'template', directInsert: true },
 
 
-      { type: 'sep', cols: 2 }, 
-      { label: 'cases', insert: '\\left\\{\\begin{array}{c}#?\\\\#?\\end{array}\\right.', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-template-image', title: 'Cases' },
-      { label: 'rcases', insert: '\\left.\\begin{array}{c}#?\\\\#?\\end{array}\\right\\}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'rcases-template-image', title: 'Right Cases' },
-      { label: 'cases-2x2', insert: '\\left\\{\\begin{array}{cc}#? & #?\\\\#? & #?\\end{array}\\right.', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-two-by-two-template-image', title: 'Cases 2x2' },
-      { label: 'aligned', insert: '\\begin{aligned} #? &= #? \\\\ #? &= #? \\end{aligned}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'aligned-equals-template-image', title: 'Aligned Equations' },
-      { type: 'sep', cols: 2 },
+      { type: 'sep', cols: 2 },  
+    { label: 'cases', insert: '\\left\\{\\begin{array}{c}\\mathstrut #? \\\\ \\mathstrut #?\\end{array}\\right.', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-template-image', title: 'Cases' },
+    { label: 'rcases', insert: '\\left.\\begin{array}{c}\\mathstrut #? \\\\ \\mathstrut #?\\end{array}\\right\\}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'rcases-template-image', title: 'Right Cases' },
+     { label: 'cases-2x2', insert: '\\left\\{\\begin{array}{cc}\\mathstrut #? & #? \\\\ \\mathstrut #? & #?\\end{array}\\right.', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-two-by-two-template-image', title: 'Cases 2x2' },
+    { label: 'aligned', insert: '\\begin{aligned} #? &= #? \\\\ #? &= #? \\end{aligned}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'aligned-equals-template-image', title: 'Aligned Equations' },
       { label: '⋮', insert: '\\vdots', title: 'Vertical ellipsis', icon: 'vertical-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '⋯', insert: '\\cdots', title: 'Midline ellipsis', icon: 'midline-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '⋰', insert: '⋰', title: 'Up-right diagonal ellipsis', icon: 'upright-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
@@ -1478,14 +1477,14 @@ const ORDERED_MATH_GROUPS = [
       { type: 'sep', cols: 2 },
       { label: 'overbrace', insert: '\\overbrace{#0}', cls: 'template', directInsert: true, title: 'Overbrace', icon: 'overbrace-arc-template-image' },
       { label: 'underbrace', insert: '\\underbrace{#0}', cls: 'template', directInsert: true, title: 'Underbrace', icon: 'underbrace-arc-template-image' },
-      { label: 'overparen', insert: '\\overparen{#0}', cls: 'template', directInsert: true, title: 'Overparen', icon: 'overparen-template-image' },
-      { label: 'underparen', insert: '\\underparen{#0}', cls: 'template', directInsert: true, title: 'Underparen', icon: 'underparen-template-image' },
+      { label: 'overparen', insert: '\\overgroup{#0}', cls: 'template', directInsert: true, title: 'Overparen', icon: 'overparen-template-image' },
+      { label: 'underparen', insert: '\\undergroup{#0}', cls: 'template', directInsert: true, title: 'Underparen', icon: 'underparen-template-image' },
       { type: 'sep', cols: 2 },  
       { label: '⃗\n▯', insert: '\\overrightharpoon{#0}', cls: 'template', directInsert: true, title: 'Vector Accent', icon: 'vec-accent-template-image' },
       { label: '→\n▯', insert: '\\overrightarrow{#?}', cls: 'template', directInsert: true, title: 'Right Arrow Accent', icon: 'overrightarrow-accent-template-image' },
       { label: '↔\n▯', insert: '\\overleftrightarrow{#?}', cls: 'template', directInsert: true, title: 'Left-Right Arrow Accent', icon: 'overleftrightarrow-accent-template-image' },
       { label: '¯\n▯', insert: '\\overline{#?}', cls: 'template', directInsert: true, title: 'Overline Accent', icon: 'overline-accent-template-image' },
-      { label: '^\n▯', insert: '\\widehat{#?}', cls: 'template', directInsert: true, title: 'Hat Accent', icon: 'hat-accent-template-image' },
+      { label: '^\n▯', insert: '\\class{cme-stretch-hat}{#?}', cls: 'template', directInsert: true, title: 'Hat Accent', icon: 'hat-accent-template-image' },
       { label: '~\n▯', insert: '\\tilde{#?}', cls: 'template', directInsert: true, title: 'Tilde Accent', icon: 'tilde-accent-template-image' },
       { label: '¨\n▯', insert: '\\ddot{#?}', cls: 'template', directInsert: true, title: 'Double Dot Accent', icon: 'ddot-accent-template-image' },
       { label: '˙\n▯', insert: '\\dot{#?}', cls: 'template', directInsert: true, title: 'Dot Accent', icon: 'dot-accent-template-image' },
@@ -1517,7 +1516,7 @@ const ORDERED_MATH_GROUPS = [
       { label: 'prod-limits-lower', insert: '\\prod\\limits_{#?}', cls: 'template', directInsert: true, title: 'Product With Lower Limit', icon: 'prod-limits-lower-template-image' },
       { label: 'prod-right-both', insert: '\\prod\\nolimits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Superscript and Subscript', icon: 'prod-right-both-template-image' },
       { label: 'prod-right-lower', insert: '\\prod\\nolimits_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Subscript', icon: 'prod-right-lower-template-image' },
-      { label: '□\n▯\n□', insert: '\\displaystyle{\\underset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.34em;line-height:1.15}{#?}}{\\overset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-bottom:0.34em;line-height:1.15}{#?}}{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}}}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image', focusFirstPlaceholder: true },
+      { label: '□\n▯\n□', insert: '\\displaystyle{\\begin{array}{c}\\htmlStyle{font-size:1.05em;display:inline-block;padding-bottom:0.18em;line-height:1.05}{#?}\\\\\\htmlStyle{font-size:1.45em;display:inline-block;padding:0.12em 0;line-height:1.05}{#0}\\\\\\htmlStyle{font-size:1.05em;display:inline-block;padding-top:0.18em;line-height:1.05}{#?}\\end{array}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image', focusFirstPlaceholder: true },
       { label: '▯\n□', insert: '\\displaystyle{\\underset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.34em;line-height:1.15}{#?}}{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}}}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image', focusFirstPlaceholder: true },
       { label: '▯^□_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}^{\\htmlStyle{font-size:1.1em;display:inline-block;padding-bottom:0.26em;line-height:1.15}{#?}}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
       { label: '▯_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
@@ -1763,6 +1762,29 @@ const MATH_FIELD_SHADOW_CSS = `
   transform-origin: center;
 }
 
+.cme-stretch-hat {
+  display: inline-block;
+  position: relative;
+  inline-size: max-content;
+  max-inline-size: none;
+  min-width: 0.78em;
+  padding: 0.58em 0.08em 0;
+  line-height: 1.08;
+  white-space: nowrap;
+  box-sizing: content-box;
+}
+
+.cme-stretch-hat::before {
+  content: "";
+  position: absolute;
+  left: 0.02em;
+  right: 0.02em;
+  top: 0.08em;
+  height: 0.42em;
+  background: currentColor;
+  clip-path: polygon(0 100%, 50% 0, 100% 100%, calc(100% - 0.08em) 100%, 50% 0.16em, 0.08em 100%);
+  pointer-events: none;
+}
 .cme-bevelled-fraction-slash {
   color: #ffffff !important;
 }
