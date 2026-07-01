@@ -689,6 +689,59 @@ export default function CustomMathEditor({ value = "", onChange }) {
   useEffect(() => {
     popupPositionRef.current = popupPosition;
   }, [popupPosition]);
+  const getDefaultPopupPosition = useCallback((nextMode = "normal") => {
+    const isSmallViewport = window.innerWidth <= 640;
+    const edgeX = isSmallViewport ? 12 : 24;
+    const edgeY = isSmallViewport ? 12 : 24;
+    const width = nextMode === "minimized"
+      ? Math.min(420, window.innerWidth - 24)
+      : Math.min(720, window.innerWidth - 24);
+    const height = nextMode === "minimized"
+      ? 32
+      : isSmallViewport
+        ? Math.min(384, window.innerHeight - 24)
+        : 384;
+    const maxX = Math.max(12, window.innerWidth - width - 12);
+    const maxY = Math.max(12, window.innerHeight - height - 12);
+
+    return {
+      x: Math.min(Math.max(12, window.innerWidth - width - edgeX), maxX),
+      y: Math.min(Math.max(12, window.innerHeight - height - edgeY), maxY),
+    };
+  }, []);
+
+  const resetPopupPosition = useCallback(() => {
+    popupPositionRef.current = null;
+    setPopupPosition(null);
+  }, []);
+
+  const setDefaultPopupPosition = useCallback((nextMode = "normal") => {
+    const next = getDefaultPopupPosition(nextMode);
+    popupPositionRef.current = next;
+    setPopupPosition(next);
+  }, [getDefaultPopupPosition]);
+
+  const handleMinimizeWindow = useCallback(() => {
+    stopDragging();
+    if (popupWindowMode === "minimized") {
+      setDefaultPopupPosition("normal");
+      setPopupWindowMode("normal");
+      return;
+    }
+    resetPopupPosition();
+    setPopupWindowMode("minimized");
+  }, [popupWindowMode, resetPopupPosition, setDefaultPopupPosition, stopDragging]);
+
+  const handleMaximizeWindow = useCallback(() => {
+    stopDragging();
+    if (popupWindowMode === "maximized") {
+      setDefaultPopupPosition("normal");
+      setPopupWindowMode("normal");
+      return;
+    }
+    resetPopupPosition();
+    setPopupWindowMode("maximized");
+  }, [popupWindowMode, resetPopupPosition, setDefaultPopupPosition, stopDragging]);
 
   useEffect(() => {
     if (!isEditorOpen || popupWindowMode === "maximized") return;
@@ -699,9 +752,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
 
       const current = popupPositionRef.current;
       if (current) {
-        const clamped = clampPopupPosition(current.x, current.y);
-        popupPositionRef.current = clamped;
-        setPopupPosition(clamped);
+        setPopupPosition(current);
         return;
       }
 
@@ -881,11 +932,13 @@ export default function CustomMathEditor({ value = "", onChange }) {
     if (isEditorOpen && mode === newMode) {
       setIsEditorOpen(false);
       setPopupWindowMode("normal");
+      resetPopupPosition();
       requestAnimationFrame(() => mainTextEditorRef.current?.focus());
       return;
     }
     setMode(newMode);
     setPopupWindowMode("normal");
+    resetPopupPosition();
     setIsEditorOpen(true);
   };
 
@@ -919,6 +972,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
     stopDragging();
     setIsEditorOpen(false);
     setPopupWindowMode("normal");
+    resetPopupPosition();
   };
 
   const groups = mode === "math" ? MATH_GROUPS : CHEM_GROUPS;
@@ -934,7 +988,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
     Array.isArray(activeGroup.items) &&
     activeGroup.items.some((item) => item.cls === "derivative-hero-template");
   const popupStyle =
-    popupWindowMode !== "maximized" && popupPosition
+    popupWindowMode === "normal" && popupPosition
       ? {
           left: `${popupPosition.x}px`,
           top: `${popupPosition.y}px`,
@@ -969,9 +1023,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
                 type="button"
                 className="cme-popup-window-btn"
                 aria-label={popupWindowMode === "minimized" ? "Restore window" : "Minimize window"}
-                onClick={() =>
-                  setPopupWindowMode((current) => (current === "minimized" ? "normal" : "minimized"))
-                }
+                onClick={handleMinimizeWindow}
               >
                 {popupWindowMode === "minimized" ? "+" : "-"}
               </button>
@@ -979,9 +1031,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
                 type="button"
                 className="cme-popup-window-btn"
                 aria-label={popupWindowMode === "maximized" ? "Restore window" : "Maximize window"}
-                onClick={() =>
-                  setPopupWindowMode((current) => (current === "maximized" ? "normal" : "maximized"))
-                }
+                onClick={handleMaximizeWindow}
               >
                 {popupWindowMode === "maximized" ? "o" : "[]"}
               </button>

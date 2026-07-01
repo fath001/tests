@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    Special Character Modal — MathType Style
    ============================================================ */
 
@@ -94,12 +94,28 @@
   padding: 0;
   border: 1px solid #b2bdc6;
   background: #f7f8fa;
+  scrollbar-width: thin;
+  scrollbar-color: #839baa #edf3f7;
 }
 
-.scm-grid-container::-webkit-scrollbar { width: 16px; }
-.scm-grid-container::-webkit-scrollbar-track { background: #3d4044; }
-.scm-grid-container::-webkit-scrollbar-thumb { background: #a8adb3; border-radius: 8px; border: 3px solid #3d4044; }
-.scm-grid-container::-webkit-scrollbar-thumb:hover { background: #bcc2c7; }
+.scm-grid-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.scm-grid-container::-webkit-scrollbar-track {
+  background: #edf3f7;
+  border-left: 1px solid #c4d1da;
+}
+
+.scm-grid-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #9fb2bf 0%, #7892a3 100%);
+  border: 2px solid #edf3f7;
+  border-radius: 999px;
+}
+
+.scm-grid-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #8fa6b5 0%, #6f8797 100%);
+}
 
 .scm-category-group {
   width: 100%;

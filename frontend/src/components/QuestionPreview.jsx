@@ -105,6 +105,48 @@ const MATH_FIELD_SHADOW_CSS = `
   transform-origin: center;
 }
 
+.cme-vmatrix-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+  padding-left: 0.44em;
+  padding-right: 0.44em;
+}
+
+.cme-vmatrix-template .ML__arraycolsep {
+  width: 0.28em !important;
+}
+
+.cme-vmatrix-template::before,
+.cme-vmatrix-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0.095em;
+  border-radius: 999px;
+  background: currentColor;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.cme-vmatrix-two-row-template::before,
+.cme-vmatrix-two-row-template::after {
+  height: 2.7em;
+}
+
+.cme-vmatrix-three-row-template::before,
+.cme-vmatrix-three-row-template::after {
+  height: 3.95em;
+}
+
+.cme-vmatrix-template::before {
+  left: 0.1em;
+}
+
+.cme-vmatrix-template::after {
+  right: 0.1em;
+}
 .cme-two-row-matrix-template {
   display: inline-block;
   position: relative;
@@ -155,6 +197,93 @@ const MATH_FIELD_SHADOW_CSS = `
   right: 0.04em;
   transform: translateY(-50%) scaleX(-1);
 }
+.cme-bmatrix-three-row-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+  padding-left: 1.02em;
+  padding-right: 1.02em;
+}
+
+.cme-bmatrix-three-row-template .ML__arraycolsep {
+  width: 0.32em !important;
+}
+
+.cme-bmatrix-three-row-template::before,
+.cme-bmatrix-three-row-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0.62em;
+  height: 5.35em;
+  background: currentColor;
+  pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M12 6 H3 V66 H12' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M12 6 H3 V66 H12' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-bmatrix-three-row-template::before {
+  left: 0.08em;
+  transform: translateY(-50%);
+}
+
+.cme-bmatrix-three-row-template::after {
+  right: 0.08em;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+.cme-bmatrix-single-column-template {
+  padding-left: 1.34em;
+  padding-right: 1.34em;
+}
+
+.cme-bmatrix-single-column-template .ML__arraycolsep {
+  width: 0.18em !important;
+}
+
+.cme-bmatrix-two-row-template.cme-bmatrix-single-column-template::before,
+.cme-bmatrix-two-row-template.cme-bmatrix-single-column-template::after {
+  width: 0.66em;
+  height: 3.35em;
+}
+
+.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template {
+  padding-left: 1.42em;
+  padding-right: 1.42em;
+}
+
+.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template::before,
+.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template::after {
+  width: 0.72em;
+  height: 6.25em;
+}
+
+.cme-bmatrix-narrow-columns-template {
+  padding-left: 0.9em;
+  padding-right: 0.9em;
+}
+
+.cme-bmatrix-narrow-columns-template .ML__arraycolsep {
+  width: 0.22em !important;
+}
+
+.cme-bmatrix-two-row-template.cme-bmatrix-narrow-columns-template::before,
+.cme-bmatrix-two-row-template.cme-bmatrix-narrow-columns-template::after {
+  width: 0.6em;
+  height: 3.25em;
+}
+
+.cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template {
+  padding-left: 0.94em;
+  padding-right: 0.94em;
+}
+
+.cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template::before,
+.cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template::after {
+  width: 0.68em;
+  height: 6.05em;
+}
 .cme-cases-left-template,
 .cme-cases-right-template {
   display: inline-block;
@@ -194,12 +323,12 @@ const MATH_FIELD_SHADOW_CSS = `
 }
 
 .cme-cases-left-template::before {
-  left: 0.04em;
+  left: 0.08em;
   transform: translateY(-50%);
 }
 
 .cme-cases-right-template::after {
-  right: 0.04em;
+  right: 0.08em;
   transform: translateY(-50%) scaleX(-1);
 }
 .cme-bevelled-fraction-slash {

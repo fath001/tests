@@ -182,32 +182,47 @@ const MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT =
 const MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT =
   '\\class{cme-two-row-matrix-template cme-pmatrix-two-row-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}';
 
-function buildMatrixInsertLatex(type, rows, cols) {
-  if (cols === 1) {
-    const body = Array.from({ length: rows }, () => '#?').join(' \\\\ ');
-    switch (type) {
-      case 'bmatrix':
-        return `\\begin{bmatrix}${body}\\end{bmatrix}`;
-      case 'pmatrix':
-        return `\\begin{pmatrix}${body}\\end{pmatrix}`;
-      case 'vmatrix':
-        return `\\begin{vmatrix}${body}\\end{vmatrix}`;
-      default:
-        return `\\begin{${type}}${body}\\end{${type}}`;
-    }
-  }
-
-  let latex = `\\begin{${type}}`;
-  for (let i = 0; i < rows; i += 1) {
-    for (let j = 0; j < cols; j += 1) {
-      latex += '#?';
-      if (j < cols - 1) latex += ' & ';
-    }
-    if (i < rows - 1) latex += '\\\\';
-  }
-  return `${latex}\\end{${type}}`;
+function buildMatrixArrayBody(rows, cols, rowSeparator = '\\\\') {
+  return Array.from({ length: rows }, () => (
+    Array.from({ length: cols }, () => '#?').join(' & ')
+  )).join(` ${rowSeparator} `);
 }
 
+function buildMatrixInsertLatex(type, rows, cols) {
+  if (type === 'bmatrix' && (rows === 2 || rows === 3)) {
+    const columnClass = cols === 1 ? ' cme-bmatrix-single-column-template' : cols === 2 ? ' cme-bmatrix-narrow-columns-template' : '';
+    const rowClass = rows === 2
+      ? 'cme-two-row-matrix-template cme-bmatrix-two-row-template' + columnClass
+      : 'cme-bmatrix-three-row-template' + columnClass;
+    const columnSpec = 'c'.repeat(Math.max(1, cols));
+    const body = buildMatrixArrayBody(rows, cols, '\\\\[0.18em]');
+    return '\\class{' + rowClass + '}{\\begin{array}{' + columnSpec + '} ' + body + ' \\end{array}}';
+  }
+
+  if (type === 'vmatrix' && (rows === 2 || rows === 3)) {
+    const rowClass = rows === 2 ? 'cme-vmatrix-two-row-template' : 'cme-vmatrix-three-row-template';
+    const columnSpec = 'c'.repeat(Math.max(1, cols));
+    const body = buildMatrixArrayBody(rows, cols, '\\\\[0.18em]');
+    return '\\class{cme-vmatrix-template ' + rowClass + '}{\\begin{array}{' + columnSpec + '} ' + body + ' \\end{array}}';
+  }
+
+  if (cols === 1) {
+    const body = buildMatrixArrayBody(rows, cols);
+    switch (type) {
+      case 'bmatrix':
+        return '\\begin{bmatrix}' + body + '\\end{bmatrix}';
+      case 'pmatrix':
+        return '\\begin{pmatrix}' + body + '\\end{pmatrix}';
+      case 'vmatrix':
+        return '\\begin{vmatrix}' + body + '\\end{vmatrix}';
+      default:
+        return '\\begin{' + type + '}' + body + '\\end{' + type + '}';
+    }
+  }
+
+  const body = buildMatrixArrayBody(rows, cols, '\\\\');
+  return '\\begin{' + type + '}' + body + '\\end{' + type + '}';
+}
 /* ══════════════════════════════════════════════════════════
    Symbol groups — same as CustomMathEditor.jsx
 ══════════════════════════════════════════════════════════ */
@@ -777,7 +792,7 @@ const ARROW_LABEL_PICKER_ITEMS = [
     focusFirstPlaceholder: true,
   },
   {
-    insert: '\\xleftrightarrows{#0}',
+    insert: '\\xleftrightarrows{\\raise{0.14em}{#0}}',
     title: 'Left Arrow over Right Arrow with Overscript',
     icon: 'left-right-arrows-over',
   },
@@ -787,13 +802,13 @@ const ARROW_LABEL_PICKER_ITEMS = [
     icon: 'left-right-arrows-under',
   },
   {
-    insert: '\\xleftrightarrows[#?]{#0}',
+    insert: '\\xleftrightarrows[#?]{\\raise{0.14em}{#0}}',
     title: 'Left Arrow over Right Arrow with Under and Overscript',
     icon: 'left-right-arrows-over-under',
     focusFirstPlaceholder: true,
   },
   {
-    insert: '\\class{cme-right-left-stacked-arrows}{\\xleftrightarrows{#0}}',
+    insert: '\\class{cme-right-left-stacked-arrows}{\\xleftrightarrows{\\raise{0.14em}{#0}}}',
     title: 'Right Arrow over Left Arrow with Overscript',
     icon: 'right-left-stacked-arrows-over',
   },
@@ -803,8 +818,7 @@ const ARROW_LABEL_PICKER_ITEMS = [
     icon: 'right-left-stacked-arrows-under',
   },
   {
-    insert: '\\class{cme-right-left-stacked-arrows}{\\xleftrightarrows[#?]{#0}}',
-    title: 'Right Arrow over Left Arrow with Under and Overscript',
+insert: '\\class{cme-right-left-stacked-arrows}{\\xleftrightarrows[#?]{\\raise{0.14em}{#0}}}',    title: 'Right Arrow over Left Arrow with Under and Overscript',
     icon: 'right-left-stacked-arrows-over-under',
     focusFirstPlaceholder: true,
   },
@@ -920,10 +934,29 @@ const BLACKBOARD_BOLD_LETTERS = [
 
 const BLACKBOARD_BOLD_PICKER_ITEMS = BLACKBOARD_BOLD_LETTERS.map(([label, letter]) => ({
   label,
+  letter,
   insert: makeBlackboardSymbolLatex(label),
   title: `Blackboard Bold ${letter}`,
   ...BLACKBOARD_SYMBOL_INSERT_OPTIONS,
 }));
+
+const BLACKBOARD_BOLD_PICKER_ITEM_BY_LETTER = new Map(
+  BLACKBOARD_BOLD_PICKER_ITEMS.map((item) => [item.letter, item])
+);
+
+const BLACKBOARD_BOLD_PICKER_GRID_LETTERS = [
+  ['A', 'D', 'G', 'J', 'M', 'P', 'S', 'V', 'Y', 'a', 'd', 'g', 'j', 'm', 'p', 's', 'v', 'y'],
+  ['B', 'E', 'H', 'K', 'N', 'Q', 'T', 'W', 'Z', 'b', 'e', 'h', 'k', 'n', 'q', 't', 'w', 'z'],
+  ['C', 'F', 'I', 'L', 'O', 'R', 'U', 'X', null, 'c', 'f', 'i', 'l', 'o', 'r', 'u', 'x', null],
+];
+
+const BLACKBOARD_BOLD_PICKER_GRID_ITEMS = BLACKBOARD_BOLD_PICKER_GRID_LETTERS.flatMap((row, rowIndex) => (
+  row.map((letter, colIndex) => (
+    letter
+      ? BLACKBOARD_BOLD_PICKER_ITEM_BY_LETTER.get(letter)
+      : { spacer: true, key: `blackboard-spacer-${rowIndex}-${colIndex}` }
+  ))
+));
 
 const FRAKTUR_SCRIPT_PICKER_ITEMS = [
   ['𝔄', '𝔄', 'Fraktur A'],
@@ -1030,10 +1063,30 @@ const FRAKTUR_SCRIPT_PICKER_ITEMS = [
   ['𝓍', '𝓍', 'Script x'],
   ['𝓎', '𝓎', 'Script y'],
   ['𝓏', '𝓏', 'Script z'],
-].map(([label, insert, title]) => ({ label, insert, title }));
+].map(([label, insert, title]) => ({ label, insert, title, letter: title.split(' ').pop() }));
 
 const FRAKTUR_PICKER_ITEMS = FRAKTUR_SCRIPT_PICKER_ITEMS.filter(({ title }) => title.startsWith('Fraktur '));
 const SCRIPT_PICKER_ITEMS = FRAKTUR_SCRIPT_PICKER_ITEMS.filter(({ title }) => title.startsWith('Script '));
+
+const FRAKTUR_SCRIPT_PICKER_GRID_LETTERS = [
+  ['A', 'D', 'G', 'J', 'M', 'P', 'S', 'V', 'Y', 'a', 'd', 'g', 'j', 'm', 'p', 's', 'v', 'y'],
+  ['B', 'E', 'H', 'K', 'N', 'Q', 'T', 'W', 'Z', 'b', 'e', 'h', 'k', 'n', 'q', 't', 'w', 'z'],
+  ['C', 'F', 'I', 'L', 'O', 'R', 'U', 'X', null, 'c', 'f', 'i', 'l', 'o', 'r', 'u', 'x', null],
+];
+
+function makeFrakturScriptPickerGridItems(items, spacerPrefix) {
+  const itemByLetter = new Map(items.map((item) => [item.letter, item]));
+  return FRAKTUR_SCRIPT_PICKER_GRID_LETTERS.flatMap((row, rowIndex) => (
+    row.map((letter, colIndex) => (
+      letter
+        ? itemByLetter.get(letter)
+        : { spacer: true, key: `${spacerPrefix}-spacer-${rowIndex}-${colIndex}` }
+    ))
+  ));
+}
+
+const FRAKTUR_PICKER_GRID_ITEMS = makeFrakturScriptPickerGridItems(FRAKTUR_PICKER_ITEMS, 'fraktur');
+const SCRIPT_PICKER_GRID_ITEMS = makeFrakturScriptPickerGridItems(SCRIPT_PICKER_ITEMS, 'script');
 
 const HEBREW_SYMBOL_PICKER_ITEMS = [
   { label: 'ℵ', insert: '\\aleph', title: 'Aleph' },
@@ -1816,6 +1869,48 @@ const MATH_FIELD_SHADOW_CSS = `
   clip-path: polygon(0 100%, 50% 0, 100% 100%, calc(100% - 0.08em) 100%, 50% 0.16em, 0.08em 100%);
   pointer-events: none;
 }
+.cme-vmatrix-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+  padding-left: 0.44em;
+  padding-right: 0.44em;
+}
+
+.cme-vmatrix-template .ML__arraycolsep {
+  width: 0.28em !important;
+}
+
+.cme-vmatrix-template::before,
+.cme-vmatrix-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0.095em;
+  border-radius: 999px;
+  background: currentColor;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.cme-vmatrix-two-row-template::before,
+.cme-vmatrix-two-row-template::after {
+  height: 2.7em;
+}
+
+.cme-vmatrix-three-row-template::before,
+.cme-vmatrix-three-row-template::after {
+  height: 3.95em;
+}
+
+.cme-vmatrix-template::before {
+  left: 0.1em;
+}
+
+.cme-vmatrix-template::after {
+  right: 0.1em;
+}
 .cme-two-row-matrix-template {
   display: inline-block;
   position: relative;
@@ -1866,6 +1961,93 @@ const MATH_FIELD_SHADOW_CSS = `
   right: 0.04em;
   transform: translateY(-50%) scaleX(-1);
 }
+.cme-bmatrix-three-row-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+  padding-left: 1.02em;
+  padding-right: 1.02em;
+}
+
+.cme-bmatrix-three-row-template .ML__arraycolsep {
+  width: 0.32em !important;
+}
+
+.cme-bmatrix-three-row-template::before,
+.cme-bmatrix-three-row-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0.62em;
+  height: 5.35em;
+  background: currentColor;
+  pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M12 6 H3 V66 H12' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M12 6 H3 V66 H12' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-bmatrix-three-row-template::before {
+  left: 0.08em;
+  transform: translateY(-50%);
+}
+
+.cme-bmatrix-three-row-template::after {
+  right: 0.08em;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+.cme-bmatrix-single-column-template {
+  padding-left: 1.34em;
+  padding-right: 1.34em;
+}
+
+.cme-bmatrix-single-column-template .ML__arraycolsep {
+  width: 0.18em !important;
+}
+
+.cme-bmatrix-two-row-template.cme-bmatrix-single-column-template::before,
+.cme-bmatrix-two-row-template.cme-bmatrix-single-column-template::after {
+  width: 0.66em;
+  height: 3.35em;
+}
+
+.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template {
+  padding-left: 1.42em;
+  padding-right: 1.42em;
+}
+
+.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template::before,
+.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template::after {
+  width: 0.72em;
+  height: 6.25em;
+}
+
+.cme-bmatrix-narrow-columns-template {
+  padding-left: 0.9em;
+  padding-right: 0.9em;
+}
+
+.cme-bmatrix-narrow-columns-template .ML__arraycolsep {
+  width: 0.22em !important;
+}
+
+.cme-bmatrix-two-row-template.cme-bmatrix-narrow-columns-template::before,
+.cme-bmatrix-two-row-template.cme-bmatrix-narrow-columns-template::after {
+  width: 0.6em;
+  height: 3.25em;
+}
+
+.cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template {
+  padding-left: 0.94em;
+  padding-right: 0.94em;
+}
+
+.cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template::before,
+.cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template::after {
+  width: 0.68em;
+  height: 6.05em;
+}
 .cme-cases-left-template,
 .cme-cases-right-template {
   display: inline-block;
@@ -1905,12 +2087,12 @@ const MATH_FIELD_SHADOW_CSS = `
 }
 
 .cme-cases-left-template::before {
-  left: 0.04em;
+  left: 0.08em;
   transform: translateY(-50%);
 }
 
 .cme-cases-right-template::after {
-  right: 0.04em;
+  right: 0.08em;
   transform: translateY(-50%) scaleX(-1);
 }
 .cme-bevelled-fraction-slash {
@@ -6363,7 +6545,9 @@ function GreekItalicPickerPopover({ position, onInsert }) {
 }
 
 function BlackboardBoldPickerPopover({ position, onInsert }) {
-  const left = Math.min(Math.max(position.x - 8, 8), window.innerWidth - 356);
+  const popupWidth = 578;
+  const maxLeft = Math.max(8, window.innerWidth - popupWidth);
+  const left = Math.min(Math.max(position.x - 8, 8), maxLeft);
   const top = Math.min(position.y + 2, window.innerHeight - 308);
 
   return (
@@ -6378,30 +6562,37 @@ function BlackboardBoldPickerPopover({ position, onInsert }) {
       onMouseDown={(e) => e.stopPropagation()}
     >
       <div className="cme-blackboard-bold-picker-grid">
-        {BLACKBOARD_BOLD_PICKER_ITEMS.map((item) => (
-          <button
-            key={item.insert}
-            type="button"
-            className="cme-blackboard-bold-picker-btn"
-            title={item.title}
-            onMouseDown={(e) => {
-              e.preventDefault();
-              onInsert(item);
-            }}
-          >
-            <span className="cme-blackboard-bold-picker-glyph" aria-hidden="true">
-              {item.label}
-            </span>
-          </button>
+        {BLACKBOARD_BOLD_PICKER_GRID_ITEMS.map((item) => (
+          item?.spacer ? (
+            <span key={item.key} className="cme-blackboard-bold-picker-spacer" aria-hidden="true" />
+          ) : (
+            <button
+              key={item.insert}
+              type="button"
+              className="cme-blackboard-bold-picker-btn"
+              title={item.title}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                onInsert(item);
+              }}
+            >
+              <span className="cme-blackboard-bold-picker-glyph" aria-hidden="true">
+                {item.label}
+              </span>
+            </button>
+          )
         ))}
       </div>
     </div>
   );
 }
 
-function FrakturScriptPickerPopover({ position, onInsert, items = SCRIPT_PICKER_ITEMS }) {
-  const left = Math.min(Math.max(position.x - 8, 8), window.innerWidth - 356);
-  const top = Math.min(position.y + 2, window.innerHeight - 348);
+function FrakturScriptPickerPopover({ position, onInsert, items = SCRIPT_PICKER_GRID_ITEMS }) {
+  const popupWidth = 578;
+  const popupHeight = 132;
+  const maxLeft = Math.max(8, window.innerWidth - popupWidth);
+  const left = Math.min(Math.max(position.x - 8, 8), maxLeft);
+  const top = Math.min(position.y + 2, Math.max(8, window.innerHeight - popupHeight));
 
   return (
     <div
@@ -6416,20 +6607,24 @@ function FrakturScriptPickerPopover({ position, onInsert, items = SCRIPT_PICKER_
     >
       <div className="cme-fraktur-script-picker-grid">
         {items.map((item) => (
-          <button
-            key={item.insert}
-            type="button"
-            className="cme-fraktur-script-picker-btn"
-            title={item.title}
-            onMouseDown={(e) => {
-              e.preventDefault();
-              onInsert(item.insert);
-            }}
-          >
-            <span className="cme-fraktur-script-picker-glyph" aria-hidden="true">
-              {item.label}
-            </span>
-          </button>
+          item?.spacer ? (
+            <span key={item.key} className="cme-fraktur-script-picker-spacer" aria-hidden="true" />
+          ) : (
+            <button
+              key={item.insert}
+              type="button"
+              className="cme-fraktur-script-picker-btn"
+              title={item.title}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                onInsert(item.insert);
+              }}
+            >
+              <span className="cme-fraktur-script-picker-glyph" aria-hidden="true">
+                {item.label}
+              </span>
+            </button>
+          )
         ))}
       </div>
     </div>
@@ -6789,6 +6984,59 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   useEffect(() => {
     popupPositionRef.current = popupPosition;
   }, [popupPosition]);
+  const getDefaultPopupPosition = useCallback((nextMode = 'normal') => {
+    const isSmallViewport = window.innerWidth <= 640;
+    const edgeX = isSmallViewport ? 12 : 24;
+    const edgeY = isSmallViewport ? 12 : 24;
+    const width = nextMode === 'minimized'
+      ? Math.min(420, window.innerWidth - 24)
+      : Math.min(720, window.innerWidth - 24);
+    const height = nextMode === 'minimized'
+      ? 32
+      : isSmallViewport
+        ? Math.min(384, window.innerHeight - 24)
+        : 384;
+    const maxX = Math.max(12, window.innerWidth - width - 12);
+    const maxY = Math.max(12, window.innerHeight - height - 12);
+
+    return {
+      x: Math.min(Math.max(12, window.innerWidth - width - edgeX), maxX),
+      y: Math.min(Math.max(12, window.innerHeight - height - edgeY), maxY),
+    };
+  }, []);
+
+  const resetPopupPosition = useCallback(() => {
+    popupPositionRef.current = null;
+    setPopupPosition(null);
+  }, []);
+
+  const setDefaultPopupPosition = useCallback((nextMode = 'normal') => {
+    const next = getDefaultPopupPosition(nextMode);
+    popupPositionRef.current = next;
+    setPopupPosition(next);
+  }, [getDefaultPopupPosition]);
+
+  const handleMinimizeWindow = useCallback(() => {
+    stopDragging();
+    if (windowMode === 'minimized') {
+      setDefaultPopupPosition('normal');
+      setWindowMode('normal');
+      return;
+    }
+    resetPopupPosition();
+    setWindowMode('minimized');
+  }, [resetPopupPosition, setDefaultPopupPosition, stopDragging, windowMode]);
+
+  const handleMaximizeWindow = useCallback(() => {
+    stopDragging();
+    if (windowMode === 'maximized') {
+      setDefaultPopupPosition('normal');
+      setWindowMode('normal');
+      return;
+    }
+    resetPopupPosition();
+    setWindowMode('maximized');
+  }, [resetPopupPosition, setDefaultPopupPosition, stopDragging, windowMode]);
 
   useEffect(() => {
     if (windowMode !== 'minimized') return;
@@ -6816,9 +7064,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
 
       const current = popupPositionRef.current;
       if (current) {
-        const clamped = clampPopupPosition(current.x, current.y);
-        popupPositionRef.current = clamped;
-        setPopupPosition(clamped);
+        setPopupPosition(current);
         return;
       }
 
@@ -7438,7 +7684,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   };
 
   const popupStyle =
-    windowMode !== 'maximized' && popupPosition
+    windowMode === 'normal' && popupPosition
       ? {
           left: `${popupPosition.x}px`,
           top: `${popupPosition.y}px`,
@@ -7456,7 +7702,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
             type="button"
             className="cme-popup-window-btn"
             aria-label={windowMode === 'minimized' ? 'Restore window' : 'Minimize window'}
-            onClick={() => setWindowMode((current) => (current === 'minimized' ? 'normal' : 'minimized'))}
+            onClick={handleMinimizeWindow}
           >
             {windowMode === 'minimized' ? '+' : '-'}
           </button>
@@ -7464,7 +7710,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
             type="button"
             className="cme-popup-window-btn"
             aria-label={windowMode === 'maximized' ? 'Restore window' : 'Maximize window'}
-            onClick={() => setWindowMode((current) => (current === 'maximized' ? 'normal' : 'maximized'))}
+            onClick={handleMaximizeWindow}
           >
             {windowMode === 'maximized' ? 'o' : '⤢ '}
           </button>
@@ -8495,7 +8741,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       {showFrakturScriptPicker && createPortal(
         <FrakturScriptPickerPopover
           position={showFrakturScriptPicker}
-          items={showFrakturScriptPicker?.picker === 'fraktur' ? FRAKTUR_PICKER_ITEMS : SCRIPT_PICKER_ITEMS}
+          items={showFrakturScriptPicker?.picker === 'fraktur' ? FRAKTUR_PICKER_GRID_ITEMS : SCRIPT_PICKER_GRID_ITEMS}
           onInsert={(latex) => {
             insertAtCursor(latex);
             setShowFrakturScriptPicker(null);
