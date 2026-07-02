@@ -621,12 +621,12 @@ const RELATION_MORE_PICKERS = {
     { label: '⟨□|□⟩', insert: '\\left\\langle #0 \\middle| #? \\right\\rangle', cls: 'green-placeholder-glyph' },
   ],
   enclosureFrameExtras: [ 
-    { label: '¯\n▯|', insert: '\\overline{\\left.\\vphantom{\\sq{A}}#?\\right|}', cls: 'template', directInsert: true, title: 'Overline with Right Bar', icon: 'overline-right-bar-template-image' },
-    { label: '▢\n▯', insert: '\\enclose{roundedbox}{#?}', cls: 'template', directInsert: true, title: 'Rounded Boxed', icon: 'boxed-rounded-template-image' },
+    { label: '¯\n▯|', insert: '\\class{cme-overline-right-bar-template}{#0}', cls: 'template', directInsert: true, title: 'Overline with Right Bar', icon: 'overline-right-bar-template-image' },
+    { label: '▢\n▯', insert: '\\class{cme-rounded-box-template}{#?}', cls: 'template', directInsert: true, title: 'Rounded Boxed', icon: 'boxed-rounded-template-image' },
   ],
-  strikeDecorationExtras: [
+  strikeDecorationExtras: [  
     { label: '│\n▯', insert: '\\enclose{verticalstrike}{#?}', cls: 'template', directInsert: true, title: 'Vertical Strike', icon: 'vertical-strike-template-image' },
-    { label: ')\n¯', insert: '\\overline{\\left)#?\\right.}', cls: 'template', directInsert: true, title: 'Overline with Curved Left Boundary', icon: 'overline-left-curve-template-image' },
+    { label: ')\n¯', insert: '\\class{cme-overline-left-curve-template}{#?}', cls: 'template', directInsert: true, title: 'Overline with Curved Left Boundary', icon: 'overline-left-curve-template-image' },
     { label: '?\n?', insert: '\\enclose{verticalstrike}{\\htmlStyle{text-decoration:line-through;text-decoration-skip-ink:none;}{#0}}', cls: 'template', directInsert: true, title: 'Vertical and Horizontal Strike', icon: 'crosshair-strike-template-image' },
   ],
   arithmeticLayoutExtras: [
@@ -1799,7 +1799,7 @@ const ORDERED_MATH_GROUPS = [
       { label: '|\n▯', insert: '\\left|#?\\right.', cls: 'template', directInsert: true, title: 'Left Bar', icon: 'left-bar-template-image' },
       { label: '▯\n|', insert: '\\left.#?\\right|', cls: 'template', directInsert: true, title: 'Right Bar', icon: 'right-bar-template-image' },
       { label: '□\n▯', insert: '\\boxed{#?}', cls: 'template', directInsert: true, title: 'Boxed', icon: 'boxed-square-template-image' },
-      { label: '(\n▯\n)', insert: '\\enclose{circle}{#?}', cls: 'template', directInsert: true, title: 'Rounded Enclosure', icon: 'paren-frame-template-image' },
+      { label: '(\n▯\n)', insert: '\\class{cme-rounded-enclosure-template}{#?}', cls: 'template', directInsert: true, title: 'Rounded Enclosure', icon: 'paren-frame-template-image' },
       makeRelationMorePicker('enclosureFrameExtras', 'More Enclosures'),
       { type: 'sep', cols: 2 },
       { label: '╱\n▯', insert: '\\cancel{#?}', cls: 'template', directInsert: true, title: 'Cancel', icon: 'cancel-diagonal-template-image' },
@@ -2015,7 +2015,11 @@ function renderEmptyMathPlaceholders(latex = '') {
     .replace(/\^\{\}/g, `^{${EMPTY_MATH_SLOT_LATEX}}`)
     .replace(/_\{\}/g, `_{${EMPTY_MATH_SLOT_LATEX}}`)
     .replace(/\\(?:tilde|widetilde|dot|ddot)\{\}/g, (match) => match.replace('{}', `{${EMPTY_MATH_SLOT_LATEX}}`))
-    .replace(/\\overset\{((?:\\cdot\\!\\cdot)|(?:\\cdot)|(?:\\sim))\}\{\}/g, `\\overset{$1}{${EMPTY_MATH_SLOT_LATEX}}`);
+    .replace(/\\overset\{((?:\\cdot\\!\\cdot)|(?:\\cdot)|(?:\\sim))\}\{\}/g, `\\overset{$1}{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\class\{cme-rounded-enclosure-template\}\{\}/g, `\\class{cme-rounded-enclosure-template}{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\class\{cme-rounded-box-template\}\{\}/g, `\\class{cme-rounded-box-template}{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\class\{cme-overline-right-bar-template\}\{\}/g, `\\class{cme-overline-right-bar-template}{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\class\{cme-overline-left-curve-template\}\{\}/g, `\\class{cme-overline-left-curve-template}{${EMPTY_MATH_SLOT_LATEX}}`);
 }
 
 const MATH_FIELD_SHADOW_STYLE_ID = 'cme-math-field-shadow-style';
@@ -2069,6 +2073,89 @@ const MATH_FIELD_SHADOW_CSS = `
   transform-origin: center;
 }
 
+/* Overline with curved left boundary: one content-sized wrapper owns both
+   strokes, so the overline starts at the curve endpoint and grows with input. */
+.cme-overline-left-curve-template {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  inline-size: max-content;
+  max-inline-size: none;
+  padding: 0.22em 0.24em 0.06em 0.52em;
+  line-height: 1;
+  box-sizing: border-box;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.cme-overline-left-curve-template::before,
+.cme-overline-left-curve-template::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.cme-overline-left-curve-template::before {
+  left: 0;
+  top: 0;
+  bottom: 0.02em;
+  width: 0.40em;
+  border-right: 0.06em solid currentColor;
+  border-radius: 0 50% 50% 0;
+}
+
+.cme-overline-left-curve-template::after {
+  left: 0.37em;
+  right: 0;
+  top: 0;
+  border-top: 0.06em solid currentColor;
+}
+/* Overline with right bar: the wrapper width is the rendered math width plus
+   padding, so the top border and attached right border grow with live input. */
+.cme-overline-right-bar-template {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0.18em 0.35em 0.06em 0.18em;
+  line-height: 1;
+  box-sizing: border-box;
+  border-top: 0.06em solid currentColor;
+  border-right: 0.06em solid currentColor;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+/* Rounded rectangle enclosure: MathLive measures the rendered body, then this
+   wrapper adds em padding and a constant corner radius without fixed width. */
+.cme-rounded-box-template {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.22em 0.42em;
+  line-height: 1;
+  box-sizing: border-box;
+  border: 0.06em solid currentColor;
+  border-radius: 0.24em;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+/* The box is intrinsically sized by MathLive's rendered content; padding expands
+   that measured box, and 50% radii turn the final box into a true ellipse. */
+.cme-rounded-enclosure-template {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: max-content;
+  max-inline-size: none;
+  padding: 0.25em 0.45em;
+  line-height: 1;
+  box-sizing: border-box;
+  border: 0.06em solid currentColor;
+  border-radius: 50%;
+  vertical-align: middle;
+  white-space: nowrap;
+}
 .cme-stretch-hat {
   display: inline-block;
   position: relative;

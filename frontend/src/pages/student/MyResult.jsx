@@ -69,7 +69,11 @@ function renderEmptyMathPlaceholders(latex = "") {
     .replace(/\\left\|\s*\\right\|/g, `\\left|${EMPTY_MATH_SLOT_LATEX}\\right|`)
     .replace(/\\left\\\{\s*\\right\\\}/g, `\\left\\{${EMPTY_MATH_SLOT_LATEX}\\right\\}`)
     .replace(/\^\{\}/g, `^{${EMPTY_MATH_SLOT_LATEX}}`)
-    .replace(/_\{\}/g, `_{${EMPTY_MATH_SLOT_LATEX}}`);
+    .replace(/_\{\}/g, `_{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\class\{cme-rounded-enclosure-template\}\{\}/g, `\\class{cme-rounded-enclosure-template}{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\class\{cme-rounded-box-template\}\{\}/g, `\\class{cme-rounded-box-template}{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\class\{cme-overline-right-bar-template\}\{\}/g, `\\class{cme-overline-right-bar-template}{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\class\{cme-overline-left-curve-template\}\{\}/g, `\\class{cme-overline-left-curve-template}{${EMPTY_MATH_SLOT_LATEX}}`);
 }
 
 const MATH_FIELD_SHADOW_STYLE_ID = "cme-math-field-shadow-style";
@@ -102,6 +106,89 @@ const MATH_FIELD_SHADOW_CSS = `
   transform-origin: center;
 }
 
+/* Overline with curved left boundary: one content-sized wrapper owns both
+   strokes, so the overline starts at the curve endpoint and grows with input. */
+.cme-overline-left-curve-template {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  inline-size: max-content;
+  max-inline-size: none;
+  padding: 0.22em 0.24em 0.06em 0.52em;
+  line-height: 1;
+  box-sizing: border-box;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.cme-overline-left-curve-template::before,
+.cme-overline-left-curve-template::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.cme-overline-left-curve-template::before {
+  left: 0;
+  top: 0;
+  bottom: 0.02em;
+  width: 0.40em;
+  border-right: 0.06em solid currentColor;
+  border-radius: 0 50% 50% 0;
+}
+
+.cme-overline-left-curve-template::after {
+  left: 0.37em;
+  right: 0;
+  top: 0;
+  border-top: 0.06em solid currentColor;
+}
+/* Overline with right bar: the wrapper width is the rendered math width plus
+   padding, so the top border and attached right border grow with live input. */
+.cme-overline-right-bar-template {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0.18em 0.35em 0.06em 0.18em;
+  line-height: 1;
+  box-sizing: border-box;
+  border-top: 0.06em solid currentColor;
+  border-right: 0.06em solid currentColor;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+/* Rounded rectangle enclosure: MathLive measures the rendered body, then this
+   wrapper adds em padding and a constant corner radius without fixed width. */
+.cme-rounded-box-template {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.22em 0.42em;
+  line-height: 1;
+  box-sizing: border-box;
+  border: 0.06em solid currentColor;
+  border-radius: 0.24em;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+/* The box is intrinsically sized by MathLive's rendered content; padding expands
+   that measured box, and 50% radii turn the final box into a true ellipse. */
+.cme-rounded-enclosure-template {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: max-content;
+  max-inline-size: none;
+  padding: 0.25em 0.45em;
+  line-height: 1;
+  box-sizing: border-box;
+  border: 0.06em solid currentColor;
+  border-radius: 50%;
+  vertical-align: middle;
+  white-space: nowrap;
+}
 .cme-mixed-fraction-whole,
 .cme-mixed-fraction-slot,
 .cme-mixed-fraction-denominator {
