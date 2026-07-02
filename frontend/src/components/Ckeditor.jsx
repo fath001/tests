@@ -337,7 +337,7 @@ const MATH_GROUPS = [
       { label: '□⏞□', insert: '\\overbrace{#?}^{#?}', cls: 'template', directInsert: true, title: 'Overbrace', icon: 'overbrace-template-image' },
       { type: 'sep', cols: 4 },
       { label: '□\n▯\n□', insert: '\\displaystyle{\\begin{array}{c}\\htmlStyle{font-size:1.05em;display:inline-block;padding-bottom:0.18em;line-height:1.05}{#?}\\\\\\htmlStyle{font-size:1.45em;display:inline-block;padding:0.12em 0;line-height:1.05}{#0}\\\\\\htmlStyle{font-size:1.05em;display:inline-block;padding-top:0.18em;line-height:1.05}{#?}\\end{array}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image', focusFirstPlaceholder: true },
-      { label: '▯\n□', insert: '\\displaystyle{\\underset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.34em;line-height:1.15}{#?}}{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}}}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image', focusFirstPlaceholder: true },
+      { label: '▯\n□', insert: '\\displaystyle{\\begin{array}{c}\\htmlStyle{font-size:1.45em;display:inline-block;padding:0.12em 0;line-height:1.05}{#0}\\\\\\htmlStyle{font-size:1.05em;display:inline-block;padding-top:0.18em;line-height:1.05}{#?}\\end{array}}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image', focusFirstPlaceholder: true },
       { label: '▯^□_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}^{\\htmlStyle{font-size:1.1em;display:inline-block;padding-bottom:0.26em;line-height:1.15}{#?}}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
       { label: '▯_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
       { type: 'sep', cols: 3 },
@@ -620,8 +620,8 @@ const RELATION_MORE_PICKERS = {
     { label: '⌈□⌉', insert: '\\left\\lceil #0 \\right\\rceil', cls: 'green-placeholder-glyph' },
     { label: '⟨□|□⟩', insert: '\\left\\langle #0 \\middle| #? \\right\\rangle', cls: 'green-placeholder-glyph' },
   ],
-  enclosureFrameExtras: [
-    { label: '¯\n▯|', insert: '\\overline{\\left.#?\\right|}', cls: 'template', directInsert: true, title: 'Overline with Right Bar', icon: 'overline-right-bar-template-image' },
+  enclosureFrameExtras: [ 
+    { label: '¯\n▯|', insert: '\\overline{\\left.\\vphantom{\\sq{A}}#?\\right|}', cls: 'template', directInsert: true, title: 'Overline with Right Bar', icon: 'overline-right-bar-template-image' },
     { label: '▢\n▯', insert: '\\enclose{roundedbox}{#?}', cls: 'template', directInsert: true, title: 'Rounded Boxed', icon: 'boxed-rounded-template-image' },
   ],
   strikeDecorationExtras: [
@@ -1790,9 +1790,9 @@ const ORDERED_MATH_GROUPS = [
       { label: '↔\n▯', insert: '\\overleftrightarrow{#?}', cls: 'template', directInsert: true, title: 'Left-Right Arrow Accent', icon: 'overleftrightarrow-accent-template-image' },
       { label: '¯\n▯', insert: '\\overline{#?}', cls: 'template', directInsert: true, title: 'Overline Accent', icon: 'overline-accent-template-image' },
       { label: '^\n▯', insert: '\\class{cme-stretch-hat}{#?}', cls: 'template', directInsert: true, title: 'Hat Accent', icon: 'hat-accent-template-image' },
-      { label: '~\n▯', insert: '\\tilde{#?}', cls: 'template', directInsert: true, title: 'Tilde Accent', icon: 'tilde-accent-template-image' },
-      { label: '¨\n▯', insert: '\\ddot{#?}', cls: 'template', directInsert: true, title: 'Double Dot Accent', icon: 'ddot-accent-template-image' },
-      { label: '˙\n▯', insert: '\\dot{#?}', cls: 'template', directInsert: true, title: 'Dot Accent', icon: 'dot-accent-template-image' },
+      { label: '~\n▯', insert: '\\overset{\\sim}{#?}', cls: 'template', directInsert: true, title: 'Tilde Accent', icon: 'tilde-accent-template-image' },
+      { label: '¨\n▯', insert: '\\overset{\\cdot\\!\\cdot}{#?}', cls: 'template', directInsert: true, title: 'Double Dot Accent', icon: 'ddot-accent-template-image' },
+      { label: '˙\n▯', insert: '\\overset{\\cdot}{#?}', cls: 'template', directInsert: true, title: 'Dot Accent', icon: 'dot-accent-template-image' },
       { type: 'sep', cols: 2 },
       { label: '¯\n▯', insert: '\\overline{#?}', cls: 'template', directInsert: true, title: 'Overline', icon: 'overline-frame-template-image' },
       { label: '_\n▯', insert: '\\underline{#?}', cls: 'template', directInsert: true, title: 'Underline', icon: 'underline-frame-template-image' },
@@ -1822,7 +1822,7 @@ const ORDERED_MATH_GROUPS = [
       { label: 'prod-right-both', insert: '\\prod\\nolimits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Superscript and Subscript', icon: 'prod-right-both-template-image' },
       { label: 'prod-right-lower', insert: '\\prod\\nolimits_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Subscript', icon: 'prod-right-lower-template-image' },
       { label: '□\n▯\n□', insert: '\\displaystyle{\\begin{array}{c}\\htmlStyle{font-size:1.05em;display:inline-block;padding-bottom:0.18em;line-height:1.05}{#?}\\\\\\htmlStyle{font-size:1.45em;display:inline-block;padding:0.12em 0;line-height:1.05}{#0}\\\\\\htmlStyle{font-size:1.05em;display:inline-block;padding-top:0.18em;line-height:1.05}{#?}\\end{array}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image', focusFirstPlaceholder: true },
-      { label: '▯\n□', insert: '\\displaystyle{\\underset{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.34em;line-height:1.15}{#?}}{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}}}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image', focusFirstPlaceholder: true },
+      { label: '▯\n□', insert: '\\displaystyle{\\begin{array}{c}\\htmlStyle{font-size:1.45em;display:inline-block;padding:0.12em 0;line-height:1.05}{#0}\\\\\\htmlStyle{font-size:1.05em;display:inline-block;padding-top:0.18em;line-height:1.05}{#?}\\end{array}}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image', focusFirstPlaceholder: true },
       { label: '▯^□_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}^{\\htmlStyle{font-size:1.1em;display:inline-block;padding-bottom:0.26em;line-height:1.15}{#?}}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
       { label: '▯_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
       { label: '⋂', insert: '\\bigcap' },
@@ -2013,7 +2013,9 @@ function renderEmptyMathPlaceholders(latex = '') {
     .replace(/\\left\|\s*\\right\|/g, `\\left|${EMPTY_MATH_SLOT_LATEX}\\right|`)
     .replace(/\\left\\\{\s*\\right\\\}/g, `\\left\\{${EMPTY_MATH_SLOT_LATEX}\\right\\}`)
     .replace(/\^\{\}/g, `^{${EMPTY_MATH_SLOT_LATEX}}`)
-    .replace(/_\{\}/g, `_{${EMPTY_MATH_SLOT_LATEX}}`);
+    .replace(/_\{\}/g, `_{${EMPTY_MATH_SLOT_LATEX}}`)
+    .replace(/\\(?:tilde|widetilde|dot|ddot)\{\}/g, (match) => match.replace('{}', `{${EMPTY_MATH_SLOT_LATEX}}`))
+    .replace(/\\overset\{((?:\\cdot\\!\\cdot)|(?:\\cdot)|(?:\\sim))\}\{\}/g, `\\overset{$1}{${EMPTY_MATH_SLOT_LATEX}}`);
 }
 
 const MATH_FIELD_SHADOW_STYLE_ID = 'cme-math-field-shadow-style';
