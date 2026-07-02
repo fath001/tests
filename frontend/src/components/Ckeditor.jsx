@@ -604,8 +604,8 @@ const RELATION_MORE_PICKERS = {
     { label: '•', insert: '●', title: 'Raised Bullet'},
   ],
   tripleIntegralExtras: [
-    { label: '∭', insert: '\\iiint', title: 'Triple Integral', icon: 'triple-integral-template-image' },
-    { label: '∰', insert: '\\oiiint', title: 'Triple Contour Integral', icon: 'triple-contour-integral-template-image' },
+    { label: '∭', insert: '\\iiint', title: 'Triple Integral', icon: 'triple-integral-template-image', cls: 'triple-integral-popup-icon' },
+    { label: '∰', insert: '\\oiiint', title: 'Triple Contour Integral', icon: 'triple-contour-integral-template-image', cls: 'triple-integral-popup-icon' },
   ],
   trigFunctionExtras: [
     { label: 'sin⁻¹(□)', insert: '\\sin^{-1}\\left(#0\\right)', cls: 'green-placeholder-glyph' },
@@ -6778,17 +6778,22 @@ function RelationMorePickerPopover({ position, items = [], onInsert, popupBounds
     geometryExtras: { columns: 2, rows: 3 },
     shapeExtras: { columns: 1, rows: 2 },
     circledExtras: { columns: 2, rows: 3 },
+    tripleIntegralExtras: { columns: 1, rows: 2, buttonWidth: 28, buttonHeight: 28, gapX: 6, gapY: 6, paddingX: 10, paddingY: 10, fillByColumn: false },
+    trigFunctionExtras: { columns: 3, rows: 2, buttonWidth: 72, buttonHeight: 36, gapX: 8, gapY: 8, paddingX: 16, paddingY: 16, fillByColumn: false },
+    enclosureFrameExtras: { columns: 1, rows: 2, buttonWidth: 58, buttonHeight: 42, gapX: 8, gapY: 8, paddingX: 16, paddingY: 16, fillByColumn: false },
+    strikeDecorationExtras: { columns: 2, rows: 2, buttonWidth: 58, buttonHeight: 42, gapX: 8, gapY: 8, paddingX: 16, paddingY: 16, fillByColumn: false },
+    arithmeticLayoutExtras: { columns: 3, rows: 2, buttonWidth: 64, buttonHeight: 42, gapX: 8, gapY: 8, paddingX: 16, paddingY: 16, fillByColumn: false },
   }[picker];
   const columns = pickerLayout?.columns || (isWideLayout ? 2 : Math.max(1, Math.min(items.length, 5)));
-  const buttonWidth = isWideLayout ? 88 : 30;
-  const buttonHeight = isWideLayout ? 34 : 30;
-  const gapX = isWideLayout ? 10 : 8;
-  const gapY = isWideLayout ? 8 : 6;
-  const paddingX = isWideLayout ? 18 : 20;
-  const paddingY = isWideLayout ? 18 : 16;
+  const buttonWidth = pickerLayout?.buttonWidth || (isWideLayout ? 88 : 30);
+  const buttonHeight = pickerLayout?.buttonHeight || (isWideLayout ? 34 : 30);
+  const gapX = pickerLayout?.gapX ?? (isWideLayout ? 10 : 8);
+  const gapY = pickerLayout?.gapY ?? (isWideLayout ? 8 : 6);
+  const paddingX = pickerLayout?.paddingX ?? (isWideLayout ? 18 : 20);
+  const paddingY = pickerLayout?.paddingY ?? (isWideLayout ? 18 : 16);
   const naturalRows = Math.max(1, Math.ceil(items.length / columns));
   const rows = pickerLayout?.rows || naturalRows;
-  const shouldFillByColumn = Boolean(pickerLayout?.rows && pickerLayout.rows > naturalRows);
+  const shouldFillByColumn = pickerLayout?.fillByColumn ?? Boolean(pickerLayout?.rows && pickerLayout.rows > naturalRows);
   const width = (columns * buttonWidth) + ((columns - 1) * gapX) + paddingX;
   const height = (rows * buttonHeight) + ((rows - 1) * gapY) + paddingY;
   const bounds = popupBounds
@@ -6804,8 +6809,9 @@ function RelationMorePickerPopover({ position, items = [], onInsert, popupBounds
         right: window.innerWidth - 8,
         bottom: window.innerHeight - 8,
       };
+  const maxPopupWidth = Math.max(80, bounds.right - bounds.left - 16);
   const minLeft = bounds.left + 8;
-  const maxLeft = Math.max(minLeft, bounds.right - width - 8);
+  const maxLeft = Math.max(minLeft, bounds.right - Math.min(width, maxPopupWidth) - 8);
   const minTop = bounds.top + 8;
   const maxTop = Math.max(minTop, bounds.bottom - height - 8);
   const left = Math.min(Math.max(position.x - 6, minLeft), maxLeft);
@@ -6823,6 +6829,8 @@ function RelationMorePickerPopover({ position, items = [], onInsert, popupBounds
         left: `${left}px`,
         top: `${top}px`,
         zIndex: 100000,
+        maxWidth: `${maxPopupWidth}px`,
+        overflowX: width > maxPopupWidth ? 'auto' : undefined,
       }}
       onMouseDown={(e) => e.stopPropagation()}
     >
@@ -6955,10 +6963,11 @@ function GreekItalicPickerPopover({ position, onInsert }) {
 }
 
 function BlackboardBoldPickerPopover({ position, onInsert }) {
-  const popupWidth = 578;
+  const popupWidth = 648;
+  const popupHeight = 132;
   const maxLeft = Math.max(8, window.innerWidth - popupWidth);
   const left = Math.min(Math.max(position.x - 8, 8), maxLeft);
-  const top = Math.min(position.y + 2, window.innerHeight - 308);
+  const top = Math.min(position.y + 2, Math.max(8, window.innerHeight - popupHeight));
 
   return (
     <div
@@ -6998,7 +7007,7 @@ function BlackboardBoldPickerPopover({ position, onInsert }) {
 }
 
 function FrakturScriptPickerPopover({ position, onInsert, items = SCRIPT_PICKER_GRID_ITEMS }) {
-  const popupWidth = 578;
+  const popupWidth = 648;
   const popupHeight = 132;
   const maxLeft = Math.max(8, window.innerWidth - popupWidth);
   const left = Math.min(Math.max(position.x - 8, 8), maxLeft);
@@ -7042,8 +7051,11 @@ function FrakturScriptPickerPopover({ position, onInsert, items = SCRIPT_PICKER_
 }
 
 function HebrewSymbolPickerPopover({ position, onInsert }) {
-  const left = Math.min(Math.max(position.x - 8, 8), window.innerWidth - 248);
-  const top = Math.min(position.y + 2, window.innerHeight - 88);
+  const popupWidth = 100;
+  const popupHeight = 126;
+  const maxLeft = Math.max(8, window.innerWidth - popupWidth);
+  const left = Math.min(Math.max(position.x - 8, 8), maxLeft);
+  const top = Math.min(position.y + 2, Math.max(8, window.innerHeight - popupHeight));
 
   return (
     <div
