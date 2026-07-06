@@ -348,15 +348,14 @@
 .cme-toolbar-items--first-tab {
   padding: 5px;
   gap: 5px;
-  width: fit-content;
-  min-width: 0;
-  max-width: fit-content;
+  width: calc(100% - 12px);
+  min-width: calc(100% - 12px);
+  max-width: calc(100% - 12px);
   flex: 0 0 auto;
-
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
+  border-radius: 0 0 4px 4px;
   /* border-top: 1px solid #97aab7; */
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .cme-toolbar-items--first-tab .cme-symbol-subgroup {
@@ -581,10 +580,12 @@
   padding: 0 4px;
   border-right: 1px solid #b9c7d0;
   flex-shrink: 0;
+  align-self: stretch;
   align-content: center;
   justify-content: center;
   align-items: center;
   margin: 1px 0;
+  box-sizing: border-box;
 }
 
 .cme-symbol-subgroup:last-child {
@@ -850,7 +851,7 @@
 }
 
 .cme-btn.green-template {
-  color: #2c8a43;
+  color: #0B7D1E;
   font-family: "Segoe UI", Arial, sans-serif;
   font-size: 11px;
   font-weight: 700;
@@ -1112,7 +1113,7 @@
 
 .cme-fraction-svg rect,
 .cme-fraction-svg line {
-  stroke: #2c8a43;
+  stroke: #0B7D1E;
   stroke-width: 1.8;
   fill: none;
   stroke-linecap: square;
@@ -1135,7 +1136,7 @@
 }
 
 .cme-arrow-label-svg rect {
-  stroke: #2c8a43;
+  stroke: #0B7D1E;
   stroke-width: 1;
   fill: none;
 }
@@ -1657,7 +1658,7 @@
 }
 
 .cme-integral-template-box {
-  stroke: #2c8a43;
+  stroke: #0B7D1E;
   stroke-width: 1.02;
   fill: none;
 }
@@ -1688,7 +1689,7 @@
 }
 
 .cme-matrix-svg-cell {
-  stroke: #2c8a43;
+  stroke: #0B7D1E;
   stroke-width: 1.05;
   fill: none;
 }
@@ -1736,7 +1737,7 @@
 }
 
 .cme-script-svg rect {
-  stroke: #2c8a43;
+  stroke: #0B7D1E;
   stroke-width: 1.6;
   fill: none;
 }
@@ -1767,7 +1768,7 @@
 }
 
 .cme-root-svg-box {
-  stroke: #43a047;
+  stroke: #0B7D1E;
   stroke-width: 2.5;
   fill: none;
 }
@@ -1803,7 +1804,7 @@
 }
 
 .cme-accent-svg-box {
-  stroke: #2c8a43;
+  stroke: #0B7D1E;
   stroke-width: 1.2;
   fill: none;
 }
@@ -2749,7 +2750,7 @@ math-field.cme-main-mathfield::part(menu-toggle) {
 
 
 .cme-toolbar-placeholder-box-green {
-  color: #2ca02c;
+  color: #0B7D1E;
 }
 
 .cme-btn.green-template.black-glyph-template {
@@ -2757,7 +2758,7 @@ math-field.cme-main-mathfield::part(menu-toggle) {
 }
 
 .cme-fraction-stack--black-glyph-template .cme-fraction-svg rect {
-  stroke: #2c8a43;
+  stroke: #0B7D1E;
 }
 
 .cme-fraction-stack--black-glyph-template .cme-fraction-svg line {
@@ -2765,17 +2766,17 @@ math-field.cme-main-mathfield::part(menu-toggle) {
 }
 
 .cme-toolbar-placeholder-box-black {
-  color: #2ca02c;
+  color: #0B7D1E;
 }
 
 .cme-arrow-label-picker-popup .cme-arrow-label-svg rect,
 .cme-arrow-label-picker-btn .cme-arrow-label-svg rect {
-  stroke: #2ca02c !important;
+  stroke: #0B7D1E !important;
   fill: none;
 }
 
 .cme-arrow-label-placeholder-box {
-  stroke: #2ca02c !important;
+  stroke: #0B7D1E !important;
   fill: none;
 }
 
