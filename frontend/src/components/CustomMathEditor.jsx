@@ -979,6 +979,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
   const activeGroupIndex = mode === "math" ? activeMathGroup : activeChemGroup;
   const activeGroup = groups[activeGroupIndex] || {};
   const isPopupTabMode = mode === "math" || mode === "chem";
+  const isFirstMathTab = mode === "math" && activeGroupIndex === 0;
   const isIntegralHeroTab =
     mode === "math" &&
     Array.isArray(activeGroup.items) &&
@@ -1063,7 +1064,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
               })}
             </div>
             
-            <div className={`cme-toolbar-items${(isIntegralHeroTab || isDerivativeHeroTab) ? " cme-toolbar-items--integral-templates" : ""}${isPopupTabMode ? " cme-toolbar-items--popup-compact" : ""}`}>
+            <div className={`cme-toolbar-items${isFirstMathTab ? " cme-toolbar-items--first-tab" : ""}${(isIntegralHeroTab || isDerivativeHeroTab) ? " cme-toolbar-items--integral-templates" : ""}${isPopupTabMode ? " cme-toolbar-items--popup-compact" : ""}`}>
               {(() => {
                 const activeItems = groups[activeGroupIndex]?.items || [];
                 const size = 4;

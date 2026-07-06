@@ -63,13 +63,14 @@
 
 /* â”€â”€ Symbol Toolbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cme-toolbar {
-  background: linear-gradient(180deg, #dbe4ea 0%, #c7d3dc 100%);
+  /* background: linear-gradient(180deg, #dbe4ea 0%, #c7d3dc 100%); */
+  background: #ffffff;
   padding: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
-  border-bottom: 1px solid #92a6b4;
+  /* border-bottom: 1px solid #92a6b4; */
 }
 
 .cme-toolbar-groups {
@@ -79,7 +80,7 @@
   background: #ffffff;
   padding: 10px 6px 0 6px;
   gap: 2px;
-  border-bottom: 1px solid #8fa1ae;
+  /* border-bottom: 1px solid #8fa1ae; */
   min-height: 30px;
   box-sizing: border-box;
 }
@@ -203,12 +204,12 @@
   background: #E6EDF2;
   color: #556e7b;
   border-color: #9aadb9;
-  border: 1px solid #9aadb9;
+  border: 1px solid #556e7b;
   border-bottom-color: #E6EDF2;
   z-index: 2;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38);
   height: 28px;
-  margin-top: -4px;
+  margin-top: -3.5px;
 }
 
 .cme-group-tab--math:nth-child(-n+9):not(.active),
@@ -228,8 +229,7 @@
 .cme-group-tab--chem.active .cme-tab-svg-icon {
   color: #556e7b !important;
 }
-
-.cme-group-tab--math:nth-child(2).active,
+.cme-group-tab-math:nth-child(2).active,
 .cme-group-tab--math:nth-child(2).active:hover,
 .cme-group-tab--math:nth-child(3).active,
 .cme-group-tab--math:nth-child(3).active:hover,
@@ -284,14 +284,15 @@
   background: #E6EDF2;
   color: #556e7b;
   border: 1px solid #9aadb9;
-  border-color: #9aadb9;
+  border-color: #556e7b;
   border-bottom-color: #E6EDF2;
   height: 28px;
 }
 
 .cme-toolbar-items {
   background: #E6EDF2;
-  border: 1px solid #9aadb9;
+  /* border: 1px solid #9aadb9; */
+  border: 1px solid #556e7b;
   border-radius: 0 0 4px 4px;
   margin: 0 6px 6px;
   padding: 5px;
@@ -310,11 +311,11 @@
   height: var(--cme-toolbar-panel-height);
   min-height: var(--cme-toolbar-panel-height);
   max-height: var(--cme-toolbar-panel-height);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  /* box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75); */
 }
 
 .cme-toolbar:has(.cme-group-tab--popup.active) .cme-toolbar-items {
-  border-top-color: #E6EDF2;
+  /* border-top-color: #E6EDF2; */
 }
 
 .cme-toolbar-items--integral-templates {
@@ -345,11 +346,17 @@
 }
 
 .cme-toolbar-items--first-tab {
-  padding: 5px 5px;
+  padding: 5px;
   gap: 5px;
-  width: 100%;
-  min-width: 100%;
-  max-width: 100%;
+  width: fit-content;
+  min-width: 0;
+  max-width: fit-content;
+  flex: 0 0 auto;
+
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  /* border-top: 1px solid #97aab7; */
+  overflow: hidden;
 }
 
 .cme-toolbar-items--first-tab .cme-symbol-subgroup {
@@ -1950,7 +1957,7 @@
   background: #ffffff;
   border: 1px solid #97aab7;
   border-radius: 2px;
-  margin: 0 8px 8px;
+  margin: -3px 6px 6px;
   flex: 1;
   min-height: 152px;
   overflow: auto;
@@ -2143,7 +2150,7 @@ math-field.cme-main-mathfield::part(menu-toggle) {
   right: 24px;
   width: min(720px, calc(100vw - 24px));
   height: 384px;
-  background: #f1f4f7;
+  background: #ffffff;
   border: 1px solid #879dab;
   border-radius: 3px;
   box-shadow: 0 14px 36px rgba(11, 24, 34, 0.34);
@@ -2348,14 +2355,14 @@ math-field.cme-main-mathfield::part(menu-toggle) {
 
 .cme-popup-footer {
   padding: 8px;
-  background: #f1f4f7;
+  background: #ffffff;
   display: flex;
   justify-content: flex-start;
   gap: 10px;
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
   box-sizing: border-box;
-  border-top: 1px solid #c6d1d8;
+  /* border-top: 1px solid #c6d1d8; */
 }
 
 .cme-insert-btn {
