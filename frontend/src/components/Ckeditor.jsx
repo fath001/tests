@@ -1,4 +1,4 @@
-﻿import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
+import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import {
@@ -176,11 +176,10 @@ function bindWidgetClickTarget(editor, container) {
   container.addEventListener('mousedown', onPointerDown, true);
   container.addEventListener('click', onPointerDown, true);
 }
-
 const MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT =
-  '\\class{cme-two-row-matrix-template cme-bmatrix-two-row-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}';
+  '\\class{cme-bmatrix-two-row-template cme-two-row-matrix-template cme-bmatrix-single-column-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}';
 const MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT =
-  '\\class{cme-two-row-matrix-template cme-pmatrix-two-row-template cme-pmatrix-single-column-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}';
+  '\\class{cme-pmatrix-two-row-template cme-two-row-matrix-template cme-pmatrix-single-column-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}';
 
 function buildMatrixArrayBody(rows, cols, rowSeparator = '\\\\') {
   return Array.from({ length: rows }, () => (
@@ -188,52 +187,40 @@ function buildMatrixArrayBody(rows, cols, rowSeparator = '\\\\') {
   )).join(` ${rowSeparator} `);
 }
 
-function buildMatrixInsertLatex(type, rows, cols) {
-  if (type === 'bmatrix' && (rows === 2 || rows === 3)) {
-    const columnClass = cols === 1 ? ' cme-bmatrix-single-column-template' : cols === 2 ? ' cme-bmatrix-narrow-columns-template' : '';
-    const rowClass = rows === 2
-      ? 'cme-two-row-matrix-template cme-bmatrix-two-row-template' + columnClass
-      : 'cme-bmatrix-three-row-template' + columnClass;
-    const columnSpec = 'c'.repeat(Math.max(1, cols));
-    const body = buildMatrixArrayBody(rows, cols, '\\\\[0.18em]');
-    return '\\class{' + rowClass + '}{\\begin{array}{' + columnSpec + '} ' + body + ' \\end{array}}';
-  }
-
-
-  if (type === 'pmatrix' && (rows === 2 || rows === 3)) {
-    const columnClass = cols === 1 ? ' cme-pmatrix-single-column-template' : cols === 2 ? ' cme-pmatrix-narrow-columns-template' : '';
-    const rowClass = rows === 2
-      ? 'cme-two-row-matrix-template cme-pmatrix-two-row-template' + columnClass
-      : 'cme-pmatrix-three-row-template' + columnClass;
-    const columnSpec = 'c'.repeat(Math.max(1, cols));
-    const body = buildMatrixArrayBody(rows, cols, '\\\\[0.18em]');
-    return '\\class{' + rowClass + '}{\\begin{array}{' + columnSpec + '} ' + body + ' \\end{array}}';
-  }
-
-  if (type === 'vmatrix' && (rows === 2 || rows === 3)) {
-    const rowClass = rows === 2 ? 'cme-vmatrix-two-row-template' : 'cme-vmatrix-three-row-template';
-    const columnSpec = 'c'.repeat(Math.max(1, cols));
-    const body = buildMatrixArrayBody(rows, cols, '\\\\[0.18em]');
-    return '\\class{cme-vmatrix-template ' + rowClass + '}{\\begin{array}{' + columnSpec + '} ' + body + ' \\end{array}}';
-  }
-
-  if (cols === 1) {
-    const body = buildMatrixArrayBody(rows, cols);
-    switch (type) {
-      case 'bmatrix':
-        return '\\begin{bmatrix}' + body + '\\end{bmatrix}';
-      case 'pmatrix':
-        return '\\begin{pmatrix}' + body + '\\end{pmatrix}';
-      case 'vmatrix':
-        return '\\begin{vmatrix}' + body + '\\end{vmatrix}';
-      default:
-        return '\\begin{' + type + '}' + body + '\\end{' + type + '}';
-    }
-  }
-
-  const body = buildMatrixArrayBody(rows, cols, '\\\\');
-  return '\\begin{' + type + '}' + body + '\\end{' + type + '}';
+function wrapMatrixBodyWithDelimiters(body, leftDelimiter, rightDelimiter) {
+  return '\\' + 'left' + leftDelimiter + '\\' + 'begin{matrix} ' + body + ' \\' + 'end{matrix}' + '\\' + 'right' + rightDelimiter;
 }
+
+function buildMatrixClassWrap(body, cols, cssClasses) {
+  const colSpec = Array.from({ length: cols }, () => 'c').join('');
+  return '\\' + 'class{' + cssClasses + '}{' + '\\' + 'begin{array}{' + colSpec + '} ' + body + ' \\' + 'end{array}}';
+}
+
+function buildMatrixInsertLatex(type, rows, cols) {
+  const body = buildMatrixArrayBody(rows, cols, '\\\\');
+
+  // For 2 and 3 rows of bmatrix/pmatrix, use CSS-class-based delimiters
+  // because MathLive's \left/\right renders broken for small matrices.
+  if ((type === 'bmatrix' || type === 'pmatrix') && (rows === 2 || rows === 3)) {
+    const rowLabel = rows === 2 ? 'two' : 'three';
+    const colModifier = cols === 1 ? ` cme-${type}-single-column-template` : '';
+    const baseClass = rows === 2 ? 'cme-two-row-matrix-template' : '';
+    const cssClasses = `cme-${type}-${rowLabel}-row-template${baseClass ? ' ' + baseClass : ''}${colModifier}`;
+    return buildMatrixClassWrap(body, cols, cssClasses);
+  }
+
+  switch (type) {
+    case 'bmatrix':
+      return wrapMatrixBodyWithDelimiters(body, '[', ']');
+    case 'pmatrix':
+      return wrapMatrixBodyWithDelimiters(body, '(', ')');
+    case 'vmatrix':
+      return wrapMatrixBodyWithDelimiters(body, '|', '|');
+    default:
+      return '\\' + 'begin{' + type + '} ' + body + ' \\' + 'end{' + type + '}';
+  }
+}
+
 /* ══════════════════════════════════════════════════════════
    Symbol groups — same as CustomMathEditor.jsx
 ══════════════════════════════════════════════════════════ */
@@ -527,14 +514,12 @@ const MATH_GROUPS = [
       { label: '□ \\ □ \\ □', insert: '\\begin{matrix} #? \\\\ #? \\\\ #? \\end{matrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '□ □ □', insert: '\\begin{matrix} #? & #? & #? \\end{matrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '□ \\ □', insert: MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT, cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'bmatrix-two-row-template-image' },
-      { label: '□ & □', insert: '\\begin{bmatrix} #? & #? \\end{bmatrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true , icon: 'bmatrix-two-column-template-image' },
+      { label: '□ & □', insert: '\\left[\\begin{matrix} #? & #? \\end{matrix}\\right]', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true , icon: 'bmatrix-two-column-template-image' },
       { label: '□ \\ □', insert: MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT, cls: 'template matrix-roomy-template matrix-extra-tall-template', directInsert: true, icon: 'pmatrix-two-row-template-image' },
-      { label: '□ & □', insert: '\\begin{pmatrix} #? & #? \\end{pmatrix}', cls: 'template matrix-roomy-template matrix-extra-tall-template', directInsert: true, icon: 'pmatrix-two-column-template-image' },
+      { label: '□ & □', insert: '\\left(\\begin{matrix} #? & #? \\end{matrix}\\right)', cls: 'template matrix-roomy-template matrix-extra-tall-template', directInsert: true, icon: 'pmatrix-two-column-template-image' },
 
 
       { type: 'sep', cols: 2 }, 
-      // { label: '□ \\ □ \\ □', insert: '\\begin{bmatrix} #? \\\\ #? \\\\ #? \\end{bmatrix}', cls: 'template', directInsert: true },
-      // { label: '□ \\ □ \\ □', insert: '\\begin{pmatrix} #? \\\\ #? \\\\ #? \\end{pmatrix}', cls: 'template', directInsert: true },
 
 
       { type: 'sep', cols: 2 },  
@@ -1386,7 +1371,7 @@ function hasExpandedMathSelection(selection) {
 function countPlaceholdersBeforePrimarySlot(template) {
   if (!template || !template.includes('#0')) return 0;
 
-  const placeholderTokens = Array.from(template.matchAll(/#(?:0|\?|@)/g));
+  const placeholderTokens = Array.from(template.matchAll(/#(?:\d+|\?|@)/g));
   const primarySlotIndex = placeholderTokens.findIndex((match) => match[0] === '#0');
   if (primarySlotIndex <= 0) return 0;
 
@@ -2006,6 +1991,32 @@ function normalizeBevelledFractionSlashForEditor(latex = '') {
     .replace(BEVELLED_FRACTION_SLASH_LATEX_PATTERN, BEVELLED_FRACTION_SLASH_EDITOR_LATEX);
 }
 
+
+function normalizeMatrixBodyLatex(body = '') {
+  return String(body || '')
+    .replace(/\\\\\[[^\]]*\]/g, '\\\\')
+    .trim();
+}
+
+function normalizeMatrixLatex(latex = '') {
+  return String(latex || '')
+    .replace(/\\class\{[^}]*cme-bmatrix-(?:two|three)-row-template[^}]*\}\{\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}\}/g, (_, body) => (
+      wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '[', ']')
+    ))
+    .replace(/\\class\{[^}]*cme-pmatrix-(?:two|three)-row-template[^}]*\}\{\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}\}/g, (_, body) => (
+      wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '(', ')')
+    ))
+    .replace(/\\begin\{bmatrix\}([\s\S]*?)\\end\{bmatrix\}/g, (_, body) => (
+      wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '[', ']')
+    ))
+    .replace(/\\begin\{pmatrix\}([\s\S]*?)\\end\{pmatrix\}/g, (_, body) => (
+      wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '(', ')')
+    ))
+    .replace(/\\begin\{vmatrix\}([\s\S]*?)\\end\{vmatrix\}/g, (_, body) => (
+      wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '|', '|')
+    ));
+}
+
 function stripEmptyMathPlaceholders(latex = '') {
   return String(latex || '')
     .replace(/\\placeholder\{\}/g, '')
@@ -2013,7 +2024,7 @@ function stripEmptyMathPlaceholders(latex = '') {
 }
 
 function renderEmptyMathPlaceholders(latex = '') {
-  const normalized = normalizeBevelledFractionSlash(latex).replace(/\\placeholder\{\}/g, EMPTY_MATH_SLOT_LATEX);
+  const normalized = normalizeMatrixLatex(normalizeBevelledFractionSlash(latex)).replace(/\\placeholder\{\}/g, EMPTY_MATH_SLOT_LATEX);
   return normalized
     .replace(/\\frac\{\}\{\}/g, `\\frac{${EMPTY_MATH_SLOT_LATEX}}{${EMPTY_MATH_SLOT_LATEX}}`)
     .replace(/\\frac\{\}\{([^{}]*)\}/g, `\\frac{${EMPTY_MATH_SLOT_LATEX}}{$1}`)
@@ -4539,8 +4550,8 @@ const TOOLBAR_ICON_IMAGES = {
   `),
   'matrix-parens-template-image': makeToolbarIconImage(`
 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32" fill="none">
-  <path d="M6 2 C2 8,2 24,6 30" stroke="#111" stroke-width="2" stroke-linecap="round"/>
-  <path d="M34 2 C38 8,38 24,34 30" stroke="#111" stroke-width="2" stroke-linecap="round"/>
+  <path d="M9 2 C2 7,2 25,9 30" stroke="#111" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <path d="M31 2 C38 7,38 25,31 30" stroke="#111" stroke-width="2" stroke-linecap="round" fill="none"/>
   <rect x="11" y="3" width="5" height="6" stroke="#0B7D1E" stroke-width="2"/>
   <rect x="24" y="3" width="5" height="6" stroke="#0B7D1E" stroke-width="2"/>
   <rect x="11" y="13" width="5" height="6" stroke="#0B7D1E" stroke-width="2"/>
@@ -6333,7 +6344,7 @@ function renderToolbarItemLabel(item, context = {}) {
       );
     } else if (matrixType === 'pmatrix') {
       frame = (
-        <path d="M3.15 1.8C1.85 3.05 1.35 4.75 1.35 8.85C1.35 12.95 1.85 14.65 3.15 15.85M12.85 1.8C14.15 3.05 14.65 4.75 14.65 8.85C14.65 12.95 14.15 14.65 12.85 15.85" />
+        <path d="M4 1.65C1.9 3.6 1.35 5.75 1.35 8.85C1.35 11.95 1.9 14.1 4 16.05M12 1.65C14.1 3.6 14.65 5.75 14.65 8.85C14.65 11.95 14.1 14.1 12 16.05" />
       );
     } else if (matrixType === 'vmatrix') {
       frame = (
@@ -6375,7 +6386,7 @@ function renderToolbarItemLabel(item, context = {}) {
       frame: 'brackets',
       cells: [[7.05, 3.25], [7.05, 10.2]]
     },
-    '\\begin{bmatrix} #? & #? \\end{bmatrix}': {
+    '\\left[\\begin{matrix} #? & #? \\end{matrix}\\right]': {
       frame: 'brackets',
       cells: [[4.85, 7.05], [9.25, 7.05]]
     },
@@ -6383,15 +6394,15 @@ function renderToolbarItemLabel(item, context = {}) {
       frame: 'parentheses',
       cells: [[7.05, 3.25], [7.05, 10.2]]
     },
-    '\\begin{pmatrix} #? & #? \\end{pmatrix}': {
+    '\\left(\\begin{matrix} #? & #? \\end{matrix}\\right)': {
       frame: 'parentheses',
       cells: [[4.85, 7.05], [9.25, 7.05]]
     },
-    '\\begin{bmatrix} #? \\\\ #? \\\\ #? \\end{bmatrix}': {
+    '\\left[\\begin{matrix} #? \\\\ #? \\\\ #? \\end{matrix}\\right]': {
       frame: 'brackets',
       cells: [[7.05, 1.9], [7.05, 7.05], [7.05, 12.2]]
     },
-    '\\begin{pmatrix} #? \\\\ #? \\\\ #? \\end{pmatrix}': {
+    '\\left(\\begin{matrix} #? \\\\ #? \\\\ #? \\end{matrix}\\right)': {
       frame: 'parentheses',
       cells: [[7.05, 1.9], [7.05, 7.05], [7.05, 12.2]]
     },
@@ -7913,7 +7924,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     const prefill = () => {
       // Keep the popup content in sync when switching between different widgets
       // while the editor stays open.
-      let valueToSet = normalizeBevelledFractionSlashForEditor(initialLatex || '');
+      let valueToSet = normalizeMatrixLatex(normalizeBevelledFractionSlashForEditor(initialLatex || ''));
       if (mode === 'chem' && valueToSet) {
         const ceMatch = valueToSet.match(/^\\ce\{([\s\S]*)\}$/);
         if (ceMatch) valueToSet = ceMatch[1];
@@ -8105,7 +8116,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     const allowSelectedFontForInsert = preserveMathStyle || (mode === 'math' && activeGroupConfig.id === 'greek');
     const insertStyle = options.insertStyle || (allowSelectedFontForInsert ? null : DEFAULT_FONT_STYLE);
 
-    const hasPlaceholders = /#(?:0|\?|@)/.test(sym);
+    const hasPlaceholders = /#(?:\d+|\?|@)/.test(sym);
     const currentSelection = mf.selection || mf.model?.selection;
     const shouldAdvanceToPrimarySlot = !options.focusFirstPlaceholder && !hasExpandedMathSelection(currentSelection);
     const primarySlotAdvanceCount = shouldAdvanceToPrimarySlot
@@ -8235,6 +8246,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       onClose();
       return;
     }
+    if (mode === 'math') latex = normalizeMatrixLatex(latex);
     if (mode === 'chem') latex = serializeChemValue(latex);
     onInsert(latex, { direction: isRtlInput ? 'rtl' : 'ltr' });
     if (mf.setValue) mf.setValue(''); else mf.value = '';

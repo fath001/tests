@@ -39,40 +39,255 @@ function hasExpandedMathSelection(selection) {
 }
 
 const MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT =
-  "\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}";
+  "\\class{cme-bmatrix-two-row-template cme-two-row-matrix-template cme-bmatrix-single-column-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}";
 const MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT =
-  "\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}";
+  "\\class{cme-pmatrix-two-row-template cme-two-row-matrix-template cme-pmatrix-single-column-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}";
+
+function buildMatrixArrayBody(rows, cols, rowSeparator = "\\\\") {
+  return Array.from({ length: rows }, () => (
+    Array.from({ length: cols }, () => "#?").join(" & ")
+  )).join(` ${rowSeparator} `);
+}
+
+function wrapMatrixBodyWithDelimiters(body, leftDelimiter, rightDelimiter) {
+  return "\\left" + leftDelimiter + "\\begin{matrix} " + body + " \\end{matrix}\\right" + rightDelimiter;
+}
+
+function buildMatrixClassWrap(body, cols, cssClasses) {
+  const colSpec = Array.from({ length: cols }, () => "c").join("");
+  return "\\class{" + cssClasses + "}{\\begin{array}{" + colSpec + "} " + body + " \\end{array}}";
+}
 
 function buildMatrixInsertLatex(type, rows, cols) {
-  if (cols === 1) {
-    const body = Array.from({ length: rows }, () => "#?").join(" \\\\ ");
-    switch (type) {
-      case "bmatrix":
-        return `\\begin{bmatrix}${body}\\end{bmatrix}`;
-      case "pmatrix":
-        return `\\begin{pmatrix}${body}\\end{pmatrix}`;
-      case "vmatrix":
-        return `\\begin{vmatrix}${body}\\end{vmatrix}`;
-      default:
-        return `\\begin{${type}}${body}\\end{${type}}`;
-    }
+  const body = buildMatrixArrayBody(rows, cols, "\\\\");
+
+  // For 2 and 3 rows of bmatrix/pmatrix, use CSS-class-based delimiters
+  // because MathLive's \left/\right renders broken for small matrices.
+  if ((type === "bmatrix" || type === "pmatrix") && (rows === 2 || rows === 3)) {
+    const rowLabel = rows === 2 ? "two" : "three";
+    const colModifier = cols === 1 ? ` cme-${type}-single-column-template` : "";
+    const baseClass = rows === 2 ? "cme-two-row-matrix-template" : "";
+    const cssClasses = `cme-${type}-${rowLabel}-row-template${baseClass ? " " + baseClass : ""}${colModifier}`;
+    return buildMatrixClassWrap(body, cols, cssClasses);
   }
 
-  let latex = `\\begin{${type}}`;
-  for (let i = 0; i < rows; i += 1) {
-    for (let j = 0; j < cols; j += 1) {
-      latex += "#?";
-      if (j < cols - 1) latex += " & ";
-    }
-    if (i < rows - 1) latex += "\\\\";
+  switch (type) {
+    case "bmatrix":
+      return wrapMatrixBodyWithDelimiters(body, "[", "]");
+    case "pmatrix":
+      return wrapMatrixBodyWithDelimiters(body, "(", ")");
+    case "vmatrix":
+      return wrapMatrixBodyWithDelimiters(body, "|", "|");
+    default:
+      return `\\begin{${type}} ${body} \\end{${type}}`;
   }
-  return `${latex}\\end{${type}}`;
+}
+
+/* ── Shadow CSS for matrix bracket/parenthesis rendering inside MathLive shadow DOM ── */
+const CME_MATRIX_SHADOW_STYLE_ID = 'cme-matrix-shadow-style';
+const CME_MATRIX_SHADOW_CSS = `
+.cme-two-row-matrix-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+  padding-left: 0.72em;
+  padding-right: 0.72em;
+}
+
+.cme-two-row-matrix-template .ML__arraycolsep {
+  width: 0.16em !important;
+}
+
+.cme-bmatrix-two-row-template::before,
+.cme-bmatrix-two-row-template::after,
+.cme-pmatrix-two-row-template::before,
+.cme-pmatrix-two-row-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  height: 2.75em;
+  background: currentColor;
+  pointer-events: none;
+}
+
+.cme-bmatrix-two-row-template {
+  padding-left: 1.02em;
+  padding-right: 1.02em;
+}
+
+.cme-bmatrix-two-row-template::before,
+.cme-bmatrix-two-row-template::after {
+  width: 0.5em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-pmatrix-two-row-template::before,
+.cme-pmatrix-two-row-template::after {
+  width: 0.68em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-bmatrix-two-row-template::before,
+.cme-pmatrix-two-row-template::before {
+  left: 0.04em;
+  transform: translateY(-50%);
+}
+
+.cme-bmatrix-two-row-template::after,
+.cme-pmatrix-two-row-template::after {
+  right: 0.04em;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+.cme-bmatrix-two-row-template::before {
+  left: 0.12em;
+}
+
+.cme-bmatrix-two-row-template::after {
+  right: 0.12em;
+}
+
+.cme-bmatrix-three-row-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+  padding-left: 1.24em;
+  padding-right: 1.24em;
+}
+
+.cme-bmatrix-three-row-template .ML__arraycolsep {
+  width: 0.32em !important;
+}
+
+.cme-bmatrix-three-row-template::before,
+.cme-bmatrix-three-row-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0.54em;
+  height: 5.35em;
+  background: currentColor;
+  pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-bmatrix-three-row-template::before {
+  left: 0.14em;
+  transform: translateY(-50%);
+}
+
+.cme-bmatrix-three-row-template::after {
+  right: 0.14em;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+.cme-pmatrix-three-row-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+  padding-left: 1.08em;
+  padding-right: 1.08em;
+}
+
+.cme-pmatrix-three-row-template .ML__arraycolsep {
+  width: 0.28em !important;
+}
+
+.cme-pmatrix-three-row-template::before,
+.cme-pmatrix-three-row-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0.76em;
+  height: 5.35em;
+  background: currentColor;
+  pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-pmatrix-three-row-template::before {
+  left: 0.08em;
+  transform: translateY(-50%);
+}
+
+.cme-pmatrix-three-row-template::after {
+  right: 0.08em;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+.cme-bmatrix-single-column-template {
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+}
+
+.cme-bmatrix-single-column-template .ML__arraycolsep {
+  width: 0.18em !important;
+}
+
+.cme-bmatrix-two-row-template.cme-bmatrix-single-column-template::before,
+.cme-bmatrix-two-row-template.cme-bmatrix-single-column-template::after {
+  width: 0.54em;
+  height: 3.35em;
+}
+
+.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template {
+  padding-left: 1.58em;
+  padding-right: 1.58em;
+}
+
+.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template::before,
+.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template::after {
+  width: 0.58em;
+  height: 6.25em;
+}
+
+.cme-pmatrix-single-column-template {
+  padding-left: 1.34em;
+  padding-right: 1.34em;
+}
+
+.cme-pmatrix-single-column-template .ML__arraycolsep {
+  width: 0.18em !important;
+}
+
+.cme-pmatrix-two-row-template.cme-pmatrix-single-column-template::before,
+.cme-pmatrix-two-row-template.cme-pmatrix-single-column-template::after {
+  width: 0.74em;
+  height: 3.35em;
+}
+
+.cme-pmatrix-three-row-template.cme-pmatrix-single-column-template {
+  padding-left: 1.42em;
+  padding-right: 1.42em;
+}
+
+.cme-pmatrix-three-row-template.cme-pmatrix-single-column-template::before,
+.cme-pmatrix-three-row-template.cme-pmatrix-single-column-template::after {
+  width: 0.82em;
+  height: 6.25em;
+}
+`;
+
+function installMatrixShadowStyles(mathfield) {
+  const shadowRoot = mathfield?.shadowRoot;
+  if (!shadowRoot || shadowRoot.getElementById(CME_MATRIX_SHADOW_STYLE_ID)) return;
+  const style = document.createElement('style');
+  style.id = CME_MATRIX_SHADOW_STYLE_ID;
+  style.textContent = CME_MATRIX_SHADOW_CSS;
+  shadowRoot.appendChild(style);
 }
 
 function countPlaceholdersBeforePrimarySlot(template) {
   if (!template || !template.includes("#0")) return 0;
 
-  const placeholderTokens = Array.from(template.matchAll(/#(?:0|\?|@)/g));
+  const placeholderTokens = Array.from(template.matchAll(/#(?:\d+|\?|@)/g));
   const primarySlotIndex = placeholderTokens.findIndex((match) => match[0] === "#0");
   if (primarySlotIndex <= 0) return 0;
 
@@ -251,7 +466,7 @@ const MATH_GROUPS = [
       { label: "lim", insert: "\\lim_{#?}" },
       { label: "∫dx", insert: "\\int_{#?}^{#?}" },
       { label: "∑", insert: "\\sum_{#?}^{#?}" },
-      { label: "matrix", insert: "\\begin{pmatrix} #? & #? \\\\ #? & #? \\end{pmatrix}" },
+      { label: "matrix", insert: "\\left(\\begin{matrix} #? & #? \\\\ #? & #? \\end{matrix}\\right)" },
       { label: "vec", insert: "\\vec{#0}" },
       { label: "hat", insert: "\\hat{#0}" },
       { label: "bar", insert: "\\bar{#0}" },
@@ -448,9 +663,9 @@ const MATH_GROUPS = [
       { label: "||", insert: "vmatrix", cls: "template" },
       { label: "3 column row", insert: "\\begin{matrix} #? & #? & #? \\end{matrix}", cls: "template", directInsert: true },
       { label: "2 row column []", insert: MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT, cls: "template", directInsert: true },
-      { label: "2 column row []", insert: "\\begin{bmatrix} #? & #? \\end{bmatrix}", cls: "template", directInsert: true },
+      { label: "2 column row []", insert: "\\left[\\begin{matrix} #? & #? \\end{matrix}\\right]", cls: "template", directInsert: true },
       { label: "2 row column ()", insert: MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT, cls: "template", directInsert: true },
-      { label: "2 column row ()", insert: "\\begin{pmatrix} #? & #? \\end{pmatrix}", cls: "template", directInsert: true },
+      { label: "2 column row ()", insert: "\\left(\\begin{matrix} #? & #? \\end{matrix}\\right)", cls: "template", directInsert: true },
     ],
   },
 ];
@@ -841,6 +1056,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
     popupMf.style.setProperty("--primary-color", "#000000");
     popupMf.style.setProperty("--caret-color", "#000000");
     popupMf.style.setProperty("--smart-fence-color", "#000000");
+    installMatrixShadowStyles(popupMf);
     requestAnimationFrame(() => popupMf.focus());
   }, [mode, isEditorOpen]);
 
@@ -901,7 +1117,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
     const popupMf = popupMfRef.current;
     if (!popupMf) return;
 
-    const hasPlaceholders = /#(?:0|\?|@)/.test(insertText);
+    const hasPlaceholders = /#(?:\d+|\?|@)/.test(insertText);
     const currentSelection = popupMf.selection || popupMf.model?.selection;
     const shouldAdvanceToPrimarySlot = !hasExpandedMathSelection(currentSelection);
     const primarySlotAdvanceCount = shouldAdvanceToPrimarySlot
