@@ -180,7 +180,7 @@ function bindWidgetClickTarget(editor, container) {
 const MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT =
   '\\class{cme-two-row-matrix-template cme-bmatrix-two-row-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}';
 const MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT =
-  '\\class{cme-two-row-matrix-template cme-pmatrix-two-row-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}';
+  '\\class{cme-two-row-matrix-template cme-pmatrix-two-row-template cme-pmatrix-single-column-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}';
 
 function buildMatrixArrayBody(rows, cols, rowSeparator = '\\\\') {
   return Array.from({ length: rows }, () => (
@@ -194,6 +194,17 @@ function buildMatrixInsertLatex(type, rows, cols) {
     const rowClass = rows === 2
       ? 'cme-two-row-matrix-template cme-bmatrix-two-row-template' + columnClass
       : 'cme-bmatrix-three-row-template' + columnClass;
+    const columnSpec = 'c'.repeat(Math.max(1, cols));
+    const body = buildMatrixArrayBody(rows, cols, '\\\\[0.18em]');
+    return '\\class{' + rowClass + '}{\\begin{array}{' + columnSpec + '} ' + body + ' \\end{array}}';
+  }
+
+
+  if (type === 'pmatrix' && (rows === 2 || rows === 3)) {
+    const columnClass = cols === 1 ? ' cme-pmatrix-single-column-template' : cols === 2 ? ' cme-pmatrix-narrow-columns-template' : '';
+    const rowClass = rows === 2
+      ? 'cme-two-row-matrix-template cme-pmatrix-two-row-template' + columnClass
+      : 'cme-pmatrix-three-row-template' + columnClass;
     const columnSpec = 'c'.repeat(Math.max(1, cols));
     const body = buildMatrixArrayBody(rows, cols, '\\\\[0.18em]');
     return '\\class{' + rowClass + '}{\\begin{array}{' + columnSpec + '} ' + body + ' \\end{array}}';
@@ -329,14 +340,14 @@ const MATH_GROUPS = [
       { label: 'xₙ', insert: '#0_{#?}', title: 'Subscript', icon: 'subscript-template-image' },
       { label: 'ₗ□', insert: '{}_{#?}#?', cls: 'template', directInsert: true, title: 'Left Subscript', icon: 'left-sub-template-image' },
       { type: 'sep', cols: 3 },
-      { label: '□\n□', insert: '\\overset{#?}{#?}', cls: 'template', directInsert: true, title: 'Overset', icon: 'overset-template-image' },
-      { label: '□\n□\n□', insert: '\\overset{#?}{\\underset{#?}{#?}}', cls: 'template', directInsert: true, title: 'Over and Under', icon: 'over-under-template-image' },
-      { label: '□\n□', insert: '\\underset{#?}{#?}', cls: 'template', directInsert: true, title: 'Underset', icon: 'underset-template-image' },
+      { label: '□\n□', insert: '\\overset{\\raisebox{0pt}{$#1$}}{\\raisebox{-1pt}{$#2$}}', cls: 'template', directInsert: true, title: 'Overset', icon: 'overset-template-image' },
+      { label: '□\n□\n□', insert: '\\overset{\\raisebox{0.5pt}{#1}}{\\underset{\\raisebox{-2pt}{#3}}{#2}}', cls: 'template', directInsert: true, title: 'Over and Under', icon: 'over-under-template-image' },
+      { label: '□\n□', insert: '\\underset{#1 \\rule{0pt}{9pt}}{#2}', cls: 'template', directInsert: true, title: 'Underset', icon: 'underset-template-image' },
       { type: 'sep', cols: 2 },
       { label: '□⏟□', insert: '\\underbrace{#?}_{#?}', cls: 'template', directInsert: true, title: 'Underbrace', icon: 'underbrace-template-image' },
       { label: '□⏞□', insert: '\\overbrace{#?}^{#?}', cls: 'template', directInsert: true, title: 'Overbrace', icon: 'overbrace-template-image' },
       { type: 'sep', cols: 4 },
-      { label: '□\n▯\n□', insert: '\\displaystyle{\\begin{array}{c}\\htmlStyle{font-size:1.05em;display:inline-block;padding-bottom:0.18em;line-height:1.05}{#?}\\\\\\htmlStyle{font-size:1.45em;display:inline-block;padding:0.12em 0;line-height:1.05}{#0}\\\\\\htmlStyle{font-size:1.05em;display:inline-block;padding-top:0.18em;line-height:1.05}{#?}\\end{array}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image', focusFirstPlaceholder: true },
+      { label: '□\n▯\n□', insert: '\\displaystyle{\\begin{array}{c}\\htmlStyle{display:inline-block;height:1.6em;line-height:1.6em;font-size:1.05em;vertical-align:middle}{#?}\\\\\\htmlStyle{display:inline-block;height:1.6em;line-height:1.6em;font-size:1.45em;vertical-align:middle}{#0}\\\\\\htmlStyle{display:inline-block;height:1.6em;line-height:1.6em;font-size:1.05em;vertical-align:middle}{#?}\\end{array}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image', focusFirstPlaceholder: true },
       { label: '▯\n□', insert: '\\displaystyle{\\begin{array}{c}\\htmlStyle{font-size:1.45em;display:inline-block;padding:0.12em 0;line-height:1.05}{#0}\\\\\\htmlStyle{font-size:1.05em;display:inline-block;padding-top:0.18em;line-height:1.05}{#?}\\end{array}}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image', focusFirstPlaceholder: true },
       { label: '▯^□_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}^{\\htmlStyle{font-size:1.1em;display:inline-block;padding-bottom:0.26em;line-height:1.15}{#?}}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
       { label: '▯_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
@@ -1821,7 +1832,7 @@ const ORDERED_MATH_GROUPS = [
       { label: 'prod-limits-lower', insert: '\\prod\\limits_{#?}', cls: 'template', directInsert: true, title: 'Product With Lower Limit', icon: 'prod-limits-lower-template-image' },
       { label: 'prod-right-both', insert: '\\prod\\nolimits^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Superscript and Subscript', icon: 'prod-right-both-template-image' },
       { label: 'prod-right-lower', insert: '\\prod\\nolimits_{#?}', cls: 'template', directInsert: true, title: 'Product With Right Subscript', icon: 'prod-right-lower-template-image' },
-      { label: '□\n▯\n□', insert: '\\displaystyle{\\begin{array}{c}\\htmlStyle{font-size:1.05em;display:inline-block;padding-bottom:0.18em;line-height:1.05}{#?}\\\\\\htmlStyle{font-size:1.45em;display:inline-block;padding:0.12em 0;line-height:1.05}{#0}\\\\\\htmlStyle{font-size:1.05em;display:inline-block;padding-top:0.18em;line-height:1.05}{#?}\\end{array}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image', focusFirstPlaceholder: true },
+      { label: '□\n▯\n□', insert: '\\displaystyle{\\begin{array}{c}\\htmlStyle{display:inline-block;height:1.6em;line-height:1.6em;font-size:1.05em;vertical-align:middle}{#?}\\\\\\htmlStyle{display:inline-block;height:1.6em;line-height:1.6em;font-size:1.45em;vertical-align:middle}{#0}\\\\\\htmlStyle{display:inline-block;height:1.6em;line-height:1.6em;font-size:1.05em;vertical-align:middle}{#?}\\end{array}}', cls: 'template', directInsert: true, title: 'Operator With Upper and Lower Limits', icon: 'operator-limits-both-template-image', focusFirstPlaceholder: true },
       { label: '▯\n□', insert: '\\displaystyle{\\begin{array}{c}\\htmlStyle{font-size:1.45em;display:inline-block;padding:0.12em 0;line-height:1.05}{#0}\\\\\\htmlStyle{font-size:1.05em;display:inline-block;padding-top:0.18em;line-height:1.05}{#?}\\end{array}}', cls: 'template', directInsert: true, title: 'Operator With Lower Limit', icon: 'operator-lower-limit-template-image', focusFirstPlaceholder: true },
       { label: '▯^□_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}^{\\htmlStyle{font-size:1.1em;display:inline-block;padding-bottom:0.26em;line-height:1.15}{#?}}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Superscript and Subscript', icon: 'operator-right-sup-sub-template-image' },
       { label: '▯_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
@@ -2346,18 +2357,23 @@ const MATH_FIELD_SHADOW_CSS = `
   pointer-events: none;
 }
 
+.cme-bmatrix-two-row-template {
+  padding-left: 1.02em;
+  padding-right: 1.02em;
+}
+
 .cme-bmatrix-two-row-template::before,
 .cme-bmatrix-two-row-template::after {
-  width: 0.55em;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M12 6 H3 V66 H12' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M12 6 H3 V66 H12' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  width: 0.5em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 
 .cme-pmatrix-two-row-template::before,
 .cme-pmatrix-two-row-template::after {
-  width: 0.58em;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 72'%3E%3Cpath d='M16 6 C6 18 6 54 16 66' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 72'%3E%3Cpath d='M16 6 C6 18 6 54 16 66' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  width: 0.68em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 
 .cme-bmatrix-two-row-template::before,
@@ -2371,13 +2387,21 @@ const MATH_FIELD_SHADOW_CSS = `
   right: 0.04em;
   transform: translateY(-50%) scaleX(-1);
 }
+
+.cme-bmatrix-two-row-template::before {
+  left: 0.12em;
+}
+
+.cme-bmatrix-two-row-template::after {
+  right: 0.12em;
+}
 .cme-bmatrix-three-row-template {
   display: inline-block;
   position: relative;
   line-height: 1;
   vertical-align: 0.48em;
-  padding-left: 1.02em;
-  padding-right: 1.02em;
+  padding-left: 1.24em;
+  padding-right: 1.24em;
 }
 
 .cme-bmatrix-three-row-template .ML__arraycolsep {
@@ -2389,12 +2413,12 @@ const MATH_FIELD_SHADOW_CSS = `
   content: "";
   position: absolute;
   top: 50%;
-  width: 0.62em;
+  width: 0.54em;
   height: 5.35em;
   background: currentColor;
   pointer-events: none;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M12 6 H3 V66 H12' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M12 6 H3 V66 H12' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 
 .cme-bmatrix-three-row-template::before {
@@ -2407,9 +2431,53 @@ const MATH_FIELD_SHADOW_CSS = `
   transform: translateY(-50%) scaleX(-1);
 }
 
+.cme-bmatrix-three-row-template::before {
+  left: 0.14em;
+}
+
+.cme-bmatrix-three-row-template::after {
+  right: 0.14em;
+}
+
+.cme-pmatrix-three-row-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+  padding-left: 1.08em;
+  padding-right: 1.08em;
+}
+
+.cme-pmatrix-three-row-template .ML__arraycolsep {
+  width: 0.28em !important;
+}
+
+.cme-pmatrix-three-row-template::before,
+.cme-pmatrix-three-row-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0.76em;
+  height: 5.35em;
+  background: currentColor;
+  pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-pmatrix-three-row-template::before {
+  left: 0.08em;
+  transform: translateY(-50%);
+}
+
+.cme-pmatrix-three-row-template::after {
+  right: 0.08em;
+  transform: translateY(-50%) scaleX(-1);
+}
+
 .cme-bmatrix-single-column-template {
-  padding-left: 1.34em;
-  padding-right: 1.34em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
 }
 
 .cme-bmatrix-single-column-template .ML__arraycolsep {
@@ -2418,24 +2486,24 @@ const MATH_FIELD_SHADOW_CSS = `
 
 .cme-bmatrix-two-row-template.cme-bmatrix-single-column-template::before,
 .cme-bmatrix-two-row-template.cme-bmatrix-single-column-template::after {
-  width: 0.66em;
+  width: 0.54em;
   height: 3.35em;
 }
 
 .cme-bmatrix-three-row-template.cme-bmatrix-single-column-template {
-  padding-left: 1.42em;
-  padding-right: 1.42em;
+  padding-left: 1.58em;
+  padding-right: 1.58em;
 }
 
 .cme-bmatrix-three-row-template.cme-bmatrix-single-column-template::before,
 .cme-bmatrix-three-row-template.cme-bmatrix-single-column-template::after {
-  width: 0.72em;
+  width: 0.58em;
   height: 6.25em;
 }
 
 .cme-bmatrix-narrow-columns-template {
-  padding-left: 0.9em;
-  padding-right: 0.9em;
+  padding-left: 1.08em;
+  padding-right: 1.08em;
 }
 
 .cme-bmatrix-narrow-columns-template .ML__arraycolsep {
@@ -2444,18 +2512,70 @@ const MATH_FIELD_SHADOW_CSS = `
 
 .cme-bmatrix-two-row-template.cme-bmatrix-narrow-columns-template::before,
 .cme-bmatrix-two-row-template.cme-bmatrix-narrow-columns-template::after {
-  width: 0.6em;
+  width: 0.52em;
   height: 3.25em;
 }
 
 .cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template {
-  padding-left: 0.94em;
-  padding-right: 0.94em;
+  padding-left: 1.12em;
+  padding-right: 1.12em;
 }
 
 .cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template::before,
 .cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template::after {
-  width: 0.68em;
+  width: 0.56em;
+  height: 6.05em;
+}
+
+.cme-pmatrix-single-column-template {
+  padding-left: 1.34em;
+  padding-right: 1.34em;
+}
+
+.cme-pmatrix-single-column-template .ML__arraycolsep {
+  width: 0.18em !important;
+}
+
+.cme-pmatrix-two-row-template.cme-pmatrix-single-column-template::before,
+.cme-pmatrix-two-row-template.cme-pmatrix-single-column-template::after {
+  width: 0.74em;
+  height: 3.35em;
+}
+
+.cme-pmatrix-three-row-template.cme-pmatrix-single-column-template {
+  padding-left: 1.42em;
+  padding-right: 1.42em;
+}
+
+.cme-pmatrix-three-row-template.cme-pmatrix-single-column-template::before,
+.cme-pmatrix-three-row-template.cme-pmatrix-single-column-template::after {
+  width: 0.82em;
+  height: 6.25em;
+}
+
+.cme-pmatrix-narrow-columns-template {
+  padding-left: 0.94em;
+  padding-right: 0.94em;
+}
+
+.cme-pmatrix-narrow-columns-template .ML__arraycolsep {
+  width: 0.22em !important;
+}
+
+.cme-pmatrix-two-row-template.cme-pmatrix-narrow-columns-template::before,
+.cme-pmatrix-two-row-template.cme-pmatrix-narrow-columns-template::after {
+  width: 0.7em;
+  height: 3.25em;
+}
+
+.cme-pmatrix-three-row-template.cme-pmatrix-narrow-columns-template {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.cme-pmatrix-three-row-template.cme-pmatrix-narrow-columns-template::before,
+.cme-pmatrix-three-row-template.cme-pmatrix-narrow-columns-template::after {
+  width: 0.78em;
   height: 6.05em;
 }
 .cme-cases-left-template,
@@ -3120,9 +3240,9 @@ function makeArrowLabelToolbarIcon(content) {
 const TOOLBAR_ICON_IMAGES = {
   'fraction-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"> 
-      <rect x="6.1" y="1.8" width="6" height="4.8" rx="0" fill="none" stroke="#0B7D1E" stroke-width="1.6"/>
-      <line x1="3.2" y1="9" x2="14.8" y2="9" stroke="#000000" stroke-width="1.6" stroke-linecap="square"/>
-      <rect x="6.1" y="11.4" width="6" height="4.8" rx="0" fill="none" stroke="#0B7D1E" stroke-width="1.6"/>
+      <rect x="6.1" y="1.8" width="5" height="4.8" rx="0" fill="none" stroke="#0B7D1E" stroke-width="1"/>
+      <line x1="3.2" y1="9" x2="13.4" y2="9" stroke="#000000" stroke-width="0.9" stroke-linecap="square"/>
+      <rect x="6.1" y="11.4" width="5" height="4.8" rx="0" fill="none" stroke="#0B7D1E" stroke-width="1"/>
     </svg>
   `),
   'small-fraction-template-image': makeToolbarIconImage(`
@@ -4438,12 +4558,19 @@ const TOOLBAR_ICON_IMAGES = {
 </svg>
   `),
   'pmatrix-two-row-template-image': makeToolbarIconImage(`
-<svg xmlns="http://www.w3.org/2000/svg" width="56" height="72" viewBox="0 0 56 72">
-  <path d="M17 6 C7 18 7 54 17 66" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-  <path d="M39 6 C49 18 49 54 39 66" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-  <rect x="19" y="15" width="18" height="18" fill="none" stroke="#0B7D1E" stroke-width="4"/>
-  <rect x="19" y="39" width="18" height="18" fill="none" stroke="#0B7D1E" stroke-width="4"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="72" viewBox="0 0 64 72">
+  <!-- Left parenthesis moved left -->
+  <path d="M13 6 C3 18 3 54 13 66"
+        fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Right parenthesis moved right -->
+  <path d="M51 6 C61 18 61 54 51 66"
+        fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Matrix unchanged -->
+  <rect x="23" y="15" width="18" height="18" fill="none" stroke="#0B7D1E" stroke-width="4"/>
+  <rect x="23" y="39" width="18" height="18" fill="none" stroke="#0B7D1E" stroke-width="4"/>
+</svg> 
   `),
   'bmatrix-two-column-template-image': makeToolbarIconImage(`
 <svg xmlns="http://www.w3.org/2000/svg" width="120" height="48" viewBox="0 0 120 48">
@@ -4544,33 +4671,33 @@ const TOOLBAR_ICON_IMAGES = {
 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
   <!-- Upper placeholder -->
   <rect x="24" y="1"
-        width="8" height="8"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
   <!-- Plus sign -->
-  <text x="6" y="20"
+  <text x="12" y="18"
         font-family="Cambria Math, Arial, sans-serif"
-        font-size="18"
+        font-size="12"
         fill="#111">+</text>
 
   <!-- Main placeholder -->
   <rect x="24" y="11"
-        width="8" height="8"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
   <!-- Fraction bar -->
-  <line x1="2" y1="22"
-        x2="34" y2="22"
+  <line x1="2" y1="20"
+        x2="34" y2="20"
         stroke="#111"
-        stroke-width="2"/>
+        stroke-width="1"/>
 
   <!-- Lower placeholder -->
-  <rect x="24" y="24"
-        width="8" height="8"
+  <rect x="24" y="22.5"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
@@ -4578,35 +4705,35 @@ const TOOLBAR_ICON_IMAGES = {
   `),
   'difference-array-template-image': makeToolbarIconImage(`
 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
-  <!-- Upper placeholder -->
+   <!-- Upper placeholder -->
   <rect x="24" y="1"
-        width="8" height="8"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
-  <!-- Minus sign -->
-  <text x="8" y="19"
+  <!-- Plus sign -->
+  <text x="15" y="20"
         font-family="Cambria Math, Arial, sans-serif"
-        font-size="18"
-        fill="#111">−</text>
+        font-size="19"
+        fill="#111">-</text>
 
   <!-- Main placeholder -->
   <rect x="24" y="11"
-        width="8" height="8"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
   <!-- Fraction bar -->
-  <line x1="2" y1="22"
-        x2="34" y2="22"
+  <line x1="2" y1="20"
+        x2="34" y2="20"
         stroke="#111"
-        stroke-width="2"/>
+        stroke-width="1"/>
 
   <!-- Lower placeholder -->
-  <rect x="24" y="24"
-        width="8" height="8"
+  <rect x="24" y="22.5"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
@@ -4614,29 +4741,29 @@ const TOOLBAR_ICON_IMAGES = {
   `),
   'stack-line-template-image': makeToolbarIconImage(`
 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
-  <!-- Top placeholder -->
+  <!-- Upper placeholder -->
   <rect x="24" y="1"
-        width="8" height="8"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
-  <!-- Middle placeholder -->
+  <!-- Main placeholder -->
   <rect x="24" y="11"
-        width="8" height="8"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
   <!-- Fraction bar -->
-  <line x1="2" y1="22"
-        x2="34" y2="22"
+  <line x1="2" y1="20"
+        x2="34" y2="20"
         stroke="#111"
-        stroke-width="2"/>
+        stroke-width="1"/>
 
-  <!-- Bottom placeholder -->
-  <rect x="24" y="24"
-        width="8" height="8"
+  <!-- Lower placeholder -->
+  <rect x="24" y="22.5"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
@@ -4646,33 +4773,33 @@ const TOOLBAR_ICON_IMAGES = {
 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
   <!-- Top placeholder -->
   <rect x="24" y="1"
-        width="8" height="8"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
   <!-- Left placeholder -->
-  <rect x="2" y="14"
-        width="8" height="8"
+  <rect x="5" y="14"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
   <!-- Delimiter -->
-  <text x="13" y="21"
+  <text x="16" y="22"
         font-family="Cambria Math, Times New Roman, serif"
-        font-size="22"
+        font-size="15"
         fill="#111">)</text>
 
   <!-- Horizontal bar -->
-  <line x1="24" y1="12"
+  <line x1="16.5" y1="12"
         x2="38" y2="12"
         stroke="#111"
-        stroke-width="2"/>
+        stroke-width="1"/>
 
   <!-- Bottom placeholder -->
   <rect x="24" y="16"
-        width="8" height="8"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
@@ -4680,101 +4807,101 @@ const TOOLBAR_ICON_IMAGES = {
   `),
   'product-array-template-image': makeToolbarIconImage(`
 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
-  <!-- Upper placeholder -->
+   <!-- Upper placeholder -->
   <rect x="24" y="1"
-        width="8" height="8"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
   <!-- Multiplication sign -->
-  <text x="7" y="19"
+  <text x="12" y="18"
         font-family="Cambria Math, Arial, sans-serif"
-        font-size="18"
+        font-size="12"
         fill="#111">×</text>
 
   <!-- Main placeholder -->
   <rect x="24" y="11"
-        width="8" height="8"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
   <!-- Fraction bar -->
-  <line x1="2" y1="22"
-        x2="34" y2="22"
+  <line x1="2" y1="20"
+        x2="34" y2="20"
         stroke="#111"
-        stroke-width="2"/>
+        stroke-width="1"/>
 
   <!-- Lower placeholder -->
-  <rect x="24" y="24"
-        width="8" height="8"
+  <rect x="24" y="22.5"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 </svg>
   `),
   'mixed-fraction-template-image': makeToolbarIconImage(`
-<svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="2 0 40 32">
   <!-- Left top box -->
-  <rect x="3" y="6"
-        width="8" height="10"
+  <rect x="9" y="6"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
   <!-- Right top box -->
   <rect x="26" y="6"
-        width="8" height="10"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
   <!-- L-shaped separator -->
   <line x1="20" y1="1"
-        x2="20" y2="21"
+        x2="20" y2="19"
         stroke="#111"
-        stroke-width="2"/>
+        stroke-width="1"/>
 
-  <line x1="20" y1="21"
-        x2="38" y2="21"
+  <line x1="20" y1="18.5"
+        x2="38" y2="18.5"
         stroke="#111"
-        stroke-width="2"/>
+        stroke-width="1"/>
 
   <!-- Bottom box -->
   <rect x="26" y="24"
-        width="8" height="8"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 </svg>
   `),
-  'array-cc-template-image': makeToolbarIconImage(`
+  'array-cc-template-image': makeToolbarIconImage(` 
    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
   <!-- Top left -->
-  <rect x="3" y="4"
-        width="8" height="10"
+  <rect x="9" y="6"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
   <!-- Bottom left -->
-  <rect x="3" y="22"
-        width="8" height="10"
+  <rect x="9" y="22"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
   <!-- Top right -->
-  <rect x="26" y="4"
-        width="8" height="10"
+  <rect x="26" y="6"
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
 
   <!-- Bottom right -->
   <rect x="26" y="22"
-        width="8" height="10"
+        width="6" height="7" 
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
@@ -4783,44 +4910,44 @@ const TOOLBAR_ICON_IMAGES = {
   <line x1="20" y1="1"
         x2="20" y2="18"
         stroke="#111"
-        stroke-width="2"/>
+        stroke-width="1"/>
 
-  <line x1="20" y1="18"
-        x2="38" y2="18"
+  <line x1="19.6" y1="18"
+        x2="37.5" y2="18"
         stroke="#111"
-        stroke-width="2"/>
+        stroke-width="1"/>
 </svg>
   `),
   'division-remainder-template-image': makeToolbarIconImage(`
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 0 60 80" fill="none">
   <!-- Top placeholder -->
   <rect x="32" y="2" width="14" height="18"
-        stroke="#0B7D1E" stroke-width="2.5"/>
+        stroke="#0B7D1E" stroke-width="3.5"/>
 
   <!-- Left placeholder -->
   <rect x="2" y="30" width="14" height="18"
-        stroke="#0B7D1E" stroke-width="2.5"/>
+        stroke="#0B7D1E" stroke-width="3.5"/>
 
   <!-- Middle placeholder -->
   <rect x="32" y="30" width="14" height="18"
-        stroke="#0B7D1E" stroke-width="2.5"/>
+        stroke="#0B7D1E" stroke-width="3.5"/>
 
   <!-- Bottom placeholder -->
   <rect x="32" y="58" width="14" height="18"
-        stroke="#0B7D1E" stroke-width="2.5"/>
+        stroke="#0B7D1E" stroke-width="3.5"/>
 
   <!-- Large bold parenthesis -->
-  <path d="M18 16 C32 28,32 52,18 64"
+<path d="M18 24 C28 32,28 48,18 56"
         stroke="#000"
-        stroke-width="4"
+        stroke-width="2.5"
         stroke-linecap="round"
         stroke-linejoin="round"/>
 
   <!-- Large bold horizontal bar -->
-  <line x1="28" y1="24"
+  <line x1="19" y1="24"
         x2="54" y2="24"
         stroke="#000"
-        stroke-width="4"/>
+        stroke-width="2.5"/>
 </svg>  
   `),
   'vertical-line-picker-template-image': makeToolbarIconImage(`
@@ -8610,9 +8737,6 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                 const enclosureSplit = splitRelationPicker(enclosureFrames);
                 const strikeSplit = splitRelationPicker(strikeDecorations);
                 const accentItems = pick(accents, [0, 1, 2, 3, 4, 5, 6, 7]);
-                if (accentItems[6]) {
-                  accentItems[6] = { ...accentItems[6], gridColumn: '2' };
-                }
 
                 subgroups = [
                   {
