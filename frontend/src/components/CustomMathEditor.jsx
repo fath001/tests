@@ -94,6 +94,26 @@ function buildMatrixInsertLatex(type, rows, cols) {
 /* ── Shadow CSS for matrix bracket/parenthesis rendering inside MathLive shadow DOM ── */
 const CME_MATRIX_SHADOW_STYLE_ID = 'cme-matrix-shadow-style';
 const CME_MATRIX_SHADOW_CSS = `
+:host {
+  font-family: Helvetica, Arial, sans-serif !important;
+  --text-font-family: Helvetica, Arial, sans-serif;
+  --math-font-family: Helvetica, Arial, sans-serif;
+}
+
+/* Force all math letters and text to use Helvetica */
+.ML__mathit,
+.ML__mathrm,
+.ML__text,
+.ML__cmr,
+.ML__mathsf,
+.ML__mathsfit {
+  font-family: Helvetica, Arial, sans-serif !important;
+}
+
+.ML__mathit {
+  font-style: italic !important;
+}
+
 .cme-two-row-matrix-template {
   display: inline-block;
   position: relative;

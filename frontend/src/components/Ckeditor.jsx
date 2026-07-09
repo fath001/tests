@@ -613,9 +613,9 @@ const RELATION_MORE_PICKERS = {
     { label: '▢\n▯', insert: '\\class{cme-rounded-box-template}{#?}', cls: 'template', directInsert: true, title: 'Rounded Boxed', icon: 'boxed-rounded-template-image' },
   ],
   strikeDecorationExtras: [
-    { label: '│\n▯', insert: '\\enclose{verticalstrike}{#?}', cls: 'template', directInsert: true, title: 'Vertical Strike', icon: 'vertical-strike-template-image' },
+    { label: '│\n▯', insert: '\\class{cme-vertical-strike-template}{#?}', cls: 'template', directInsert: true, title: 'Vertical Strike', icon: 'vertical-strike-template-image' },
     { label: ')\n¯', insert: '\\class{cme-overline-left-curve-template}{#?}', cls: 'template', directInsert: true, title: 'Overline with Curved Left Boundary', icon: 'overline-left-curve-template-image' },
-    { label: '?\n?', insert: '\\enclose{verticalstrike}{\\htmlStyle{text-decoration:line-through;text-decoration-skip-ink:none;}{#0}}', cls: 'template', directInsert: true, title: 'Vertical and Horizontal Strike', icon: 'crosshair-strike-template-image' },
+    { label: '?\n?', insert: '\\class{cme-crosshair-strike-template}{\\htmlStyle{display:inline-block;min-width:0.72em;white-space:nowrap;}{#0}}', cls: 'template', directInsert: true, title: 'Vertical and Horizontal Strike', icon: 'crosshair-strike-template-image' },
   ],
   arithmeticLayoutExtras: [
     { label: 'diff-array', insert: '\\frac{\\begin{array}{r}\\class{cme-column-layout-slot-1}{#0}\\\\-\\,\\class{cme-column-layout-slot-2}{#?}\\end{array}}{\\hskip10px\\class{cme-column-layout-slot-3}{#?}}', directInsert: true, focusSlotGroup: 'column-layout', icon: 'difference-array-template-image', title: 'Column Subtraction' },
@@ -2047,6 +2047,25 @@ function renderEmptyMathPlaceholders(latex = '') {
 
 const MATH_FIELD_SHADOW_STYLE_ID = 'cme-math-field-shadow-style';
 const MATH_FIELD_SHADOW_CSS = `
+:host {
+  font-family: Helvetica, Arial, sans-serif !important;
+  --text-font-family: Helvetica, Arial, sans-serif;
+  --math-font-family: Helvetica, Arial, sans-serif;
+}
+
+/* Force all math letters and text to use Helvetica */
+.ML__mathit,
+.ML__mathrm,
+.ML__text,
+.ML__cmr,
+.ML__mathsf,
+.ML__mathsfit {
+  font-family: Helvetica, Arial, sans-serif !important;
+}
+
+.ML__mathit {
+  font-style: italic !important;
+}
 .cme-not-identical-symbol {
   display: inline-block;
   position: relative;
@@ -2715,6 +2734,63 @@ const MATH_FIELD_SHADOW_CSS = `
   color: #ffffff !important;
 }
 
+.cme-vertical-strike-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  padding: 0.12em 0.1em;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.cme-vertical-strike-template::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -0.08em;
+  bottom: -0.08em;
+  width: 0.065em;
+  min-width: 1px;
+  background: currentColor;
+  border-radius: 999px;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+.cme-crosshair-strike-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  padding: 0.12em 0.1em;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.cme-crosshair-strike-template::before,
+.cme-crosshair-strike-template::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.cme-crosshair-strike-template::before {
+  left: 50%;
+  top: -0.10em;
+  bottom: -0.10em;
+  width: 0.065em;
+  min-width: 1px;
+  transform: translateX(-50%);
+}
+
+.cme-crosshair-strike-template::after {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 0.065em;
+  min-height: 1px;
+  transform: translateY(-50%);
+}
 /* Dynamic Cancel / Strikeout Templates */
 .cme-cancel-template,
 .cme-bcancel-template,
@@ -9961,6 +10037,9 @@ function CkEditor({ value, onChange, className = '' }) {
           max-width: 100% !important;
           pointer-events: none !important;
           color: #ffffff !important;
+          font-family: Helvetica, Arial, sans-serif !important;
+          --text-font-family: Helvetica, Arial, sans-serif;
+          --math-font-family: Helvetica, Arial, sans-serif;
         }
         .ck-math-widget[data-dir="rtl"] {
           direction: rtl !important;

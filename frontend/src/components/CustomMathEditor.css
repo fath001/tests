@@ -2016,6 +2016,7 @@ math-field.cme-mathfield {
   min-height: 100%;
   padding: 10px 12px;
   font-size: 18px;
+  font-family: Helvetica, Arial, sans-serif;
   outline: none;
   border: none;
   background: transparent;
@@ -2029,7 +2030,8 @@ math-field.cme-mathfield {
   --selection-color: #1d2c35;
   --contains-highlight-background-color: transparent;
   --smart-fence-color: #2f8a57;
-  --text-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --text-font-family: Helvetica, Arial, sans-serif;
+  --math-font-family: Helvetica, Arial, sans-serif;
   --highlight-inactive-color: transparent;
   --text-highlight-background-color: transparent;
 
@@ -2116,14 +2118,15 @@ math-field.cme-main-mathfield {
   border: 1px solid #3a3a5c;
   border-radius: 10px;
   font-size: 16px;
-  font-family: Inter, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   box-sizing: border-box;
   outline: none;
   background: #1a1a2e;
   transition: border-color 0.2s, box-shadow 0.2s;
   cursor: text;
   color: #e8e8ff;
-  --text-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --text-font-family: Helvetica, Arial, sans-serif;
+  --math-font-family: Helvetica, Arial, sans-serif;
 }
 
 math-field.cme-main-mathfield:focus-within {
