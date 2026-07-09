@@ -145,7 +145,7 @@ function triggerWidgetEdit(editor, modelElement, latex, widgetEl) {
     getLatexFromWidgetDom(widgetEl);
   const resolvedDirection =
     resolvedModel?.getAttribute('dir') === 'rtl' ||
-    getMathDirectionFromWidgetDom(widgetEl) === 'rtl'
+      getMathDirectionFromWidgetDom(widgetEl) === 'rtl'
       ? 'rtl'
       : 'ltr';
 
@@ -176,10 +176,14 @@ function bindWidgetClickTarget(editor, container) {
   container.addEventListener('mousedown', onPointerDown, true);
   container.addEventListener('click', onPointerDown, true);
 }
+function computeMatrixHeight(rows) {
+  return Math.max(1.8, 2.6 * rows - 2.45);
+}
+
 const MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT =
-  '\\class{cme-bmatrix-two-row-template cme-two-row-matrix-template cme-bmatrix-single-column-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}';
+  '\\htmlStyle{--matrix-h:' + computeMatrixHeight(2).toFixed(2) + 'em}{\\class{cme-bmatrix-dynamic-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}}';
 const MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT =
-  '\\class{cme-pmatrix-two-row-template cme-two-row-matrix-template cme-pmatrix-single-column-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}';
+  '\\htmlStyle{--matrix-h:' + computeMatrixHeight(2).toFixed(2) + 'em}{\\class{cme-pmatrix-dynamic-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}}';
 
 function buildMatrixArrayBody(rows, cols, rowSeparator = '\\\\') {
   return Array.from({ length: rows }, () => (
@@ -191,29 +195,17 @@ function wrapMatrixBodyWithDelimiters(body, leftDelimiter, rightDelimiter) {
   return '\\' + 'left' + leftDelimiter + '\\' + 'begin{matrix} ' + body + ' \\' + 'end{matrix}' + '\\' + 'right' + rightDelimiter;
 }
 
-function buildMatrixClassWrap(body, cols, cssClasses) {
-  const colSpec = Array.from({ length: cols }, () => 'c').join('');
-  return '\\' + 'class{' + cssClasses + '}{' + '\\' + 'begin{array}{' + colSpec + '} ' + body + ' \\' + 'end{array}}';
-}
-
 function buildMatrixInsertLatex(type, rows, cols) {
   const body = buildMatrixArrayBody(rows, cols, '\\\\');
 
-  // For 2 and 3 rows of bmatrix/pmatrix, use CSS-class-based delimiters
-  // because MathLive's \left/\right renders broken for small matrices.
-  if ((type === 'bmatrix' || type === 'pmatrix') && (rows === 2 || rows === 3)) {
-    const rowLabel = rows === 2 ? 'two' : 'three';
-    const colModifier = cols === 1 ? ` cme-${type}-single-column-template` : '';
-    const baseClass = rows === 2 ? 'cme-two-row-matrix-template' : '';
-    const cssClasses = `cme-${type}-${rowLabel}-row-template${baseClass ? ' ' + baseClass : ''}${colModifier}`;
-    return buildMatrixClassWrap(body, cols, cssClasses);
+  if (type === 'bmatrix' || type === 'pmatrix') {
+    const h = computeMatrixHeight(rows).toFixed(2);
+    const cls = type === 'bmatrix' ? 'cme-bmatrix-dynamic-template' : 'cme-pmatrix-dynamic-template';
+    const colSpec = Array.from({ length: cols }, () => 'c').join('');
+    return '\\' + 'htmlStyle{--matrix-h:' + h + 'em}{' + '\\' + 'class{' + cls + '}{' + '\\' + 'begin{array}{' + colSpec + '} ' + body + ' \\' + 'end{array}}}';
   }
 
   switch (type) {
-    case 'bmatrix':
-      return wrapMatrixBodyWithDelimiters(body, '[', ']');
-    case 'pmatrix':
-      return wrapMatrixBodyWithDelimiters(body, '(', ')');
     case 'vmatrix':
       return wrapMatrixBodyWithDelimiters(body, '|', '|');
     default:
@@ -310,18 +302,18 @@ const MATH_GROUPS = [
     ]
   },
   {
-    label: '□/□', isTemplate: true, items: [    
+    label: '□/□', isTemplate: true, items: [
       { label: 'a/b', insert: '\\frac{#0}{#?}', title: 'Fraction', icon: 'fraction-template-image' },
       { label: '□/□', insert: '\\htmlStyle{display:inline-block;position:relative;top:-0.28em;padding:0 0.06em;min-width:0.54em;line-height:1;text-align:center;}{#0}\\htmlStyle{display:inline-block;position:relative;top:0.02em;font-size:1.3em;line-height:0.9;padding:0;color:#111;}{/}\\htmlStyle{display:inline-block;position:relative;top:0.28em;padding:0 0.06em;min-width:0.54em;line-height:1;text-align:center;}{#?}', title: 'Bevelled Fraction', cls: 'green-template black-glyph-template', icon: 'bevelled-fraction-offset-template-image' },
       { label: 'a/b', insert: '\\htmlStyle{font-size:0.68em;}{\\frac{#0}{#?}}', title: 'Small Fraction', icon: 'small-fraction-template-image' },
-      {label: '□/□',insert: '\\htmlStyle{display:inline-block;position:relative;top:-0.18em;padding:0 0.03em;min-width:0.38em;line-height:1;font-size:0.78em;text-align:center;}{#0}\\htmlStyle{display:inline-block;position:relative;top:0.01em;font-size:1.05em;line-height:0.9;padding:0;color:#111;}{/}\\htmlStyle{display:inline-block;position:relative;top:0.18em;padding:0 0.03em;min-width:0.38em;line-height:1;font-size:0.78em;text-align:center;}{#?}',title: 'Small Bevelled Fraction',cls: 'green-template black-placeholder-glyph',icon: 'small-bevelled-fraction-template-image'},
-            { type: 'sep', cols: 4 },
+      { label: '□/□', insert: '\\htmlStyle{display:inline-block;position:relative;top:-0.18em;padding:0 0.03em;min-width:0.38em;line-height:1;font-size:0.78em;text-align:center;}{#0}\\htmlStyle{display:inline-block;position:relative;top:0.01em;font-size:1.05em;line-height:0.9;padding:0;color:#111;}{/}\\htmlStyle{display:inline-block;position:relative;top:0.18em;padding:0 0.03em;min-width:0.38em;line-height:1;font-size:0.78em;text-align:center;}{#?}', title: 'Small Bevelled Fraction', cls: 'green-template black-placeholder-glyph', icon: 'small-bevelled-fraction-template-image' },
+      { type: 'sep', cols: 4 },
       { label: '√x', insert: '\\sqrt{#0}', title: 'Square Root', icon: 'sqrt-template-image' },
       { label: 'ⁿ√x', insert: '{}^{#?}\\!\\sqrt{#0}', title: 'Nth Root', icon: 'nth-root-template-image', focusFirstPlaceholder: true },
-      {type: 'sep', cols: 2 },
+      { type: 'sep', cols: 2 },
       { label: 'xⁿ', insert: '#0^{#?}', title: 'Superscript', icon: 'superscript-template-image' },
       { label: 'ˡ□', insert: '{}^{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript', icon: 'left-sup-template-image' },
-      
+
       { label: '□^□_□', insert: '#?^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Right Superscript and Subscript', icon: 'right-sup-sub-template-image' },
       { label: 'ˡₗ□', insert: '{}^{#?}_{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript and Subscript', icon: 'left-sup-sub-template-image' },
       { label: 'xₙ', insert: '#0_{#?}', title: 'Subscript', icon: 'subscript-template-image' },
@@ -340,7 +332,7 @@ const MATH_GROUPS = [
       { label: '▯_□', insert: '\\displaystyle{\\htmlStyle{font-size:1.45em;line-height:1.1}{#0}_{\\htmlStyle{font-size:1.1em;display:inline-block;padding-top:0.26em;line-height:1.15}{#?}}}', cls: 'template', directInsert: true, title: 'Operator With Right Subscript', icon: 'operator-right-sub-template-image' },
       { type: 'sep', cols: 3 },
       { label: 'hphantom', insert: '\\hphantom{0}', cls: 'template', directInsert: true, title: 'Horizontal Phantom Space', icon: 'hphantom-space-template-image' },
-      { label: 'negative-space', insert: '\\!', cls: 'template', directInsert: true, title: 'Negative Thin Space', icon: 'negative-thin-space-template-image' }, 
+      { label: 'negative-space', insert: '\\!', cls: 'template', directInsert: true, title: 'Negative Thin Space', icon: 'negative-thin-space-template-image' },
       { label: 'thin-space', insert: '\\,', cls: 'template', directInsert: true, title: 'Thin Space', icon: 'thin-space-template-image' },
     ]
   },
@@ -390,7 +382,7 @@ const MATH_GROUPS = [
       { label: 'A←B', insert: '\\xleftarrow[#?]{#0}', title: 'Left arrow with labels above and below', icon: 'arrow-label-left-above-below', focusFirstPlaceholder: true },
       { label: '|', action: 'ARROW_LABEL_PICKER', title: 'More Labelled Arrows', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool arrow-label-picker-tool' },
 
-      { type: 'sep', cols: 2 }, 
+      { type: 'sep', cols: 2 },
       { label: 'x⇀', insert: '\\overrightharpoon{#0}', title: 'Vector accent', icon: 'accent-harpoon-right' },
       { label: 'x↔', insert: '\\overleftrightarrow{#0}', title: 'Left-right arrow accent', icon: 'accent-arrow-both' },
       { label: 'x→', insert: '\\overrightarrow{#0}', title: 'Arrow accent', icon: 'accent-arrow-right' },
@@ -504,7 +496,7 @@ const MATH_GROUPS = [
         ⎡□ □⎤
       </>
     ),
-    isMatrix: true, 
+    isMatrix: true,
     items: [
       { label: '□', insert: 'matrix', cls: 'template matrix-roomy-template matrix-tall-template', icon: 'matrix-grid-template-image' },
       { label: '[]', insert: 'bmatrix', cls: 'template matrix-roomy-template matrix-tall-template', icon: 'matrix-brackets-template-image' },
@@ -514,25 +506,25 @@ const MATH_GROUPS = [
       { label: '□ \\ □ \\ □', insert: '\\begin{matrix} #? \\\\ #? \\\\ #? \\end{matrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '□ □ □', insert: '\\begin{matrix} #? & #? & #? \\end{matrix}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '□ \\ □', insert: MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT, cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'bmatrix-two-row-template-image' },
-      { label: '□ & □', insert: '\\left[\\begin{matrix} #? & #? \\end{matrix}\\right]', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true , icon: 'bmatrix-two-column-template-image' },
+      { label: '□ & □', insert: '\\left[\\begin{matrix} #? & #? \\end{matrix}\\right]', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'bmatrix-two-column-template-image' },
       { label: '□ \\ □', insert: MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT, cls: 'template matrix-roomy-template matrix-extra-tall-template', directInsert: true, icon: 'pmatrix-two-row-template-image' },
       { label: '□ & □', insert: '\\left(\\begin{matrix} #? & #? \\end{matrix}\\right)', cls: 'template matrix-roomy-template matrix-extra-tall-template', directInsert: true, icon: 'pmatrix-two-column-template-image' },
 
 
-      { type: 'sep', cols: 2 }, 
+      { type: 'sep', cols: 2 },
 
 
-      { type: 'sep', cols: 2 },  
-    { label: 'cases', insert: '\\class{cme-cases-left-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-template-image', title: 'Cases' },
-    { label: 'rcases', insert: '\\class{cme-cases-right-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'rcases-template-image', title: 'Right Cases' },
-     { label: 'cases-2x2', insert: '\\class{cme-cases-left-template cme-cases-2x2-template}{\\begin{array}{cc} #? & #? \\\\[0.18em] #? & #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-two-by-two-template-image', title: 'Cases 2x2' },
-    { label: 'aligned', insert: '\\begin{aligned} #? &= #? \\\\ #? &= #? \\end{aligned}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'aligned-equals-template-image', title: 'Aligned Equations' },
+      { type: 'sep', cols: 2 },
+      { label: 'cases', insert: '\\class{cme-cases-left-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-template-image', title: 'Cases' },
+      { label: 'rcases', insert: '\\class{cme-cases-right-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'rcases-template-image', title: 'Right Cases' },
+      { label: 'cases-2x2', insert: '\\class{cme-cases-left-template cme-cases-2x2-template}{\\begin{array}{cc} #? & #? \\\\[0.18em] #? & #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-two-by-two-template-image', title: 'Cases 2x2' },
+      { label: 'aligned', insert: '\\begin{aligned} #? &= #? \\\\ #? &= #? \\end{aligned}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'aligned-equals-template-image', title: 'Aligned Equations' },
       { label: '⋮', insert: '\\vdots', title: 'Vertical ellipsis', icon: 'vertical-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '⋯', insert: '\\cdots', title: 'Midline ellipsis', icon: 'midline-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '⋰', insert: '⋰', title: 'Up-right diagonal ellipsis', icon: 'upright-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis', icon: 'downright-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { type: 'sep', cols: 2 },
-      {label: 'sum-array',insert: '\\frac{\\begin{array}{r}\\class{cme-column-layout-slot-1}{#0}\\\\+\\,\\class{cme-column-layout-slot-2}{#?}\\end{array}}{\\hskip10px\\class{cme-column-layout-slot-3}{#?}}',cls: 'template matrix-roomy-template matrix-tall-template',directInsert: true, focusSlotGroup: 'column-layout',icon: 'sum-array-template-image',title: 'Column Addition'},     
+      { label: 'sum-array', insert: '\\frac{\\begin{array}{r}\\class{cme-column-layout-slot-1}{#0}\\\\+\\,\\class{cme-column-layout-slot-2}{#?}\\end{array}}{\\hskip10px\\class{cme-column-layout-slot-3}{#?}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, focusSlotGroup: 'column-layout', icon: 'sum-array-template-image', title: 'Column Addition' },
       { label: 'division', insert: '\\raise{-2px}{#?}\\, ) \\!\\!\\!\\!\\! \\overset{\\displaystyle\\kern11px#?}{\\kern5px\\raise{-2px}{\\overline{\\vphantom{1}\\;\\;\\kern3px\\raise{-2px}{#?}\\;}}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
       makeRelationMorePicker('arithmeticLayoutExtras', 'More Arithmetic Layouts'),
     ]
@@ -541,9 +533,9 @@ const MATH_GROUPS = [
 
 const RELATION_MORE_PICKERS = {
   operatorExtras: [
-    { label: '\\', insert: '\\backslash', title: 'Slash'},
+    { label: '\\', insert: '\\backslash', title: 'Slash' },
     { label: '﹨', insert: '﹨', title: 'Reverse Solidus' },
-    { label: '∓', insert: '\\mp', title: 'Minus or Plus'},
+    { label: '∓', insert: '\\mp', title: 'Minus or Plus' },
   ],
   primeExtras: [
     { label: '‴', insert: "'''", cls: 'prime-symbol-tool' },
@@ -557,47 +549,47 @@ const RELATION_MORE_PICKERS = {
     { label: '\u2262', insert: '\\class{cme-not-identical-symbol}{\\equiv}', title: 'Not Identical', icon: 'not-identical-template-image' },
   ],
   comparisonExtras: [
-    { label: '≫', insert: '\\gg', title: 'Much Greater Than'},
-    { label: '≪', insert: '\\ll', title: 'Much Less Than'},
+    { label: '≫', insert: '\\gg', title: 'Much Greater Than' },
+    { label: '≪', insert: '\\ll', title: 'Much Less Than' },
     { label: '⪇', insert: '⪇', title: 'Less Than But Not Equal' },
-    { label: '≻', insert: '\\succ', title: 'Succeeds'},
-    { label: '⪈', insert: '⪈', title: 'Greater Than But Not Equal'},
-    { label: '∝', insert: '\\propto', title: 'Proportional To'},
-    { label: '⊲', insert: '\\lhd', title: 'Normal Subgroup'},
-    { label: '≺', insert: '\\prec', title: 'Precedes'},
-    { label: '▷', insert: '\\rhd', title: 'Contains Normal Subgroup'},
+    { label: '≻', insert: '\\succ', title: 'Succeeds' },
+    { label: '⪈', insert: '⪈', title: 'Greater Than But Not Equal' },
+    { label: '∝', insert: '\\propto', title: 'Proportional To' },
+    { label: '⊲', insert: '\\lhd', title: 'Normal Subgroup' },
+    { label: '≺', insert: '\\prec', title: 'Precedes' },
+    { label: '▷', insert: '\\rhd', title: 'Contains Normal Subgroup' },
   ],
   setExtras: [
-    { label: '∉', insert: '\\notin', title: 'Not Element Of'},
-    { label: '∌', insert: '\\notni', title: 'Not Contains Member'},
-    { label: '⊆', insert: '\\subseteq', title: 'Subset Equal'},
-    { label: '⊇', insert: '\\supseteq', title: 'Superset Equal'},
-    { label: '⊏', insert: '\\sqsubset', title: 'Square Subset'},
-    { label: '⊐', insert: '\\sqsupset', title: 'Square Superset'},
-    { label: '⊑', insert: '\\sqsubseteq', title: 'Square Subset Equal'},
-    { label: '⊒', insert: '\\sqsupseteq', title: 'Square Superset Equal'},
-    { label: '⊓', insert: '\\sqcap', title: 'Square Cap'},
-    { label: '⊔', insert: '\\sqcup', title: 'Square Cup'},
+    { label: '∉', insert: '\\notin', title: 'Not Element Of' },
+    { label: '∌', insert: '\\notni', title: 'Not Contains Member' },
+    { label: '⊆', insert: '\\subseteq', title: 'Subset Equal' },
+    { label: '⊇', insert: '\\supseteq', title: 'Superset Equal' },
+    { label: '⊏', insert: '\\sqsubset', title: 'Square Subset' },
+    { label: '⊐', insert: '\\sqsupset', title: 'Square Superset' },
+    { label: '⊑', insert: '\\sqsubseteq', title: 'Square Subset Equal' },
+    { label: '⊒', insert: '\\sqsupseteq', title: 'Square Superset Equal' },
+    { label: '⊓', insert: '\\sqcap', title: 'Square Cap' },
+    { label: '⊔', insert: '\\sqcup', title: 'Square Cup' },
   ],
   logicExtras: [
-    { label: '∴', insert: '\\therefore', title: 'Therefore'},
-    { label: '∵', insert: '\\because', title: 'Because'},
+    { label: '∴', insert: '\\therefore', title: 'Therefore' },
+    { label: '∵', insert: '\\because', title: 'Because' },
   ],
   geometryExtras: [
-    { label: '∦', insert: '\\nparallel', title: 'Not Parallel'},
-    { label: '∡', insert: '\\measuredangle', title: 'Measured Angle'},
-    { label: '∢', insert: '\\sphericalangle', title: 'Spherical Angle'},
-    { label: '◊', insert: '◊', title: 'Diamond'},
+    { label: '∦', insert: '\\nparallel', title: 'Not Parallel' },
+    { label: '∡', insert: '\\measuredangle', title: 'Measured Angle' },
+    { label: '∢', insert: '\\sphericalangle', title: 'Spherical Angle' },
+    { label: '◊', insert: '◊', title: 'Diamond' },
   ],
   shapeExtras: [
-    { label: '▭', insert: '▭', title: 'Rectangle'},
-    { label: '▱', insert: '\\parallelogram', title: 'Parallelogram'},
+    { label: '▭', insert: '▭', title: 'Rectangle' },
+    { label: '▱', insert: '\\parallelogram', title: 'Parallelogram' },
   ],
   circledExtras: [
-    { label: '⊖', insert: '\\circleddash', title: 'Circled Minus'},
-    { label: '⊛', insert: '\\circledast', title: 'Circled Asterisk'},
-    { label: '⨸', insert: '⨸', title: 'Circled Divide'},
-    { label: '•', insert: '●', title: 'Raised Bullet'},
+    { label: '⊖', insert: '\\circleddash', title: 'Circled Minus' },
+    { label: '⊛', insert: '\\circledast', title: 'Circled Asterisk' },
+    { label: '⨸', insert: '⨸', title: 'Circled Divide' },
+    { label: '•', insert: '●', title: 'Raised Bullet' },
   ],
   tripleIntegralExtras: [
     { label: '∭', insert: '\\iiint', title: 'Triple Integral', icon: 'triple-integral-template-image', cls: 'triple-integral-popup-icon' },
@@ -616,11 +608,11 @@ const RELATION_MORE_PICKERS = {
     { label: '⌈□⌉', insert: '\\left\\lceil #0 \\right\\rceil', cls: 'green-placeholder-glyph' },
     { label: '⟨□|□⟩', insert: '\\left\\langle #0 \\middle| #? \\right\\rangle', cls: 'green-placeholder-glyph' },
   ],
-  enclosureFrameExtras: [ 
+  enclosureFrameExtras: [
     { label: '¯\n▯|', insert: '\\class{cme-overline-right-bar-template}{#0}', cls: 'template', directInsert: true, title: 'Overline with Right Bar', icon: 'overline-right-bar-template-image' },
     { label: '▢\n▯', insert: '\\class{cme-rounded-box-template}{#?}', cls: 'template', directInsert: true, title: 'Rounded Boxed', icon: 'boxed-rounded-template-image' },
   ],
-  strikeDecorationExtras: [  
+  strikeDecorationExtras: [
     { label: '│\n▯', insert: '\\enclose{verticalstrike}{#?}', cls: 'template', directInsert: true, title: 'Vertical Strike', icon: 'vertical-strike-template-image' },
     { label: ')\n¯', insert: '\\class{cme-overline-left-curve-template}{#?}', cls: 'template', directInsert: true, title: 'Overline with Curved Left Boundary', icon: 'overline-left-curve-template-image' },
     { label: '?\n?', insert: '\\enclose{verticalstrike}{\\htmlStyle{text-decoration:line-through;text-decoration-skip-ink:none;}{#0}}', cls: 'template', directInsert: true, title: 'Vertical and Horizontal Strike', icon: 'crosshair-strike-template-image' },
@@ -754,7 +746,7 @@ const ARROW_PICKER_ITEMS = [
   { label: '⥮', insert: '⥮', title: 'Upwards Harpoon with Barb Left beside Downwards Harpoon with Barb Right' },
   { label: '⥯', insert: '⥯', title: 'Downwards Harpoon with Barb Left beside Upwards Harpoon with Barb Right' },
   {
-    label: '⥂', 
+    label: '⥂',
     insert: '⥂',
     title: 'Rightwards Arrow over Short Leftwards Arrow',
     // preview: 'rightleft-short-left'
@@ -814,7 +806,7 @@ const ARROW_LABEL_PICKER_ITEMS = [
     icon: 'right-left-stacked-arrows-under',
   },
   {
-insert: '\\class{cme-right-left-stacked-arrows}{\\xleftrightarrows[#?]{\\raise{0.14em}{#0}}}',    title: 'Right Arrow over Left Arrow with Under and Overscript',
+    insert: '\\class{cme-right-left-stacked-arrows}{\\xleftrightarrows[#?]{\\raise{0.14em}{#0}}}', title: 'Right Arrow over Left Arrow with Under and Overscript',
     icon: 'right-left-stacked-arrows-over-under',
     focusFirstPlaceholder: true,
   },
@@ -856,7 +848,7 @@ insert: '\\class{cme-right-left-stacked-arrows}{\\xleftrightarrows[#?]{\\raise{0
     icon: 'long-right-short-left-over',
   },
   {
-    insert: '\\underset{#?}{\\underset{\\leftarrow}{\\rightarrow}}', 
+    insert: '\\underset{#?}{\\underset{\\leftarrow}{\\rightarrow}}',
     title: 'Rightwards Arrow over Short Leftwards Arrow with Underscript',
     icon: 'long-right-short-left-under',
   },
@@ -885,7 +877,7 @@ insert: '\\class{cme-right-left-stacked-arrows}{\\xleftrightarrows[#?]{\\raise{0
 ];
 
 const GREEK_ITALIC_UPPERCASE_ITEMS = [
-  { label: 'Α', insert: '\\mathit{Α}', title: 'Italic Alpha' }, 
+  { label: 'Α', insert: '\\mathit{Α}', title: 'Italic Alpha' },
   { label: 'Β', insert: '\\mathit{Β}', title: 'Italic Beta' },
   { label: 'Γ', insert: '\\varGamma', title: 'Italic Gamma' },
   { label: 'Δ', insert: '\\varDelta', title: 'Italic Delta' },
@@ -915,7 +907,7 @@ function makeGreekItalicHelveticaLatex(label) {
   return `\\htmlStyle{font-family:Helvetica, Arial, sans-serif;font-style:italic;}{${label}}`;
 }
 
-const BLACKBOARD_BOLD_LETTERS = [  
+const BLACKBOARD_BOLD_LETTERS = [
   ['𝔸', 'A'], ['𝔹', 'B'], ['ℂ', 'C'], ['𝔻', 'D'], ['𝔼', 'E'], ['𝔽', 'F'],
   ['𝔾', 'G'], ['ℍ', 'H'], ['𝕀', 'I'], ['𝕁', 'J'], ['𝕂', 'K'], ['𝕃', 'L'],
   ['𝕄', 'M'], ['ℕ', 'N'], ['𝕆', 'O'], ['ℙ', 'P'], ['ℚ', 'Q'], ['ℝ', 'R'],
@@ -1612,8 +1604,8 @@ function moveWithinMixedFractionSlots(mathfield, isBackward = false) {
 
 const ORDERED_MATH_GROUPS = [
   {
-    id: 'roots-main', 
-    label: <RootFractionTabIcon />, 
+    id: 'roots-main',
+    label: <RootFractionTabIcon />,
     items: [
       // GROUP 1 - Fractions & Roots (cols: 2)
       { label: '□/□', insert: '\\frac{#0}{#?}', title: 'Fraction', cls: 'green-template black-glyph-template', icon: 'stacked-fraction' },
@@ -1624,7 +1616,7 @@ const ORDERED_MATH_GROUPS = [
       // GROUP 2a - Brackets (cols: 2)
       { label: '□^□', insert: '#0^{#?}', title: 'Superscript', cls: 'green-template black-glyph-template', icon: 'superscript-template' },
       { label: '□_□', insert: '#0_{#?}', title: 'Subscript', cls: 'green-template black-glyph-template', icon: 'subscript-template' },
-      
+
       { type: 'sep', cols: 1 },
       // GROUP 2b - Super/Subscript (cols: 1)
       { label: '(□)', insert: '\\left(#0\\right)', title: 'Parentheses', cls: 'green-template green-placeholder-glyph' },
@@ -1720,12 +1712,12 @@ const ORDERED_MATH_GROUPS = [
       { category: 'Lowercase Greek Letters', label: '\u03C9', insert: '\\omega' },
       { category: 'Greek Letter Picker', label: '|', action: 'GREEK_ITALIC_PICKER', title: 'Italic Uppercase Greek', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool greek-italic-picker-tool' },
 
-      { label: 'ℕ',insert: makeBlackboardSymbolLatex('ℕ'), title: 'Mathbb N' }, 
+      { label: 'ℕ', insert: makeBlackboardSymbolLatex('ℕ'), title: 'Mathbb N' },
       { label: 'ℤ', insert: makeBlackboardSymbolLatex('ℤ'), title: 'Mathbb Z' },
       { label: 'ℚ', insert: makeBlackboardSymbolLatex('ℚ'), title: 'Mathbb Q' },
       { label: 'ℂ', insert: makeBlackboardSymbolLatex('ℂ'), title: 'Mathbb C' },
       { label: 'ℝ', insert: makeBlackboardSymbolLatex('ℝ'), title: 'Mathbb R' },
-      { label: 'ℙ', insert: makeBlackboardSymbolLatex('ℙ'), title: 'Mathbb P' },  
+      { label: 'ℙ', insert: makeBlackboardSymbolLatex('ℙ'), title: 'Mathbb P' },
       { category: 'Blackboard Bold Picker', label: '|', action: 'BLACKBOARD_BOLD_PICKER', title: 'More Blackboard Bold Letters', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool blackboard-bold-picker-tool' },
 
       { category: 'Fraktur Symbols', label: '\u{1D504}', insert: '𝔄' },
@@ -1780,7 +1772,7 @@ const ORDERED_MATH_GROUPS = [
       { label: 'underbrace', insert: '\\underbrace{#0}', cls: 'template', directInsert: true, title: 'Underbrace', icon: 'underbrace-arc-template-image' },
       { label: 'overparen', insert: '\\overgroup{#0}', cls: 'template', directInsert: true, title: 'Overparen', icon: 'overparen-template-image' },
       { label: 'underparen', insert: '\\undergroup{#0}', cls: 'template', directInsert: true, title: 'Underparen', icon: 'underparen-template-image' },
-      { type: 'sep', cols: 2 },  
+      { type: 'sep', cols: 2 },
       { label: '⃗\n▯', insert: '\\overrightharpoon{#0}', cls: 'template', directInsert: true, title: 'Vector Accent', icon: 'vec-accent-template-image' },
       { label: '→\n▯', insert: '\\overrightarrow{#?}', cls: 'template', directInsert: true, title: 'Right Arrow Accent', icon: 'overrightarrow-accent-template-image' },
       { label: '↔\n▯', insert: '\\overleftrightarrow{#?}', cls: 'template', directInsert: true, title: 'Left-Right Arrow Accent', icon: 'overleftrightarrow-accent-template-image' },
@@ -1798,10 +1790,10 @@ const ORDERED_MATH_GROUPS = [
       { label: '(\n▯\n)', insert: '\\class{cme-rounded-enclosure-template}{#?}', cls: 'template', directInsert: true, title: 'Rounded Enclosure', icon: 'paren-frame-template-image' },
       makeRelationMorePicker('enclosureFrameExtras', 'More Enclosures'),
       { type: 'sep', cols: 2 },
-      { label: '╱\n▯', insert: '\\cancel{#?}', cls: 'template', directInsert: true, title: 'Cancel', icon: 'cancel-diagonal-template-image' },
-      { label: '╲\n▯', insert: '\\bcancel{#?}', cls: 'template', directInsert: true, title: 'Backward Cancel', icon: 'bcancel-template-image' },
+      { label: '╱\n▯', insert: '\\class{cme-cancel-template}{#?}', cls: 'template', directInsert: true, title: 'Cancel', icon: 'cancel-diagonal-template-image' },
+      { label: '╲\n▯', insert: '\\class{cme-bcancel-template}{#?}', cls: 'template', directInsert: true, title: 'Backward Cancel', icon: 'bcancel-template-image' },
       { label: '?\n?', insert: '\\htmlStyle{text-decoration:line-through;text-decoration-skip-ink:none;}{#0}', cls: 'template', directInsert: true, title: 'Strikeout Text', icon: 'sout-template-image' },
-      { label: '╳\n▯', insert: '\\xcancel{#?}', cls: 'template', directInsert: true, title: 'Cross Cancel', icon: 'xcancel-template-image' },
+      { label: '╳\n▯', insert: '\\class{cme-xcancel-template}{#?}', cls: 'template', directInsert: true, title: 'Cross Cancel', icon: 'xcancel-template-image' },
       makeRelationMorePicker('strikeDecorationExtras', 'More Strike Decorations'),
     ],
   },
@@ -1840,14 +1832,14 @@ const ORDERED_MATH_GROUPS = [
       { label: '∫□d□', insert: '\\int_{#?}^{#?} #? \\, d#?', directInsert: true, title: 'Integral', icon: 'integral-box-differential-template-image' },
       { label: '', insert: '\\int_{#?} #? \\, d#?', cls: 'template', directInsert: true, title: 'Integral', icon: 'integral-template-image' },
       { type: 'sep', cols: 4 },
-      {label: 'd', insert: 'd', cls: 'template', directInsert: true, title: 'Differential'},
-      {label: '∂', insert: '∂', cls: 'template', directInsert: true, title: 'Partial Differential'},
+      { label: 'd', insert: 'd', cls: 'template', directInsert: true, title: 'Differential' },
+      { label: '∂', insert: '∂', cls: 'template', directInsert: true, title: 'Partial Differential' },
       { label: 'first-derivative', insert: '\\frac{d#?}{d#?}', cls: 'template', directInsert: true, title: 'First Derivative', icon: 'first-derivative-template-image' },
       { label: 'partial-derivative', insert: '\\frac{\\partial#?}{\\partial#?}', cls: 'template', directInsert: true, title: 'Partial Derivative', icon: 'partial-derivative-template-image' },
       { type: 'sep', cols: 2 },
       { label: 'limit-infinity', insert: '\\lim_{#?\\to\\infty}', cls: 'template', directInsert: true, title: 'Limit to Infinity', icon: 'limit-infinity-template-image' },
       { label: 'limit-generic', insert: '\\lim_{#?}', cls: 'template', directInsert: true, title: 'Limit', icon: 'limit-generic-template-image' },
-      { type: 'sep', cols: 2 }, 
+      { type: 'sep', cols: 2 },
       { label: '∇×□', insert: '\\nabla \\times #?', cls: 'template green-placeholder-glyph', directInsert: true, title: 'Curl' },
       { label: '∇·□', insert: '\\nabla \\cdot #?', cls: 'template green-placeholder-glyph', directInsert: true, title: 'Divergence' },
       { label: '∇□', insert: '\\nabla #?', cls: 'template green-placeholder-glyph', directInsert: true, title: 'Gradient' },
@@ -1885,7 +1877,7 @@ const ORDERED_MATH_GROUPS = [
 const CHEM_GROUPS = [
   {
     id: 'chem-period-1',
-    label: <TabIcon top={'H-Ne'} bottom={'elem'} />, 
+    label: <TabIcon top={'H-Ne'} bottom={'elem'} />,
     isChem: true,
     items: ['H', 'He', 'Li', 'Be', 'B', 'C', 'N', 'O', 'F', 'Ne'].map(el => ({ label: el, insert: el, cls: 'chem-element' }))
   },
@@ -2000,6 +1992,12 @@ function normalizeMatrixBodyLatex(body = '') {
 
 function normalizeMatrixLatex(latex = '') {
   return String(latex || '')
+    .replace(/\\htmlStyle\{[^}]*\}\{\\class\{[^}]*cme-bmatrix-dynamic-template[^}]*\}\{\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}\}\}/g, (_, body) => (
+      wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '[', ']')
+    ))
+    .replace(/\\htmlStyle\{[^}]*\}\{\\class\{[^}]*cme-pmatrix-dynamic-template[^}]*\}\{\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}\}\}/g, (_, body) => (
+      wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '(', ')')
+    ))
     .replace(/\\class\{[^}]*cme-bmatrix-(?:two|three)-row-template[^}]*\}\{\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}\}/g, (_, body) => (
       wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '[', ']')
     ))
@@ -2014,7 +2012,10 @@ function normalizeMatrixLatex(latex = '') {
     ))
     .replace(/\\begin\{vmatrix\}([\s\S]*?)\\end\{vmatrix\}/g, (_, body) => (
       wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '|', '|')
-    ));
+    ))
+    .replace(/\\class\{[^}]*cme-cancel-template[^}]*\}\{([\s\S]*?)\}/g, '\\cancel{$1}')
+    .replace(/\\class\{[^}]*cme-bcancel-template[^}]*\}\{([\s\S]*?)\}/g, '\\bcancel{$1}')
+    .replace(/\\class\{[^}]*cme-xcancel-template[^}]*\}\{([\s\S]*?)\}/g, '\\xcancel{$1}');
 }
 
 function stripEmptyMathPlaceholders(latex = '') {
@@ -2589,6 +2590,80 @@ const MATH_FIELD_SHADOW_CSS = `
   width: 0.78em;
   height: 6.05em;
 }
+/* Dynamic bracket matrix — single class for ALL row counts */
+.cme-bmatrix-dynamic-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+  padding-left: 1.12em;
+  padding-right: 1.12em;
+}
+
+.cme-bmatrix-dynamic-template .ML__arraycolsep {
+  width: 0.28em !important;
+}
+
+.cme-bmatrix-dynamic-template::before,
+.cme-bmatrix-dynamic-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0.52em;
+  height: var(--matrix-h, 2.75em);
+  background: currentColor;
+  pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-bmatrix-dynamic-template::before {
+  left: 0.12em;
+  transform: translateY(-50%);
+}
+
+.cme-bmatrix-dynamic-template::after {
+  right: 0.12em;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+/* Dynamic parenthesis matrix — single class for ALL row counts */
+.cme-pmatrix-dynamic-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+  padding-left: 0.96em;
+  padding-right: 0.96em;
+}
+
+.cme-pmatrix-dynamic-template .ML__arraycolsep {
+  width: 0.28em !important;
+}
+
+.cme-pmatrix-dynamic-template::before,
+.cme-pmatrix-dynamic-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0.72em;
+  height: var(--matrix-h, 2.75em);
+  background: currentColor;
+  pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-pmatrix-dynamic-template::before {
+  left: 0.06em;
+  transform: translateY(-50%);
+}
+
+.cme-pmatrix-dynamic-template::after {
+  right: 0.06em;
+  transform: translateY(-50%) scaleX(-1);
+}
+
 .cme-cases-left-template,
 .cme-cases-right-template {
   display: inline-block;
@@ -2638,6 +2713,53 @@ const MATH_FIELD_SHADOW_CSS = `
 }
 .cme-bevelled-fraction-slash {
   color: #ffffff !important;
+}
+
+/* Dynamic Cancel / Strikeout Templates */
+.cme-cancel-template,
+.cme-bcancel-template,
+.cme-xcancel-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  padding: 0 0.1em;
+}
+
+.cme-cancel-template::after,
+.cme-bcancel-template::after,
+.cme-xcancel-template::after,
+.cme-xcancel-template::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.cme-cancel-template::after {
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='100' x2='100' y2='0' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='100' x2='100' y2='0' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+}
+
+.cme-bcancel-template::after {
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='0' x2='100' y2='100' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='0' x2='100' y2='100' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+}
+
+.cme-xcancel-template::after {
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='100' x2='100' y2='0' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='100' x2='100' y2='0' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+}
+
+.cme-xcancel-template::before {
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='0' x2='100' y2='100' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='0' x2='100' y2='100' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
 }
 
 `;
@@ -2722,47 +2844,47 @@ function MatrixTabIcon() {
 function PowerFracTabIcon() {
   return (
     <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
-<svg className="cme-tab-svg-icon" viewBox="0 0 70 50" focusable="false">
-  <rect
-    x="4"
-    y="20"
-    width="20"
-    height="28"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="4"
-  />
+      <svg className="cme-tab-svg-icon" viewBox="0 0 70 50" focusable="false">
+        <rect
+          x="4"
+          y="20"
+          width="20"
+          height="28"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
 
-  <rect
-    x="24"
-    y="6"
-    width="12"
-    height="22"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="4"
-  />
+        <rect
+          x="24"
+          y="6"
+          width="12"
+          height="22"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
 
-  <rect
-    x="51"
-    y="10"
-    width="8"
-    height="10"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="4"
-  />
+        <rect
+          x="51"
+          y="10"
+          width="8"
+          height="10"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
 
-  <rect
-    x="48"
-    y="30"
-    width="14"
-    height="18"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="4"
-  />
-</svg>
+        <rect
+          x="48"
+          y="30"
+          width="14"
+          height="18"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
+      </svg>
     </span>
   );
 }
@@ -2793,7 +2915,7 @@ function RelationsTabIcon() {
           y="24"
           fill="currentColor"
           fontFamily="Cambria Math, serif"
-          fontSize="35" 
+          fontSize="35"
         >
           ∞
         </text>
@@ -2825,53 +2947,53 @@ function BracketsTabIcon() {
     <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
       <svg className="cme-tab-svg-icon" viewBox="0 0 90 50" focusable="false">
 
-  {/* Left icon: (□) */}
-  <path
-    d="M12 8 C4 14,4 36,12 42"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="4"
-    strokeLinecap="round"
-  />
+        {/* Left icon: (□) */}
+        <path
+          d="M12 8 C4 14,4 36,12 42"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
 
-  <rect
-    x="20"
-    y="10"
-    width="18"
-    height="30"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="4"
-  />
+        <rect
+          x="20"
+          y="10"
+          width="18"
+          height="30"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
 
-  <path
-    d="M46 8 C54 14,54 36,46 42"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="4"
-    strokeLinecap="round"
-  />
+        <path
+          d="M46 8 C54 14,54 36,46 42"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
 
-  {/* Right icon: overparen + □ */}
-  <path
-    d="M65 10 Q75 2 85 10"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="4"
-    strokeLinecap="round"
-  />
+        {/* Right icon: overparen + □ */}
+        <path
+          d="M65 10 Q75 2 85 10"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
 
-  <rect
-    x="68"
-    y="18"
-    width="14"
-    height="22"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="4"
-  />
+        <rect
+          x="68"
+          y="18"
+          width="14"
+          height="22"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
 
-</svg>
+      </svg>
     </span>
   );
 }
@@ -2879,55 +3001,55 @@ function BracketsTabIcon() {
 function CalcTabIcon() {
   return (
     <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
-<svg className="cme-tab-svg-icon" viewBox="0 0 80 50" focusable="false">
+      <svg className="cme-tab-svg-icon" viewBox="0 0 80 50" focusable="false">
 
-  {/* Integral */}
-  <text
-    x="2"
-    y="40"
-    fill="currentColor"
-    fontSize="42"
-    fontFamily="Cambria Math, Times New Roman, serif"
-    fontWeight="500"
-  >
-    ∫
-  </text>
+        {/* Integral */}
+        <text
+          x="2"
+          y="40"
+          fill="currentColor"
+          fontSize="42"
+          fontFamily="Cambria Math, Times New Roman, serif"
+          fontWeight="500"
+        >
+          ∫
+        </text>
 
-  {/* Upper limit */}
-  <rect
-    x="30"
-    y="1"
-    width="10"
-    height="10"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-  />
+        {/* Upper limit */}
+        <rect
+          x="30"
+          y="1"
+          width="10"
+          height="10"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+        />
 
-  {/* Lower limit */}
-  <rect
-    x="24"
-    y="40"
-    width="10"
-    height="10"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-  />
+        {/* Lower limit */}
+        <rect
+          x="24"
+          y="40"
+          width="10"
+          height="10"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+        />
 
-  {/* lim */}
-  <text
-    x="45"
-    y="36"
-    fill="currentColor"
-    fontSize="32"
-    fontWeight="500"
-    fontFamily="Cambria Math, Times New Roman, serif"
-  >
-    lim
-  </text>
+        {/* lim */}
+        <text
+          x="45"
+          y="36"
+          fill="currentColor"
+          fontSize="32"
+          fontWeight="500"
+          fontFamily="Cambria Math, Times New Roman, serif"
+        >
+          lim
+        </text>
 
-</svg>
+      </svg>
     </span>
   );
 }
@@ -2936,47 +3058,47 @@ function MoveTextTabIcon() {
   return (
     <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
       <svg xmlns="http://www.w3.org/2000/svg"
-     width="24"
-     height="24"
-     viewBox="0 0 24 24"
-     fill="none">
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none">
 
-  {/* <!-- Arrow shaft --> */}
-  <path
-    d="M12 3V12"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-  />
+        {/* <!-- Arrow shaft --> */}
+        <path
+          d="M12 3V12"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
 
-  {/* <!-- Arrow head --> */}
-  <path
-    d="M8.5 8.5L12 12L15.5 8.5"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    fill="none"
-  />
+        {/* <!-- Arrow head --> */}
+        <path
+          d="M8.5 8.5L12 12L15.5 8.5"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          fill="none"
+        />
 
-  {/* <!-- Outer curved arc --> */}
-  <path
-    d="M4 15C4 19 7.5 22 12 22C16.5 22 20 19 20 15"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    fill="none"
-  />
+        {/* <!-- Outer curved arc --> */}
+        <path
+          d="M4 15C4 19 7.5 22 12 22C16.5 22 20 19 20 15"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          fill="none"
+        />
 
-  {/* <!-- Inner curved arc --> */}
-  <path
-    d="M7 15C7 17.5 9 19 12 19C15 19 17 17.5 17 15"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    fill="none"    
-  />
-</svg>  
+        {/* <!-- Inner curved arc --> */}
+        <path
+          d="M7 15C7 17.5 9 19 12 19C15 19 17 17.5 17 15"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          fill="none"
+        />
+      </svg>
     </span>
   );
 }
@@ -3164,7 +3286,7 @@ class MathInlinePlugin extends Plugin {
         const latex = viewElement.getAttribute('data-latex') || '';
         const dir =
           viewElement.getAttribute('data-dir') === 'rtl' ||
-          viewElement.getAttribute('dir') === 'rtl'
+            viewElement.getAttribute('dir') === 'rtl'
             ? 'rtl'
             : 'ltr';
         return writer.createElement('mathInline', { latex, dir });
@@ -3269,7 +3391,7 @@ const TOOLBAR_ICON_IMAGES = {
       <path d="M24 30 L39 2" stroke="#111" stroke-width="3" stroke-linecap="square"/>
       <rect x="42" y="16" width="14" height="15" stroke="#0B7D1E" stroke-width="3"/>
     </svg>
-  `), 
+  `),
   'small-bevelled-fraction-template-image': makeToolbarIconImage(`
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -15 79 56" width="64" height="56" fill="none">
   <g transform="translate(-1.6,-1) scale(0.9)">
@@ -6098,9 +6220,9 @@ function renderToolbarItemLabel(item, context = {}) {
           focusable="false"
           aria-hidden="true"
         >
-          <rect x="7.5" y="-0.2" width="8" height="9"/> 
+          <rect x="7.5" y="-0.2" width="8" height="9" />
           <line x1="4.5" y1="12" x2="18.5" y2="12" />
-          <rect x="7.5" y="15.3" width="8" height="9"/>
+          <rect x="7.5" y="15.3" width="8" height="9" />
         </svg>
       </span>
     );
@@ -6276,7 +6398,7 @@ function renderToolbarItemLabel(item, context = {}) {
                   </>
                 )
                 : direction === 'bar-harpoon-lr'
-                ? (
+                  ? (
                     <>
                       <path d={`M14.2 ${arrowY - 1.95}H4.1M6.35 ${arrowY - 3.15}L3.85 ${arrowY - 1.95}L6.35 ${arrowY - 0.75}`} />
                       <path d={`M4.3 ${arrowY + 1.65}H14.1M11.8 ${arrowY + 0.45}L14.3 ${arrowY + 1.65}L11.8 ${arrowY + 2.85}`} />
@@ -6300,7 +6422,7 @@ function renderToolbarItemLabel(item, context = {}) {
                           <line x1="4.05" y1={arrowY - 1.95} x2="14.15" y2={arrowY - 1.95} />
                         </>
                       )
-          : <path d={`M12.5 ${arrowY - 1.55}L15.05 ${arrowY}L12.5 ${arrowY + 1.55}M2.95 ${arrowY}H14.65`} />;
+                      : <path d={`M12.5 ${arrowY - 1.55}L15.05 ${arrowY}L12.5 ${arrowY + 1.55}M2.95 ${arrowY}H14.65`} />;
 
     return (
       <span className="cme-arrow-label-icon" aria-hidden="true">
@@ -6327,15 +6449,15 @@ function renderToolbarItemLabel(item, context = {}) {
     const matrixType = item.insert;
     const cells = matrixType === 'matrix'
       ? [
-          [2.3, 3.1], [7.1, 3.1], [11.9, 3.1],
-          [2.3, 7.25], [7.1, 7.25], [11.9, 7.25],
-          [2.3, 11.4], [7.1, 11.4], [11.9, 11.4],
-        ]
+        [2.3, 3.1], [7.1, 3.1], [11.9, 3.1],
+        [2.3, 7.25], [7.1, 7.25], [11.9, 7.25],
+        [2.3, 11.4], [7.1, 11.4], [11.9, 11.4],
+      ]
       : [
-          [5.3, 2.95], [10.1, 2.95],
-          [5.3, 7.1], [10.1, 7.1],
-          [5.3, 11.25], [10.1, 11.25],
-        ];
+        [5.3, 2.95], [10.1, 2.95],
+        [5.3, 7.1], [10.1, 7.1],
+        [5.3, 11.25], [10.1, 11.25],
+      ];
 
     let frame;
     if (matrixType === 'bmatrix') {
@@ -6609,10 +6731,10 @@ function renderToolbarItemLabel(item, context = {}) {
       <span className={classNames.join(' ')} aria-hidden="true">
         {(itemClassName.includes('green-placeholder-glyph') || itemClassName.includes('black-glyph-template') || itemClassName.includes('black-placeholder-glyph'))
           ? Array.from(labelText).map((char, index) => (
-              char === '□'
-                ? <span key={`placeholder-${index}`} className={itemClassName.includes('black-placeholder-glyph') ? 'cme-toolbar-placeholder-box-black' : 'cme-toolbar-placeholder-box-green'}>{char}</span>
-                : <span key={`glyph-${index}`}>{char}</span>
-            ))
+            char === '□'
+              ? <span key={`placeholder-${index}`} className={itemClassName.includes('black-placeholder-glyph') ? 'cme-toolbar-placeholder-box-black' : 'cme-toolbar-placeholder-box-green'}>{char}</span>
+              : <span key={`glyph-${index}`}>{char}</span>
+          ))
           : item.label}
       </span>
     );
@@ -6936,17 +7058,17 @@ function RelationMorePickerPopover({ position, items = [], onInsert, popupBounds
   const height = (rows * buttonHeight) + ((rows - 1) * gapY) + paddingY;
   const bounds = popupBounds
     ? {
-        left: popupBounds.left,
-        top: popupBounds.top,
-        right: popupBounds.right,
-        bottom: popupBounds.bottom,
-      }
+      left: popupBounds.left,
+      top: popupBounds.top,
+      right: popupBounds.right,
+      bottom: popupBounds.bottom,
+    }
     : {
-        left: 8,
-        top: 8,
-        right: window.innerWidth - 8,
-        bottom: window.innerHeight - 8,
-      };
+      left: 8,
+      top: 8,
+      right: window.innerWidth - 8,
+      bottom: window.innerHeight - 8,
+    };
   const maxPopupWidth = Math.max(80, bounds.right - bounds.left - 16);
   const minLeft = bounds.left + 8;
   const maxLeft = Math.max(minLeft, bounds.right - Math.min(width, maxPopupWidth) - 8);
@@ -7471,7 +7593,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   const popupRef = useRef(null);
   const popupPositionRef = useRef(null);
   const dragStateRef = useRef(null);
-  const removeDragListenersRef = useRef(() => {});
+  const removeDragListenersRef = useRef(() => { });
   const moveTextStateRef = useRef(null);
   const [activeGroup, setActiveGroup] = useState(0);
   const [activeMatrix, setActiveMatrix] = useState(null); // { type, x, y }
@@ -7534,7 +7656,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
 
   const stopDragging = useCallback(() => {
     removeDragListenersRef.current();
-    removeDragListenersRef.current = () => {};
+    removeDragListenersRef.current = () => { };
     dragStateRef.current = null;
     setIsDragging(false);
   }, []);
@@ -7954,16 +8076,16 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
             try {
               mf.executeCommand(command);
               return;
-            } catch {}
+            } catch { }
           }
         }
-      } catch {}
+      } catch { }
 
       try {
         if (typeof mf.setSelectionRange === 'function') {
           mf.setSelectionRange(0, 0);
         }
-      } catch {}
+      } catch { }
     };
 
     const writeValue = (nextValue) => {
@@ -8002,7 +8124,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           if (typeof mf.executeCommand === 'function') {
             try {
               mf.executeCommand(placeholderCommand);
-            } catch {}
+            } catch { }
           }
         }
         requestAnimationFrame(updateActiveStyles);
@@ -8191,7 +8313,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     if ('selection' in mf) {
       try {
         mf.selection = currentSelection;
-      } catch {}
+      } catch { }
     }
 
     const selectedLatex = typeof mf.getValue === 'function'
@@ -8256,11 +8378,11 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   const popupStyle =
     windowMode === 'normal' && popupPosition
       ? {
-          left: `${popupPosition.x}px`,
-          top: `${popupPosition.y}px`,
-          right: 'auto',
-          bottom: 'auto',
-        }
+        left: `${popupPosition.x}px`,
+        top: `${popupPosition.y}px`,
+        right: 'auto',
+        bottom: 'auto',
+      }
       : undefined;
 
   return (
@@ -8386,7 +8508,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                                     ? !!showPeriodicTablePicker
                                     : isArabicIndicNumeralsBtn
                                       ? numeralMode === 'arabicIndic'
-                                    : isEasternArabicIndicNumeralsBtn
+                                      : isEasternArabicIndicNumeralsBtn
                                         ? numeralMode === 'easternArabicIndic'
                                         : false;
 
@@ -8592,7 +8714,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                     items: pick(operators, [0, 4, 2, 5, 1, 3]),
                   },
                   {
-                    cols: 2, 
+                    cols: 2,
                     rows: 3,
                     flow: 'row',
                     equalColumns: true,
@@ -8838,354 +8960,354 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
               const defaultSpan = Math.max(1, Math.floor(actualCols / baseCols));
 
               return (
-              <div
-                key={chunkIndex}
-                className={`cme-symbol-subgroup${subgroup.className || ''}${isPopupTabMode ? ' cme-symbol-subgroup--compact' : ''}${activeMathSubgroupClassName}`}
-                style={{
-                  gridTemplateColumns: `repeat(${actualCols}, ${subgroup.equalColumns ? 'minmax(0, 1fr)' : 'auto'})`,
-                  gridTemplateRows: `repeat(${subgroup.rows || Math.ceil(subgroup.items.length / baseCols)}, auto)`,
-                  gridAutoFlow: subgroup.flow || 'column',
-                  ...(subgroup.rows ? { '--cme-subgroup-rows': `repeat(${subgroup.rows}, minmax(0, 1fr))` } : {}),
-                }}
-              >
-                {subgroup.items.map((item, i) => {
-                  const isLastRowStretchItem = Boolean(subgroup.stretchLastRow) && totalItems > 0 && i >= lastRowStartIndex && lastRowCount < baseCols;
-                  const itemGridColumn = isLastRowStretchItem
-                    ? `span ${Math.max(1, Math.floor(actualCols / lastRowCount))}`
-                    : (defaultSpan > 1 ? `span ${defaultSpan}` : undefined);
-                  const currentGroup = activeGroupConfig;
-                  const groupKey = currentGroup.id || currentGroup.label || activeGroup;
-                  const buttonKey = `${groupKey}-${chunkIndex * 4 + i}-${item.insert || item.action || item.label}`;
-                  if (item.type === 'dropdown') {
-                    const isFont = item.label === 'Font...';
-                    const isSize = item.label === 'Size';
+                <div
+                  key={chunkIndex}
+                  className={`cme-symbol-subgroup${subgroup.className || ''}${isPopupTabMode ? ' cme-symbol-subgroup--compact' : ''}${activeMathSubgroupClassName}`}
+                  style={{
+                    gridTemplateColumns: `repeat(${actualCols}, ${subgroup.equalColumns ? 'minmax(0, 1fr)' : 'auto'})`,
+                    gridTemplateRows: `repeat(${subgroup.rows || Math.ceil(subgroup.items.length / baseCols)}, auto)`,
+                    gridAutoFlow: subgroup.flow || 'column',
+                    ...(subgroup.rows ? { '--cme-subgroup-rows': `repeat(${subgroup.rows}, minmax(0, 1fr))` } : {}),
+                  }}
+                >
+                  {subgroup.items.map((item, i) => {
+                    const isLastRowStretchItem = Boolean(subgroup.stretchLastRow) && totalItems > 0 && i >= lastRowStartIndex && lastRowCount < baseCols;
+                    const itemGridColumn = isLastRowStretchItem
+                      ? `span ${Math.max(1, Math.floor(actualCols / lastRowCount))}`
+                      : (defaultSpan > 1 ? `span ${defaultSpan}` : undefined);
+                    const currentGroup = activeGroupConfig;
+                    const groupKey = currentGroup.id || currentGroup.label || activeGroup;
+                    const buttonKey = `${groupKey}-${chunkIndex * 4 + i}-${item.insert || item.action || item.label}`;
+                    if (item.type === 'dropdown') {
+                      const isFont = item.label === 'Font...';
+                      const isSize = item.label === 'Size';
 
-                    const isFontActive = isFont && activeStyles.fontOption !== '';
-                    const isSizeActive = isSize && activeStyles.fontSize !== 'auto' && activeStyles.fontSize !== '5';
+                      const isFontActive = isFont && activeStyles.fontOption !== '';
+                      const isSizeActive = isSize && activeStyles.fontSize !== 'auto' && activeStyles.fontSize !== '5';
 
-                    const selectValue = isFont
-                      ? activeStyles.fontOption
-                      : (isSize
-                        ? (activeStyles.fontSize === 'auto' || activeStyles.fontSize === '5' ? '' : activeStyles.fontSize)
-                        : '');
+                      const selectValue = isFont
+                        ? activeStyles.fontOption
+                        : (isSize
+                          ? (activeStyles.fontSize === 'auto' || activeStyles.fontSize === '5' ? '' : activeStyles.fontSize)
+                          : '');
 
-                    const dropdownOptions = isFont ? FONT_OPTIONS : FONT_SIZE_OPTIONS;
-                    const selectedLabel = dropdownOptions.find((option) => option.value === selectValue)?.label || item.label;
-                    const isOpenStyleDropdown = showStyleDropdown?.buttonKey === buttonKey;
+                      const dropdownOptions = isFont ? FONT_OPTIONS : FONT_SIZE_OPTIONS;
+                      const selectedLabel = dropdownOptions.find((option) => option.value === selectValue)?.label || item.label;
+                      const isOpenStyleDropdown = showStyleDropdown?.buttonKey === buttonKey;
 
-                    return (
-                      <button
-                        key={i}
-                        type="button"
-                        className={`cme-style-select-trigger cme-select cme-btn template${isFontActive || isSizeActive || isOpenStyleDropdown ? ' active' : ''}`}
-                        title={item.label}
-                        style={{
-                          width: item.width || '60px', 
-                          boxSizing: 'border-box',
-                          margin: '2px 0',
-                          gridColumn: item.gridColumn || itemGridColumn || ((subgroup.cols === 3) ? 'span 1' : ((subgroup.cols === 1) ? 'span 1' : 'span 2')),
-                          gridRow: item.gridRow,
-                          paddingLeft: '6px',
-                        }}
-                        onMouseDown={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          setShowStyleDropdown((current) => (
-                            current?.buttonKey === buttonKey
-                              ? null
-                              : {
-                                x: rect.left,
-                                y: rect.bottom,
-                                type: isFont ? 'font' : 'size',
-                                buttonKey,
-                              }
-                          ));
-                        }}
-                      >
-                        {selectedLabel}
-                      </button>
-                    );
-                  }
-
-                  if (currentGroup.isMatrix && !item.directInsert && !item.action) {
-                    return (
-                      <div
-                        key={i}
-                        className="cme-matrix-btn-wrapper"
-                      >
+                      return (
                         <button
+                          key={i}
                           type="button"
-                        className={`cme-btn template${isPopupTabMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${activeMatrix?.type === item.insert ? ' active' : ''}`}
-                          title={item.insert}
+                          className={`cme-style-select-trigger cme-select cme-btn template${isFontActive || isSizeActive || isOpenStyleDropdown ? ' active' : ''}`}
+                          title={item.label}
+                          style={{
+                            width: item.width || '60px',
+                            boxSizing: 'border-box',
+                            margin: '2px 0',
+                            gridColumn: item.gridColumn || itemGridColumn || ((subgroup.cols === 3) ? 'span 1' : ((subgroup.cols === 1) ? 'span 1' : 'span 2')),
+                            gridRow: item.gridRow,
+                            paddingLeft: '6px',
+                          }}
                           onMouseDown={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            if (activeMatrix?.type === item.insert) {
-                              setActiveMatrix(null);
-                            } else {
-                              const rect = e.currentTarget.getBoundingClientRect();
-                              setActiveMatrix({
-                                type: item.insert,
-                                x: rect.left + rect.width / 2,
-                                y: rect.bottom
-                              });
-                            }
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setShowStyleDropdown((current) => (
+                              current?.buttonKey === buttonKey
+                                ? null
+                                : {
+                                  x: rect.left,
+                                  y: rect.bottom,
+                                  type: isFont ? 'font' : 'size',
+                                  buttonKey,
+                                }
+                            ));
                           }}
                         >
-                          {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode })}
+                          {selectedLabel}
                         </button>
-                      </div>
-                    );
-                  }
+                      );
+                    }
 
-                  const isBoldBtn = item.action === 'BOLD';
-                  const isItalicBtn = item.action === 'ITALIC';
-                  const isBoldItalicBtn = item.action === 'BOLD_ITALIC';
-                  const isColorBtn = item.action === 'TEXT_COLOR';
-                  const isRtlBtn = item.action === 'TOGGLE_RTL';
-                  const isArrowPickerBtn = item.action === 'ARROW_PICKER';
-                  const isRelationMorePickerBtn = item.action === 'RELATION_MORE_PICKER';
-                  const isArrowLabelPickerBtn = item.action === 'ARROW_LABEL_PICKER';
-                  const isBlackboardBoldPickerBtn = item.action === 'BLACKBOARD_BOLD_PICKER';
-                  const isFrakturScriptPickerBtn = item.action === 'FRAKTUR_SCRIPT_PICKER';
-                  const isHebrewSymbolPickerBtn = item.action === 'HEBREW_SYMBOL_PICKER';
-                  const isPeriodicTablePickerBtn = item.action === 'PERIODIC_TABLE_PICKER';
-                  const isBtnActive =
-                    (isBoldBtn && activeStyles.bold && !activeStyles.italic) ||
-                    (isItalicBtn && activeStyles.italic && !activeStyles.bold) ||
-                    (isBoldItalicBtn && activeStyles.boldItalic) ||
-                    (isRtlBtn && isRtlInput) ||
-                    (isArrowPickerBtn && !!showArrowPicker) ||
-                    (isRelationMorePickerBtn && showRelationMorePicker?.picker === item.picker) ||
-                    (isArrowLabelPickerBtn && !!showArrowLabelPicker) ||
-                    (isBlackboardBoldPickerBtn && !!showBlackboardBoldPicker) ||
-                    (isFrakturScriptPickerBtn && showFrakturScriptPicker?.picker === (item.picker || 'script')) ||
-                    (isHebrewSymbolPickerBtn && !!showHebrewSymbolPicker) ||
-                    (isPeriodicTablePickerBtn && !!showPeriodicTablePicker) ||
-                    (isColorBtn && activeStyles.color !== 'none');
-
-                  return (
-                    <button
-                      key={`${groupKey}-${chunkIndex * 4 + i}`}
-                      type="button"
-                      className={`cme-btn${currentGroup.isTemplate ? ' template' : ''}${isPopupTabMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${isBtnActive ? ' active' : ''}`}
-                      title={item.title || item.insert}
-                      style={item.gridColumn || item.gridRow || itemGridColumn ? { gridColumn: item.gridColumn || itemGridColumn, gridRow: item.gridRow } : undefined}
-                      onMouseDown={(e) => {
-                        e.preventDefault();
-                        const mf = popupMfRef.current;
-                        if (item.action === 'SPECIAL_CHARS') {
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          setShowArrowPicker(null);
-                          setShowRelationMorePicker(null);
-                          setShowArrowLabelPicker(null);
-                          setShowGreekItalicPicker(null);
-                          setShowBlackboardBoldPicker(null);
-                          setShowFrakturScriptPicker(null);
-                          setShowHebrewSymbolPicker(null);
-                          setShowPeriodicTablePicker(null);
-                          setShowColorPicker(null);
-                          setShowSpecialChars({ x: rect.left, y: rect.bottom + 4 });
-                        } else if (item.action === 'ARROW_PICKER') {
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          setShowSpecialChars(null);
-                          setShowRelationMorePicker(null);
-                          setShowArrowLabelPicker(null);
-                          setShowGreekItalicPicker(null);
-                          setShowBlackboardBoldPicker(null);
-                          setShowFrakturScriptPicker(null);
-                          setShowHebrewSymbolPicker(null);
-                          setShowPeriodicTablePicker(null);
-                          setShowColorPicker(null);
-                          setShowArrowPicker((prev) => (
-                            prev ? null : { x: rect.left, y: rect.bottom + 4 }
-                          ));
-                        } else if (item.action === 'RELATION_MORE_PICKER') {
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          setShowSpecialChars(null);
-                          setShowArrowPicker(null);
-                          setShowArrowLabelPicker(null);
-                          setShowGreekItalicPicker(null);
-                          setShowBlackboardBoldPicker(null);
-                          setShowFrakturScriptPicker(null);
-                          setShowHebrewSymbolPicker(null);
-                          setShowPeriodicTablePicker(null);
-                          setShowColorPicker(null);
-                          setShowRelationMorePicker((prev) => (
-                            prev?.picker === item.picker ? null : { x: rect.left, y: rect.bottom + 4, picker: item.picker }
-                          ));
-                        } else if (item.action === 'ARROW_LABEL_PICKER') {
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          setShowSpecialChars(null);
-                          setShowArrowPicker(null);
-                          setShowRelationMorePicker(null);
-                          setShowGreekItalicPicker(null);
-                          setShowBlackboardBoldPicker(null);
-                          setShowFrakturScriptPicker(null);
-                          setShowHebrewSymbolPicker(null);
-                          setShowPeriodicTablePicker(null);
-                          setShowColorPicker(null);
-                          setShowArrowLabelPicker((prev) => (
-                            prev ? null : { x: rect.left, y: rect.bottom + 4 }
-                          ));
-                        } else if (item.action === 'BLACKBOARD_BOLD_PICKER') {
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          setShowSpecialChars(null);
-                          setShowArrowPicker(null);
-                          setShowArrowLabelPicker(null);
-                          setShowColorPicker(null);
-                          setShowRelationMorePicker(null);
-                          setShowGreekItalicPicker(null);
-                          setShowFrakturScriptPicker(null);
-                          setShowHebrewSymbolPicker(null);
-                          setShowPeriodicTablePicker(null);
-                          setShowBlackboardBoldPicker((prev) => (
-                            prev ? null : { x: rect.left, y: rect.bottom + 4 }
-                          ));
-                        } else if (item.action === 'FRAKTUR_SCRIPT_PICKER') {
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          setShowSpecialChars(null);
-                          setShowArrowPicker(null);
-                          setShowArrowLabelPicker(null);
-                          setShowColorPicker(null);
-                          setShowRelationMorePicker(null);
-                          setShowGreekItalicPicker(null);
-                          setShowBlackboardBoldPicker(null);
-                          setShowHebrewSymbolPicker(null);
-                          setShowPeriodicTablePicker(null);
-                          setShowFrakturScriptPicker((prev) => (
-                            prev?.picker === (item.picker || 'script') ? null : { x: rect.left, y: rect.bottom + 4, picker: item.picker || 'script' }
-                          ));
-                        } else if (item.action === 'HEBREW_SYMBOL_PICKER') {
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          setShowSpecialChars(null);
-                          setShowArrowPicker(null);
-                          setShowArrowLabelPicker(null);
-                          setShowColorPicker(null);
-                          setShowRelationMorePicker(null);
-                          setShowGreekItalicPicker(null);
-                          setShowBlackboardBoldPicker(null);
-                          setShowFrakturScriptPicker(null);
-                          setShowPeriodicTablePicker(null);
-                          setShowHebrewSymbolPicker((prev) => (
-                            prev ? null : { x: rect.left, y: rect.bottom + 4 }
-                          ));
-                        } else if (item.action === 'PERIODIC_TABLE_PICKER') {
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          setShowSpecialChars(null);
-                          setShowArrowPicker(null);
-                          setShowArrowLabelPicker(null);
-                          setShowColorPicker(null);
-                          setShowRelationMorePicker(null);
-                          setShowGreekItalicPicker(null);
-                          setShowBlackboardBoldPicker(null);
-                          setShowFrakturScriptPicker(null);
-                          setShowHebrewSymbolPicker(null);
-                          setShowPeriodicTablePicker((prev) => (
-                            prev ? null : { x: rect.left, y: rect.bottom + 4 }
-                          ));
-                        } else if (item.action === 'TEXT_COLOR') {
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          setShowArrowPicker(null);
-                          setShowRelationMorePicker(null);
-                          setShowArrowLabelPicker(null);
-                          setShowGreekItalicPicker(null);
-                          setShowBlackboardBoldPicker(null);
-                          setShowFrakturScriptPicker(null);
-                          setShowHebrewSymbolPicker(null);
-                          setShowPeriodicTablePicker(null);
-                          setCustomColorInput(activeStyles.color !== 'none' ? activeStyles.color : '');
-                          setCustomColorError('');
-                          setShowColorPicker({ x: rect.left, y: rect.bottom + 4 });
-                        } else if (item.action === 'TOGGLE_RTL') {
-                          setIsRtlInput((prev) => !prev);
-                          requestAnimationFrame(() => popupMfRef.current?.focus?.());
-                        } else if (item.action === 'BOLD') {
-                          setTypingVariant(!activeStyles.bold, activeStyles.italic);
-                        } else if (item.action === 'BOLD_ITALIC') {
-                          const shouldEnableBoth = !activeStyles.boldItalic;
-                          setTypingVariant(shouldEnableBoth, shouldEnableBoth);
-                        } else if (item.action === 'CUT') {
-                          const latex = mf ? (mf.getValue ? mf.getValue() : mf.value || '') : '';
-                          if (latex && navigator.clipboard?.writeText) {
-                            void navigator.clipboard.writeText(latex).catch(() => {});
-                          }
-                          if (mf) {
-                            if (typeof mf.setValue === 'function') {
-                              mf.setValue('');
-                            } else {
-                              mf.value = '';
-                            }
-                            mf.focus?.();
-                          }
-                        } else if (item.action === 'COPY') {
-                          const latex = mf ? (mf.getValue ? mf.getValue() : mf.value || '') : '';
-                          if (latex && navigator.clipboard?.writeText) {
-                            void navigator.clipboard.writeText(latex).catch(() => {});
-                          }
-                        } else if (item.action === 'PASTE') {
-                          if (navigator.clipboard?.readText) {
-                            void navigator.clipboard.readText().then((text) => {
-                              if (text) {
-                                insertAtCursor(convertDigitsToNumeralSystem(text, numeralMode));
+                    if (currentGroup.isMatrix && !item.directInsert && !item.action) {
+                      return (
+                        <div
+                          key={i}
+                          className="cme-matrix-btn-wrapper"
+                        >
+                          <button
+                            type="button"
+                            className={`cme-btn template${isPopupTabMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${activeMatrix?.type === item.insert ? ' active' : ''}`}
+                            title={item.insert}
+                            onMouseDown={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              if (activeMatrix?.type === item.insert) {
+                                setActiveMatrix(null);
+                              } else {
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                setActiveMatrix({
+                                  type: item.insert,
+                                  x: rect.left + rect.width / 2,
+                                  y: rect.bottom
+                                });
                               }
-                            }).catch(() => {});
-                          }
-                        } else if (item.action === 'ARABIC_INDIC_NUMERALS') {
-                          setNumeralMode((current) => (current === 'arabicIndic' ? 'western' : 'arabicIndic'));
-                          requestAnimationFrame(() => popupMfRef.current?.focus?.());
-                        } else if (item.action === 'EASTERN_ARABIC_INDIC_NUMERALS') {
-                          setNumeralMode((current) => (current === 'easternArabicIndic' ? 'western' : 'easternArabicIndic'));
-                          requestAnimationFrame(() => popupMfRef.current?.focus?.());
-                        } else if (item.action === 'MOVE_TEXT_UP') {
-                          applyMoveTextAction('up');
-                        } else if (item.action === 'MOVE_TEXT_RIGHT') {
-                          applyMoveTextAction('right');
-                        } else if (item.action === 'MOVE_TEXT_LEFT') {
-                          applyMoveTextAction('left');
-                        } else if (item.action === 'MOVE_TEXT_DOWN') {
-                          applyMoveTextAction('down');
-                        } else if (item.action === 'BLACKBOARD') {
-                          insertAtCursor('\\mathbb{#0}', { preserveMathStyle: true });
-                        } else if (item.action === 'GREEK') {
-                          insertAtCursor('\\Omega');
-                        } else if (item.action === 'TILDE') {
-                          insertAtCursor('\\widetilde{#0}');
-                        } else if (item.action === 'ITALIC') {
-                          setTypingVariant(activeStyles.bold, !activeStyles.italic);
-                        } else if (item.action === 'TEXT') {
-                          insertAtCursor('\\text{#0}');
-                        } else if (item.action === 'UNDO') {
-                          popupMfRef.current?.executeCommand('undo');
-                        } else if (item.action === 'REDO') {
-                          popupMfRef.current?.executeCommand('redo');
-                        } else if (item.action === 'CLEAR') {
-                          if (mf) {
-                            if (typeof mf.setValue === 'function') {
-                              mf.setValue('');
-                            } else {
-                              mf.value = '';
+                            }}
+                          >
+                            {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode })}
+                          </button>
+                        </div>
+                      );
+                    }
+
+                    const isBoldBtn = item.action === 'BOLD';
+                    const isItalicBtn = item.action === 'ITALIC';
+                    const isBoldItalicBtn = item.action === 'BOLD_ITALIC';
+                    const isColorBtn = item.action === 'TEXT_COLOR';
+                    const isRtlBtn = item.action === 'TOGGLE_RTL';
+                    const isArrowPickerBtn = item.action === 'ARROW_PICKER';
+                    const isRelationMorePickerBtn = item.action === 'RELATION_MORE_PICKER';
+                    const isArrowLabelPickerBtn = item.action === 'ARROW_LABEL_PICKER';
+                    const isBlackboardBoldPickerBtn = item.action === 'BLACKBOARD_BOLD_PICKER';
+                    const isFrakturScriptPickerBtn = item.action === 'FRAKTUR_SCRIPT_PICKER';
+                    const isHebrewSymbolPickerBtn = item.action === 'HEBREW_SYMBOL_PICKER';
+                    const isPeriodicTablePickerBtn = item.action === 'PERIODIC_TABLE_PICKER';
+                    const isBtnActive =
+                      (isBoldBtn && activeStyles.bold && !activeStyles.italic) ||
+                      (isItalicBtn && activeStyles.italic && !activeStyles.bold) ||
+                      (isBoldItalicBtn && activeStyles.boldItalic) ||
+                      (isRtlBtn && isRtlInput) ||
+                      (isArrowPickerBtn && !!showArrowPicker) ||
+                      (isRelationMorePickerBtn && showRelationMorePicker?.picker === item.picker) ||
+                      (isArrowLabelPickerBtn && !!showArrowLabelPicker) ||
+                      (isBlackboardBoldPickerBtn && !!showBlackboardBoldPicker) ||
+                      (isFrakturScriptPickerBtn && showFrakturScriptPicker?.picker === (item.picker || 'script')) ||
+                      (isHebrewSymbolPickerBtn && !!showHebrewSymbolPicker) ||
+                      (isPeriodicTablePickerBtn && !!showPeriodicTablePicker) ||
+                      (isColorBtn && activeStyles.color !== 'none');
+
+                    return (
+                      <button
+                        key={`${groupKey}-${chunkIndex * 4 + i}`}
+                        type="button"
+                        className={`cme-btn${currentGroup.isTemplate ? ' template' : ''}${isPopupTabMode ? ' cme-btn--compact' : ''}${item.cls ? ` ${item.cls}` : ''}${isBtnActive ? ' active' : ''}`}
+                        title={item.title || item.insert}
+                        style={item.gridColumn || item.gridRow || itemGridColumn ? { gridColumn: item.gridColumn || itemGridColumn, gridRow: item.gridRow } : undefined}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          const mf = popupMfRef.current;
+                          if (item.action === 'SPECIAL_CHARS') {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setShowArrowPicker(null);
+                            setShowRelationMorePicker(null);
+                            setShowArrowLabelPicker(null);
+                            setShowGreekItalicPicker(null);
+                            setShowBlackboardBoldPicker(null);
+                            setShowFrakturScriptPicker(null);
+                            setShowHebrewSymbolPicker(null);
+                            setShowPeriodicTablePicker(null);
+                            setShowColorPicker(null);
+                            setShowSpecialChars({ x: rect.left, y: rect.bottom + 4 });
+                          } else if (item.action === 'ARROW_PICKER') {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setShowSpecialChars(null);
+                            setShowRelationMorePicker(null);
+                            setShowArrowLabelPicker(null);
+                            setShowGreekItalicPicker(null);
+                            setShowBlackboardBoldPicker(null);
+                            setShowFrakturScriptPicker(null);
+                            setShowHebrewSymbolPicker(null);
+                            setShowPeriodicTablePicker(null);
+                            setShowColorPicker(null);
+                            setShowArrowPicker((prev) => (
+                              prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                            ));
+                          } else if (item.action === 'RELATION_MORE_PICKER') {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setShowSpecialChars(null);
+                            setShowArrowPicker(null);
+                            setShowArrowLabelPicker(null);
+                            setShowGreekItalicPicker(null);
+                            setShowBlackboardBoldPicker(null);
+                            setShowFrakturScriptPicker(null);
+                            setShowHebrewSymbolPicker(null);
+                            setShowPeriodicTablePicker(null);
+                            setShowColorPicker(null);
+                            setShowRelationMorePicker((prev) => (
+                              prev?.picker === item.picker ? null : { x: rect.left, y: rect.bottom + 4, picker: item.picker }
+                            ));
+                          } else if (item.action === 'ARROW_LABEL_PICKER') {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setShowSpecialChars(null);
+                            setShowArrowPicker(null);
+                            setShowRelationMorePicker(null);
+                            setShowGreekItalicPicker(null);
+                            setShowBlackboardBoldPicker(null);
+                            setShowFrakturScriptPicker(null);
+                            setShowHebrewSymbolPicker(null);
+                            setShowPeriodicTablePicker(null);
+                            setShowColorPicker(null);
+                            setShowArrowLabelPicker((prev) => (
+                              prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                            ));
+                          } else if (item.action === 'BLACKBOARD_BOLD_PICKER') {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setShowSpecialChars(null);
+                            setShowArrowPicker(null);
+                            setShowArrowLabelPicker(null);
+                            setShowColorPicker(null);
+                            setShowRelationMorePicker(null);
+                            setShowGreekItalicPicker(null);
+                            setShowFrakturScriptPicker(null);
+                            setShowHebrewSymbolPicker(null);
+                            setShowPeriodicTablePicker(null);
+                            setShowBlackboardBoldPicker((prev) => (
+                              prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                            ));
+                          } else if (item.action === 'FRAKTUR_SCRIPT_PICKER') {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setShowSpecialChars(null);
+                            setShowArrowPicker(null);
+                            setShowArrowLabelPicker(null);
+                            setShowColorPicker(null);
+                            setShowRelationMorePicker(null);
+                            setShowGreekItalicPicker(null);
+                            setShowBlackboardBoldPicker(null);
+                            setShowHebrewSymbolPicker(null);
+                            setShowPeriodicTablePicker(null);
+                            setShowFrakturScriptPicker((prev) => (
+                              prev?.picker === (item.picker || 'script') ? null : { x: rect.left, y: rect.bottom + 4, picker: item.picker || 'script' }
+                            ));
+                          } else if (item.action === 'HEBREW_SYMBOL_PICKER') {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setShowSpecialChars(null);
+                            setShowArrowPicker(null);
+                            setShowArrowLabelPicker(null);
+                            setShowColorPicker(null);
+                            setShowRelationMorePicker(null);
+                            setShowGreekItalicPicker(null);
+                            setShowBlackboardBoldPicker(null);
+                            setShowFrakturScriptPicker(null);
+                            setShowPeriodicTablePicker(null);
+                            setShowHebrewSymbolPicker((prev) => (
+                              prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                            ));
+                          } else if (item.action === 'PERIODIC_TABLE_PICKER') {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setShowSpecialChars(null);
+                            setShowArrowPicker(null);
+                            setShowArrowLabelPicker(null);
+                            setShowColorPicker(null);
+                            setShowRelationMorePicker(null);
+                            setShowGreekItalicPicker(null);
+                            setShowBlackboardBoldPicker(null);
+                            setShowFrakturScriptPicker(null);
+                            setShowHebrewSymbolPicker(null);
+                            setShowPeriodicTablePicker((prev) => (
+                              prev ? null : { x: rect.left, y: rect.bottom + 4 }
+                            ));
+                          } else if (item.action === 'TEXT_COLOR') {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setShowArrowPicker(null);
+                            setShowRelationMorePicker(null);
+                            setShowArrowLabelPicker(null);
+                            setShowGreekItalicPicker(null);
+                            setShowBlackboardBoldPicker(null);
+                            setShowFrakturScriptPicker(null);
+                            setShowHebrewSymbolPicker(null);
+                            setShowPeriodicTablePicker(null);
+                            setCustomColorInput(activeStyles.color !== 'none' ? activeStyles.color : '');
+                            setCustomColorError('');
+                            setShowColorPicker({ x: rect.left, y: rect.bottom + 4 });
+                          } else if (item.action === 'TOGGLE_RTL') {
+                            setIsRtlInput((prev) => !prev);
+                            requestAnimationFrame(() => popupMfRef.current?.focus?.());
+                          } else if (item.action === 'BOLD') {
+                            setTypingVariant(!activeStyles.bold, activeStyles.italic);
+                          } else if (item.action === 'BOLD_ITALIC') {
+                            const shouldEnableBoth = !activeStyles.boldItalic;
+                            setTypingVariant(shouldEnableBoth, shouldEnableBoth);
+                          } else if (item.action === 'CUT') {
+                            const latex = mf ? (mf.getValue ? mf.getValue() : mf.value || '') : '';
+                            if (latex && navigator.clipboard?.writeText) {
+                              void navigator.clipboard.writeText(latex).catch(() => { });
                             }
-                            mf.focus?.();
+                            if (mf) {
+                              if (typeof mf.setValue === 'function') {
+                                mf.setValue('');
+                              } else {
+                                mf.value = '';
+                              }
+                              mf.focus?.();
+                            }
+                          } else if (item.action === 'COPY') {
+                            const latex = mf ? (mf.getValue ? mf.getValue() : mf.value || '') : '';
+                            if (latex && navigator.clipboard?.writeText) {
+                              void navigator.clipboard.writeText(latex).catch(() => { });
+                            }
+                          } else if (item.action === 'PASTE') {
+                            if (navigator.clipboard?.readText) {
+                              void navigator.clipboard.readText().then((text) => {
+                                if (text) {
+                                  insertAtCursor(convertDigitsToNumeralSystem(text, numeralMode));
+                                }
+                              }).catch(() => { });
+                            }
+                          } else if (item.action === 'ARABIC_INDIC_NUMERALS') {
+                            setNumeralMode((current) => (current === 'arabicIndic' ? 'western' : 'arabicIndic'));
+                            requestAnimationFrame(() => popupMfRef.current?.focus?.());
+                          } else if (item.action === 'EASTERN_ARABIC_INDIC_NUMERALS') {
+                            setNumeralMode((current) => (current === 'easternArabicIndic' ? 'western' : 'easternArabicIndic'));
+                            requestAnimationFrame(() => popupMfRef.current?.focus?.());
+                          } else if (item.action === 'MOVE_TEXT_UP') {
+                            applyMoveTextAction('up');
+                          } else if (item.action === 'MOVE_TEXT_RIGHT') {
+                            applyMoveTextAction('right');
+                          } else if (item.action === 'MOVE_TEXT_LEFT') {
+                            applyMoveTextAction('left');
+                          } else if (item.action === 'MOVE_TEXT_DOWN') {
+                            applyMoveTextAction('down');
+                          } else if (item.action === 'BLACKBOARD') {
+                            insertAtCursor('\\mathbb{#0}', { preserveMathStyle: true });
+                          } else if (item.action === 'GREEK') {
+                            insertAtCursor('\\Omega');
+                          } else if (item.action === 'TILDE') {
+                            insertAtCursor('\\widetilde{#0}');
+                          } else if (item.action === 'ITALIC') {
+                            setTypingVariant(activeStyles.bold, !activeStyles.italic);
+                          } else if (item.action === 'TEXT') {
+                            insertAtCursor('\\text{#0}');
+                          } else if (item.action === 'UNDO') {
+                            popupMfRef.current?.executeCommand('undo');
+                          } else if (item.action === 'REDO') {
+                            popupMfRef.current?.executeCommand('redo');
+                          } else if (item.action === 'CLEAR') {
+                            if (mf) {
+                              if (typeof mf.setValue === 'function') {
+                                mf.setValue('');
+                              } else {
+                                mf.value = '';
+                              }
+                              mf.focus?.();
+                            }
+                          } else if (
+                            item.insert === '\\hphantom{0}' ||
+                            item.insert === '\\,' ||
+                            item.insert === '\\!'
+                          ) {
+                            insertSpacingToolAtCursor(item.insert);
+                          } else {
+                            insertAtCursor(item.insert, { preserveMathStyle: item.preserveMathStyle, insertStyle: item.insertStyle, focusFirstPlaceholder: item.focusFirstPlaceholder, focusSlotGroup: item.focusSlotGroup });
                           }
-                        } else if (
-                          item.insert === '\\hphantom{0}' ||
-                          item.insert === '\\,' ||
-                          item.insert === '\\!'
-                        ) {
-                          insertSpacingToolAtCursor(item.insert);
-                        } else {
-                          insertAtCursor(item.insert, { preserveMathStyle: item.preserveMathStyle, insertStyle: item.insertStyle, focusFirstPlaceholder: item.focusFirstPlaceholder, focusSlotGroup: item.focusSlotGroup });
-                        }
-                      }}
-                    >
-                      {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode })}
-                    </button>
-                  );
-                })}
-              </div>
-            );
+                        }}
+                      >
+                        {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode })}
+                      </button>
+                    );
+                  })}
+                </div>
+              );
             });
           })()}
         </div>
@@ -9854,7 +9976,7 @@ function CkEditor({ value, onChange, className = '' }) {
       `}</style>
 
       {/* Insert Options Bar */}
-        {/* <div className="ck-editor-meta">
+      {/* <div className="ck-editor-meta">
           <label className="ck-editor-mode-toggle">
             <input
               className="ck-editor-mode-checkbox"

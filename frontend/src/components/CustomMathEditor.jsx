@@ -38,44 +38,52 @@ function hasExpandedMathSelection(selection) {
   );
 }
 
+function computeMatrixHeight(rows) {
+  return Math.max(1.8, 2.6 * rows - 2.45);
+}
+
+function getMatrixRowClass(type, rows) {
+  if (rows === 2) return type === "bmatrix" ? "cme-bmatrix-two-row-template" : "cme-pmatrix-two-row-template";
+  if (rows === 3) return type === "bmatrix" ? "cme-bmatrix-three-row-template" : "cme-pmatrix-three-row-template";
+  if (rows === 4) return type === "bmatrix" ? "cme-bmatrix-four-row-template" : "cme-pmatrix-four-row-template";
+  if (rows === 5) return type === "bmatrix" ? "cme-bmatrix-five-row-template" : "cme-pmatrix-five-row-template";
+  return type === "bmatrix" ? "cme-bmatrix-multi-row-template" : "cme-pmatrix-multi-row-template";
+}
+
+function getMatrixColumnClass(type, cols) {
+  if (cols === 1) return type === "bmatrix" ? "cme-bmatrix-single-column-template" : "cme-pmatrix-single-column-template";
+  if (cols === 2) return type === "bmatrix" ? "cme-bmatrix-narrow-columns-template" : "cme-pmatrix-narrow-columns-template";
+  return "";
+}
+
 const MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT =
-  "\\class{cme-bmatrix-two-row-template cme-two-row-matrix-template cme-bmatrix-single-column-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}";
+  "\\htmlStyle{--matrix-h:" + computeMatrixHeight(2).toFixed(2) + "em}{\\class{cme-two-row-matrix-template cme-bmatrix-two-row-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}}";
 const MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT =
-  "\\class{cme-pmatrix-two-row-template cme-two-row-matrix-template cme-pmatrix-single-column-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}";
+  "\\htmlStyle{--matrix-h:" + computeMatrixHeight(2).toFixed(2) + "em}{\\class{cme-two-row-matrix-template cme-pmatrix-two-row-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}}";
 
 function buildMatrixArrayBody(rows, cols, rowSeparator = "\\\\") {
   return Array.from({ length: rows }, () => (
     Array.from({ length: cols }, () => "#?").join(" & ")
-  )).join(` ${rowSeparator} `);
+  )).join(` ${rowSeparator}[0.18em] `);
 }
 
 function wrapMatrixBodyWithDelimiters(body, leftDelimiter, rightDelimiter) {
   return "\\left" + leftDelimiter + "\\begin{matrix} " + body + " \\end{matrix}\\right" + rightDelimiter;
 }
 
-function buildMatrixClassWrap(body, cols, cssClasses) {
-  const colSpec = Array.from({ length: cols }, () => "c").join("");
-  return "\\class{" + cssClasses + "}{\\begin{array}{" + colSpec + "} " + body + " \\end{array}}";
-}
-
 function buildMatrixInsertLatex(type, rows, cols) {
   const body = buildMatrixArrayBody(rows, cols, "\\\\");
 
-  // For 2 and 3 rows of bmatrix/pmatrix, use CSS-class-based delimiters
-  // because MathLive's \left/\right renders broken for small matrices.
-  if ((type === "bmatrix" || type === "pmatrix") && (rows === 2 || rows === 3)) {
-    const rowLabel = rows === 2 ? "two" : "three";
-    const colModifier = cols === 1 ? ` cme-${type}-single-column-template` : "";
-    const baseClass = rows === 2 ? "cme-two-row-matrix-template" : "";
-    const cssClasses = `cme-${type}-${rowLabel}-row-template${baseClass ? " " + baseClass : ""}${colModifier}`;
-    return buildMatrixClassWrap(body, cols, cssClasses);
+  if (type === "bmatrix" || type === "pmatrix") {
+    const h = computeMatrixHeight(rows).toFixed(2);
+    const rowClass = getMatrixRowClass(type, rows);
+    const colClass = getMatrixColumnClass(type, cols);
+    const combinedClasses = colClass ? `${rowClass} ${colClass}` : rowClass;
+    const colSpec = Array.from({ length: cols }, () => "c").join("");
+    return "\\htmlStyle{--matrix-h:" + h + "em}{\\class{" + combinedClasses + "}{\\begin{array}{" + colSpec + "} " + body + " \\end{array}}}";
   }
 
   switch (type) {
-    case "bmatrix":
-      return wrapMatrixBodyWithDelimiters(body, "[", "]");
-    case "pmatrix":
-      return wrapMatrixBodyWithDelimiters(body, "(", ")");
     case "vmatrix":
       return wrapMatrixBodyWithDelimiters(body, "|", "|");
     default:
@@ -111,167 +119,51 @@ const CME_MATRIX_SHADOW_CSS = `
   pointer-events: none;
 }
 
-.cme-bmatrix-two-row-template {
-  padding-left: 1.02em;
-  padding-right: 1.02em;
-}
-
-.cme-bmatrix-two-row-template::before,
-.cme-bmatrix-two-row-template::after {
-  width: 0.5em;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-}
-
-.cme-pmatrix-two-row-template::before,
-.cme-pmatrix-two-row-template::after {
-  width: 0.68em;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-}
-
-.cme-bmatrix-two-row-template::before,
-.cme-pmatrix-two-row-template::before {
-  left: 0.04em;
-  transform: translateY(-50%);
-}
-
-.cme-bmatrix-two-row-template::after,
-.cme-pmatrix-two-row-template::after {
-  right: 0.04em;
-  transform: translateY(-50%) scaleX(-1);
-}
-
-.cme-bmatrix-two-row-template::before {
-  left: 0.12em;
-}
-
-.cme-bmatrix-two-row-template::after {
-  right: 0.12em;
-}
-
-.cme-bmatrix-three-row-template {
+/* Dynamic Cancel / Strikeout Templates */
+.cme-cancel-template,
+.cme-bcancel-template,
+.cme-xcancel-template {
   display: inline-block;
   position: relative;
   line-height: 1;
-  vertical-align: 0.48em;
-  padding-left: 1.24em;
-  padding-right: 1.24em;
+  padding: 0 0.1em;
 }
 
-.cme-bmatrix-three-row-template .ML__arraycolsep {
-  width: 0.32em !important;
-}
-
-.cme-bmatrix-three-row-template::before,
-.cme-bmatrix-three-row-template::after {
+.cme-cancel-template::after,
+.cme-bcancel-template::after,
+.cme-xcancel-template::after,
+.cme-xcancel-template::before {
   content: "";
   position: absolute;
-  top: 50%;
-  width: 0.54em;
-  height: 5.35em;
-  background: currentColor;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   pointer-events: none;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 
-.cme-bmatrix-three-row-template::before {
-  left: 0.14em;
-  transform: translateY(-50%);
-}
-
-.cme-bmatrix-three-row-template::after {
-  right: 0.14em;
-  transform: translateY(-50%) scaleX(-1);
-}
-
-.cme-pmatrix-three-row-template {
-  display: inline-block;
-  position: relative;
-  line-height: 1;
-  vertical-align: 0.48em;
-  padding-left: 1.08em;
-  padding-right: 1.08em;
-}
-
-.cme-pmatrix-three-row-template .ML__arraycolsep {
-  width: 0.28em !important;
-}
-
-.cme-pmatrix-three-row-template::before,
-.cme-pmatrix-three-row-template::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 0.76em;
-  height: 5.35em;
+.cme-cancel-template::after {
   background: currentColor;
-  pointer-events: none;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='100' x2='100' y2='0' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='100' x2='100' y2='0' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
 }
 
-.cme-pmatrix-three-row-template::before {
-  left: 0.08em;
-  transform: translateY(-50%);
+.cme-bcancel-template::after {
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='0' x2='100' y2='100' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='0' x2='100' y2='100' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
 }
 
-.cme-pmatrix-three-row-template::after {
-  right: 0.08em;
-  transform: translateY(-50%) scaleX(-1);
+.cme-xcancel-template::after {
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='100' x2='100' y2='0' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='100' x2='100' y2='0' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
 }
 
-.cme-bmatrix-single-column-template {
-  padding-left: 1.5em;
-  padding-right: 1.5em;
-}
-
-.cme-bmatrix-single-column-template .ML__arraycolsep {
-  width: 0.18em !important;
-}
-
-.cme-bmatrix-two-row-template.cme-bmatrix-single-column-template::before,
-.cme-bmatrix-two-row-template.cme-bmatrix-single-column-template::after {
-  width: 0.54em;
-  height: 3.35em;
-}
-
-.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template {
-  padding-left: 1.58em;
-  padding-right: 1.58em;
-}
-
-.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template::before,
-.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template::after {
-  width: 0.58em;
-  height: 6.25em;
-}
-
-.cme-pmatrix-single-column-template {
-  padding-left: 1.34em;
-  padding-right: 1.34em;
-}
-
-.cme-pmatrix-single-column-template .ML__arraycolsep {
-  width: 0.18em !important;
-}
-
-.cme-pmatrix-two-row-template.cme-pmatrix-single-column-template::before,
-.cme-pmatrix-two-row-template.cme-pmatrix-single-column-template::after {
-  width: 0.74em;
-  height: 3.35em;
-}
-
-.cme-pmatrix-three-row-template.cme-pmatrix-single-column-template {
-  padding-left: 1.42em;
-  padding-right: 1.42em;
-}
-
-.cme-pmatrix-three-row-template.cme-pmatrix-single-column-template::before,
-.cme-pmatrix-three-row-template.cme-pmatrix-single-column-template::after {
-  width: 0.82em;
-  height: 6.25em;
+.cme-xcancel-template::before {
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='0' x2='100' y2='100' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='0' x2='100' y2='100' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
 }
 `;
 
@@ -861,7 +753,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
   const popupRef = useRef(null);
   const popupPositionRef = useRef(null);
   const dragStateRef = useRef(null);
-  const removeDragListenersRef = useRef(() => {});
+  const removeDragListenersRef = useRef(() => { });
 
   const [activeMathGroup, setActiveMathGroup] = useState(0);
   const [activeChemGroup, setActiveChemGroup] = useState(0);
@@ -895,7 +787,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
 
   const stopDragging = useCallback(() => {
     removeDragListenersRef.current();
-    removeDragListenersRef.current = () => {};
+    removeDragListenersRef.current = () => { };
     dragStateRef.current = null;
   }, []);
 
@@ -1207,11 +1099,11 @@ export default function CustomMathEditor({ value = "", onChange }) {
   const popupStyle =
     popupWindowMode === "normal" && popupPosition
       ? {
-          left: `${popupPosition.x}px`,
-          top: `${popupPosition.y}px`,
-          right: "auto",
-          bottom: "auto",
-        }
+        left: `${popupPosition.x}px`,
+        top: `${popupPosition.y}px`,
+        right: "auto",
+        bottom: "auto",
+      }
       : undefined;
 
 
@@ -1279,7 +1171,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
                 );
               })}
             </div>
-            
+
             <div className={`cme-toolbar-items${isFirstMathTab ? " cme-toolbar-items--first-tab" : ""}${(isIntegralHeroTab || isDerivativeHeroTab) ? " cme-toolbar-items--integral-templates" : ""}${isPopupTabMode ? " cme-toolbar-items--popup-compact" : ""}`}>
               {(() => {
                 const activeItems = groups[activeGroupIndex]?.items || [];
@@ -1288,7 +1180,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
                 for (let i = 0; i < activeItems.length; i += size) {
                   chunks.push(activeItems.slice(i, i + size));
                 }
-                
+
                 return chunks.map((chunk, chunkIndex) => (
                   <div key={chunkIndex} className={`cme-symbol-subgroup${isPopupTabMode ? " cme-symbol-subgroup--compact" : ""}`}>
                     {chunk.map((item, i) => {
@@ -1401,13 +1293,13 @@ export default function CustomMathEditor({ value = "", onChange }) {
                 handleMatrixInsert(activeMatrix.type, r, c);
                 setActiveMatrix(null);
               }}
-              onMouseEnter={() => {}}
-              onMouseLeave={() => {}}
+              onMouseEnter={() => { }}
+              onMouseLeave={() => { }}
             />
           )}
 
           {showSpecialChars && (
-            <SpecialCharacterModal 
+            <SpecialCharacterModal
               isOpen={!!showSpecialChars}
               position={showSpecialChars}
               onClose={() => setShowSpecialChars(null)}
@@ -1420,5 +1312,129 @@ export default function CustomMathEditor({ value = "", onChange }) {
         </div>
       )}
     </div>
+  );
+}
+className = {`cme-btn template${isPopupTabMode ? " cme-btn--compact" : ""}${item.cls ? ` ${item.cls}` : ""}${isTouchedButton ? " active" : ""}`}
+title = { item.insert }
+onMouseDown = {(e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (activeMatrix?.type === item.insert) {
+    setActiveMatrix(null);
+  } else {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setActiveMatrix({
+      type: item.insert,
+      x: rect.left + rect.width / 2,
+      y: rect.bottom
+    });
+  }
+}}
+                            >
+  { renderToolbarItemLabel(item) }
+                            </button >
+                          </div >
+                        );
+                      }
+
+return (
+  <button
+    key={`${currentGroup.id || activeGroupIndex}-${chunkIndex * size + i}`}
+    type="button"
+    className={`cme-btn${currentGroup.isTemplate ? " template" : ""}${isPopupTabMode ? " cme-btn--compact" : ""}${item.cls ? ` ${item.cls}` : ""}`}
+    title={item.title || item.insert}
+    onMouseDown={(e) => {
+      e.preventDefault();
+      if (item.action === "SPECIAL_CHARS") {
+        const rect = e.currentTarget.getBoundingClientRect();
+        setShowSpecialChars({ x: rect.left, y: rect.bottom + 4 });
+      } else {
+        insertAtCursor(item.insert);
+      }
+    }}
+  >
+    {renderToolbarItemLabel(item)}
+  </button>
+);
+                    })}
+                  </div >
+                ));
+              }) ()}
+            </div >
+          </div >
+
+  <div
+    className="cme-mathfield-container"
+    onMouseDown={(e) => {
+      // If the click landed on the math-field itself, let the browser
+      // handle focus + caret placement natively (do NOT preventDefault).
+      // If click landed on container padding, preventDefault to stop
+      // focus theft, then manually focus the math-field.
+      if (e.target === popupMfRef.current ||
+        (popupMfRef.current && popupMfRef.current.contains(e.target))) {
+        return; // browser handles it
+      }
+      e.preventDefault();
+      requestAnimationFrame(() => {
+        try { popupMfRef.current?.focus(); } catch (_) { }
+      });
+    }}
+  >
+    <math-field
+      ref={popupMfRef}
+      class="cme-mathfield"
+      letter-shape-style="upright"
+      tabIndex={0}
+      math-virtual-keyboard-policy="manual"
+      placeholder={
+        mode === "math"
+          ? ""
+          : ""
+      }
+    />
+  </div>
+
+{/* cancel and insert div */ }
+<div className="cme-popup-footer">
+  <button type="button" className="cme-cancel-btn" onClick={handleClose}>
+    Cancel
+  </button>
+  <button type="button" className="cme-insert-btn" onClick={handleInsert}>
+    Insert
+  </button>
+</div>
+
+{
+  activeMatrix && (
+    <MatrixHoverGrid
+      matrixType={activeMatrix.type}
+      x={activeMatrix.x}
+      y={activeMatrix.y}
+      onSelect={(r, c) => {
+        handleMatrixInsert(activeMatrix.type, r, c);
+        setActiveMatrix(null);
+      }}
+      onMouseEnter={() => { }}
+      onMouseLeave={() => { }}
+    />
+  )
+}
+
+{
+  showSpecialChars && (
+    <SpecialCharacterModal
+      isOpen={!!showSpecialChars}
+      position={showSpecialChars}
+      onClose={() => setShowSpecialChars(null)}
+      onInsert={(char) => {
+        insertAtCursor(char);
+        setShowSpecialChars(null);
+      }}
+    />
+  )
+}
+        </div >
+      )}
+    </div >
   );
 }
