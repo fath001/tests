@@ -40,9 +40,9 @@ function hasExpandedMathSelection(selection) {
 }
 
 const MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT =
-  "\\class{cme-matrix-compact-wrapper cme-bmatrix-dynamic-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}";
+  "\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}";
 const MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT =
-  "\\class{cme-matrix-compact-wrapper cme-pmatrix-dynamic-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}";
+  "\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}";
 
 function buildMatrixArrayBody(rows, cols, rowSeparator = "\\\\") {
   return Array.from({ length: rows }, () => (
@@ -57,18 +57,11 @@ function wrapMatrixBodyWithDelimiters(body, leftDelimiter, rightDelimiter) {
 function buildMatrixInsertLatex(type, rows, cols) {
   const body = buildMatrixArrayBody(rows, cols, "\\\\");
 
-  if (type === "bmatrix" || type === "pmatrix") {
-    const cls = type === "bmatrix" ? "cme-matrix-compact-wrapper cme-bmatrix-dynamic-template" : "cme-matrix-compact-wrapper cme-pmatrix-dynamic-template";
-    const colSpec = Array.from({ length: cols }, () => "c").join("");
-    return "\\class{" + cls + "}{\\begin{array}{" + colSpec + "} " + body + " \\end{array}}";
+  if (type === "bmatrix" || type === "pmatrix" || type === "vmatrix") {
+    return `\\begin{${type}} ${body} \\end{${type}}`;
   }
 
-  switch (type) {
-    case "vmatrix":
-      return wrapMatrixBodyWithDelimiters(body, "|", "|");
-    default:
-      return `\\begin{${type}} ${body} \\end{${type}}`;
-  }
+  return `\\begin{${type}} ${body} \\end{${type}}`;
 }
 
 /* ── Shadow CSS for matrix bracket/parenthesis rendering inside MathLive shadow DOM ── */

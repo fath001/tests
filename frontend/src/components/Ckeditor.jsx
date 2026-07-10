@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
+﻿import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import {
@@ -178,9 +178,9 @@ function bindWidgetClickTarget(editor, container) {
   container.addEventListener('click', onPointerDown, true);
 }
 const MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT =
-  '\\class{cme-matrix-compact-wrapper cme-bmatrix-dynamic-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}';
+  '\\begin{bmatrix} #? \\\\ #? \\end{bmatrix}';
 const MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT =
-  '\\class{cme-matrix-compact-wrapper cme-pmatrix-dynamic-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}';
+  '\\begin{pmatrix} #? \\\\ #? \\end{pmatrix}';
 
 function buildMatrixArrayBody(rows, cols, rowSeparator = '\\\\') {
   return Array.from({ length: rows }, () => (
@@ -195,18 +195,11 @@ function wrapMatrixBodyWithDelimiters(body, leftDelimiter, rightDelimiter) {
 function buildMatrixInsertLatex(type, rows, cols) {
   const body = buildMatrixArrayBody(rows, cols, '\\\\');
 
-  if (type === 'bmatrix' || type === 'pmatrix') {
-    const cls = type === 'bmatrix' ? 'cme-matrix-compact-wrapper cme-bmatrix-dynamic-template' : 'cme-matrix-compact-wrapper cme-pmatrix-dynamic-template';
-    const colSpec = Array.from({ length: cols }, () => 'c').join('');
-    return '\\' + 'class{' + cls + '}{' + '\\' + 'begin{array}{' + colSpec + '} ' + body + ' \\' + 'end{array}}';
+  if (type === 'bmatrix' || type === 'pmatrix' || type === 'vmatrix') {
+    return '\\' + 'begin{' + type + '} ' + body + ' \\' + 'end{' + type + '}';
   }
 
-  switch (type) {
-    case 'vmatrix':
-      return wrapMatrixBodyWithDelimiters(body, '|', '|');
-    default:
-      return '\\' + 'begin{' + type + '} ' + body + ' \\' + 'end{' + type + '}';
-  }
+  return '\\' + 'begin{' + type + '} ' + body + ' \\' + 'end{' + type + '}';
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -589,7 +582,7 @@ const RELATION_MORE_PICKERS = {
   ],
   tripleIntegralExtras: [
     { label: '∭', insert: '\\iiint', title: 'Triple Integral', icon: 'triple-integral-template-image', cls: 'triple-integral-popup-icon' },
-    { label: '∰', insert: '\\oiiint', title: 'Triple Contour Integral', icon: 'triple-contour-integral-template-image', cls: 'triple-integral-popup-icon' },
+    { label: '∰', insert: '\\mathop{{\\style{font-size:1em;}{\\iiint}}\\mkern-28mu\\class{wider-circle}{\\bigcirc}\\mkern18mu}', title: 'Triple Contour Integral', icon: 'triple-contour-integral-template-image', cls: 'triple-integral-popup-icon' },
   ],
   trigFunctionExtras: [
     { label: 'sin⁻¹(□)', insert: '\\sin^{-1}\\left(#0\\right)', cls: 'green-placeholder-glyph' },
@@ -1842,9 +1835,9 @@ const ORDERED_MATH_GROUPS = [
       { label: 'Δ□', insert: '\\Delta #?', cls: 'template green-placeholder-glyph', directInsert: true, title: 'Delta Expression' },
       { type: 'sep', cols: 3 },
       { label: '∫', insert: '\\int', icon: 'single-integral-template-image' },
-      { label: '∮', insert: '\\oint', icon: 'contour-integral-template-image' },
+      { label: '∮', insert: '\\oint', icon: 'contour-integral-template-image' }, 
       { label: '∬', insert: '\\iint', icon: 'double-integral-template-image' },
-      { label: '∯', insert: '\\oiint', icon: 'double-contour-integral-template-image' },
+      { label: '∯', insert: '\\mathop{{\\style{font-size:1em;}{\\iint}}\\mkern-23mu\\class{wide-circle}{\\bigcirc}\\mkern14mu}', icon: 'double-contour-integral-template-image' },
       makeRelationMorePicker('tripleIntegralExtras', 'More Triple Integrals'),
       { type: 'sep', cols: 2 },
       { label: 'log(□)', insert: '\\log\\left(#0\\right)', cls: 'green-placeholder-glyph' },
@@ -1989,25 +1982,16 @@ function normalizeMatrixBodyLatex(body = '') {
 function normalizeMatrixLatex(latex = '') {
   return String(latex || '')
     .replace(/\\class\{[^}]*cme-bmatrix-dynamic-template[^}]*\}\{\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}\}/g, (_, body) => (
-      wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '[', ']')
+      '\\begin{bmatrix} ' + normalizeMatrixBodyLatex(body) + ' \\end{bmatrix}'
     ))
     .replace(/\\class\{[^}]*cme-pmatrix-dynamic-template[^}]*\}\{\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}\}/g, (_, body) => (
-      wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '(', ')')
+      '\\begin{pmatrix} ' + normalizeMatrixBodyLatex(body) + ' \\end{pmatrix}'
     ))
     .replace(/\\class\{[^}]*cme-bmatrix-(?:two|three)-row-template[^}]*\}\{\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}\}/g, (_, body) => (
-      wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '[', ']')
+      '\\begin{bmatrix} ' + normalizeMatrixBodyLatex(body) + ' \\end{bmatrix}'
     ))
     .replace(/\\class\{[^}]*cme-pmatrix-(?:two|three)-row-template[^}]*\}\{\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}\}/g, (_, body) => (
-      wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '(', ')')
-    ))
-    .replace(/\\begin\{bmatrix\}([\s\S]*?)\\end\{bmatrix\}/g, (_, body) => (
-      wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '[', ']')
-    ))
-    .replace(/\\begin\{pmatrix\}([\s\S]*?)\\end\{pmatrix\}/g, (_, body) => (
-      wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '(', ')')
-    ))
-    .replace(/\\begin\{vmatrix\}([\s\S]*?)\\end\{vmatrix\}/g, (_, body) => (
-      wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '|', '|')
+      '\\begin{pmatrix} ' + normalizeMatrixBodyLatex(body) + ' \\end{pmatrix}'
     ))
     .replace(/\\class\{[^}]*cme-cancel-template[^}]*\}\{([\s\S]*?)\}/g, '\\cancel{$1}')
     .replace(/\\class\{[^}]*cme-bcancel-template[^}]*\}\{([\s\S]*?)\}/g, '\\bcancel{$1}')

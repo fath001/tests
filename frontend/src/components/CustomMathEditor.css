@@ -229,6 +229,7 @@
 .cme-group-tab--chem.active .cme-tab-svg-icon {
   color: #556e7b !important;
 }
+
 .cme-group-tab-math:nth-child(2).active,
 .cme-group-tab--math:nth-child(2).active:hover,
 .cme-group-tab--math:nth-child(3).active,
@@ -1314,7 +1315,7 @@
   border-radius: 10px;
   background: linear-gradient(180deg, #f8fbfe 0%, #dbe7ef 100%);
   box-shadow: 0 10px 18px rgba(59, 88, 107, 0.16);
-  
+
 }
 
 .cme-greek-italic-picker-grid {
@@ -1337,7 +1338,7 @@
   justify-content: center;
   cursor: pointer;
   transition: background 0.12s, border-color 0.12s, box-shadow 0.12s;
-  
+
 }
 
 .cme-greek-italic-picker-btn:hover {
@@ -1352,7 +1353,8 @@
 }
 
 .cme-greek-italic-picker-glyph {
-  font-family: Helvetica, Arial, sans-serif;  font-size: 20px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 20px;
   font-style: italic;
   line-height: 1;
 }
@@ -2806,4 +2808,9 @@ math-field.cme-main-mathfield::part(menu-toggle) {
 
 .cme-toolbar-items--greek .cme-greek-subgroup--no-right-border {
   border-right: none;
+}
+
+.cme-sqcap-icon {
+  font-size: 1.3em !important;
+  transform: translateY(1px);
 }
