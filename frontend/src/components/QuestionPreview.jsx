@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import "mathlive";
 
 const MATH_OPEN = "\u00A7MATH\u00A7";
@@ -334,142 +334,58 @@ const MATH_FIELD_SHADOW_CSS = `
 .cme-vmatrix-template::after {
   right: 0.1em;
 }
-.cme-two-row-matrix-template {
-  display: inline-block;
+/* Dynamic Matrix Wrapper - Auto-scaling and Compact */
+.cme-matrix-compact-wrapper {
+  display: inline-flex;
+  align-items: stretch;
+  justify-content: center;
   position: relative;
+  vertical-align: middle;
   line-height: 1;
-  vertical-align: 0.48em;
-  padding-left: 0.72em;
-  padding-right: 0.72em;
+  font-size: 0.65em;
+  margin: 0 0.1em;
 }
 
-.cme-two-row-matrix-template .ML__arraycolsep {
-  width: 0.16em !important;
+.cme-matrix-compact-wrapper.cme-bmatrix-dynamic-template,
+.cme-matrix-compact-wrapper.cme-pmatrix-dynamic-template {
+  padding-left: 0.45em;
+  padding-right: 0.45em;
 }
 
-.cme-bmatrix-two-row-template::before,
-.cme-bmatrix-two-row-template::after,
-.cme-pmatrix-two-row-template::before,
-.cme-pmatrix-two-row-template::after {
+.cme-matrix-compact-wrapper .ML__arraycolsep {
+  width: 0.15em !important;
+}
+
+.cme-matrix-compact-wrapper::before,
+.cme-matrix-compact-wrapper::after {
   content: "";
   position: absolute;
-  top: 50%;
-  height: 2.75em;
+  top: 0.05em;
+  bottom: 0.05em;
   background: currentColor;
   pointer-events: none;
 }
 
-.cme-bmatrix-two-row-template::before,
-.cme-bmatrix-two-row-template::after {
-  width: 0.55em;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M12 6 H3 V66 H12' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M12 6 H3 V66 H12' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+.cme-bmatrix-dynamic-template::before,
+.cme-bmatrix-dynamic-template::after {
+  width: 0.35em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72' preserveAspectRatio='none'%3E%3Cpath d='M12 2 H4 V70 H12' fill='none' stroke='white' stroke-width='2.5' vector-effect='non-scaling-stroke' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72' preserveAspectRatio='none'%3E%3Cpath d='M12 2 H4 V70 H12' fill='none' stroke='white' stroke-width='2.5' vector-effect='non-scaling-stroke' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 
-.cme-pmatrix-two-row-template::before,
-.cme-pmatrix-two-row-template::after {
-  width: 0.58em;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 72'%3E%3Cpath d='M16 6 C6 18 6 54 16 66' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 72'%3E%3Cpath d='M16 6 C6 18 6 54 16 66' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+.cme-pmatrix-dynamic-template::before,
+.cme-pmatrix-dynamic-template::after {
+  width: 0.42em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72' preserveAspectRatio='none'%3E%3Cpath d='M17 2 C4 18 4 54 17 70' fill='none' stroke='white' stroke-width='2.5' vector-effect='non-scaling-stroke' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72' preserveAspectRatio='none'%3E%3Cpath d='M17 2 C4 18 4 54 17 70' fill='none' stroke='white' stroke-width='2.5' vector-effect='non-scaling-stroke' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 
-.cme-bmatrix-two-row-template::before,
-.cme-pmatrix-two-row-template::before {
-  left: 0.04em;
-  transform: translateY(-50%);
+.cme-matrix-compact-wrapper::before {
+  left: 0;
 }
-
-.cme-bmatrix-two-row-template::after,
-.cme-pmatrix-two-row-template::after {
-  right: 0.04em;
-  transform: translateY(-50%) scaleX(-1);
-}
-.cme-bmatrix-three-row-template {
-  display: inline-block;
-  position: relative;
-  line-height: 1;
-  vertical-align: 0.48em;
-  padding-left: 1.02em;
-  padding-right: 1.02em;
-}
-
-.cme-bmatrix-three-row-template .ML__arraycolsep {
-  width: 0.32em !important;
-}
-
-.cme-bmatrix-three-row-template::before,
-.cme-bmatrix-three-row-template::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 0.62em;
-  height: 5.35em;
-  background: currentColor;
-  pointer-events: none;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M12 6 H3 V66 H12' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M12 6 H3 V66 H12' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-}
-
-.cme-bmatrix-three-row-template::before {
-  left: 0.08em;
-  transform: translateY(-50%);
-}
-
-.cme-bmatrix-three-row-template::after {
-  right: 0.08em;
-  transform: translateY(-50%) scaleX(-1);
-}
-
-.cme-bmatrix-single-column-template {
-  padding-left: 1.34em;
-  padding-right: 1.34em;
-}
-
-.cme-bmatrix-single-column-template .ML__arraycolsep {
-  width: 0.18em !important;
-}
-
-.cme-bmatrix-two-row-template.cme-bmatrix-single-column-template::before,
-.cme-bmatrix-two-row-template.cme-bmatrix-single-column-template::after {
-  width: 0.66em;
-  height: 3.35em;
-}
-
-.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template {
-  padding-left: 1.42em;
-  padding-right: 1.42em;
-}
-
-.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template::before,
-.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template::after {
-  width: 0.72em;
-  height: 6.25em;
-}
-
-.cme-bmatrix-narrow-columns-template {
-  padding-left: 0.9em;
-  padding-right: 0.9em;
-}
-
-.cme-bmatrix-narrow-columns-template .ML__arraycolsep {
-  width: 0.22em !important;
-}
-
-.cme-bmatrix-two-row-template.cme-bmatrix-narrow-columns-template::before,
-.cme-bmatrix-two-row-template.cme-bmatrix-narrow-columns-template::after {
-  width: 0.6em;
-  height: 3.25em;
-}
-
-.cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template {
-  padding-left: 0.94em;
-  padding-right: 0.94em;
-}
-
-.cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template::before,
-.cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template::after {
-  width: 0.68em;
-  height: 6.05em;
+.cme-matrix-compact-wrapper::after {
+  right: 0;
+  transform: scaleX(-1);
 }
 .cme-cases-left-template,
 .cme-cases-right-template {

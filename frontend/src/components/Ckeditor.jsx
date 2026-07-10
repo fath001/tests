@@ -176,14 +176,10 @@ function bindWidgetClickTarget(editor, container) {
   container.addEventListener('mousedown', onPointerDown, true);
   container.addEventListener('click', onPointerDown, true);
 }
-function computeMatrixHeight(rows) {
-  return Math.max(1.8, 2.6 * rows - 2.45);
-}
-
 const MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT =
-  '\\htmlStyle{--matrix-h:' + computeMatrixHeight(2).toFixed(2) + 'em}{\\class{cme-bmatrix-dynamic-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}}';
+  '\\class{cme-matrix-compact-wrapper cme-bmatrix-dynamic-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}';
 const MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT =
-  '\\htmlStyle{--matrix-h:' + computeMatrixHeight(2).toFixed(2) + 'em}{\\class{cme-pmatrix-dynamic-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}}';
+  '\\class{cme-matrix-compact-wrapper cme-pmatrix-dynamic-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}';
 
 function buildMatrixArrayBody(rows, cols, rowSeparator = '\\\\') {
   return Array.from({ length: rows }, () => (
@@ -199,10 +195,9 @@ function buildMatrixInsertLatex(type, rows, cols) {
   const body = buildMatrixArrayBody(rows, cols, '\\\\');
 
   if (type === 'bmatrix' || type === 'pmatrix') {
-    const h = computeMatrixHeight(rows).toFixed(2);
-    const cls = type === 'bmatrix' ? 'cme-bmatrix-dynamic-template' : 'cme-pmatrix-dynamic-template';
+    const cls = type === 'bmatrix' ? 'cme-matrix-compact-wrapper cme-bmatrix-dynamic-template' : 'cme-matrix-compact-wrapper cme-pmatrix-dynamic-template';
     const colSpec = Array.from({ length: cols }, () => 'c').join('');
-    return '\\' + 'htmlStyle{--matrix-h:' + h + 'em}{' + '\\' + 'class{' + cls + '}{' + '\\' + 'begin{array}{' + colSpec + '} ' + body + ' \\' + 'end{array}}}';
+    return '\\' + 'class{' + cls + '}{' + '\\' + 'begin{array}{' + colSpec + '} ' + body + ' \\' + 'end{array}}';
   }
 
   switch (type) {
@@ -1992,10 +1987,10 @@ function normalizeMatrixBodyLatex(body = '') {
 
 function normalizeMatrixLatex(latex = '') {
   return String(latex || '')
-    .replace(/\\htmlStyle\{[^}]*\}\{\\class\{[^}]*cme-bmatrix-dynamic-template[^}]*\}\{\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}\}\}/g, (_, body) => (
+    .replace(/\\class\{[^}]*cme-bmatrix-dynamic-template[^}]*\}\{\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}\}/g, (_, body) => (
       wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '[', ']')
     ))
-    .replace(/\\htmlStyle\{[^}]*\}\{\\class\{[^}]*cme-pmatrix-dynamic-template[^}]*\}\{\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}\}\}/g, (_, body) => (
+    .replace(/\\class\{[^}]*cme-pmatrix-dynamic-template[^}]*\}\{\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}\}/g, (_, body) => (
       wrapMatrixBodyWithDelimiters(normalizeMatrixBodyLatex(body), '(', ')')
     ))
     .replace(/\\class\{[^}]*cme-bmatrix-(?:two|three)-row-template[^}]*\}\{\\begin\{array\}\{[^}]*\}([\s\S]*?)\\end\{array\}\}/g, (_, body) => (
@@ -2609,78 +2604,58 @@ const MATH_FIELD_SHADOW_CSS = `
   width: 0.78em;
   height: 6.05em;
 }
-/* Dynamic bracket matrix — single class for ALL row counts */
-.cme-bmatrix-dynamic-template {
-  display: inline-block;
+/* Dynamic Matrix Wrapper - Auto-scaling and Compact */
+.cme-matrix-compact-wrapper {
+  display: inline-flex;
+  align-items: stretch;
+  justify-content: center;
   position: relative;
+  vertical-align: middle;
   line-height: 1;
-  vertical-align: 0.48em;
-  padding-left: 1.12em;
-  padding-right: 1.12em;
+  font-size: 0.65em;
+  margin: 0 0.1em;
 }
 
-.cme-bmatrix-dynamic-template .ML__arraycolsep {
-  width: 0.28em !important;
+.cme-matrix-compact-wrapper.cme-bmatrix-dynamic-template,
+.cme-matrix-compact-wrapper.cme-pmatrix-dynamic-template {
+  padding-left: 0.45em;
+  padding-right: 0.45em;
+}
+
+.cme-matrix-compact-wrapper .ML__arraycolsep {
+  width: 0.15em !important;
+}
+
+.cme-matrix-compact-wrapper::before,
+.cme-matrix-compact-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0.05em;
+  bottom: 0.05em;
+  background: currentColor;
+  pointer-events: none;
 }
 
 .cme-bmatrix-dynamic-template::before,
 .cme-bmatrix-dynamic-template::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 0.52em;
-  height: var(--matrix-h, 2.75em);
-  background: currentColor;
-  pointer-events: none;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-}
-
-.cme-bmatrix-dynamic-template::before {
-  left: 0.12em;
-  transform: translateY(-50%);
-}
-
-.cme-bmatrix-dynamic-template::after {
-  right: 0.12em;
-  transform: translateY(-50%) scaleX(-1);
-}
-
-/* Dynamic parenthesis matrix — single class for ALL row counts */
-.cme-pmatrix-dynamic-template {
-  display: inline-block;
-  position: relative;
-  line-height: 1;
-  vertical-align: 0.48em;
-  padding-left: 0.96em;
-  padding-right: 0.96em;
-}
-
-.cme-pmatrix-dynamic-template .ML__arraycolsep {
-  width: 0.28em !important;
+  width: 0.35em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72' preserveAspectRatio='none'%3E%3Cpath d='M12 2 H4 V70 H12' fill='none' stroke='white' stroke-width='2.5' vector-effect='non-scaling-stroke' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72' preserveAspectRatio='none'%3E%3Cpath d='M12 2 H4 V70 H12' fill='none' stroke='white' stroke-width='2.5' vector-effect='non-scaling-stroke' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 
 .cme-pmatrix-dynamic-template::before,
 .cme-pmatrix-dynamic-template::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 0.72em;
-  height: var(--matrix-h, 2.75em);
-  background: currentColor;
-  pointer-events: none;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  width: 0.42em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72' preserveAspectRatio='none'%3E%3Cpath d='M17 2 C4 18 4 54 17 70' fill='none' stroke='white' stroke-width='2.5' vector-effect='non-scaling-stroke' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72' preserveAspectRatio='none'%3E%3Cpath d='M17 2 C4 18 4 54 17 70' fill='none' stroke='white' stroke-width='2.5' vector-effect='non-scaling-stroke' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 
-.cme-pmatrix-dynamic-template::before {
-  left: 0.06em;
-  transform: translateY(-50%);
+.cme-matrix-compact-wrapper::before {
+  left: 0;
 }
-
-.cme-pmatrix-dynamic-template::after {
-  right: 0.06em;
-  transform: translateY(-50%) scaleX(-1);
+.cme-matrix-compact-wrapper::after {
+  right: 0;
+  transform: scaleX(-1);
 }
 
 .cme-cases-left-template,

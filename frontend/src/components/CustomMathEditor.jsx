@@ -38,33 +38,15 @@ function hasExpandedMathSelection(selection) {
   );
 }
 
-function computeMatrixHeight(rows) {
-  return Math.max(1.8, 2.6 * rows - 2.45);
-}
-
-function getMatrixRowClass(type, rows) {
-  if (rows === 2) return type === "bmatrix" ? "cme-bmatrix-two-row-template" : "cme-pmatrix-two-row-template";
-  if (rows === 3) return type === "bmatrix" ? "cme-bmatrix-three-row-template" : "cme-pmatrix-three-row-template";
-  if (rows === 4) return type === "bmatrix" ? "cme-bmatrix-four-row-template" : "cme-pmatrix-four-row-template";
-  if (rows === 5) return type === "bmatrix" ? "cme-bmatrix-five-row-template" : "cme-pmatrix-five-row-template";
-  return type === "bmatrix" ? "cme-bmatrix-multi-row-template" : "cme-pmatrix-multi-row-template";
-}
-
-function getMatrixColumnClass(type, cols) {
-  if (cols === 1) return type === "bmatrix" ? "cme-bmatrix-single-column-template" : "cme-pmatrix-single-column-template";
-  if (cols === 2) return type === "bmatrix" ? "cme-bmatrix-narrow-columns-template" : "cme-pmatrix-narrow-columns-template";
-  return "";
-}
-
 const MATRIX_BMATRIX_TWO_ROW_COLUMN_INSERT =
-  "\\htmlStyle{--matrix-h:" + computeMatrixHeight(2).toFixed(2) + "em}{\\class{cme-two-row-matrix-template cme-bmatrix-two-row-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}}";
+  "\\class{cme-matrix-compact-wrapper cme-bmatrix-dynamic-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}";
 const MATRIX_PMATRIX_TWO_ROW_COLUMN_INSERT =
-  "\\htmlStyle{--matrix-h:" + computeMatrixHeight(2).toFixed(2) + "em}{\\class{cme-two-row-matrix-template cme-pmatrix-two-row-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}}";
+  "\\class{cme-matrix-compact-wrapper cme-pmatrix-dynamic-template}{\\begin{array}{c} #? \\\\ #? \\end{array}}";
 
 function buildMatrixArrayBody(rows, cols, rowSeparator = "\\\\") {
   return Array.from({ length: rows }, () => (
     Array.from({ length: cols }, () => "#?").join(" & ")
-  )).join(` ${rowSeparator}[0.18em] `);
+  )).join(` ${rowSeparator} `);
 }
 
 function wrapMatrixBodyWithDelimiters(body, leftDelimiter, rightDelimiter) {
@@ -75,12 +57,9 @@ function buildMatrixInsertLatex(type, rows, cols) {
   const body = buildMatrixArrayBody(rows, cols, "\\\\");
 
   if (type === "bmatrix" || type === "pmatrix") {
-    const h = computeMatrixHeight(rows).toFixed(2);
-    const rowClass = getMatrixRowClass(type, rows);
-    const colClass = getMatrixColumnClass(type, cols);
-    const combinedClasses = colClass ? `${rowClass} ${colClass}` : rowClass;
+    const cls = type === "bmatrix" ? "cme-matrix-compact-wrapper cme-bmatrix-dynamic-template" : "cme-matrix-compact-wrapper cme-pmatrix-dynamic-template";
     const colSpec = Array.from({ length: cols }, () => "c").join("");
-    return "\\htmlStyle{--matrix-h:" + h + "em}{\\class{" + combinedClasses + "}{\\begin{array}{" + colSpec + "} " + body + " \\end{array}}}";
+    return "\\class{" + cls + "}{\\begin{array}{" + colSpec + "} " + body + " \\end{array}}";
   }
 
   switch (type) {
@@ -114,30 +93,60 @@ const CME_MATRIX_SHADOW_CSS = `
   font-style: italic !important;
 }
 
-.cme-two-row-matrix-template {
-  display: inline-block;
+/* Dynamic Matrix Wrapper - Auto-scaling and Compact */
+.cme-matrix-compact-wrapper {
+  display: inline-flex;
+  align-items: stretch;
+  justify-content: center;
   position: relative;
+  vertical-align: middle;
   line-height: 1;
-  vertical-align: 0.48em;
-  padding-left: 0.72em;
-  padding-right: 0.72em;
+  font-size: 0.65em;
+  margin: 0 0.1em;
 }
 
-.cme-two-row-matrix-template .ML__arraycolsep {
-  width: 0.16em !important;
+.cme-matrix-compact-wrapper.cme-bmatrix-dynamic-template,
+.cme-matrix-compact-wrapper.cme-pmatrix-dynamic-template {
+  padding-left: 0.45em;
+  padding-right: 0.45em;
 }
 
-.cme-bmatrix-two-row-template::before,
-.cme-bmatrix-two-row-template::after,
-.cme-pmatrix-two-row-template::before,
-.cme-pmatrix-two-row-template::after {
+.cme-matrix-compact-wrapper .ML__arraycolsep {
+  width: 0.15em !important;
+}
+
+.cme-matrix-compact-wrapper::before,
+.cme-matrix-compact-wrapper::after {
   content: "";
   position: absolute;
-  top: 50%;
-  height: 2.75em;
+  top: 0.05em;
+  bottom: 0.05em;
   background: currentColor;
   pointer-events: none;
 }
+
+.cme-bmatrix-dynamic-template::before,
+.cme-bmatrix-dynamic-template::after {
+  width: 0.35em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72' preserveAspectRatio='none'%3E%3Cpath d='M12 2 H4 V70 H12' fill='none' stroke='white' stroke-width='2.5' vector-effect='non-scaling-stroke' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72' preserveAspectRatio='none'%3E%3Cpath d='M12 2 H4 V70 H12' fill='none' stroke='white' stroke-width='2.5' vector-effect='non-scaling-stroke' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-pmatrix-dynamic-template::before,
+.cme-pmatrix-dynamic-template::after {
+  width: 0.42em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72' preserveAspectRatio='none'%3E%3Cpath d='M17 2 C4 18 4 54 17 70' fill='none' stroke='white' stroke-width='2.5' vector-effect='non-scaling-stroke' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72' preserveAspectRatio='none'%3E%3Cpath d='M17 2 C4 18 4 54 17 70' fill='none' stroke='white' stroke-width='2.5' vector-effect='non-scaling-stroke' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-matrix-compact-wrapper::before {
+  left: 0;
+}
+.cme-matrix-compact-wrapper::after {
+  right: 0;
+  transform: scaleX(-1);
+}
+
 
 /* Dynamic Cancel / Strikeout Templates */
 .cme-cancel-template,
