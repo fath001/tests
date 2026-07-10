@@ -12,6 +12,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import "mathlive";
+import "../mathliveSetup";
 import "./CustomMathEditor.css";
 import CustomTextEditor from "./CustomTextEditor";
 import SpecialCharacterModal from "./SpecialCharacterModal";
@@ -697,14 +698,8 @@ const CHEM_GROUPS = [
   },
 ];
 
-function MatrixHoverGrid({ matrixType, x, y, onSelect, onMouseEnter, onMouseLeave }) {
+function MatrixHoverGrid({ x, y, onSelect, onMouseEnter, onMouseLeave }) {
   const [hoverGrid, setHoverGrid] = useState({ r: 2, c: 2 });
-  const labelMap = {
-    matrix: 'Plain Matrix',
-    bmatrix: 'Square Matrix',
-    pmatrix: 'Parenthesis Matrix',
-    vmatrix: 'Vertical Matrix'
-  };
 
   return (
     <div
@@ -1125,6 +1120,12 @@ export default function CustomMathEditor({ value = "", onChange }) {
     mode === "math" &&
     Array.isArray(activeGroup.items) &&
     activeGroup.items.some((item) => item.cls === "derivative-hero-template");
+  const toolbarChunkSize = 4;
+  const toolbarItems = activeGroup.items || [];
+  const toolbarChunks = [];
+  for (let i = 0; i < toolbarItems.length; i += toolbarChunkSize) {
+    toolbarChunks.push(toolbarItems.slice(i, i + toolbarChunkSize));
+  }
   const popupStyle =
     popupWindowMode === "normal" && popupPosition
       ? {
@@ -1202,73 +1203,63 @@ export default function CustomMathEditor({ value = "", onChange }) {
             </div>
 
             <div className={`cme-toolbar-items${isFirstMathTab ? " cme-toolbar-items--first-tab" : ""}${(isIntegralHeroTab || isDerivativeHeroTab) ? " cme-toolbar-items--integral-templates" : ""}${isPopupTabMode ? " cme-toolbar-items--popup-compact" : ""}`}>
-              {(() => {
-                const activeItems = groups[activeGroupIndex]?.items || [];
-                const size = 4;
-                const chunks = [];
-                for (let i = 0; i < activeItems.length; i += size) {
-                  chunks.push(activeItems.slice(i, i + size));
-                }
-
-                return chunks.map((chunk, chunkIndex) => (
-                  <div key={chunkIndex} className={`cme-symbol-subgroup${isPopupTabMode ? " cme-symbol-subgroup--compact" : ""}`}>
-                    {chunk.map((item, i) => {
-                      const currentGroup = groups[activeGroupIndex];
-                      const isTouchedButton = activeMatrix?.type === item.insert;
-                      if (currentGroup.isMatrix && !item.directInsert) {
-                        return (
-                          <div
-                            key={i}
-                            className="cme-matrix-btn-wrapper"
-                          >
-                            <button
-                              type="button"
-                              className={`cme-btn template${isPopupTabMode ? " cme-btn--compact" : ""}${item.cls ? ` ${item.cls}` : ""}${isTouchedButton ? " active" : ""}`}
-                              title={item.insert}
-                              onMouseDown={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                if (activeMatrix?.type === item.insert) {
-                                  setActiveMatrix(null);
-                                } else {
-                                  const rect = e.currentTarget.getBoundingClientRect();
-                                  setActiveMatrix({
-                                    type: item.insert,
-                                    x: rect.left + rect.width / 2,
-                                    y: rect.bottom
-                                  });
-                                }
-                              }}
-                            >
-                              {renderToolbarItemLabel(item)}
-                            </button>
-                          </div>
-                        );
-                      }
-
+              {toolbarChunks.map((chunk, chunkIndex) => (
+                <div key={chunkIndex} className={`cme-symbol-subgroup${isPopupTabMode ? " cme-symbol-subgroup--compact" : ""}`}>
+                  {chunk.map((item, i) => {
+                    const isTouchedButton = activeMatrix?.type === item.insert;
+                    if (activeGroup.isMatrix && !item.directInsert) {
                       return (
-                        <button
-                          key={`${currentGroup.id || activeGroupIndex}-${chunkIndex * size + i}`}
-                          type="button"
-                          className={`cme-btn${currentGroup.isTemplate ? " template" : ""}${isPopupTabMode ? " cme-btn--compact" : ""}${item.cls ? ` ${item.cls}` : ""}`}
-                          title={item.title || item.insert}
-                          onMouseDown={(e) => {
-                            e.preventDefault();
-                            if (item.action === "SPECIAL_CHARS") {
-                              const rect = e.currentTarget.getBoundingClientRect();
-                              setShowSpecialChars({ x: rect.left, y: rect.bottom + 4 });
-                            } else {
-                              insertAtCursor(item.insert);
-                            }
-                          }}
+                        <div
+                          key={i}
+                          className="cme-matrix-btn-wrapper"
                         >
-                          {renderToolbarItemLabel(item)}
-                        </button>
+                          <button
+                            type="button"
+                            className={`cme-btn template${isPopupTabMode ? " cme-btn--compact" : ""}${item.cls ? ` ${item.cls}` : ""}${isTouchedButton ? " active" : ""}`}
+                            title={item.insert}
+                            onMouseDown={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              if (activeMatrix?.type === item.insert) {
+                                setActiveMatrix(null);
+                              } else {
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                setActiveMatrix({
+                                  type: item.insert,
+                                  x: rect.left + rect.width / 2,
+                                  y: rect.bottom
+                                });
+                              }
+                            }}
+                          >
+                            {renderToolbarItemLabel(item)}
+                          </button>
+                        </div>
                       );
-                    })}
-                  </div>
-                ));
-              })()}
+                    }
+
+                    return (
+                      <button
+                        key={`${activeGroup.id || activeGroupIndex}-${chunkIndex * toolbarChunkSize + i}`}
+                        type="button"
+                        className={`cme-btn${activeGroup.isTemplate ? " template" : ""}${isPopupTabMode ? " cme-btn--compact" : ""}${item.cls ? ` ${item.cls}` : ""}`}
+                        title={item.title || item.insert}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          if (item.action === "SPECIAL_CHARS") {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setShowSpecialChars({ x: rect.left, y: rect.bottom + 4 });
+                          } else {
+                            insertAtCursor(item.insert);
+                          }
+                        }}
+                      >
+                        {renderToolbarItemLabel(item)}
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
           </div>
 
@@ -1285,7 +1276,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
               }
               e.preventDefault();
               requestAnimationFrame(() => {
-                try { popupMfRef.current?.focus(); } catch (_) { }
+                try { popupMfRef.current?.focus(); } catch { /* Ignore focus races while closing. */ }
               });
             }}
           >
@@ -1341,129 +1332,5 @@ export default function CustomMathEditor({ value = "", onChange }) {
         </div>
       )}
     </div>
-  );
-}
-className = {`cme-btn template${isPopupTabMode ? " cme-btn--compact" : ""}${item.cls ? ` ${item.cls}` : ""}${isTouchedButton ? " active" : ""}`}
-title = { item.insert }
-onMouseDown = {(e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  if (activeMatrix?.type === item.insert) {
-    setActiveMatrix(null);
-  } else {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setActiveMatrix({
-      type: item.insert,
-      x: rect.left + rect.width / 2,
-      y: rect.bottom
-    });
-  }
-}}
-                            >
-  { renderToolbarItemLabel(item) }
-                            </button >
-                          </div >
-                        );
-                      }
-
-return (
-  <button
-    key={`${currentGroup.id || activeGroupIndex}-${chunkIndex * size + i}`}
-    type="button"
-    className={`cme-btn${currentGroup.isTemplate ? " template" : ""}${isPopupTabMode ? " cme-btn--compact" : ""}${item.cls ? ` ${item.cls}` : ""}`}
-    title={item.title || item.insert}
-    onMouseDown={(e) => {
-      e.preventDefault();
-      if (item.action === "SPECIAL_CHARS") {
-        const rect = e.currentTarget.getBoundingClientRect();
-        setShowSpecialChars({ x: rect.left, y: rect.bottom + 4 });
-      } else {
-        insertAtCursor(item.insert);
-      }
-    }}
-  >
-    {renderToolbarItemLabel(item)}
-  </button>
-);
-                    })}
-                  </div >
-                ));
-              }) ()}
-            </div >
-          </div >
-
-  <div
-    className="cme-mathfield-container"
-    onMouseDown={(e) => {
-      // If the click landed on the math-field itself, let the browser
-      // handle focus + caret placement natively (do NOT preventDefault).
-      // If click landed on container padding, preventDefault to stop
-      // focus theft, then manually focus the math-field.
-      if (e.target === popupMfRef.current ||
-        (popupMfRef.current && popupMfRef.current.contains(e.target))) {
-        return; // browser handles it
-      }
-      e.preventDefault();
-      requestAnimationFrame(() => {
-        try { popupMfRef.current?.focus(); } catch (_) { }
-      });
-    }}
-  >
-    <math-field
-      ref={popupMfRef}
-      class="cme-mathfield"
-      letter-shape-style="upright"
-      tabIndex={0}
-      math-virtual-keyboard-policy="manual"
-      placeholder={
-        mode === "math"
-          ? ""
-          : ""
-      }
-    />
-  </div>
-
-{/* cancel and insert div */ }
-<div className="cme-popup-footer">
-  <button type="button" className="cme-cancel-btn" onClick={handleClose}>
-    Cancel
-  </button>
-  <button type="button" className="cme-insert-btn" onClick={handleInsert}>
-    Insert
-  </button>
-</div>
-
-{
-  activeMatrix && (
-    <MatrixHoverGrid
-      matrixType={activeMatrix.type}
-      x={activeMatrix.x}
-      y={activeMatrix.y}
-      onSelect={(r, c) => {
-        handleMatrixInsert(activeMatrix.type, r, c);
-        setActiveMatrix(null);
-      }}
-      onMouseEnter={() => { }}
-      onMouseLeave={() => { }}
-    />
-  )
-}
-
-{
-  showSpecialChars && (
-    <SpecialCharacterModal
-      isOpen={!!showSpecialChars}
-      position={showSpecialChars}
-      onClose={() => setShowSpecialChars(null)}
-      onInsert={(char) => {
-        insertAtCursor(char);
-        setShowSpecialChars(null);
-      }}
-    />
-  )
-}
-        </div >
-      )}
-    </div >
   );
 }

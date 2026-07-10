@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import "mathlive";
+import "../mathliveSetup";
 
 const MATH_OPEN = "\u00A7MATH\u00A7";
 const MATH_CLOSE = "\u00A7END\u00A7";

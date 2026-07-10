@@ -1,6 +1,7 @@
-﻿import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import "mathlive";
+import "../../mathliveSetup";
 import Navbar from "../../components/Navbar";
 import API from "../../services/api";
 

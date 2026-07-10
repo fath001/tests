@@ -11,6 +11,7 @@ import {
   useState,
 } from "react";
 import "mathlive";
+import "../mathliveSetup";
 import "./CustomTextEditor.css";
 
 const MATH_OPEN = "§MATH§";

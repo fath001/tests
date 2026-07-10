@@ -23,6 +23,7 @@ import {
 } from 'ckeditor5';
 import 'ckeditor5/ckeditor5.css';
 import 'mathlive';
+import '../mathliveSetup';
 import './CustomMathEditor.css';
 import SpecialCharacterModal from './SpecialCharacterModal';
 
@@ -3423,20 +3424,20 @@ function makeArrowLabelToolbarIcon(content) {
 
 const TOOLBAR_ICON_IMAGES = {
   'fraction-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"> 
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
       <rect x="6.1" y="1.8" width="5" height="4.8" rx="0" fill="none" stroke="#0B7D1E" stroke-width="1"/>
       <line x1="3.2" y1="9" x2="13.4" y2="9" stroke="#000000" stroke-width="0.9" stroke-linecap="square"/>
       <rect x="6.1" y="11.4" width="5" height="4.8" rx="0" fill="none" stroke="#0B7D1E" stroke-width="1"/>
     </svg>
   `),
   'small-fraction-template-image': makeToolbarIconImage(`
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"> 
-      <rect x="6.1" y="3.8" width="4" height="2.8" rx="0" fill="none" stroke="#0B7D1E" stroke-width="0.8"/> 
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+      <rect x="6.1" y="3.8" width="4" height="2.8" rx="0" fill="none" stroke="#0B7D1E" stroke-width="0.8"/>
       <line x1="4.2" y1="9" x2="12" y2="9" stroke="#000000" stroke-width="0.8" stroke-linecap="square"/>
       <rect x="6.1" y="11.4" width="4" height="2.8" rx="0" fill="none" stroke="#0B7D1E" stroke-width="0.8"/>
     </svg>
   `),
-  'bevelled-fraction-offset-template-image': makeToolbarIconImage(` 
+  'bevelled-fraction-offset-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -10 64 56" width="64" height="56" fill="none">
       <rect x="8" y="3" width="14" height="15" stroke="#0B7D1E" stroke-width="3"/>
       <path d="M24 30 L39 2" stroke="#111" stroke-width="3" stroke-linecap="square"/>
@@ -3452,7 +3453,7 @@ const TOOLBAR_ICON_IMAGES = {
   </g>
 </svg>
   `),
-  'superscript-template-image': makeToolbarIconImage(` 
+  'superscript-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
       <rect x="3.1" y="7.3" width="6.5" height="7.4" rx="0.6" fill="none" stroke="#0B7D1E" stroke-width="1.5"/>
       <rect x="10.3" y="3.2" width="4.6" height="5.6" rx="0.6" fill="none" stroke="#0B7D1E" stroke-width="1.5"/>
@@ -3469,7 +3470,7 @@ const TOOLBAR_ICON_IMAGES = {
     stroke-linejoin="round"
   />
   <rect
-    x="23"   
+    x="23"
     y="9"
     width="10"
     height="13"
@@ -3477,7 +3478,7 @@ const TOOLBAR_ICON_IMAGES = {
     stroke="#0B7D1E"
     stroke-width="2"
   />
-</svg>  
+</svg>
   `),
   'subscript-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
@@ -3489,7 +3490,7 @@ const TOOLBAR_ICON_IMAGES = {
 <svg width="48" height="32" viewBox="0 0 48 32" xmlns="http://www.w3.org/2000/svg">
   <!-- index placeholder -->
   <rect
-    x="11"   
+    x="11"
     y="6"
     width="6"
     height="8"
@@ -3518,7 +3519,7 @@ const TOOLBAR_ICON_IMAGES = {
     stroke="#0B7D1E"
     stroke-width="2"
   />
-</svg> 
+</svg>
   `),
   'slash-fraction-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" fill="none">
@@ -3675,8 +3676,8 @@ const TOOLBAR_ICON_IMAGES = {
   'underbrace-arc-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
       <rect x="15" y="6" width="10" height="16" stroke="#0B7D1E" stroke-width="3"/>
-      <path d="M8 30 C8 34,12 34,16 34 C20 34,20 38,20 38 C20 38,20 34,24 34 C28 34,32 34,32 30" stroke="#000000" stroke-width="2"/> 
-    </svg> 
+      <path d="M8 30 C8 34,12 34,16 34 C20 34,20 38,20 38 C20 38,20 34,24 34 C28 34,32 34,32 30" stroke="#000000" stroke-width="2"/>
+    </svg>
   `),
   'underparen-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
@@ -3688,8 +3689,8 @@ const TOOLBAR_ICON_IMAGES = {
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
   <!-- Right harpoon -->
   <path
-    d="M10 10 H30 
-       M26 6 L30 10"  
+    d="M10 10 H30
+       M26 6 L30 10"
     stroke="#000000"
     stroke-width="2"
     stroke-linecap="round"
@@ -3704,7 +3705,7 @@ const TOOLBAR_ICON_IMAGES = {
     height="16"
     stroke="#0B7D1E"
     stroke-width="3"/>
-</svg> 
+</svg>
   `),
   'overrightarrow-accent-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
@@ -3847,7 +3848,7 @@ const TOOLBAR_ICON_IMAGES = {
   <!-- Placeholder box -->
   <rect x="33" y="20"
         width="25"
-        height="25" 
+        height="25"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="5"/>
@@ -3877,7 +3878,7 @@ const TOOLBAR_ICON_IMAGES = {
   <rect x="14" y="6" width="12" height="15"
         fill="none" stroke="#111" stroke-width="2"/>
 
-  <rect x="17" y="26" width="5" height="5" 
+  <rect x="17" y="26" width="5" height="5"
         fill="none" stroke="#0B7D1E" stroke-width="1.5"/>
       </svg>
   `),
@@ -3968,7 +3969,7 @@ const TOOLBAR_ICON_IMAGES = {
   <!-- Lower box -->
   <rect x="17" y="25" width="6" height="4"
         fill="none" stroke="#0B7D1E" stroke-width="1.5"/>
-</svg> 
+</svg>
   `),
   'sum-right-both-template-image': makeToolbarIconImage(`
 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
@@ -3989,7 +3990,7 @@ const TOOLBAR_ICON_IMAGES = {
   <!-- Small summation -->
   <text x="15" y="16"
         font-family="Cambria Math, Times New Roman, serif"
-        font-size="16" 
+        font-size="16"
         fill="#111">∑</text>
 
   <!-- Lower box -->
@@ -4027,10 +4028,10 @@ const TOOLBAR_ICON_IMAGES = {
   `),
   'prod-limits-lower-template-image': makeToolbarIconImage(`
 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
-  <text x="14" y="16" 
+  <text x="14" y="16"
         font-family="Cambria Math, Times New Roman, serif"
         font-size="18"
-        fill="#111">∏</text> 
+        fill="#111">∏</text>
 
   <rect x="18" y="25" width="6" height="4"
         fill="none" stroke="#0B7D1E" stroke-width="1.5"/>
@@ -4061,7 +4062,7 @@ const TOOLBAR_ICON_IMAGES = {
 
   <rect x="28" y="20" width="8" height="8"
         fill="none" stroke="#0B7D1E" stroke-width="1.5"/>
-</svg> 
+</svg>
   `),
   'overline-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
@@ -4268,7 +4269,7 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'limit-infinity-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 70 40"> 
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 70 40">
       <text x="18" y="15" font-size="18">lim</text>
       <rect x="4" y="22" width="8" height="14" fill="none" stroke="#0B7D1E" stroke-width="2"/>
       <text x="16" y="33" font-size="16">→∞</text>
@@ -4454,7 +4455,7 @@ const TOOLBAR_ICON_IMAGES = {
   `),
   'negate-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
-      <rect x="5.2" y="3.05" width="7.35" height="10.35" rx="" fill="none" stroke="#0B7D1E" stroke-width="1.15"/>
+      <rect x="5.2" y="3.05" width="7.35" height="10.35" fill="none" stroke="#0B7D1E" stroke-width="1.15"/>
       <path d="M5.1 17.5 L11.85 0" fill="none" stroke="#000000ff" stroke-width="1.55" stroke-linecap="" stroke-linejoin="round"/>
     </svg>
   `),
@@ -4737,7 +4738,7 @@ const TOOLBAR_ICON_IMAGES = {
 <svg xmlns="http://www.w3.org/2000/svg" width="56" height="72" viewBox="0 0 56 72">
   <path d="M7 6 H17 M7 6 V66 M7 66 H17" fill="none" stroke="#000" stroke-width="4" stroke-linecap="round"/>
   <path d="M49 6 H39 M49 6 V66 M49 66 H39" fill="none" stroke="#000" stroke-width="4" stroke-linecap="round"/>
-  <rect x="19" y="15" width="18" height="18" fill="none" stroke="#0B7D1E" stroke-width="4"/> 
+  <rect x="19" y="15" width="18" height="18" fill="none" stroke="#0B7D1E" stroke-width="4"/>
   <rect x="19" y="39" width="18" height="18" fill="none" stroke="#0B7D1E" stroke-width="4"/>
 </svg>
   `),
@@ -4754,7 +4755,7 @@ const TOOLBAR_ICON_IMAGES = {
   <!-- Matrix unchanged -->
   <rect x="23" y="15" width="18" height="18" fill="none" stroke="#0B7D1E" stroke-width="4"/>
   <rect x="23" y="39" width="18" height="18" fill="none" stroke="#0B7D1E" stroke-width="4"/>
-</svg> 
+</svg>
   `),
   'bmatrix-two-column-template-image': makeToolbarIconImage(`
 <svg xmlns="http://www.w3.org/2000/svg" width="120" height="48" viewBox="0 0 120 48">
@@ -4764,7 +4765,7 @@ const TOOLBAR_ICON_IMAGES = {
   <rect x="70" y="15" width="14" height="18" fill="none" stroke="#0B7D1E" stroke-width="5" stroke-linecap="round"/>
 </svg>
   `),
-  'pmatrix-two-column-template-image': makeToolbarIconImage(` 
+  'pmatrix-two-column-template-image': makeToolbarIconImage(`
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 48" width="110" height="48">
   <path d="M18 8 C10 14 10 34 18 40" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
   <path d="M92 8 C100 14 100 34 92 40" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
@@ -4776,8 +4777,8 @@ const TOOLBAR_ICON_IMAGES = {
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 48" fill="none">
       <path
         d="M9 2 C4 2 4 5 4 8 L4 16 C4 19 3 21 1 24 C3 27 4 29 4 32 L4 40 C4 43 4 46 9 46"
-        stroke="#000000" 
-        stroke-width="2.5" 
+        stroke="#000000"
+        stroke-width="2.5"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
@@ -4885,7 +4886,7 @@ const TOOLBAR_ICON_IMAGES = {
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
-</svg> 
+</svg>
   `),
   'difference-array-template-image': makeToolbarIconImage(`
 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
@@ -4921,7 +4922,7 @@ const TOOLBAR_ICON_IMAGES = {
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
-</svg>  
+</svg>
   `),
   'stack-line-template-image': makeToolbarIconImage(`
 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
@@ -4987,7 +4988,7 @@ const TOOLBAR_ICON_IMAGES = {
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
-</svg> 
+</svg>
   `),
   'product-array-template-image': makeToolbarIconImage(`
 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
@@ -5060,7 +5061,7 @@ const TOOLBAR_ICON_IMAGES = {
         stroke-width="1.5"/>
 </svg>
   `),
-  'array-cc-template-image': makeToolbarIconImage(` 
+  'array-cc-template-image': makeToolbarIconImage(`
    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
   <!-- Top left -->
   <rect x="9" y="6"
@@ -5085,7 +5086,7 @@ const TOOLBAR_ICON_IMAGES = {
 
   <!-- Bottom right -->
   <rect x="26" y="22"
-        width="6" height="7" 
+        width="6" height="7"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="1.5"/>
@@ -5132,7 +5133,7 @@ const TOOLBAR_ICON_IMAGES = {
         x2="54" y2="24"
         stroke="#000"
         stroke-width="2.5"/>
-</svg>  
+</svg>
   `),
   'vertical-line-picker-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
@@ -5363,7 +5364,7 @@ const TOOLBAR_ICON_IMAGES = {
   fill="none"
   stroke="#0B7D1E"
   stroke-width="0.8"
-/> 
+/>
   `),
   'left-right-arrows-over-under': makeArrowLabelToolbarIcon(`
 <rect
@@ -5922,7 +5923,7 @@ const TOOLBAR_ICON_IMAGES = {
 
 <!-- Top right arrow -->
 <line
-  x1="6" 
+  x1="6"
   y1="12"
   x2="18"
   y2="12"
@@ -6636,13 +6637,13 @@ function renderToolbarItemLabel(item, context = {}) {
         >
           {isSuperscript ? (
             <>
-              <rect x="3" y="7" width="6" height="8" rx="" />
-              <rect x="10" y="3" width="5" height="7" rx="" />
+              <rect x="3" y="7" width="6" height="8" />
+              <rect x="10" y="3" width="5" height="7" />
             </>
           ) : (
             <>
-              <rect x="3" y="3" width="6" height="8" rx="" />
-              <rect x="10" y="8" width="5" height="7" rx="" />
+              <rect x="3" y="3" width="6" height="8" />
+              <rect x="10" y="8" width="5" height="7" />
             </>
           )}
         </svg>
@@ -9275,7 +9276,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                             setIsRtlInput((prev) => !prev);
                             requestAnimationFrame(() => popupMfRef.current?.focus?.());
                           } else if (item.action === 'BOLD') {
-                            setTypingVariant(!activeStyles.bold, activeStyles.italic);
+                            setTypingVariant(!activeStyles.bold, false);
                           } else if (item.action === 'BOLD_ITALIC') {
                             const shouldEnableBoth = !activeStyles.boldItalic;
                             setTypingVariant(shouldEnableBoth, shouldEnableBoth);
@@ -9326,7 +9327,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           } else if (item.action === 'TILDE') {
                             insertAtCursor('\\widetilde{#0}');
                           } else if (item.action === 'ITALIC') {
-                            setTypingVariant(activeStyles.bold, !activeStyles.italic);
+                            setTypingVariant(false, !activeStyles.italic);
                           } else if (item.action === 'TEXT') {
                             insertAtCursor('\\text{#0}');
                           } else if (item.action === 'UNDO') {
