@@ -1,4 +1,4 @@
-﻿import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
+import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import {
@@ -1835,7 +1835,7 @@ const ORDERED_MATH_GROUPS = [
       { label: 'Δ□', insert: '\\Delta #?', cls: 'template green-placeholder-glyph', directInsert: true, title: 'Delta Expression' },
       { type: 'sep', cols: 3 },
       { label: '∫', insert: '\\int', icon: 'single-integral-template-image' },
-      { label: '∮', insert: '\\oint', icon: 'contour-integral-template-image' }, 
+      { label: '∮', insert: '\\oint', icon: 'contour-integral-template-image' },
       { label: '∬', insert: '\\iint', icon: 'double-integral-template-image' },
       { label: '∯', insert: '\\mathop{{\\style{font-size:1em;}{\\iint}}\\mkern-23mu\\class{wide-circle}{\\bigcirc}\\mkern14mu}', icon: 'double-contour-integral-template-image' },
       makeRelationMorePicker('tripleIntegralExtras', 'More Triple Integrals'),
@@ -2045,6 +2045,24 @@ const MATH_FIELD_SHADOW_CSS = `
 
 .ML__mathit {
   font-style: italic !important;
+}
+
+.wide-circle,
+.wider-circle {
+  display: inline-block !important;
+  font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", "Times New Roman", serif !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  transform-origin: 50% 54% !important;
+  vertical-align: -0.03em !important;
+}
+
+.wide-circle {
+  transform: translateY(0.02em) scaleX(1.72) scaleY(1.08) !important;
+}
+
+.wider-circle {
+  transform: translateY(0.02em) scaleX(2.05) scaleY(1.08) !important;
 }
 .cme-not-identical-symbol {
   display: inline-block;
@@ -4080,26 +4098,26 @@ const TOOLBAR_ICON_IMAGES = {
   <!-- Integrand box -->
   <rect x="38"
         y="16"
-        width="14"
-        height="18"
+        width="10"
+        height="15"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="2"/>
 
   <!-- d -->
-  <text x="54"
+  <text x="52"
         y="31"
         font-family="Times New Roman, Cambria Math, serif"
-        font-size="20"
+        font-size="34"
         fill="#111">
     d
   </text>
 
   <!-- Variable box -->
-  <rect x="64"
+  <rect x="74"
         y="16"
-        width="14"
-        height="18"
+        width="10"
+        height="15"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="2"/>
@@ -4110,7 +4128,7 @@ const TOOLBAR_ICON_IMAGES = {
         width="8"
         height="12"
         fill="none"
-        stroke="#0B7D1E"
+        stroke="#3f7448ff"
         stroke-width="2"/>
 </svg>
   `),
@@ -4140,34 +4158,34 @@ const TOOLBAR_ICON_IMAGES = {
 
   <!-- Upper limit -->
   <rect x="28" y="6"
-        width="10" height="12"
+        width="8" height="12"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="2"/>
 
   <!-- Lower limit -->
   <rect x="20" y="48"
-        width="10" height="12"
+        width="8" height="12"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="2"/>
 
   <!-- Integrand -->
   <rect x="40" y="24"
-        width="16" height="16"
+        width="12" height="16"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="2"/>
 
   <!-- d -->
-  <text x="57" y="38"
+  <text x="55" y="38"
         font-family="Times New Roman, serif"
-        font-size="20"
+        font-size="36"
         fill="#222">d</text>
 
   <!-- Variable -->
-  <rect x="67" y="24"
-        width="16" height="16"
+  <rect x="77" y="24"
+        width="12" height="16"
         fill="none"
         stroke="#0B7D1E"
         stroke-width="2"/>
@@ -4189,8 +4207,8 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'double-contour-integral-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="32" viewBox="0 0 36 32">
-      <text x="1" y="25" font-family="Cambria Math, Times New Roman, serif" font-size="28" fill="#111">&#8751;</text>
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="32" viewBox="0 0 30 32" overflow="visible">
+      <text x="-1" y="25" font-family="Cambria Math, STIX Two Math, Latin Modern Math, Times New Roman, serif" font-size="28" fill="#111">&#8751;</text>
     </svg>
   `),
   'triple-integral-template-image': makeToolbarIconImage(`
@@ -4199,8 +4217,8 @@ const TOOLBAR_ICON_IMAGES = {
     </svg>
   `),
   'triple-contour-integral-template-image': makeToolbarIconImage(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 40 32">
-      <text x="1" y="25" font-family="Cambria Math, Times New Roman, serif" font-size="28" fill="#111">&#8752;</text>
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="32" viewBox="0 0 30 32" overflow="visible">
+      <text x="-4" y="25" font-family="Cambria Math, STIX Two Math, Latin Modern Math, Times New Roman, serif" font-size="28" fill="#111">&#8752;</text>
     </svg>
   `),
   'integral-with-differential': makeToolbarIconImage(`
@@ -4236,19 +4254,19 @@ const TOOLBAR_ICON_IMAGES = {
   `),
   'first-derivative-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 50 50">
-      <text x="5" y="18" font-size="18">d</text>
+      <text x="1" y="18" font-size="24">d</text>
       <rect x="18" y="4" width="8" height="16" fill="none" stroke="#0B7D1E" stroke-width="2"/>
       <line x1="2" y1="25" x2="32" y2="25" stroke="#000" stroke-width="2"/>
-      <text x="5" y="44" font-size="18">d</text>
+      <text x="1" y="44" font-size="24">d</text>
       <rect x="18" y="30" width="8" height="16" fill="none" stroke="#0B7D1E" stroke-width="2"/>
     </svg>
   `),
   'partial-derivative-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 0 55 50">
-      <text x="4" y="18" font-size="18">∂</text>
+      <text x="1" y="20" font-size="26">∂</text>
       <rect x="20" y="4" width="8" height="16" fill="none" stroke="#0B7D1E" stroke-width="2"/>
       <line x1="2" y1="25" x2="34" y2="25" stroke="#000" stroke-width="2"/>
-      <text x="4" y="44" font-size="18">∂</text>
+      <text x="1" y="48" font-size="26">∂</text>
       <rect x="20" y="30" width="8" height="16" fill="none" stroke="#0B7D1E" stroke-width="2"/>
     </svg>
   `),
@@ -9749,7 +9767,7 @@ function latexToPlainText(latex) {
     ['\\cdot', '·'], ['\\neq', '≠'], ['\\leq', '≤'], ['\\geq', '≥'],
     ['\\approx', '≈'], ['\\equiv', '≡'], ['\\infty', '∞'],
     ['\\sum', '∑'], ['\\prod', '∏'], ['\\int', '∫'], ['\\oint', '∮'],
-    ['\\iint', '∬'], ['\\iiint', '∭'], ['\\oiint', '∯'],
+    ['\\iint', '∬'], ['\\iiint', '∭'], ['\\oiint', '∯'], ['\\oiiint', '∰'],
     ['\\partial', '∂'], ['\\nabla', '∇'],
     ['\\in', '∈'], ['\\notin', '∉'],
     ['\\subset', '⊂'], ['\\subseteq', '⊆'], ['\\supset', '⊃'], ['\\supseteq', '⊇'],
