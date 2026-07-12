@@ -362,6 +362,46 @@ function RootFractionTabIcon() {
   );
 }
 
+function ChemFirstTabIcon() {
+  return (
+    <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
+      <svg className="cme-tab-svg-icon" viewBox="0 0 64 32" focusable="false">
+        <text
+          x="2"
+          y="23"
+          fill="currentColor"
+          fontFamily="Arial, Helvetica, sans-serif"
+          fontSize="24"
+          fontWeight="700"
+        >
+          H
+        </text>
+        <text
+          x="18"
+          y="28"
+          fill="currentColor"
+          fontFamily="Arial, Helvetica, sans-serif"
+          fontSize="12"
+          fontWeight="700"
+        >
+          2
+        </text>
+        <text
+          x="27"
+          y="23"
+          fill="currentColor"
+          fontFamily="Arial, Helvetica, sans-serif"
+          fontSize="24"
+          fontWeight="700"
+        >
+          O
+        </text>
+      </svg>
+    </span>
+  );
+}
+
+
 /* ─────────────────────────────────────────────────────────────
    Symbol / Template definitions
 ───────────────────────────────────────────────────────────── */
@@ -585,111 +625,7 @@ const MATH_GROUPS = [
   },
 ];
 
-const CHEM_GROUPS = [
-  {
-    id: "chem-period-1",
-    label: <TabIcon top={"H-Ne"} bottom={"elem"} />,
-    isChem: true,
-    items: ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne"].map((el) => ({
-      label: el, insert: el, cls: "chem-element",
-    })),
-  },
-  {
-    id: "chem-period-2",
-    label: <TabIcon top={"Na-Ca"} bottom={"elem"} />,
-    isChem: true,
-    items: ["Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca"].map((el) => ({
-      label: el, insert: el, cls: "chem-element",
-    })),
-  },
-  {
-    id: "chem-metals",
-    label: <TabIcon top={"Fe-Zn"} bottom={"metals"} />,
-    isChem: true,
-    items: ["Fe", "Cu", "Zn", "Mn", "Cr", "Ni", "Co", "Ag", "Au", "Hg", "Pb", "Sn", "Br", "I", "Ba", "Pt", "Xe"].map(
-      (el) => ({ label: el, insert: el, cls: "chem-element" })
-    ),
-  },
-  {
-    id: "chem-arrows",
-    label: <TabIcon top={"\u2192 \u21cc"} bottom={"react"} />,
-    isChem: true,
-    items: [
-      { label: "\u2192", insert: "->", cls: "chem-arrow" },
-      { label: "\u21cc", insert: "<=>", cls: "chem-arrow" },
-      { label: "\u2190", insert: "<-", cls: "chem-arrow" },
-      { label: "\u21c4", insert: "<->", cls: "chem-arrow" },
-      { label: "\u2191", insert: "^", cls: "chem-arrow" },
-      { label: "\u2193", insert: "v", cls: "chem-arrow" },
-      { label: "+", insert: " + ", cls: "chem-arrow" },
-      { label: "\u2192(\u0394)", insert: "->[\\Delta]", cls: "chem-arrow" },
-      { label: "\u2192(aq)", insert: "->[aq]", cls: "chem-arrow" },
-    ],
-  },
-  {
-    id: "chem-states",
-    label: <TabIcon top={"(s)(l)"} bottom={"state"} />,
-    isChem: true,
-    items: [
-      { label: "(s)", insert: "(s)", cls: "chem-state" },
-      { label: "(l)", insert: "(l)", cls: "chem-state" },
-      { label: "(g)", insert: "(g)", cls: "chem-state" },
-      { label: "(aq)", insert: "(aq)", cls: "chem-state" },
-      { label: "(conc)", insert: "(conc)", cls: "chem-state" },
-      { label: "(dil)", insert: "(dil)", cls: "chem-state" },
-      { label: "(ppt)", insert: "(ppt)", cls: "chem-state" },
-    ],
-  },
-  {
-    id: "chem-charge",
-    label: <TabIcon top={"\u207a \u207b"} bottom={"\u2082 \u2083"} />,
-    isChem: true,
-    items: [
-      { label: "\u207a", insert: "^{+}", cls: "chem-element" },
-      { label: "\u207b", insert: "^{-}", cls: "chem-element" },
-      { label: "\u00b2\u207a", insert: "^{2+}", cls: "chem-element" },
-      { label: "\u00b2\u207b", insert: "^{2-}", cls: "chem-element" },
-      { label: "\u00b3\u207a", insert: "^{3+}", cls: "chem-element" },
-      { label: "\u00b3\u207b", insert: "^{3-}", cls: "chem-element" },
-      { label: "\u2082", insert: "2", cls: "chem-element" },
-      { label: "\u2083", insert: "3", cls: "chem-element" },
-      { label: "\u2084", insert: "4", cls: "chem-element" },
-      { label: "\u2085", insert: "5", cls: "chem-element" },
-      { label: "\u2086", insert: "6", cls: "chem-element" },
-      { label: "\u2087", insert: "7", cls: "chem-element" },
-      { label: "\u2088", insert: "8", cls: "chem-element" },
-      { label: "\u2093", insert: "x", cls: "chem-element" },
-      { label: "\u2099", insert: "n", cls: "chem-element" },
-    ],
-  },
-  {
-    id: "chem-molecules",
-    label: <TabIcon top={"H\u2082O"} bottom={"ions"} />,
-    isChem: true,
-    items: [
-      { label: "H\u2082O", insert: "H2O", cls: "chem-element" },
-      { label: "CO\u2082", insert: "CO2", cls: "chem-element" },
-      { label: "NH\u2083", insert: "NH3", cls: "chem-element" },
-      { label: "H\u2082SO\u2084", insert: "H2SO4", cls: "chem-element" },
-      { label: "HCl", insert: "HCl", cls: "chem-element" },
-      { label: "NaOH", insert: "NaOH", cls: "chem-element" },
-      { label: "NaCl", insert: "NaCl", cls: "chem-element" },
-      { label: "CaCO\u2083", insert: "CaCO3", cls: "chem-element" },
-      { label: "HNO\u2083", insert: "HNO3", cls: "chem-element" },
-      { label: "H\u2083PO\u2084", insert: "H3PO4", cls: "chem-element" },
-      { label: "CH\u2083COOH", insert: "CH3COOH", cls: "chem-element" },
-      { label: "C\u2086H\u2081\u2082O\u2086", insert: "C6H12O6", cls: "chem-element" },
-      { label: "CH\u2084", insert: "CH4", cls: "chem-element" },
-      { label: "C\u2082H\u2085OH", insert: "C2H5OH", cls: "chem-element" },
-      { label: "CO\u2083\u00b2\u207b", insert: "CO3^{2-}", cls: "chem-element" },
-      { label: "SO\u2084\u00b2\u207b", insert: "SO4^{2-}", cls: "chem-element" },
-      { label: "NO\u2083\u207b", insert: "NO3^-", cls: "chem-element" },
-      { label: "PO\u2084\u00b3\u207b", insert: "PO4^{3-}", cls: "chem-element" },
-      { label: "NH\u2084\u207a", insert: "NH4^+", cls: "chem-element" },
-      { label: "OH\u207b", insert: "OH^-", cls: "chem-element" },
-    ],
-  },
-];
+const CHEM_GROUPS = MATH_GROUPS;
 
 function MatrixHoverGrid({ x, y, onSelect, onMouseEnter, onMouseLeave }) {
   const [hoverGrid, setHoverGrid] = useState({ r: 2, c: 2 });
@@ -1102,21 +1038,54 @@ export default function CustomMathEditor({ value = "", onChange }) {
     resetPopupPosition();
   };
 
-  const groups = mode === "math" ? MATH_GROUPS : CHEM_GROUPS;
+  const groups = MATH_GROUPS;
   const activeGroupIndex = mode === "math" ? activeMathGroup : activeChemGroup;
   const activeGroup = groups[activeGroupIndex] || {};
   const isPopupTabMode = mode === "math" || mode === "chem";
-  const isFirstMathTab = mode === "math" && activeGroupIndex === 0;
+  const isFirstMathTab = activeGroupIndex === 0;
   const isIntegralHeroTab =
-    mode === "math" &&
     Array.isArray(activeGroup.items) &&
     activeGroup.items.some((item) => item.cls === "integral-hero-template");
   const isDerivativeHeroTab =
-    mode === "math" &&
     Array.isArray(activeGroup.items) &&
     activeGroup.items.some((item) => item.cls === "derivative-hero-template");
   const toolbarChunkSize = 4;
-  const toolbarItems = activeGroup.items || [];
+  let toolbarItems = activeGroup.items || [];
+  if (mode === "chem" && activeGroup.id === "roots-main") {
+    const chemGroup1Items = [
+      { category: 'Periodic Table Symbols', label: 'H', insert: 'H' },
+      { category: 'Periodic Table Symbols', label: 'C', insert: 'C' },
+      { category: 'Periodic Table Symbols', label: 'N', insert: 'N' },
+      { category: 'Periodic Table Symbols', label: 'O', insert: 'O' },
+      { category: 'Periodic Table Symbols', label: 'F', insert: 'F' },
+      { category: 'Periodic Table Symbols', label: 'S', insert: 'S' },
+      { category: 'Periodic Table Picker', label: '|', action: 'PERIODIC_TABLE_PICKER', title: 'Periodic Table', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool periodic-table-picker-tool' },
+      { category: 'Chemistry Tools', label: '°', insert: '^{\\circ}', title: 'Degree' },
+      { category: 'Chemistry Tools', label: 'Δ', insert: '\\Delta', title: 'Increment' },
+      { category: 'Chemistry Tools', label: 'mol', insert: '\\text{mol}', title: 'mol' },
+      { category: 'Bonds', label: '-', insert: '-', title: 'Single Bond' },
+      { category: 'Bonds', label: '=', insert: '=', title: 'Double Bond' },
+      { category: 'Bonds', label: '≡', insert: '\\equiv', title: 'Triple Bond' },
+      { category: 'Arrows', label: '→', insert: '\\rightarrow' },
+      { category: 'Arrows', label: 'A→', insert: '\\xrightarrow{#0}', title: 'Arrow with label above', icon: 'arrow-label-right-above' },
+      { category: 'Arrows', label: '→A', insert: '\\xrightarrow[#?]{}', title: 'Arrow with label below', icon: 'arrow-label-right-below' },
+      { category: 'Arrows', label: '⇌', insert: '\\rightleftharpoons', title: 'Equilibrium Harpoons' },
+      { category: 'Arrows', insert: '\\xrightleftharpoons{#0}', title: 'Right Harpoon over Left Harpoon with Overscript', icon: 'right-left-harpoons-over' },
+      { category: 'Arrows', insert: '\\xrightleftharpoons[#0]{}', title: 'Right Harpoon over Left Harpoon with Underscript', icon: 'right-left-harpoons-under' },
+      { category: 'Arrows', label: '⇄', insert: '\\rightleftarrows', title: 'Rightwards Arrow over Leftwards Arrow' },
+      { category: 'Arrows', insert: '\\xleftrightarrows{\\raise{0.14em}{#0}}', title: 'Left Arrow over Right Arrow with Overscript', icon: 'left-right-arrows-over' },
+      { category: 'Arrows', insert: '\\xleftrightarrows[#0]{}', title: 'Left Arrow over Right Arrow with Underscript', icon: 'left-right-arrows-under' },
+      { category: 'Arrow Label Picker', label: '|', action: 'ARROW_LABEL_PICKER', title: 'More Labelled Arrows', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool arrow-label-picker-tool' },
+      { category: 'Scripts', label: '□^□_□', insert: '#?^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Right Superscript and Subscript', icon: 'right-sup-sub-template-image' },
+      { category: 'Scripts', label: 'ˡₗ□', insert: '{}^{#?}_{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript and Subscript', icon: 'left-sup-sub-template-image' },
+      { category: 'Scripts', label: '□^□', insert: '#0^{#?}', title: 'Superscript', cls: 'green-template black-glyph-template', icon: 'superscript-template' },
+      { category: 'Scripts', label: '□_□', insert: '#0_{#?}', title: 'Subscript', cls: 'green-template black-glyph-template', icon: 'subscript-template' },
+      { category: 'Brackets', label: '(□)', insert: '\\left(#0\\right)', title: 'Parentheses', cls: 'green-template green-placeholder-glyph' },
+      { category: 'Brackets', label: '[□]', insert: '\\left[#0\\right]', title: 'Square Brackets', cls: 'green-template green-placeholder-glyph' },
+      { category: 'Brackets', label: '{□}', insert: '\\left\\{#0\\right\\}', title: 'Curly Braces', cls: 'green-template green-placeholder-glyph' },
+    ];
+    toolbarItems = [...chemGroup1Items, ...toolbarItems.slice(8)];
+  }
   const toolbarChunks = [];
   for (let i = 0; i < toolbarItems.length; i += toolbarChunkSize) {
     toolbarChunks.push(toolbarItems.slice(i, i + toolbarChunkSize));
@@ -1183,7 +1152,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
                 return (
                   <button
                     key={group.id || index}
-                    className={`cme-group-tab${isPopupTabMode ? " cme-group-tab--popup" : ""}${mode === "math" ? " cme-group-tab--math" : ""}${mode === "chem" ? " cme-group-tab--chem" : ""}${isActive ? " active" : ""}`}
+                    className={`cme-group-tab${isPopupTabMode ? " cme-group-tab--popup" : ""} cme-group-tab--math${isActive ? " active" : ""}`}
                     type="button"
                     onClick={() => {
                       if (mode === "math") setActiveMathGroup(index);
@@ -1191,13 +1160,13 @@ export default function CustomMathEditor({ value = "", onChange }) {
                       setActiveMatrix(null);
                     }}
                   >
-                    <span className="cme-group-tab-label">{group.label}</span>
+                    <span className="cme-group-tab-label">{mode === "chem" && index === 0 ? <ChemFirstTabIcon /> : group.label}</span>
                   </button>
                 );
               })}
             </div>
 
-            <div className={`cme-toolbar-items${isFirstMathTab ? " cme-toolbar-items--first-tab" : ""}${(isIntegralHeroTab || isDerivativeHeroTab) ? " cme-toolbar-items--integral-templates" : ""}${isPopupTabMode ? " cme-toolbar-items--popup-compact" : ""}`}>
+            <div className={`cme-toolbar-items${isFirstMathTab ? (mode === "chem" ? " cme-toolbar-items--first-tab-chem" : " cme-toolbar-items--first-tab") : ""}${(isIntegralHeroTab || isDerivativeHeroTab) ? " cme-toolbar-items--integral-templates" : ""}${isPopupTabMode ? " cme-toolbar-items--popup-compact" : ""}`}>
               {toolbarChunks.map((chunk, chunkIndex) => (
                 <div key={chunkIndex} className={`cme-symbol-subgroup${isPopupTabMode ? " cme-symbol-subgroup--compact" : ""}`}>
                   {chunk.map((item, i) => {

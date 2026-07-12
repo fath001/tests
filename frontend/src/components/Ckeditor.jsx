@@ -1,4 +1,4 @@
-﻿import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
+import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import {
@@ -613,7 +613,7 @@ const RELATION_MORE_PICKERS = {
     { label: 'mixed-fraction', insert: '\\begin{array}{@{\\hspace{3px}}rl}\\class{cme-mixed-fraction-whole}{#?}\\, & \\kern-10mu\\class{cme-mixed-fraction-slot}{#?}\\\\\\kern0pt & \\kern-10mu\\class{cme-mixed-fraction-denominator}{#?}\\end{array}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
     { label: 'array-cc', insert: '\\begin{array}{rl}\\class{cme-split-fraction-left}{#?}\\, & \\kern-10mu\\class{cme-split-fraction-slot}{#?}\\\\\\class{cme-split-fraction-left}{#?}\\, & \\kern-10mu\\class{cme-split-fraction-denominator}{#?}\\end{array}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
     { label: 'longdiv', insert: '\\class{cme-longdiv-wrapper}{\\class{cme-longdiv-divisor}{#?}\\class{cme-longdiv-quotient}{#?}\\class{cme-longdiv-dividend}{#?}\\class{cme-longdiv-remainder}{#?}}', cls: 'template', directInsert: true, action: 'INSERT_CUSTOM', focusFirstPlaceholder: true, title: 'Division With Remainder', icon: 'division-remainder-template-image' },
-  ], 
+  ],
 };
 
 function makeRelationMorePicker(picker, title = 'More Symbols') {
@@ -1643,7 +1643,7 @@ const ORDERED_MATH_GROUPS = [
       { label: '⌫', action: 'CLEAR', title: 'Clear Formula', cls: 'soft-tool' },
       { type: 'sep', cols: 3 },
       // GROUP 7 - Formatting (cols: 3) 
-      { label: 'B', action: 'BOLD', cls: 'template format-tool', title: 'Bold' }, 
+      { label: 'B', action: 'BOLD', cls: 'template format-tool', title: 'Bold' },
       { label: '1b', action: 'ITALIC', cls: 'format-tool', title: 'Italic' },
       { label: 'BI', action: 'BOLD_ITALIC', cls: 'format-tool', title: 'Bold Italic' },
       { label: 'Ω', action: 'SPECIAL_CHARS', cls: 'format-tool omega-tool', title: 'Greek Letters' },
@@ -1821,7 +1821,7 @@ const ORDERED_MATH_GROUPS = [
       { label: '∫□d□', insert: '\\int_{#?}^{#?} #? \\, d#?', directInsert: true, title: 'Integral', icon: 'integral-box-differential-template-image' },
       { label: '', insert: '\\int_{#?} #? \\, d#?', cls: 'template', directInsert: true, title: 'Integral', icon: 'integral-template-image' },
       { type: 'sep', cols: 4 },
-      { label: 'd', insert: 'd', cls: 'template', directInsert: true, title: 'Differential' }, 
+      { label: 'd', insert: 'd', cls: 'template', directInsert: true, title: 'Differential' },
       { label: '∂', insert: '∂', cls: 'template', directInsert: true, title: 'Partial Differential' },
       { label: 'first-derivative', insert: '\\frac{d#?}{d#?}', cls: 'template', directInsert: true, title: 'First Derivative', icon: 'first-derivative-template-image' },
       { label: 'partial-derivative', insert: '\\frac{\\partial#?}{\\partial#?}', cls: 'template', directInsert: true, title: 'Partial Derivative', icon: 'partial-derivative-template-image' },
@@ -2957,6 +2957,46 @@ function RootFractionTabIcon() {
   );
 }
 
+function ChemFirstTabIcon() {
+  return (
+    <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
+      <svg className="cme-tab-svg-icon" viewBox="-6 0 64 32" focusable="false">
+        <text
+          x="2"
+          y="27"
+          fill="currentColor"
+          fontFamily="Arial, Helvetica, sans-serif"
+          fontSize="28"
+          fontWeight="700"
+        >
+          H
+        </text>
+        <text
+          x="22"
+          y="32"
+          fill="currentColor"
+          fontFamily="Arial, Helvetica, sans-serif"
+          fontSize="16"
+          fontWeight="700"
+        >
+          2
+        </text>
+        <text
+          x="31"
+          y="27"
+          fill="currentColor"
+          fontFamily="Arial, Helvetica, sans-serif"
+          fontSize="28"
+          fontWeight="700"
+        >
+          O
+        </text>
+      </svg>
+    </span>
+  );
+}
+
+
 function MatrixTabIcon() {
   return (
     <span className="cme-tab-icon cme-tab-icon--svg" aria-hidden="true">
@@ -3622,6 +3662,13 @@ const TOOLBAR_ICON_IMAGES = {
       <rect x="20" y="20" width="8" height="10" stroke="#0B7D1E" stroke-width="2.5" opacity="1"/>
     </svg>
   `),
+    'right-sup-sub-template-image-1': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+      <rect x="8" y="10" width="7" height="10" stroke="#0B7D1E" stroke-width="2"/>
+      <rect x="17" y="2" width="5" height="8" stroke="#0B7D1E" stroke-width="2" opacity="1"/>
+      <rect x="17" y="19" width="5" height="8" stroke="#0B7D1E" stroke-width="2" opacity="1"/>
+    </svg>
+  `),
   'left-sup-template-image': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
       <rect x="4" y="2" width="8" height="10" stroke="#0B7D1E" stroke-width="2.5" opacity="1"/>
@@ -3639,6 +3686,13 @@ const TOOLBAR_ICON_IMAGES = {
       <rect x="4" y="2" width="8" height="10" stroke="#0B7D1E" stroke-width="2.5" opacity="1"/>
       <rect x="4" y="22" width="8" height="10" stroke="#0B7D1E" stroke-width="2.5" opacity="1"/>
       <rect x="16" y="10" width="10" height="14" stroke="#0B7D1E" stroke-width="2.5"/>
+    </svg>
+  `),
+    'left-sup-sub-template-image-1': makeToolbarIconImage(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 36" fill="none">
+      <rect x="7.8" y="2" width="6" height="9" stroke="#0B7D1E" stroke-width="2.2" opacity="1"/>
+      <rect x="7.8" y="22" width="6" height="9" stroke="#0B7D1E" stroke-width="2.2" opacity="1"/>
+      <rect x="16" y="10" width="8" height="11" stroke="#0B7D1E" stroke-width="2.3"/>
     </svg>
   `),
   'overset-template-image': makeToolbarIconImage(`
@@ -7267,11 +7321,28 @@ function RelationMorePickerPopover({ position, items = [], onInsert, popupBounds
   );
 }
 
-function ArrowLabelPickerPopover({ position, onInsert }) {
-  const columns = 11;
-  const rows = 2;
-  const buttonWidth = 48;
-  const buttonHeight = 34;
+function ArrowLabelPickerPopover({ position, onInsert, isChemMode }) {
+  const chemItems = [
+    { label: 'A→B', insert: '\\xrightarrow[#?]{#0}', title: 'Arrow with labels above and below', icon: 'arrow-label-right-above-below', focusFirstPlaceholder: true },
+    {
+      insert: '\\xrightleftharpoons[#?]{#0}',
+      title: 'Right Harpoon over Left Harpoon with Under and Overscript',
+      icon: 'right-left-harpoons-over-under',
+      focusFirstPlaceholder: true,
+    },
+    {
+      insert: '\\xleftrightarrows[#?]{\\raise{0.14em}{#0}}',
+      title: 'Left Arrow over Right Arrow with Under and Overscript',
+      icon: 'left-right-arrows-over-under',
+      focusFirstPlaceholder: true,
+    },
+  ];
+
+  const items = isChemMode ? chemItems : ARROW_LABEL_PICKER_ITEMS;
+  const columns = isChemMode ? 3 : 11;
+  const rows = isChemMode ? 1 : 2;
+  const buttonWidth = isChemMode ? 72 : 48;
+  const buttonHeight = isChemMode ? 44 : 34;
   const gap = 4;
   const paddingX = 16;
   const paddingY = 12;
@@ -7293,6 +7364,8 @@ function ArrowLabelPickerPopover({ position, onInsert }) {
         position: 'fixed',
         left: `${left}px`,
         top: `${top}px`,
+        width: `${popupWidth}px`,
+        height: `${popupHeight}px`,
         zIndex: 100000,
       }}
       onMouseDown={(e) => e.stopPropagation()}
@@ -7305,7 +7378,7 @@ function ArrowLabelPickerPopover({ position, onInsert }) {
           gridAutoRows: `${buttonHeight}px`,
         }}
       >
-        {ARROW_LABEL_PICKER_ITEMS.map((item) => (
+        {items.map((item) => (
           <button
             key={`${item.icon}-${item.title}`}
             type="button"
@@ -7316,7 +7389,7 @@ function ArrowLabelPickerPopover({ position, onInsert }) {
               onInsert(item);
             }}
           >
-            {renderToolbarItemLabel(item, { groupId: 'arrows', isMathMode: true, isChemMode: false })}
+            {renderToolbarItemLabel(item, { groupId: 'arrows', isMathMode: !isChemMode, isChemMode })}
           </button>
         ))}
       </div>
@@ -7753,12 +7826,12 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   const [isRtlInput, setIsRtlInput] = useState(initialDirection === 'rtl');
   const [customColorInput, setCustomColorInput] = useState('');
   const [customColorError, setCustomColorError] = useState('');
-  const groups = mode === 'math' ? ORDERED_MATH_GROUPS : CHEM_GROUPS;
+  const groups = ORDERED_MATH_GROUPS;
   const isMathMode = mode === 'math';
   const isChemMode = mode === 'chem';
   const isPopupTabMode = isMathMode || isChemMode;
   const activeGroupConfig = groups[activeGroup] || {};
-  const activeMathSubgroupClassName = isMathMode && activeGroupConfig.id
+  const activeMathSubgroupClassName = activeGroupConfig.id
     ? ` cme-symbol-subgroup--tab-${activeGroupConfig.id}`
     : '';
   const colorSwatches = useMemo(
@@ -8374,7 +8447,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     if (!mf) return;
 
     const preserveMathStyle = Boolean(options.preserveMathStyle);
-    const allowSelectedFontForInsert = preserveMathStyle || (mode === 'math' && activeGroupConfig.id === 'greek');
+    const allowSelectedFontForInsert = preserveMathStyle || ((mode === 'math' || mode === 'chem') && activeGroupConfig.id === 'greek');
     const insertStyle = options.insertStyle || (allowSelectedFontForInsert ? null : DEFAULT_FONT_STYLE);
 
     const hasPlaceholders = /#(?:\d+|\?|@)/.test(sym);
@@ -8565,21 +8638,113 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
           {groups.map((group, index) => (
             <button
               key={group.id || index}
-              className={`cme-group-tab${isPopupTabMode ? ' cme-group-tab--popup' : ''}${isMathMode ? ' cme-group-tab--math' : ''}${isChemMode ? ' cme-group-tab--chem' : ''}${activeGroup === index ? ' active' : ''}`}
+              className={`cme-group-tab${isPopupTabMode ? ' cme-group-tab--popup' : ''} cme-group-tab--math${activeGroup === index ? ' active' : ''}`}
               type="button"
               onClick={() => {
                 setActiveGroup(index);
                 setActiveMatrix(null);
               }}
             >
-              <span className="cme-group-tab-label">{group.label}</span>
+              <span className="cme-group-tab-label">{isChemMode && index === 0 ? <ChemFirstTabIcon /> : group.label}</span>
             </button>
           ))}
         </div>
 
-        <div className={`cme-toolbar-items${activeGroup === 0 && isMathMode ? ' cme-toolbar-items--first-tab' : ''}${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${activeGroupConfig.id === 'relations' ? ' cme-toolbar-items--relations' : ''}${activeGroupConfig.id === 'arrows' ? ' cme-toolbar-items--arrows' : ''}${activeGroupConfig.id === 'brackets' ? ' cme-toolbar-items--brackets' : ''}${activeGroupConfig.id === 'matrix' ? ' cme-toolbar-items--matrix' : ''}${isPopupTabMode ? ' cme-toolbar-items--popup-compact' : ''}`}>
+        <div className={`cme-toolbar-items${activeGroup === 0 && isPopupTabMode ? (isChemMode ? ' cme-toolbar-items--first-tab-chem' : ' cme-toolbar-items--first-tab') : ''}${activeGroupConfig.id === 'greek' ? ' cme-toolbar-items--greek' : ''}${activeGroupConfig.id === 'relations' ? ' cme-toolbar-items--relations' : ''}${activeGroupConfig.id === 'arrows' ? ' cme-toolbar-items--arrows' : ''}${activeGroupConfig.id === 'brackets' ? ' cme-toolbar-items--brackets' : ''}${activeGroupConfig.id === 'matrix' ? ' cme-toolbar-items--matrix' : ''}${isPopupTabMode ? ' cme-toolbar-items--popup-compact' : ''}`}>
           {(() => {
-            const activeItems = activeGroupConfig.items || [];
+            let activeItems = activeGroupConfig.items || [];
+            if (isChemMode && activeGroupConfig.id === 'roots-main') {
+              const chemGroup1Items = [
+                { category: 'Periodic Table Symbols', label: 'H', insert: 'H' },
+                { category: 'Periodic Table Symbols', label: 'C', insert: 'C' },
+                { category: 'Periodic Table Symbols', label: 'N', insert: 'N' },
+                { category: 'Periodic Table Symbols', label: 'O', insert: 'O' },
+                { category: 'Periodic Table Symbols', label: 'F', insert: 'F' },
+                { category: 'Periodic Table Symbols', label: 'S', insert: 'S' },
+                { type: 'sep', cols: 1 },
+                { category: 'Periodic Table Picker', label: '|', action: 'PERIODIC_TABLE_PICKER', title: 'Periodic Table', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool periodic-table-picker-tool' },
+              ];
+              const chemToolsGroup = [
+                { type: 'sep', cols: 1 },
+                { category: 'Chemistry Tools', label: '°', insert: '^{\\circ}', title: 'Degree' },
+                { category: 'Chemistry Tools', label: 'Δ', insert: '\\Delta', title: 'Increment' },
+                { category: 'Chemistry Tools', label: 'mol', insert: '\\text{mol}', title: 'mol' },
+                { type: 'sep', cols: 1 },
+                { category: 'Bonds', label: '-', insert: '-', title: 'Single Bond' },
+                { category: 'Bonds', label: '=', insert: '=', title: 'Double Bond' },
+                { category: 'Bonds', label: '≡', insert: '\\equiv', title: 'Triple Bond' },
+              ];
+              const chemArrowsGroup = [
+                { type: 'sep', cols: 3 },
+                { category: 'Arrows', label: '→', insert: '\\rightarrow' },
+                { category: 'Arrows', label: 'A→', insert: '\\xrightarrow{#0}', title: 'Arrow with label above', icon: 'arrow-label-right-above' },
+                { category: 'Arrows', label: '→A', insert: '\\xrightarrow[#?]{}', title: 'Arrow with label below', icon: 'arrow-label-right-below' },
+                { category: 'Arrows', label: '⇌', insert: '\\rightleftharpoons', title: 'Equilibrium Harpoons' },
+                { category: 'Arrows', insert: '\\xrightleftharpoons{#0}', title: 'Right Harpoon over Left Harpoon with Overscript', icon: 'right-left-harpoons-over' },
+                { category: 'Arrows', insert: '\\xrightleftharpoons[#0]{}', title: 'Right Harpoon over Left Harpoon with Underscript', icon: 'right-left-harpoons-under' },
+                { category: 'Arrows', label: '⇄', insert: '\\rightleftarrows', title: 'Rightwards Arrow over Leftwards Arrow' },
+                { category: 'Arrows', insert: '\\xleftrightarrows{\\raise{0.14em}{#0}}', title: 'Left Arrow over Right Arrow with Overscript', icon: 'left-right-arrows-over' },
+                { category: 'Arrows', insert: '\\xleftrightarrows[#0]{}', title: 'Left Arrow over Right Arrow with Underscript', icon: 'left-right-arrows-under' },
+                { type: 'sep', cols: 1 },
+                { category: 'Arrow Label Picker', label: '|', action: 'ARROW_LABEL_PICKER', title: 'More Labelled Arrows', icon: 'vertical-line-picker-template-image', cls: 'arrow-picker-tool arrow-label-picker-tool' },
+              ];
+              const chemSupSubGroup = [
+                { type: 'sep', cols: 2 },
+                { category: 'Scripts', label: '□^□_□', insert: '#?^{#?}_{#?}', cls: 'template', directInsert: true, title: 'Right Superscript and Subscript', icon: 'right-sup-sub-template-image-1' },
+                { category: 'Scripts', label: 'ˡₗ□', insert: '{}^{#?}_{#?}#?', cls: 'template', directInsert: true, title: 'Left Superscript and Subscript', icon: 'left-sup-sub-template-image-1' },
+                { category: 'Scripts', label: '□^□', insert: '#0^{#?}', title: 'Superscript', cls: 'green-template black-glyph-template', icon: 'superscript-template' },
+                { category: 'Scripts', label: '□_□', insert: '#0_{#?}', title: 'Subscript', cls: 'green-template black-glyph-template', icon: 'subscript-template' },
+              ];
+              const chemBracketsGroup = [
+                { type: 'sep', cols: 1 },
+                { category: 'Brackets', label: '(□)', insert: '\\left(#0\\right)', title: 'Parentheses', cls: 'green-template green-placeholder-glyph' },
+                { category: 'Brackets', label: '[□]', insert: '\\left[#0\\right]', title: 'Square Brackets', cls: 'green-template green-placeholder-glyph' },
+                { category: 'Brackets', label: '{□}', insert: '\\left\\{#0\\right\\}', title: 'Curly Braces', cls: 'green-template green-placeholder-glyph' },
+              ];
+              const firstSepIndex = activeItems.findIndex(item => item.type === 'sep');
+              if (firstSepIndex !== -1) {
+                const separators = [];
+                activeItems.forEach((item, index) => {
+                  if (item.type === 'sep') separators.push(index);
+                });
+                if (separators.length >= 6) {
+                  activeItems = [
+                    ...chemGroup1Items,
+                    ...chemToolsGroup,
+                    ...chemArrowsGroup,
+                    ...chemSupSubGroup,
+                    ...chemBracketsGroup,
+                    ...activeItems.slice(separators[5])
+                  ];
+                } else if (separators.length >= 5) {
+                  activeItems = [
+                    ...chemGroup1Items,
+                    ...chemToolsGroup,
+                    ...chemArrowsGroup,
+                    ...chemSupSubGroup,
+                    ...chemBracketsGroup,
+                    ...activeItems.slice(separators[4])
+                  ];
+                } else if (separators.length >= 4) {
+                  activeItems = [
+                    ...chemGroup1Items,
+                    ...chemToolsGroup,
+                    ...chemArrowsGroup,
+                    ...chemSupSubGroup,
+                    ...chemBracketsGroup,
+                    ...activeItems.slice(separators[3])
+                  ];
+                } else {
+                  activeItems = [
+                    ...chemGroup1Items,
+                    ...chemToolsGroup,
+                    ...chemArrowsGroup,
+                    ...chemSupSubGroup,
+                    ...chemBracketsGroup
+                  ];
+                }
+              }
+            }
 
             if (activeGroupConfig.id === 'greek') {
               const groupedGreekItems = activeItems.reduce((acc, item) => {
@@ -8767,7 +8932,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                                 insertAtCursor(item.insert, { preserveMathStyle: item.preserveMathStyle, insertStyle: item.insertStyle, focusFirstPlaceholder: item.focusFirstPlaceholder, focusSlotGroup: item.focusSlotGroup });
                               }}
                             >
-                              {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode })}
+                              {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode: true, isChemMode: false })}
                             </button>
                           );
                         })}
@@ -8807,110 +8972,227 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
 
               if (activeGroupConfig.id === 'roots-main') {
                 const groupedItems = subgroups.map((subgroup) => subgroup.items || []);
-                const [
-                  fractions = [],
-                  scripts = [],
-                  brackets = [],
-                  operators = [],
-                  relations = [],
-                  symbols = [],
-                  clipboard = [],
-                  formatting = [],
-                  rtl = [],
-                  dropdowns = [],
-                ] = groupedItems;
                 const pick = (items, order) => order.map((index) => items[index]).filter(Boolean);
 
-                subgroups = [
-                  {
-                    cols: 2,
-                    rows: 2,
-                    flow: 'row',
-                    equalColumns: true,
-                    className: ' cme-roots-main-subgroup',
-                    items: pick(fractions, [0, 2, 1, 3]),
-                  },
-                  {
-                    cols: 1,
-                    rows: 2,
-                    flow: 'row',
-                    equalColumns: true,
-                    className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
-                    items: pick(scripts, [0, 1]),
-                  },
-                  {
-                    cols: 2,
-                    rows: 2,
-                    flow: 'row',
-                    equalColumns: true,
-                    className: ' cme-roots-main-subgroup',
-                    items: pick(brackets, [0, 2, 1, 3]),
-                  },
-                  {
-                    cols: 2,
-                    rows: 3,
-                    flow: 'row',
-                    equalColumns: true,
-                    className: ' cme-roots-main-subgroup',
-                    items: pick(operators, [0, 4, 2, 5, 1, 3]),
-                  },
-                  {
-                    cols: 2,
-                    rows: 3,
-                    flow: 'row',
-                    equalColumns: true,
-                    className: ' cme-roots-main-subgroup',
-                    items: pick(relations, [0, 1, 5, 4, 3, 2]),
-                  },
-                  {
-                    cols: 1,
-                    rows: 2,
-                    flow: 'row',
-                    equalColumns: true,
-                    className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
-                    items: [],
-                  },
-                  {
-                    cols: 1,
-                    rows: 3,
-                    flow: 'row',
-                    equalColumns: true,
-                    className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
-                    items: pick(symbols, [0, 1, 2]),
-                  },
-                  {
-                    cols: 2,
-                    rows: 3,
-                    flow: 'row',
-                    equalColumns: true,
-                    className: ' cme-roots-main-subgroup',
-                    items: pick(clipboard, [1, 3, 0, 4, 2, 5]),
-                  },
-                  {
-                    cols: 2,
-                    rows: 3,
-                    flow: 'row',
-                    equalColumns: true,
-                    className: ' cme-roots-main-subgroup cme-roots-main-subgroup--format',
-                    items: pick(formatting, [0, 5, 1, 3, 2, 4]),
-                  },
-                  {
-                    cols: 1,
-                    rows: 1,
-                    flow: 'row',
-                    equalColumns: true,
-                    className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
-                    items: pick(rtl, [0]),
-                  },
-                  {
-                    cols: 1,
-                    rows: 2,
-                    flow: 'row',
-                    equalColumns: true,
-                    className: ' cme-roots-main-subgroup cme-roots-main-subgroup--dropdown',
-                    items: pick(dropdowns, [0, 1]),
-                  },
-                ].filter((subgroup) => subgroup.items.length > 0);
+                if (isChemMode) {
+                  const [
+                    chemElements = [],
+                    chemPicker = [],
+                    chemScripts = [],
+                    chemBonds = [],
+                    chemArrows = [],
+                    chemArrowPicker = [],
+                    chemSupSub = [],
+                    chemBrackets = [],
+                    clipboard = [],
+                    formatting = [],
+                    rtl = [],
+                    dropdowns = [],
+                  ] = groupedItems;
+
+                  subgroups = [
+                    {
+                      cols: 2,
+                      rows: 3,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--no-border',
+                      items: chemElements,
+                    },
+                    {
+                      cols: 1,
+                      rows: 3,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack cme-roots-main-subgroup--picker',
+                      items: chemPicker,
+                    },
+                    {
+                      cols: 1,
+                      rows: 3,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
+                      items: chemScripts,
+                    },
+                    {
+                      cols: 1,
+                      rows: 3,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
+                      items: chemBonds,
+                    },
+                    {
+                      cols: 3,
+                      rows: 3,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--no-border',
+                      items: chemArrows,
+                    },
+                    {
+                      cols: 1,
+                      rows: 3,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack cme-roots-main-subgroup--picker',
+                      items: chemArrowPicker,
+                    },
+                    {
+                      cols: 2,
+                      rows: 2,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup',
+                      items: chemSupSub,
+                    },
+                    {
+                      cols: 1,
+                      rows: 3,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
+                      items: chemBrackets,
+                    },
+                    {
+                      cols: 2,
+                      rows: 3,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup',
+                      items: pick(clipboard, [1, 3, 0, 4, 2, 5]),
+                    },
+                    {
+                      cols: 2,
+                      rows: 3,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--format',
+                      items: pick(formatting, [0, 5, 1, 3, 2, 4]),
+                    },
+                    {
+                      cols: 1,
+                      rows: 1,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
+                      items: pick(rtl, [0]),
+                    },
+                    {
+                      cols: 1,
+                      rows: 2,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--dropdown',
+                      items: pick(dropdowns, [0, 1]),
+                    },
+                  ].filter((subgroup) => subgroup.items.length > 0);
+                } else {
+                  const [
+                    fractions = [],
+                    scripts = [],
+                    brackets = [],
+                    operators = [],
+                    relations = [],
+                    symbols = [],
+                    clipboard = [],
+                    formatting = [],
+                    rtl = [],
+                    dropdowns = [],
+                  ] = groupedItems;
+
+                  subgroups = [
+                    {
+                      cols: 2,
+                      rows: 2,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup',
+                      items: pick(fractions, [0, 2, 1, 3]),
+                    },
+                    {
+                      cols: 1,
+                      rows: 2,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
+                      items: pick(scripts, [0, 1]),
+                    },
+                    {
+                      cols: 2,
+                      rows: 2,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup',
+                      items: pick(brackets, [0, 2, 1, 3]),
+                    },
+                    {
+                      cols: 2,
+                      rows: 3,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup',
+                      items: pick(operators, [0, 4, 2, 5, 1, 3]),
+                    },
+                    {
+                      cols: 2,
+                      rows: 3,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup',
+                      items: pick(relations, [0, 1, 5, 4, 3, 2]),
+                    },
+                    {
+                      cols: 1,
+                      rows: 2,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
+                      items: [],
+                    },
+                    {
+                      cols: 1,
+                      rows: 3,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
+                      items: pick(symbols, [0, 1, 2]),
+                    },
+                    {
+                      cols: 2,
+                      rows: 3,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup',
+                      items: pick(clipboard, [1, 3, 0, 4, 2, 5]),
+                    },
+                    {
+                      cols: 2,
+                      rows: 3,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--format',
+                      items: pick(formatting, [0, 5, 1, 3, 2, 4]),
+                    },
+                    {
+                      cols: 1,
+                      rows: 1,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--stack',
+                      items: pick(rtl, [0]),
+                    },
+                    {
+                      cols: 1,
+                      rows: 2,
+                      flow: 'row',
+                      equalColumns: true,
+                      className: ' cme-roots-main-subgroup cme-roots-main-subgroup--dropdown',
+                      items: pick(dropdowns, [0, 1]),
+                    },
+                  ].filter((subgroup) => subgroup.items.length > 0);
+                }
               }
 
               if (activeGroupConfig.id === 'arrows') {
@@ -9196,7 +9478,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                               }
                             }}
                           >
-                            {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode })}
+                            {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode: true, isChemMode: false })}
                           </button>
                         </div>
                       );
@@ -9443,7 +9725,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
                           }
                         }}
                       >
-                        {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode, isChemMode })}
+                        {renderToolbarItemLabel(item, { groupId: currentGroup.id, isMathMode: true, isChemMode: false })}
                       </button>
                     );
                   })}
@@ -9544,6 +9826,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       {showArrowLabelPicker && createPortal(
         <ArrowLabelPickerPopover
           position={showArrowLabelPicker}
+          isChemMode={isChemMode}
           onInsert={(item) => {
             insertAtCursor(item.insert, { focusFirstPlaceholder: item.focusFirstPlaceholder, focusSlotGroup: item.focusSlotGroup });
             setShowArrowLabelPicker(null);
