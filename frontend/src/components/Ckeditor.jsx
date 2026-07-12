@@ -514,7 +514,7 @@ const MATH_GROUPS = [
       { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis', icon: 'downright-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { type: 'sep', cols: 2 },
       { label: 'sum-array', insert: '\\frac{\\begin{array}{r}\\class{cme-column-layout-slot-1}{#0}\\\\+\\,\\class{cme-column-layout-slot-2}{#?}\\end{array}}{\\hskip10px\\class{cme-column-layout-slot-3}{#?}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, focusSlotGroup: 'column-layout', icon: 'sum-array-template-image', title: 'Column Addition' },
-      { label: 'division', insert: '\\class{cme-longdiv-wrapper}{\\class{cme-longdiv-divisor}{#?}\\class{cme-longdiv-quotient}{#?}\\class{cme-longdiv-dividend}{#?}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
+      { label: 'division', insert: '\\raise{-2px}{#?}\\, ) \\!\\!\\!\\!\\! \\overset{\\displaystyle\\kern11px#?}{\\kern5px\\raise{-2px}{\\overline{\\vphantom{1}\\;\\;\\kern3px\\raise{-2px}{#?}\\;}}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
       makeRelationMorePicker('arithmeticLayoutExtras', 'More Arithmetic Layouts'),
     ]
   },
@@ -1642,8 +1642,8 @@ const ORDERED_MATH_GROUPS = [
       { label: '↷', action: 'REDO', title: 'Redo', cls: 'soft-tool' },
       { label: '⌫', action: 'CLEAR', title: 'Clear Formula', cls: 'soft-tool' },
       { type: 'sep', cols: 3 },
-      // GROUP 7 - Formatting (cols: 3)
-      { label: 'B', action: 'BOLD', cls: 'template format-tool', title: 'Bold' },
+      // GROUP 7 - Formatting (cols: 3) 
+      { label: 'B', action: 'BOLD', cls: 'template format-tool', title: 'Bold' }, 
       { label: '1b', action: 'ITALIC', cls: 'format-tool', title: 'Italic' },
       { label: 'BI', action: 'BOLD_ITALIC', cls: 'format-tool', title: 'Bold Italic' },
       { label: 'Ω', action: 'SPECIAL_CHARS', cls: 'format-tool omega-tool', title: 'Greek Letters' },
