@@ -191,20 +191,7 @@ const MATH_FIELD_SHADOW_CSS = `
   grid-template-columns: auto auto;
   grid-template-rows: auto auto;
   align-items: baseline;
-  justify-items: stretch;
-  position: relative;
   vertical-align: -0.4em;
-  white-space: nowrap;
-}
-
-.cme-longdiv-wrapper::after {
-  content: '';
-  grid-column: 2;
-  grid-row: 1;
-  align-self: end;
-  justify-self: stretch;
-  border-bottom: 0.04em solid currentColor;
-  pointer-events: none;
 }
 
 .cme-longdiv-divisor {
@@ -220,11 +207,10 @@ const MATH_FIELD_SHADOW_CSS = `
   display: block !important;
   grid-column: 2;
   grid-row: 1;
+  border-bottom: 1px solid currentColor;
   padding-bottom: 0.1em;
   padding-left: 0.2em;
-  padding-right: 0.2em;
   text-align: center;
-  min-width: 1em;
 }
 
 .cme-longdiv-dividend {
@@ -251,6 +237,16 @@ const MATH_FIELD_SHADOW_CSS = `
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
   pointer-events: none;
+}
+
+.cme-longdiv-remainder {
+  display: block !important;
+  grid-column: 2;
+  grid-row: 3;
+  padding-left: 0.4em;
+  padding-top: 0.1em;
+  padding-right: 0.2em;
+  text-align: left;
 }
 /* Rounded rectangle enclosure: MathLive measures the rendered body, then this
    wrapper adds em padding and a constant corner radius without fixed width. */

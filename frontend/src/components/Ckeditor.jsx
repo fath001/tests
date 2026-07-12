@@ -514,7 +514,7 @@ const MATH_GROUPS = [
       { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis', icon: 'downright-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { type: 'sep', cols: 2 },
       { label: 'sum-array', insert: '\\frac{\\begin{array}{r}\\class{cme-column-layout-slot-1}{#0}\\\\+\\,\\class{cme-column-layout-slot-2}{#?}\\end{array}}{\\hskip10px\\class{cme-column-layout-slot-3}{#?}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, focusSlotGroup: 'column-layout', icon: 'sum-array-template-image', title: 'Column Addition' },
-      { label: 'division', insert: '\\raise{-2px}{#?}\\, ) \\!\\!\\!\\!\\! \\overset{\\displaystyle\\kern11px#?}{\\kern5px\\raise{-2px}{\\overline{\\vphantom{1}\\;\\;\\kern3px\\raise{-2px}{#?}\\;}}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
+      { label: 'division', insert: '\\class{cme-longdiv-wrapper}{\\class{cme-longdiv-divisor}{#?}\\class{cme-longdiv-quotient}{#?}\\class{cme-longdiv-dividend}{#?}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, focusFirstPlaceholder: true, icon: 'division-layout-template-image', title: 'Division Layout' },
       makeRelationMorePicker('arithmeticLayoutExtras', 'More Arithmetic Layouts'),
     ]
   },
@@ -612,7 +612,16 @@ const RELATION_MORE_PICKERS = {
     { label: 'product-array', insert: '\\frac{\\begin{array}{r}\\class{cme-column-layout-slot-1}{#0}\\\\\\times\\,\\class{cme-column-layout-slot-2}{#?}\\end{array}}{\\hskip10px\\class{cme-column-layout-slot-3}{#?}}', cls: 'template', directInsert: true, focusSlotGroup: 'column-layout', icon: 'product-array-template-image', title: 'Column Multiplication' },
     { label: 'mixed-fraction', insert: '\\begin{array}{@{\\hspace{3px}}rl}\\class{cme-mixed-fraction-whole}{#?}\\, & \\kern-10mu\\class{cme-mixed-fraction-slot}{#?}\\\\\\kern0pt & \\kern-10mu\\class{cme-mixed-fraction-denominator}{#?}\\end{array}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
     { label: 'array-cc', insert: '\\begin{array}{rl}\\class{cme-split-fraction-left}{#?}\\, & \\kern-10mu\\class{cme-split-fraction-slot}{#?}\\\\\\class{cme-split-fraction-left}{#?}\\, & \\kern-10mu\\class{cme-split-fraction-denominator}{#?}\\end{array}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
-    { label: 'division-remainder', insert: '\\raise{-2px}{#?}\\, ) \\!\\!\\!\\!\\! \\begin{array}{l}\\overset{\\displaystyle\\hskip4px#?}{\\raise{-2px}{\\overline{\\vphantom{1}\\;\\;\\raise{-2px}{#?}\\;}}}\\\\\\;\\;\\raise{-2px}{#?}\\;\\end{array}', cls: 'template', cls: 'template', directInsert: true, icon: 'division-remainder-template-image', title: 'Division With Remainder' },
+    { label: (
+      <svg width="26" height="30" viewBox="0 0 64 72" fill="none" stroke="currentColor" strokeWidth="3" style={{ display: 'inline-block', verticalAlign: 'middle', color: '#2E7D32' }}>
+        <rect x="40" y="0" width="10" height="16" rx="1" />
+        <line x1="30" y1="20" x2="54" y2="20" stroke="#222" strokeWidth="4" strokeLinecap="round" />
+        <path d="M26 18C34 25 34 47 26 54" stroke="#222" strokeWidth="4" fill="none" />
+        <rect x="6" y="28" width="10" height="16" rx="1" />
+        <rect x="40" y="28" width="10" height="16" rx="1" />
+        <rect x="40" y="52" width="10" height="16" rx="1" />
+      </svg>
+    ), insert: '\\class{cme-longdiv-wrapper}{\\class{cme-longdiv-divisor}{#?}\\class{cme-longdiv-quotient}{#?}\\class{cme-longdiv-dividend}{#?}\\class{cme-longdiv-remainder}{#?}}', cls: 'template', directInsert: true, action: 'INSERT_CUSTOM', focusFirstPlaceholder: true, title: 'Division With Remainder' },
   ],
 };
 
@@ -2194,20 +2203,7 @@ const MATH_FIELD_SHADOW_CSS = `
   grid-template-columns: auto auto;
   grid-template-rows: auto auto;
   align-items: baseline;
-  justify-items: stretch;
-  position: relative;
   vertical-align: -0.4em;
-  white-space: nowrap;
-}
-
-.cme-longdiv-wrapper::after {
-  content: '';
-  grid-column: 2;
-  grid-row: 1;
-  align-self: end;
-  justify-self: stretch;
-  border-bottom: 0.04em solid currentColor;
-  pointer-events: none;
 }
 
 .cme-longdiv-divisor {
@@ -2223,11 +2219,10 @@ const MATH_FIELD_SHADOW_CSS = `
   display: block !important;
   grid-column: 2;
   grid-row: 1;
+  border-bottom: 1px solid currentColor;
   padding-bottom: 0.1em;
   padding-left: 0.2em;
-  padding-right: 0.2em;
   text-align: center;
-  min-width: 1em;
 }
 
 .cme-longdiv-dividend {
@@ -2254,6 +2249,16 @@ const MATH_FIELD_SHADOW_CSS = `
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
   pointer-events: none;
+}
+
+.cme-longdiv-remainder {
+  display: block !important;
+  grid-column: 2;
+  grid-row: 3;
+  padding-left: 0.4em;
+  padding-top: 0.1em;
+  padding-right: 0.2em;
+  text-align: left;
 }
 /* Rounded rectangle enclosure: MathLive measures the rendered body, then this
    wrapper adds em padding and a constant corner radius without fixed width. */
