@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
+﻿import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import {
@@ -514,7 +514,7 @@ const MATH_GROUPS = [
       { label: '⋱', insert: '\\ddots', title: 'Down-right diagonal ellipsis', icon: 'downright-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { type: 'sep', cols: 2 },
       { label: 'sum-array', insert: '\\frac{\\begin{array}{r}\\class{cme-column-layout-slot-1}{#0}\\\\+\\,\\class{cme-column-layout-slot-2}{#?}\\end{array}}{\\hskip10px\\class{cme-column-layout-slot-3}{#?}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, focusSlotGroup: 'column-layout', icon: 'sum-array-template-image', title: 'Column Addition' },
-      { label: 'division', insert: '\\raise{-2px}{#?}\\, ) \\!\\!\\!\\!\\! \\overset{\\displaystyle\\kern11px#?}{\\kern5px\\raise{-2px}{\\overline{\\vphantom{1}\\;\\;\\kern3px\\raise{-2px}{#?}\\;}}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
+      { label: 'division', insert: '\\class{cme-longdiv-wrapper}{\\class{cme-longdiv-divisor}{#?}\\class{cme-longdiv-quotient}{#?}\\class{cme-longdiv-dividend}{#?}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'division-layout-template-image', title: 'Division Layout' },
       makeRelationMorePicker('arithmeticLayoutExtras', 'More Arithmetic Layouts'),
     ]
   },
@@ -1821,12 +1821,12 @@ const ORDERED_MATH_GROUPS = [
       { label: '∫□d□', insert: '\\int_{#?}^{#?} #? \\, d#?', directInsert: true, title: 'Integral', icon: 'integral-box-differential-template-image' },
       { label: '', insert: '\\int_{#?} #? \\, d#?', cls: 'template', directInsert: true, title: 'Integral', icon: 'integral-template-image' },
       { type: 'sep', cols: 4 },
-      { label: 'd', insert: 'd', cls: 'template', directInsert: true, title: 'Differential' },
+      { label: 'd', insert: 'd', cls: 'template', directInsert: true, title: 'Differential' }, 
       { label: '∂', insert: '∂', cls: 'template', directInsert: true, title: 'Partial Differential' },
       { label: 'first-derivative', insert: '\\frac{d#?}{d#?}', cls: 'template', directInsert: true, title: 'First Derivative', icon: 'first-derivative-template-image' },
       { label: 'partial-derivative', insert: '\\frac{\\partial#?}{\\partial#?}', cls: 'template', directInsert: true, title: 'Partial Derivative', icon: 'partial-derivative-template-image' },
       { type: 'sep', cols: 2 },
-      { label: 'limit-infinity', insert: '\\lim_{#?\\to\\infty}', cls: 'template', directInsert: true, title: 'Limit to Infinity', icon: 'limit-infinity-template-image' },
+      { label: 'limit-infinity', insert: '\\lim_{#?\\to\\raise{-3px}{\\style{font-size:1.7em;}{\\infty}}}', cls: 'template', directInsert: true, title: 'Limit to Infinity', icon: 'limit-infinity-template-image' },
       { label: 'limit-generic', insert: '\\lim_{#?}', cls: 'template', directInsert: true, title: 'Limit', icon: 'limit-generic-template-image' },
       { type: 'sep', cols: 2 },
       { label: '∇×□', insert: '\\nabla \\times #?', cls: 'template green-placeholder-glyph', directInsert: true, title: 'Curl' },
@@ -2165,6 +2165,95 @@ const MATH_FIELD_SHADOW_CSS = `
   border-right: 0.06em solid currentColor;
   vertical-align: middle;
   white-space: nowrap;
+}
+
+.cme-division-layout-line {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.cme-division-layout-line .overline-line {
+  opacity: 0;
+}
+
+.cme-division-layout-line::after {
+  content: "";
+  position: absolute;
+  left: 0.38em;
+  right: 0;
+  top: calc(0.72em + 5px);
+  border-top: 0.04em solid currentColor;
+  transform: translateX(2px);
+  pointer-events: none;
+}
+
+.cme-longdiv-wrapper {
+  display: inline-grid !important;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  align-items: baseline;
+  justify-items: stretch;
+  position: relative;
+  vertical-align: -0.4em;
+  white-space: nowrap;
+}
+
+.cme-longdiv-wrapper::after {
+  content: '';
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+  justify-self: stretch;
+  border-bottom: 0.04em solid currentColor;
+  pointer-events: none;
+}
+
+.cme-longdiv-divisor {
+  display: block !important;
+  grid-column: 1;
+  grid-row: 2;
+  text-align: right;
+  padding-right: 0.1em;
+  padding-top: 0.1em;
+}
+
+.cme-longdiv-quotient {
+  display: block !important;
+  grid-column: 2;
+  grid-row: 1;
+  padding-bottom: 0.1em;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+  text-align: center;
+  min-width: 1em;
+}
+
+.cme-longdiv-dividend {
+  display: block !important;
+  grid-column: 2;
+  grid-row: 2;
+  position: relative;
+  padding-left: 0.4em;
+  padding-top: 0.1em;
+  padding-right: 0.2em;
+  text-align: left;
+}
+
+.cme-longdiv-dividend::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.4em;
+  height: 100%;
+  background: currentColor;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg preserveAspectRatio='none' viewBox='0 0 10 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 0 0 C 10 20, 10 80, 0 100' stroke='black' stroke-width='1.5' fill='none' vector-effect='non-scaling-stroke' stroke-linecap='round' /%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg preserveAspectRatio='none' viewBox='0 0 10 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 0 0 C 10 20, 10 80, 0 100' stroke='black' stroke-width='1.5' fill='none' vector-effect='non-scaling-stroke' stroke-linecap='round' /%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  pointer-events: none;
 }
 /* Rounded rectangle enclosure: MathLive measures the rendered body, then this
    wrapper adds em padding and a constant corner radius without fixed width. */
