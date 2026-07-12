@@ -1028,7 +1028,9 @@ export default function CustomMathEditor({ value = "", onChange }) {
 
     const hasPlaceholders = /#(?:\d+|\?|@)/.test(insertText);
     const currentSelection = popupMf.selection || popupMf.model?.selection;
-    const shouldAdvanceToPrimarySlot = !hasExpandedMathSelection(currentSelection);
+    const hasExpandedSelection = hasExpandedMathSelection(currentSelection);
+    const shouldReplaceSelection = hasPlaceholders || hasExpandedSelection;
+    const shouldAdvanceToPrimarySlot = !hasExpandedSelection;
     const primarySlotAdvanceCount = shouldAdvanceToPrimarySlot
       ? countPlaceholdersBeforePrimarySlot(insertText)
       : 0;
@@ -1037,7 +1039,7 @@ export default function CustomMathEditor({ value = "", onChange }) {
     if (typeof popupMf.insert === "function") {
       popupMf.insert(insertText, {
         format: "latex",
-        insertionMode: "replaceSelection",
+        insertionMode: shouldReplaceSelection ? "replaceSelection" : "insert",
         selectionMode: hasPlaceholders ? "placeholder" : "after",
       });
     } else {

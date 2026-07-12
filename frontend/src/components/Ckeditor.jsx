@@ -612,17 +612,8 @@ const RELATION_MORE_PICKERS = {
     { label: 'product-array', insert: '\\frac{\\begin{array}{r}\\class{cme-column-layout-slot-1}{#0}\\\\\\times\\,\\class{cme-column-layout-slot-2}{#?}\\end{array}}{\\hskip10px\\class{cme-column-layout-slot-3}{#?}}', cls: 'template', directInsert: true, focusSlotGroup: 'column-layout', icon: 'product-array-template-image', title: 'Column Multiplication' },
     { label: 'mixed-fraction', insert: '\\begin{array}{@{\\hspace{3px}}rl}\\class{cme-mixed-fraction-whole}{#?}\\, & \\kern-10mu\\class{cme-mixed-fraction-slot}{#?}\\\\\\kern0pt & \\kern-10mu\\class{cme-mixed-fraction-denominator}{#?}\\end{array}', cls: 'template', directInsert: true, icon: 'mixed-fraction-template-image', title: 'Mixed Fraction' },
     { label: 'array-cc', insert: '\\begin{array}{rl}\\class{cme-split-fraction-left}{#?}\\, & \\kern-10mu\\class{cme-split-fraction-slot}{#?}\\\\\\class{cme-split-fraction-left}{#?}\\, & \\kern-10mu\\class{cme-split-fraction-denominator}{#?}\\end{array}', cls: 'template', directInsert: true, icon: 'array-cc-template-image', title: 'Split Column With Fraction' },
-    { label: (
-      <svg width="26" height="30" viewBox="0 0 64 72" fill="none" stroke="currentColor" strokeWidth="3" style={{ display: 'inline-block', verticalAlign: 'middle', color: '#2E7D32' }}>
-        <rect x="40" y="0" width="10" height="16" rx="1" />
-        <line x1="30" y1="20" x2="54" y2="20" stroke="#222" strokeWidth="4" strokeLinecap="round" />
-        <path d="M26 18C34 25 34 47 26 54" stroke="#222" strokeWidth="4" fill="none" />
-        <rect x="6" y="28" width="10" height="16" rx="1" />
-        <rect x="40" y="28" width="10" height="16" rx="1" />
-        <rect x="40" y="52" width="10" height="16" rx="1" />
-      </svg>
-    ), insert: '\\class{cme-longdiv-wrapper}{\\class{cme-longdiv-divisor}{#?}\\class{cme-longdiv-quotient}{#?}\\class{cme-longdiv-dividend}{#?}\\class{cme-longdiv-remainder}{#?}}', cls: 'template', directInsert: true, action: 'INSERT_CUSTOM', focusFirstPlaceholder: true, title: 'Division With Remainder' },
-  ],
+    { label: 'longdiv', insert: '\\class{cme-longdiv-wrapper}{\\class{cme-longdiv-divisor}{#?}\\class{cme-longdiv-quotient}{#?}\\class{cme-longdiv-dividend}{#?}\\class{cme-longdiv-remainder}{#?}}', cls: 'template', directInsert: true, action: 'INSERT_CUSTOM', focusFirstPlaceholder: true, title: 'Division With Remainder', icon: 'division-remainder-template-image' },
+  ], 
 };
 
 function makeRelationMorePicker(picker, title = 'More Symbols') {
@@ -8388,7 +8379,9 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
 
     const hasPlaceholders = /#(?:\d+|\?|@)/.test(sym);
     const currentSelection = mf.selection || mf.model?.selection;
-    const shouldAdvanceToPrimarySlot = !options.focusFirstPlaceholder && !hasExpandedMathSelection(currentSelection);
+    const hasExpandedSelection = hasExpandedMathSelection(currentSelection);
+    const shouldReplaceSelection = hasPlaceholders || hasExpandedSelection;
+    const shouldAdvanceToPrimarySlot = !options.focusFirstPlaceholder && !hasExpandedSelection;
     const primarySlotAdvanceCount = shouldAdvanceToPrimarySlot
       ? countPlaceholdersBeforePrimarySlot(sym)
       : 0;
@@ -8398,7 +8391,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     if (typeof mf.insert === 'function') {
       mf.insert(sym, {
         format: 'latex',
-        insertionMode: 'replaceSelection',
+        insertionMode: shouldReplaceSelection ? 'replaceSelection' : 'insert',
         selectionMode: hasPlaceholders ? 'placeholder' : 'after',
         ...(insertStyle ? { style: insertStyle } : {}),
       });
