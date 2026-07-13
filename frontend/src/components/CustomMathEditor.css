@@ -2127,15 +2127,18 @@ math-field.cme-mathfield:focus-within {
 
 math-field.cme-mathfield::part(container) {
   min-height: 100%;
-  align-items: flex-start;
-  overflow: auto;
+  align-items: center;
+  overflow: hidden;
 }
 
 math-field.cme-mathfield::part(content) {
   min-width: 0;
   min-height: 100%;
   overflow-x: auto;
-  overflow-y: auto;
+  overflow-y: hidden;
+  box-sizing: border-box !important;
+  padding-top: 0.35em !important;
+  padding-bottom: 0.35em !important;
 }
 
 math-field.cme-mathfield--rtl::part(container) {
@@ -2899,3 +2902,24 @@ math-field.cme-main-mathfield::part(menu-toggle) {
   transform: translateY(1px);
 }
 
+/* Ensure all math-field elements calculate layout naturally and do not clip */
+math-field {
+  contain: none !important;
+}
+
+math-field::part(container) {
+  overflow: visible !important;
+}
+
+math-field::part(content) {
+  box-sizing: border-box !important;
+  overflow: visible !important;
+  padding-top: 0.35em !important;
+  padding-bottom: 0.35em !important;
+}
+
+math-field::part(scrollbar),
+math-field::part(scroll-button),
+math-field::part(scroll-indicator) {
+  display: none !important;
+}

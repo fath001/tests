@@ -293,9 +293,9 @@ const MATH_GROUPS = [
   {
     label: '□/□', isTemplate: true, items: [
       { label: 'a/b', insert: '\\frac{#0}{#?}', title: 'Fraction', icon: 'fraction-template-image' },
-      { label: '□/□', insert: '\\htmlStyle{display:inline-block;position:relative;top:-0.28em;padding:0 0.06em;min-width:0.54em;line-height:1;text-align:center;}{#0}\\htmlStyle{display:inline-block;position:relative;top:0.02em;font-size:1.3em;line-height:0.9;padding:0;color:#111;}{/}\\htmlStyle{display:inline-block;position:relative;top:0.28em;padding:0 0.06em;min-width:0.54em;line-height:1;text-align:center;}{#?}', title: 'Bevelled Fraction', cls: 'green-template black-glyph-template', icon: 'bevelled-fraction-offset-template-image' },
+      { label: '□/□', insert: '\\htmlStyle{display:inline-block;vertical-align:0.28em;padding:0 0.06em;min-width:0.54em;line-height:1;text-align:center;}{#0}\\htmlStyle{display:inline-block;vertical-align:-0.02em;font-size:1.3em;line-height:0.9;padding:0;color:#111;}{/}\\htmlStyle{display:inline-block;vertical-align:-0.28em;padding:0 0.06em;min-width:0.54em;line-height:1;text-align:center;}{#?}', title: 'Bevelled Fraction', cls: 'green-template black-glyph-template', icon: 'bevelled-fraction-offset-template-image' },
       { label: 'a/b', insert: '\\htmlStyle{font-size:0.68em;}{\\frac{#0}{#?}}', title: 'Small Fraction', icon: 'small-fraction-template-image' },
-      { label: '□/□', insert: '\\htmlStyle{display:inline-block;position:relative;top:-0.18em;padding:0 0.03em;min-width:0.38em;line-height:1;font-size:0.78em;text-align:center;}{#0}\\htmlStyle{display:inline-block;position:relative;top:0.01em;font-size:1.05em;line-height:0.9;padding:0;color:#111;}{/}\\htmlStyle{display:inline-block;position:relative;top:0.18em;padding:0 0.03em;min-width:0.38em;line-height:1;font-size:0.78em;text-align:center;}{#?}', title: 'Small Bevelled Fraction', cls: 'green-template black-placeholder-glyph', icon: 'small-bevelled-fraction-template-image' },
+      { label: '□/□', insert: '\\htmlStyle{display:inline-block;vertical-align:0.18em;padding:0 0.03em;min-width:0.38em;line-height:1;font-size:0.78em;text-align:center;}{#0}\\htmlStyle{display:inline-block;vertical-align:-0.01em;font-size:1.05em;line-height:0.9;padding:0;color:#111;}{/}\\htmlStyle{display:inline-block;vertical-align:-0.18em;padding:0 0.03em;min-width:0.38em;line-height:1;font-size:0.78em;text-align:center;}{#?}', title: 'Small Bevelled Fraction', cls: 'green-template black-placeholder-glyph', icon: 'small-bevelled-fraction-template-image' },
       { type: 'sep', cols: 4 },
       { label: '√x', insert: '\\sqrt{#0}', title: 'Square Root', icon: 'sqrt-template-image' },
       { label: 'ⁿ√x', insert: '{}^{#?}\\!\\sqrt{#0}', title: 'Nth Root', icon: 'nth-root-template-image', focusFirstPlaceholder: true },
@@ -1598,7 +1598,7 @@ const ORDERED_MATH_GROUPS = [
     items: [
       // GROUP 1 - Fractions & Roots (cols: 2)
       { label: '□/□', insert: '\\frac{#0}{#?}', title: 'Fraction', cls: 'green-template black-glyph-template', icon: 'stacked-fraction' },
-      { label: '□/□', insert: '\\htmlStyle{display:inline-block;position:relative;top:-0.28em;padding:0 0.06em;min-width:0.54em;line-height:1;text-align:center;}{#0}\\htmlStyle{display:inline-block;position:relative;top:0.02em;font-size:1.3em;line-height:0.9;padding:0;color:#111;}{/}\\htmlStyle{display:inline-block;position:relative;top:0.28em;padding:0 0.06em;min-width:0.54em;line-height:1;text-align:center;}{#?}', title: 'Bevelled Fraction', cls: 'green-template black-glyph-template', icon: 'bevelled-fraction-offset-template-image' },
+      { label: '□/□', insert: '\\htmlStyle{display:inline-block;vertical-align:0.28em;padding:0 0.06em;min-width:0.54em;line-height:1;text-align:center;}{#0}\\htmlStyle{display:inline-block;vertical-align:-0.02em;font-size:1.3em;line-height:0.9;padding:0;color:#111;}{/}\\htmlStyle{display:inline-block;vertical-align:-0.28em;padding:0 0.06em;min-width:0.54em;line-height:1;text-align:center;}{#?}', title: 'Bevelled Fraction', cls: 'green-template black-glyph-template', icon: 'bevelled-fraction-offset-template-image' },
       { label: '√□', insert: '\\sqrt{#0}', title: 'Square Root', cls: 'green-template black-glyph-template', icon: 'square-root-template' },
       { label: '□√□', insert: '{}^{#?}\\!\\sqrt{#0}', title: 'Root', cls: 'green-template black-glyph-template', icon: 'nth-root-template', focusFirstPlaceholder: true },
       { type: 'sep', cols: 2 },
@@ -1955,10 +1955,10 @@ function serializeChemValue(latex = '') {
 
 const EMPTY_MATH_SLOT_LATEX = '\\phantom{0}';
 
-const BEVELLED_FRACTION_SLASH_LATEX_PATTERN = /\\htmlStyle\{display:inline-block;position:relative;top:0\.02em;font-size:1\.3em;line-height:0\.9;padding:0;color:#(?:111|fff);\}\{\/\}/g;
-const BEVELLED_FRACTION_SLASH_LATEX = '\\class{cme-bevelled-fraction-slash}{\\htmlStyle{display:inline-block;position:relative;top:0.02em;font-size:1.3em;line-height:0.9;padding:0;color:#fff;}{/}}';
-const BEVELLED_FRACTION_SLASH_CLASS_LATEX_PATTERN = /\\class\{cme-bevelled-fraction-slash\}\{\\htmlStyle\{display:inline-block;position:relative;top:0\.02em;font-size:1\.3em;line-height:0\.9;padding:0;color:#(?:111|fff);\}\{\/\}\}/g;
-const BEVELLED_FRACTION_SLASH_EDITOR_LATEX = '\\htmlStyle{display:inline-block;position:relative;top:0.02em;font-size:1.3em;line-height:0.9;padding:0;color:#111;}{/}';
+const BEVELLED_FRACTION_SLASH_LATEX_PATTERN = /\\htmlStyle\{display:inline-block;vertical-align:-0\.02em;font-size:1\.3em;line-height:0\.9;padding:0;color:#(?:111|fff);\}\{\/\}/g;
+const BEVELLED_FRACTION_SLASH_LATEX = '\\class{cme-bevelled-fraction-slash}{\\htmlStyle{display:inline-block;vertical-align:-0.02em;font-size:1.3em;line-height:0.9;padding:0;color:#fff;}{/}}';
+const BEVELLED_FRACTION_SLASH_CLASS_LATEX_PATTERN = /\\class\{cme-bevelled-fraction-slash\}\{\\htmlStyle\{display:inline-block;vertical-align:-0\.02em;font-size:1\.3em;line-height:0\.9;padding:0;color:#(?:111|fff);\}\{\/\}\}/g;
+const BEVELLED_FRACTION_SLASH_EDITOR_LATEX = '\\htmlStyle{display:inline-block;vertical-align:-0.02em;font-size:1.3em;line-height:0.9;padding:0;color:#111;}{/}';
 
 function normalizeBevelledFractionSlash(latex = '') {
   const value = String(latex || '');
@@ -2028,9 +2028,27 @@ function renderEmptyMathPlaceholders(latex = '') {
 const MATH_FIELD_SHADOW_STYLE_ID = 'cme-math-field-shadow-style';
 const MATH_FIELD_SHADOW_CSS = `
 :host {
+  contain: none !important;
   font-family: Helvetica, Arial, sans-serif !important;
   --text-font-family: Helvetica, Arial, sans-serif;
   --math-font-family: Helvetica, Arial, sans-serif;
+}
+
+.ML__container {
+  overflow: visible !important;
+}
+
+.ML__content {
+  box-sizing: border-box !important;
+  overflow: visible !important;
+  padding-top: 0.35em !important;
+  padding-bottom: 0.35em !important;
+}
+
+.ML__scrollbar,
+.ML__scroll-button,
+.ML__scroll-indicator {
+  display: none !important;
 }
 
 /* Force all math letters and text to use Helvetica */
@@ -3667,7 +3685,7 @@ const TOOLBAR_ICON_IMAGES = {
       <rect x="20" y="20" width="8" height="10" stroke="#0B7D1E" stroke-width="2.5" opacity="1"/>
     </svg>
   `),
-    'right-sup-sub-template-image-1': makeToolbarIconImage(`
+  'right-sup-sub-template-image-1': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
       <rect x="8" y="10" width="7" height="10" stroke="#0B7D1E" stroke-width="2"/>
       <rect x="17" y="2" width="5" height="8" stroke="#0B7D1E" stroke-width="2" opacity="1"/>
@@ -3693,7 +3711,7 @@ const TOOLBAR_ICON_IMAGES = {
       <rect x="16" y="10" width="10" height="14" stroke="#0B7D1E" stroke-width="2.5"/>
     </svg>
   `),
-    'left-sup-sub-template-image-1': makeToolbarIconImage(`
+  'left-sup-sub-template-image-1': makeToolbarIconImage(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 36" fill="none">
       <rect x="7.8" y="2" width="6" height="9" stroke="#0B7D1E" stroke-width="2.2" opacity="1"/>
       <rect x="7.8" y="22" width="6" height="9" stroke="#0B7D1E" stroke-width="2.2" opacity="1"/>

@@ -79,6 +79,27 @@ function renderEmptyMathPlaceholders(latex = "") {
 
 const MATH_FIELD_SHADOW_STYLE_ID = "cme-math-field-shadow-style";
 const MATH_FIELD_SHADOW_CSS = `
+:host {
+  contain: none !important;
+}
+
+.ML__container {
+  overflow: visible !important;
+}
+
+.ML__content {
+  box-sizing: border-box !important;
+  overflow: visible !important;
+  padding-top: 0.35em !important;
+  padding-bottom: 0.35em !important;
+}
+
+.ML__scrollbar,
+.ML__scroll-button,
+.ML__scroll-indicator {
+  display: none !important;
+}
+
 .cme-not-identical-symbol {
   display: inline-block;
   position: relative;

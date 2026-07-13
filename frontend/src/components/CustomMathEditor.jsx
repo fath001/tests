@@ -68,9 +68,27 @@ function buildMatrixInsertLatex(type, rows, cols) {
 const CME_MATRIX_SHADOW_STYLE_ID = 'cme-matrix-shadow-style';
 const CME_MATRIX_SHADOW_CSS = `
 :host {
+  contain: none !important;
   font-family: Helvetica, Arial, sans-serif !important;
   --text-font-family: Helvetica, Arial, sans-serif;
   --math-font-family: Helvetica, Arial, sans-serif;
+}
+
+.ML__container {
+  overflow: visible !important;
+}
+
+.ML__content {
+  box-sizing: border-box !important;
+  overflow: visible !important;
+  padding-top: 0.35em !important;
+  padding-bottom: 0.35em !important;
+}
+
+.ML__scrollbar,
+.ML__scroll-button,
+.ML__scroll-indicator {
+  display: none !important;
 }
 
 /* Force all math letters and text to use Helvetica */
