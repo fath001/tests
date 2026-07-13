@@ -504,10 +504,10 @@ const MATH_GROUPS = [
 
 
       { type: 'sep', cols: 2 },
-      { label: 'cases', insert: '\\class{cme-cases-left-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-template-image', title: 'Cases' },
-      { label: 'rcases', insert: '\\class{cme-cases-right-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'rcases-template-image', title: 'Right Cases' },
-      { label: 'cases-2x2', insert: '\\class{cme-cases-left-template cme-cases-2x2-template}{\\begin{array}{cc} #? & #? \\\\[0.18em] #? & #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-two-by-two-template-image', title: 'Cases 2x2' },
-      { label: 'aligned', insert: '\\begin{aligned} #? &= #? \\\\ #? &= #? \\end{aligned}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'aligned-equals-template-image', title: 'Aligned Equations' },
+      { label: 'cases', insert: '\\class{cme-cases-left-template cme-downward-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-template-image', title: 'Cases' },
+      { label: 'rcases', insert: '\\class{cme-cases-right-template cme-downward-template}{\\begin{array}{c} #? \\\\[0.18em] #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'rcases-template-image', title: 'Right Cases' },
+      { label: 'cases-2x2', insert: '\\class{cme-cases-left-template cme-cases-2x2-template cme-downward-template}{\\begin{array}{cc} #? & #? \\\\[0.18em] #? & #? \\end{array}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'cases-two-by-two-template-image', title: 'Cases 2x2' },
+      { label: 'aligned', insert: '\\class{cme-downward-template}{\\begin{aligned} #? &= #? \\\\ #? &= #? \\end{aligned}}', cls: 'template matrix-roomy-template matrix-tall-template', directInsert: true, icon: 'aligned-equals-template-image', title: 'Aligned Equations' },
       { label: '⋮', insert: '\\vdots', title: 'Vertical ellipsis', icon: 'vertical-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '⋯', insert: '\\cdots', title: 'Midline ellipsis', icon: 'midline-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
       { label: '⋰', insert: '⋰', title: 'Up-right diagonal ellipsis', icon: 'upright-ellipsis-template-image', cls: 'matrix-roomy-template matrix-tall-template', directInsert: true },
@@ -2746,12 +2746,17 @@ const MATH_FIELD_SHADOW_CSS = `
   transform: scaleX(-1);
 }
 
+.cme-downward-template {
+  display: inline-block;
+  vertical-align: top;
+}
+
 .cme-cases-left-template,
 .cme-cases-right-template {
   display: inline-block;
   position: relative;
   line-height: 1;
-  vertical-align: 0.48em;
+  vertical-align: top;
 }
 
 .cme-cases-left-template {
@@ -8410,29 +8415,45 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
 
 
 
-  /* ── Auto-scroll caret into view ── */
+  const scrollPopupSelectionIntoView = useCallback(() => {
+    setTimeout(() => {
+      const popupMf = popupMfRef.current;
+      if (!popupMf) return;
+
+      const shadow = popupMf.shadowRoot;
+      const caret = shadow?.querySelector('.ML__caret') || shadow?.querySelector('[class*="caret"]');
+      caret?.scrollIntoView?.({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
+
+      const container = popupMf.closest?.('.cme-mathfield-container');
+      const anchor = caret || shadow?.querySelector('.ML__placeholder') || popupMf;
+      const anchorRect = anchor?.getBoundingClientRect?.();
+      const containerRect = container?.getBoundingClientRect?.();
+      if (!container || !anchorRect || !containerRect) return;
+
+      const topOverflow = containerRect.top + 12 - anchorRect.top;
+      const bottomOverflow = anchorRect.bottom - (containerRect.bottom - 12);
+      if (topOverflow > 0) {
+        container.scrollTop -= topOverflow;
+      } else if (bottomOverflow > 0) {
+        container.scrollTop += bottomOverflow;
+      }
+    }, 0);
+  }, []);
+
+  /* Auto-scroll caret into view */
   useEffect(() => {
     const popupMf = popupMfRef.current;
     if (!popupMf) return;
 
     const handleSelectionChange = () => {
-      // Small timeout to let MathLive update the DOM caret position first
-      setTimeout(() => {
-        const shadow = popupMf.shadowRoot;
-        if (!shadow) return;
-        const caret = shadow.querySelector('.ML__caret') || shadow.querySelector('[class*="caret"]');
-        if (caret) {
-          caret.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
-        }
-        updateActiveStyles();
-      }, 0);
+      scrollPopupSelectionIntoView();
+      updateActiveStyles();
     };
 
     popupMf.addEventListener('selection-change', handleSelectionChange);
     popupMf.addEventListener('input', handleSelectionChange);
     popupMf.addEventListener('keydown', handleSelectionChange);
 
-    // Initial check
     setTimeout(updateActiveStyles, 50);
 
     return () => {
@@ -8440,7 +8461,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       popupMf.removeEventListener('input', handleSelectionChange);
       popupMf.removeEventListener('keydown', handleSelectionChange);
     };
-  }, [updateActiveStyles]);
+  }, [scrollPopupSelectionIntoView, updateActiveStyles]);
 
   const insertAtCursor = useCallback((sym, options = {}) => {
     const mf = popupMfRef.current;
@@ -8481,8 +8502,9 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
       if (!preserveMathStyle) {
         applyCurrentTypingStyles(activeStyles);
       }
+      scrollPopupSelectionIntoView();
     });
-  }, [activeGroupConfig.id, activeStyles, applyCurrentTypingStyles, mode]);
+  }, [activeGroupConfig.id, activeStyles, applyCurrentTypingStyles, mode, scrollPopupSelectionIntoView]);
   const insertSpacingToolAtCursor = useCallback((sym) => {
     const mf = popupMfRef.current;
     if (!mf) return;
@@ -10466,3 +10488,4 @@ function CkEditor({ value, onChange, className = '' }) {
 }
 
 export default CkEditor;
+
