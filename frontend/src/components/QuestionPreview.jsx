@@ -660,6 +660,49 @@ function appendHtmlContent(parent, html, tone = "dark") {
     "FIGCAPTION",
     "COLGROUP",
     "COL",
+    "MATH",
+    "MACTION",
+    "MALIGNGROUP",
+    "MALIGNMARK",
+    "MENCLOSE",
+    "MERROR",
+    "MFENCED",
+    "MFRAC",
+    "MGLYPH",
+    "MI",
+    "MLABELEDTR",
+    "MLONGDIV",
+    "MMULTISCRIPTS",
+    "MN",
+    "MO",
+    "MOVER",
+    "MPADDED",
+    "MPHANTOM",
+    "MPRESCRIPTS",
+    "MROOT",
+    "MROW",
+    "MS",
+    "MSCARRIES",
+    "MSCARRY",
+    "MSGROUP",
+    "MSLINE",
+    "MSPACE",
+    "MSQRT",
+    "MSROW",
+    "MSTACK",
+    "MSTYLE",
+    "MSUB",
+    "MSUP",
+    "MSUBSUP",
+    "MTABLE",
+    "MTD",
+    "MTEXT",
+    "MTR",
+    "MUNDER",
+    "MUNDEROVER",
+    "MSEMANTICS",
+    "ANNOTATION",
+    "ANNOTATION-XML",
   ]);
 
   const copy = (src, dest) => {
@@ -667,7 +710,7 @@ function appendHtmlContent(parent, html, tone = "dark") {
       if (node.nodeType === Node.TEXT_NODE) {
         dest.appendChild(document.createTextNode(node.textContent));
       } else if (node.nodeType === Node.ELEMENT_NODE) {
-        const tag = node.nodeName;
+        const tag = node.nodeName.toUpperCase();
 
         if (tag === "MATH-FIELD") {
           const latex =
@@ -690,8 +733,17 @@ function appendHtmlContent(parent, html, tone = "dark") {
           span.textContent = node.textContent;
           dest.appendChild(span);
         } else if (allowed.has(tag)) {
+          const isMathML =
+            tag === "MATH" ||
+            tag === "SEMANTICS" ||
+            tag === "ANNOTATION" ||
+            tag === "ANNOTATION-XML" ||
+            tag.startsWith("M");
+
           const map = { STRONG: "b", EM: "i" };
-          const el = document.createElement(map[tag] || tag.toLowerCase());
+          const el = isMathML
+            ? document.createElementNS("http://www.w3.org/1998/Math/MathML", tag.toLowerCase())
+            : document.createElement(map[tag] || tag.toLowerCase());
 
           if (tag === "A" && node.getAttribute("href")) {
             el.setAttribute("href", node.getAttribute("href"));
@@ -699,15 +751,21 @@ function appendHtmlContent(parent, html, tone = "dark") {
             el.setAttribute("rel", "noopener noreferrer");
           }
 
-          ["class", "colspan", "rowspan"].forEach((attr) => {
-            if (node.getAttribute(attr)) {
-              el.setAttribute(attr, node.getAttribute(attr));
-            }
-          });
+          if (isMathML) {
+            Array.from(node.attributes).forEach((attr) => {
+              el.setAttribute(attr.name, attr.value);
+            });
+          } else {
+            ["class", "colspan", "rowspan"].forEach((attr) => {
+              if (node.getAttribute(attr)) {
+                el.setAttribute(attr, node.getAttribute(attr));
+              }
+            });
 
-          const sanitizedStyle = sanitizeInlineStyle(node.getAttribute("style") || "");
-          if (sanitizedStyle) {
-            el.setAttribute("style", sanitizedStyle);
+            const sanitizedStyle = sanitizeInlineStyle(node.getAttribute("style") || "");
+            if (sanitizedStyle) {
+              el.setAttribute("style", sanitizedStyle);
+            }
           }
 
           copy(node, el);
@@ -725,6 +783,47 @@ function appendHtmlContent(parent, html, tone = "dark") {
   while (clean.firstChild) {
     parent.appendChild(clean.firstChild);
   }
+}
+
+function loadMathJax() {
+  if (typeof window === "undefined") return Promise.reject();
+  if (window.MathJax && window.MathJax.typesetPromise) {
+    return Promise.resolve(window.MathJax);
+  }
+  return new Promise((resolve, reject) => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        startup: {
+          typeset: false
+        }
+      };
+    }
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+    script.async = true;
+    script.id = "mathjax-script";
+    script.onload = () => {
+      resolve(window.MathJax);
+    };
+    script.onerror = (err) => {
+      reject(err);
+    };
+    document.head.appendChild(script);
+  });
+}
+
+function typesetMathML(container) {
+  if (!container) return;
+  const mathElements = Array.from(container.querySelectorAll("math"));
+  if (mathElements.length === 0) return;
+
+  loadMathJax()
+    .then((mj) => {
+      if (mj && mj.typesetPromise) {
+        mj.typesetPromise(mathElements).catch((err) => console.log(err));
+      }
+    })
+    .catch((err) => console.log("Failed to load MathJax", err));
 }
 
 export default function QuestionPreview({ value = "", className = "", tone = "dark" }) {
@@ -767,6 +866,8 @@ export default function QuestionPreview({ value = "", className = "", tone = "da
         span.replaceWith(createPreviewMathField(latex, tone));
       }
     });
+
+    typesetMathML(el);
   }, [tone, value]);
 
   return (
