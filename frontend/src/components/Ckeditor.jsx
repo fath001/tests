@@ -2038,6 +2038,11 @@ const MATH_FIELD_SHADOW_CSS = `
   overflow: visible !important;
 }
 
+:host(.cme-mathfield) .ML__container {
+  align-items: flex-start !important;
+  overflow: visible !important;
+}
+
 .ML__content {
   box-sizing: border-box !important;
   overflow: visible !important;
@@ -2045,9 +2050,9 @@ const MATH_FIELD_SHADOW_CSS = `
   padding-bottom: 0.35em !important;
 }
 
-.ML__scrollbar,
-.ML__scroll-button,
-.ML__scroll-indicator {
+:host(:not(.cme-mathfield)) .ML__scrollbar,
+:host(:not(.cme-mathfield)) .ML__scroll-button,
+:host(:not(.cme-mathfield)) .ML__scroll-indicator {
   display: none !important;
 }
 
@@ -2774,7 +2779,18 @@ const MATH_FIELD_SHADOW_CSS = `
   display: inline-block;
   position: relative;
   line-height: 1;
-  vertical-align: middle;
+  vertical-align: -0.35em;
+  padding-top: 0.15em;
+  padding-bottom: 0.35em;
+}
+
+.cme-cases-left-template .cme-cases-left-template,
+.cme-cases-left-template .cme-cases-right-template,
+.cme-cases-right-template .cme-cases-left-template,
+.cme-cases-right-template .cme-cases-right-template {
+  vertical-align: -0.35em;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .cme-cases-left-template {
@@ -8497,8 +8513,17 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
     const insertStyle = options.insertStyle || (allowSelectedFontForInsert ? null : DEFAULT_FONT_STYLE);
 
     const hasPlaceholders = /#(?:\d+|\?|@)/.test(sym);
-    const currentSelection = mf.selection || mf.model?.selection;
-    const hasExpandedSelection = hasExpandedMathSelection(currentSelection);
+    let currentSelection = mf.selection || mf.model?.selection;
+    let hasExpandedSelection = hasExpandedMathSelection(currentSelection);
+
+    if (options.insertAfterSelection && typeof mf.executeCommand === 'function') {
+      try {
+        mf.executeCommand('moveToMathfieldEnd');
+        currentSelection = mf.selection || mf.model?.selection;
+        hasExpandedSelection = hasExpandedMathSelection(currentSelection);
+      } catch { }
+    }
+
     const shouldReplaceSelection = hasPlaceholders || hasExpandedSelection;
     const shouldAdvanceToPrimarySlot = !options.focusFirstPlaceholder && !hasExpandedSelection;
     const primarySlotAdvanceCount = shouldAdvanceToPrimarySlot
@@ -8614,7 +8639,7 @@ function MathChemPopup({ mode, onInsert, onClose, initialLatex, initialDirection
   }, []);
 
   const handleMatrixInsert = useCallback((type, rows, cols) => {
-    insertAtCursor(buildMatrixInsertLatex(type, rows, cols));
+    insertAtCursor(buildMatrixInsertLatex(type, rows, cols), { insertAfterSelection: true });
   }, [insertAtCursor]);
 
   const handleInsert = () => {

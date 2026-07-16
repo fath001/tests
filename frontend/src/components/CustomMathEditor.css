@@ -2087,9 +2087,9 @@ math-field.cme-mathfield {
   display: block;
   width: 100%;
   min-width: 0;
-  height: 100%;
+  height: auto;
   min-height: 100%;
-  overflow: auto;
+  overflow: visible;
   scrollbar-width: thin;
   scrollbar-color: #9baebb #edf2f6;
   padding: 10px 12px;
@@ -2127,15 +2127,14 @@ math-field.cme-mathfield:focus-within {
 
 math-field.cme-mathfield::part(container) {
   min-height: 100%;
-  align-items: center;
-  overflow: hidden;
+  align-items: flex-start;
+  overflow: visible;
 }
 
 math-field.cme-mathfield::part(content) {
   min-width: 0;
   min-height: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: visible;
   box-sizing: border-box !important;
   padding-top: 0.35em !important;
   padding-bottom: 0.35em !important;
@@ -2918,8 +2917,8 @@ math-field::part(content) {
   padding-bottom: 0.35em !important;
 }
 
-math-field::part(scrollbar),
-math-field::part(scroll-button),
-math-field::part(scroll-indicator) {
+math-field:not(.cme-mathfield)::part(scrollbar),
+math-field:not(.cme-mathfield)::part(scroll-button),
+math-field:not(.cme-mathfield)::part(scroll-indicator) {
   display: none !important;
 }

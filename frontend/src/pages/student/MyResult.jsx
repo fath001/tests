@@ -543,7 +543,9 @@ const MATH_FIELD_SHADOW_CSS = `
   display: inline-block;
   position: relative;
   line-height: 1;
-  vertical-align: middle;
+  vertical-align: -0.35em;
+  padding-top: 0.15em;
+  padding-bottom: 0.35em;
 }
 
 .cme-cases-left-template {
