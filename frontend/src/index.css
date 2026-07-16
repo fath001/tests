@@ -1157,7 +1157,9 @@ input[type="datetime-local"] {
 
 .admin-preview-modal-footer {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
+  gap: 12px;
   margin-top: 24px;
 }
 
@@ -1165,6 +1167,27 @@ input[type="datetime-local"] {
   min-width: 112px;
   min-height: 44px;
   border-radius: 12px;
+}
+
+.admin-preview-sheet,
+.admin-preview-spreadsheet {
+  min-width: 168px;
+  min-height: 44px;
+  border-radius: 12px;
+}
+
+.admin-preview-sheet-status {
+  color: #d8dcef;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.admin-preview-sheet-status.success {
+  color: #77f2b2;
+}
+
+.admin-preview-sheet-status.error {
+  color: #ff9ba7;
 }
 
 .admin-preview-empty {
@@ -1188,11 +1211,15 @@ input[type="datetime-local"] {
   }
 
   .admin-preview-close,
+  .admin-preview-sheet,
+  .admin-preview-spreadsheet,
   .admin-preview-launch {
     width: 100%;
   }
 
   .admin-preview-modal-footer {
+    align-items: stretch;
+    flex-direction: column;
     justify-content: stretch;
   }
 }

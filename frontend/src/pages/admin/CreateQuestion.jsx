@@ -5,6 +5,7 @@ import CkEditor from "../../components/Ckeditor";
 import Navbar from "../../components/Navbar";
 import QuestionPreview from "../../components/QuestionPreview";
 import API from "../../services/api";
+import { questionHtmlToSpreadsheetText, latexToUnicodeMath, questionHtmlToUnicodeMath } from "../../utils/questionExport";
 
 export default function CreateQuestion() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,6 +17,8 @@ export default function CreateQuestion() {
   const [options, setOptions] = useState({ A: "", B: "", C: "", D: "" });
   const [correctAnswer, setCorrectAnswer] = useState("A");
   const [showQuestionPreview, setShowQuestionPreview] = useState(false);
+  const [sheetExportStatus, setSheetExportStatus] = useState("idle");
+  const [spreadsheetExportStatus, setSpreadsheetExportStatus] = useState("idle");
 
   const selectedExam = useMemo(
     () => exams.find((exam) => exam._id === selectedExamId),
@@ -138,6 +141,81 @@ export default function CreateQuestion() {
     } catch (error) {
       console.log(error);
       alert(error.response?.data?.message || "Question create failed");
+    }
+  };
+  const handleExportPreviewToSheet = async () => {
+    if (!question.trim()) {
+      alert("Type your question before exporting it.");
+      return;
+    }
+
+    try {
+      setSheetExportStatus("saving");
+      const token = localStorage.getItem("token");
+      const payloadOptions =
+        questionType === "true_false"
+          ? { A: "True", B: "False" }
+          : options;
+      await API.post(
+        "/questions/export-to-sheets",
+        {
+          examId: selectedExamId,
+          examName: selectedExam?.name || "",
+          questionHtml: question,
+          questionText: questionHtmlToSpreadsheetText(question),
+          questionType,
+          options: payloadOptions,
+          correctAnswer,
+        },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      setSheetExportStatus("saved");
+    } catch (error) {
+      console.log(error);
+      setSheetExportStatus("error");
+      alert(error.response?.data?.message || "Google Sheet export failed");
+    }
+  };
+
+  const handleExportToSpreadsheet = async () => {
+    if (!question.trim()) {
+      alert("Type your question before exporting it.");
+      return;
+    }
+
+    try {
+      setSpreadsheetExportStatus("saving");
+      const token = localStorage.getItem("token");
+      const payloadOptions =
+        questionType === "true_false"
+          ? { A: "True", B: "False" }
+          : options;
+
+      const convertedOptions = {};
+      for (const [key, val] of Object.entries(payloadOptions)) {
+        convertedOptions[key] = latexToUnicodeMath(val);
+      }
+
+      await API.post(
+        "/questions/export-to-sheets",
+        {
+          examId: selectedExamId,
+          examName: selectedExam?.name || "",
+          questionHtml: question,
+          questionText: questionHtmlToUnicodeMath(question),
+          questionType,
+          options: convertedOptions,
+          correctAnswer,
+        },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      setSpreadsheetExportStatus("saved");
+    } catch (error) {
+      console.log(error);
+      setSpreadsheetExportStatus("error");
+      alert(error.response?.data?.message || "Spreadsheet export failed");
     }
   };
 
@@ -292,7 +370,13 @@ export default function CreateQuestion() {
       </main>
 
       {showQuestionPreview && (
-        <div className="admin-preview-overlay" onClick={() => setShowQuestionPreview(false)}>
+        <div
+          className="admin-preview-overlay"
+          onClick={() => {
+            setShowQuestionPreview(false);
+            setSheetExportStatus("idle");
+          }}
+        >
           <div
             className="admin-preview-modal"
             role="dialog"
@@ -306,9 +390,12 @@ export default function CreateQuestion() {
                 type="button"
                 className="admin-preview-modal-dismiss"
                 aria-label="Close preview"
-                onClick={() => setShowQuestionPreview(false)}
+                onClick={() => {
+                  setShowQuestionPreview(false);
+                  setSheetExportStatus("idle");
+                }}
               >
-                ×
+                x
               </button>
             </div>
             <div className="admin-preview-modal-divider" />
@@ -324,8 +411,27 @@ export default function CreateQuestion() {
             <div className="admin-preview-modal-footer">
               <button
                 type="button"
+                className="button primary admin-preview-sheet"
+                onClick={handleExportPreviewToSheet}
+                disabled={sheetExportStatus === "saving" || !question.trim()}
+              >
+                {sheetExportStatus === "saving" ? "Adding..." : "Add to Google Sheet"}
+              </button>
+              {sheetExportStatus === "saved" && (
+                <span className="admin-preview-sheet-status success">Added to sheet</span>
+              )}
+              {sheetExportStatus === "error" && (
+                <span className="admin-preview-sheet-status error">Export failed</span>
+              )}
+
+              <button
+                type="button"
                 className="button secondary admin-preview-close"
-                onClick={() => setShowQuestionPreview(false)}
+                onClick={() => {
+                  setShowQuestionPreview(false);
+                  setSheetExportStatus("idle");
+                  setSpreadsheetExportStatus("idle");
+                }}
               >
                 Close
               </button>

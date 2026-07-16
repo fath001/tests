@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import "mathlive";
 import "../mathliveSetup";
+import { mathmlToLatex } from "../utils/questionExport";
 
 const MATH_OPEN = "\u00A7MATH\u00A7";
 const MATH_CLOSE = "\u00A7END\u00A7";
@@ -734,6 +735,13 @@ function appendHtmlContent(parent, html, tone = "dark") {
 
           span.textContent = node.textContent;
           dest.appendChild(span);
+        } else if (tag === "MATH") {
+          const latex = mathmlToLatex(node.outerHTML);
+          if (latex) {
+            dest.appendChild(createPreviewMathField(latex, tone));
+          } else {
+            copy(node, dest);
+          }
         } else if (allowed.has(tag)) {
           const isMathML =
             tag === "MATH" ||
