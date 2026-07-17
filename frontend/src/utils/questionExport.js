@@ -273,15 +273,19 @@ function tableToAsciiTable(node, converterFn) {
   if (grid.length === 0 || grid[0].length === 0) return "";
 
   const colCount = grid.reduce((max, r) => Math.max(max, r.length), 0);
-  const colWidths = new Array(colCount).fill(0);
+  const maxLenPerCol = new Array(colCount).fill(0);
 
   grid.forEach((row) => {
     row.forEach((cellText, colIdx) => {
-      colWidths[colIdx] = Math.max(colWidths[colIdx], cellText.length);
+      maxLenPerCol[colIdx] = Math.max(maxLenPerCol[colIdx], (cellText || "").length);
     });
   });
 
-  const divider = "+" + colWidths.map((w) => "-".repeat(w + 2)).join("+") + "+";
+  const colInnerWidths = maxLenPerCol.map((maxLen) => {
+    return maxLen === 1 ? 5 : maxLen + 2;
+  });
+
+  const divider = "+" + colInnerWidths.map((w) => "-".repeat(w)).join("+") + "+";
 
   const asciiRows = [divider];
 
@@ -289,10 +293,13 @@ function tableToAsciiTable(node, converterFn) {
     const formattedCells = [];
     for (let i = 0; i < colCount; i++) {
       const cellText = row[i] || "";
-      const width = colWidths[i];
-      const isNumeric = /^\d+(\.\d+)?$/.test(cellText);
-      const padded = isNumeric ? cellText.padStart(width) : cellText.padEnd(width);
-      formattedCells.push(` ${padded} `);
+      const targetWidth = colInnerWidths[i];
+      const totalPadding = targetWidth - cellText.length;
+      const leftPadding = Math.floor(totalPadding / 2);
+      const rightPadding = Math.ceil(totalPadding / 2);
+
+      const padded = " ".repeat(leftPadding) + cellText + " ".repeat(rightPadding);
+      formattedCells.push(padded);
     }
     asciiRows.push("|" + formattedCells.join("|") + "|");
     asciiRows.push(divider);
