@@ -258,6 +258,49 @@ export function mathmlToLatex(mathml = "") {
   }
 }
 
+function tableToAsciiTable(node, converterFn) {
+  const trs = Array.from(node.querySelectorAll("tr"));
+  if (trs.length === 0) return "";
+
+  const grid = trs.map((tr) => {
+    const cells = Array.from(tr.querySelectorAll("th, td"));
+    return cells.map((cell) => {
+      const cellContent = Array.from(cell.childNodes).map(converterFn).join("");
+      return cellContent.replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
+    });
+  });
+
+  if (grid.length === 0 || grid[0].length === 0) return "";
+
+  const colCount = grid.reduce((max, r) => Math.max(max, r.length), 0);
+  const colWidths = new Array(colCount).fill(0);
+
+  grid.forEach((row) => {
+    row.forEach((cellText, colIdx) => {
+      colWidths[colIdx] = Math.max(colWidths[colIdx], cellText.length);
+    });
+  });
+
+  const divider = "+" + colWidths.map((w) => "-".repeat(w + 2)).join("+") + "+";
+
+  const asciiRows = [divider];
+
+  grid.forEach((row) => {
+    const formattedCells = [];
+    for (let i = 0; i < colCount; i++) {
+      const cellText = row[i] || "";
+      const width = colWidths[i];
+      const isNumeric = /^\d+(\.\d+)?$/.test(cellText);
+      const padded = isNumeric ? cellText.padStart(width) : cellText.padEnd(width);
+      formattedCells.push(` ${padded} `);
+    }
+    asciiRows.push("|" + formattedCells.join("|") + "|");
+    asciiRows.push(divider);
+  });
+
+  return "\n" + asciiRows.join("\n") + "\n";
+}
+
 function nodeToSpreadsheetText(node) {
   if (node.nodeType === Node.TEXT_NODE) {
     return node.textContent || "";
@@ -291,17 +334,7 @@ function nodeToSpreadsheetText(node) {
   }
 
   if (tag === "TABLE") {
-    const trs = Array.from(node.querySelectorAll("tr"));
-    if (trs.length === 0) return "";
-    const rowsText = trs.map((tr) => {
-      const cells = Array.from(tr.querySelectorAll("th, td"));
-      const cellTexts = cells.map((cell) => {
-        const cellContent = Array.from(cell.childNodes).map(nodeToSpreadsheetText).join("");
-        return cellContent.replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
-      });
-      return cellTexts.join("\t");
-    });
-    return "\n" + rowsText.join("\n") + "\n";
+    return tableToAsciiTable(node, nodeToSpreadsheetText);
   }
 
   if (tag === "SUP") {
@@ -1115,17 +1148,7 @@ function nodeToUnicodeMath(node) {
   }
 
   if (tag === "TABLE") {
-    const trs = Array.from(node.querySelectorAll("tr"));
-    if (trs.length === 0) return "";
-    const rowsText = trs.map((tr) => {
-      const cells = Array.from(tr.querySelectorAll("th, td"));
-      const cellTexts = cells.map((cell) => {
-        const cellContent = Array.from(cell.childNodes).map(nodeToUnicodeMath).join("");
-        return cellContent.replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
-      });
-      return cellTexts.join("\t");
-    });
-    return "\n" + rowsText.join("\n") + "\n";
+    return tableToAsciiTable(node, nodeToUnicodeMath);
   }
 
   if (tag === "SUP") {
