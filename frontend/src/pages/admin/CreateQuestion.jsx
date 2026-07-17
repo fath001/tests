@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AdminTabs from "../../components/AdminTabs";
-import CkEditor from "../../components/Ckeditor";
+import { CKEditorWithMath as CkEditor, QuestionPreview } from "math-chem-ckeditor";
+import "math-chem-ckeditor/dist/style.css";
 import Navbar from "../../components/Navbar";
-import QuestionPreview from "../../components/QuestionPreview";
+
 import API from "../../services/api";
 import { questionHtmlToSpreadsheetText, latexToUnicodeMath, questionHtmlToUnicodeMath } from "../../utils/questionExport";
 

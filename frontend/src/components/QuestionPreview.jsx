@@ -32,8 +32,8 @@ function sanitizeInlineStyle(styleValue = "") {
 
 const EMPTY_MATH_SLOT_LATEX = "\\phantom{0}";
 
-const BEVELLED_FRACTION_SLASH_LATEX_PATTERN = /\\htmlStyle\{display:inline-block;vertical-align:-0\.02em;font-size:1\.3em;line-height:0\.9;padding:0;color:#(?:111|fff);\}\{\/\}/g;
-const BEVELLED_FRACTION_SLASH_LATEX = "\\class{cme-bevelled-fraction-slash}{\\htmlStyle{display:inline-block;vertical-align:-0.02em;font-size:1.3em;line-height:0.9;padding:0;color:#fff;}{/}}";
+const BEVELLED_FRACTION_SLASH_LATEX_PATTERN = /\\htmlStyle\{display:inline-block;vertical-align:-0\.02em;font-size:1\.3em;line-height:0\.9;padding:0(?:;color:#(?:111|fff))?;\}\{\/\}/g;
+const BEVELLED_FRACTION_SLASH_LATEX = "\\class{cme-bevelled-fraction-slash}{\\htmlStyle{display:inline-block;vertical-align:-0.02em;font-size:1.3em;line-height:0.9;padding:0;}{/}}";
 
 function normalizeBevelledFractionSlash(latex = "") {
   const value = String(latex || "");
@@ -64,9 +64,17 @@ const MATH_FIELD_SHADOW_STYLE_ID = "cme-math-field-shadow-style";
 const MATH_FIELD_SHADOW_CSS = `
 :host {
   contain: none !important;
+  font-family: Helvetica, Arial, sans-serif !important;
+  --text-font-family: Helvetica, Arial, sans-serif;
+  --math-font-family: Helvetica, Arial, sans-serif;
 }
 
 .ML__container {
+  overflow: visible !important;
+}
+
+:host(.cme-mathfield) .ML__container {
+  align-items: flex-start !important;
   overflow: visible !important;
 }
 
@@ -77,12 +85,43 @@ const MATH_FIELD_SHADOW_CSS = `
   padding-bottom: 0.35em !important;
 }
 
-.ML__scrollbar,
-.ML__scroll-button,
-.ML__scroll-indicator {
+:host(:not(.cme-mathfield)) .ML__scrollbar,
+:host(:not(.cme-mathfield)) .ML__scroll-button,
+:host(:not(.cme-mathfield)) .ML__scroll-indicator {
   display: none !important;
 }
 
+/* Force all math letters and text to use Helvetica */
+.ML__mathit,
+.ML__mathrm,
+.ML__text,
+.ML__cmr,
+.ML__mathsf,
+.ML__mathsfit {
+  font-family: Helvetica, Arial, sans-serif !important;
+}
+
+.ML__mathit {
+  font-style: italic !important;
+}
+
+.wide-circle,
+.wider-circle {
+  display: inline-block !important;
+  font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", "Times New Roman", serif !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  transform-origin: 50% 54% !important;
+  vertical-align: -0.03em !important;
+}
+
+.wide-circle {
+  transform: translateY(0.02em) scaleX(1.72) scaleY(1.08) !important;
+}
+
+.wider-circle {
+  transform: translateY(0.02em) scaleX(2.05) scaleY(1.08) !important;
+}
 .cme-not-identical-symbol {
   display: inline-block;
   position: relative;
@@ -300,6 +339,29 @@ const MATH_FIELD_SHADOW_CSS = `
   vertical-align: middle;
   white-space: nowrap;
 }
+.cme-stretch-hat {
+  display: inline-block;
+  position: relative;
+  inline-size: max-content;
+  max-inline-size: none;
+  min-width: 0.78em;
+  padding: 0.58em 0.08em 0;
+  line-height: 1.08;
+  white-space: nowrap;
+  box-sizing: content-box;
+}
+
+.cme-stretch-hat::before {
+  content: "";
+  position: absolute;
+  left: 0.02em;
+  right: 0.02em;
+  top: 0.08em;
+  height: 0.42em;
+  background: currentColor;
+  clip-path: polygon(0 100%, 50% 0, 100% 100%, calc(100% - 0.08em) 100%, 50% 0.16em, 0.08em 100%);
+  pointer-events: none;
+}
 .cme-mixed-fraction-whole,
 .cme-mixed-fraction-slot,
 .cme-mixed-fraction-denominator {
@@ -442,6 +504,252 @@ const MATH_FIELD_SHADOW_CSS = `
 .cme-vmatrix-template::after {
   right: 0.1em;
 }
+.cme-two-row-matrix-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+  padding-left: 0.72em;
+  padding-right: 0.72em;
+}
+
+.cme-two-row-matrix-template .ML__arraycolsep {
+  width: 0.16em !important;
+}
+
+.cme-bmatrix-two-row-template::before,
+.cme-bmatrix-two-row-template::after,
+.cme-pmatrix-two-row-template::before,
+.cme-pmatrix-two-row-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  height: 2.75em;
+  background: currentColor;
+  pointer-events: none;
+}
+
+.cme-bmatrix-two-row-template {
+  padding-left: 1.02em;
+  padding-right: 1.02em;
+}
+
+.cme-bmatrix-two-row-template::before,
+.cme-bmatrix-two-row-template::after {
+  width: 0.5em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-pmatrix-two-row-template::before,
+.cme-pmatrix-two-row-template::after {
+  width: 0.68em;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-bmatrix-two-row-template::before,
+.cme-pmatrix-two-row-template::before {
+  left: 0.04em;
+  transform: translateY(-50%);
+}
+
+.cme-bmatrix-two-row-template::after,
+.cme-pmatrix-two-row-template::after {
+  right: 0.04em;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+.cme-bmatrix-two-row-template::before {
+  left: 0.12em;
+}
+
+.cme-bmatrix-two-row-template::after {
+  right: 0.12em;
+}
+.cme-bmatrix-three-row-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+  padding-left: 1.24em;
+  padding-right: 1.24em;
+}
+
+.cme-bmatrix-three-row-template .ML__arraycolsep {
+  width: 0.32em !important;
+}
+
+.cme-bmatrix-three-row-template::before,
+.cme-bmatrix-three-row-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0.54em;
+  height: 5.35em;
+  background: currentColor;
+  pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 72'%3E%3Cpath d='M11 6 H3 V66 H11' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-bmatrix-three-row-template::before {
+  left: 0.08em;
+  transform: translateY(-50%);
+}
+
+.cme-bmatrix-three-row-template::after {
+  right: 0.08em;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+.cme-bmatrix-three-row-template::before {
+  left: 0.14em;
+}
+
+.cme-bmatrix-three-row-template::after {
+  right: 0.14em;
+}
+
+.cme-pmatrix-three-row-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  vertical-align: 0.48em;
+  padding-left: 1.08em;
+  padding-right: 1.08em;
+}
+
+.cme-pmatrix-three-row-template .ML__arraycolsep {
+  width: 0.28em !important;
+}
+
+.cme-pmatrix-three-row-template::before,
+.cme-pmatrix-three-row-template::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0.76em;
+  height: 5.35em;
+  background: currentColor;
+  pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 72'%3E%3Cpath d='M17 6 C7 18 7 54 17 66' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cme-pmatrix-three-row-template::before {
+  left: 0.08em;
+  transform: translateY(-50%);
+}
+
+.cme-pmatrix-three-row-template::after {
+  right: 0.08em;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+.cme-bmatrix-single-column-template {
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+}
+
+.cme-bmatrix-single-column-template .ML__arraycolsep {
+  width: 0.18em !important;
+}
+
+.cme-bmatrix-two-row-template.cme-bmatrix-single-column-template::before,
+.cme-bmatrix-two-row-template.cme-bmatrix-single-column-template::after {
+  width: 0.54em;
+  height: 3.35em;
+}
+
+.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template {
+  padding-left: 1.58em;
+  padding-right: 1.58em;
+}
+
+.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template::before,
+.cme-bmatrix-three-row-template.cme-bmatrix-single-column-template::after {
+  width: 0.58em;
+  height: 6.25em;
+}
+
+.cme-bmatrix-narrow-columns-template {
+  padding-left: 1.08em;
+  padding-right: 1.08em;
+}
+
+.cme-bmatrix-narrow-columns-template .ML__arraycolsep {
+  width: 0.22em !important;
+}
+
+.cme-bmatrix-two-row-template.cme-bmatrix-narrow-columns-template::before,
+.cme-bmatrix-two-row-template.cme-bmatrix-narrow-columns-template::after {
+  width: 0.52em;
+  height: 3.25em;
+}
+
+.cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template {
+  padding-left: 1.12em;
+  padding-right: 1.12em;
+}
+
+.cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template::before,
+.cme-bmatrix-three-row-template.cme-bmatrix-narrow-columns-template::after {
+  width: 0.56em;
+  height: 6.05em;
+}
+
+.cme-pmatrix-single-column-template {
+  padding-left: 1.34em;
+  padding-right: 1.34em;
+}
+
+.cme-pmatrix-single-column-template .ML__arraycolsep {
+  width: 0.18em !important;
+}
+
+.cme-pmatrix-two-row-template.cme-pmatrix-single-column-template::before,
+.cme-pmatrix-two-row-template.cme-pmatrix-single-column-template::after {
+  width: 0.74em;
+  height: 3.35em;
+}
+
+.cme-pmatrix-three-row-template.cme-pmatrix-single-column-template {
+  padding-left: 1.42em;
+  padding-right: 1.42em;
+}
+
+.cme-pmatrix-three-row-template.cme-pmatrix-single-column-template::before,
+.cme-pmatrix-three-row-template.cme-pmatrix-single-column-template::after {
+  width: 0.82em;
+  height: 6.25em;
+}
+
+.cme-pmatrix-narrow-columns-template {
+  padding-left: 0.94em;
+  padding-right: 0.94em;
+}
+
+.cme-pmatrix-narrow-columns-template .ML__arraycolsep {
+  width: 0.22em !important;
+}
+
+.cme-pmatrix-two-row-template.cme-pmatrix-narrow-columns-template::before,
+.cme-pmatrix-two-row-template.cme-pmatrix-narrow-columns-template::after {
+  width: 0.7em;
+  height: 3.25em;
+}
+
+.cme-pmatrix-three-row-template.cme-pmatrix-narrow-columns-template {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.cme-pmatrix-three-row-template.cme-pmatrix-narrow-columns-template::before,
+.cme-pmatrix-three-row-template.cme-pmatrix-narrow-columns-template::after {
+  width: 0.78em;
+  height: 6.05em;
+}
 /* Dynamic Matrix Wrapper - Auto-scaling and Compact */
 .cme-matrix-compact-wrapper {
   display: inline-flex;
@@ -495,6 +803,7 @@ const MATH_FIELD_SHADOW_CSS = `
   right: 0;
   transform: scaleX(-1);
 }
+
 .cme-downward-template {
   display: inline-block;
   vertical-align: middle;
@@ -508,6 +817,15 @@ const MATH_FIELD_SHADOW_CSS = `
   vertical-align: -0.35em;
   padding-top: 0.15em;
   padding-bottom: 0.35em;
+}
+
+.cme-cases-left-template .cme-cases-left-template,
+.cme-cases-left-template .cme-cases-right-template,
+.cme-cases-right-template .cme-cases-left-template,
+.cme-cases-right-template .cme-cases-right-template {
+  vertical-align: -0.35em;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .cme-cases-left-template {
@@ -560,6 +878,110 @@ const MATH_FIELD_SHADOW_CSS = `
   color: #ffffff !important;
 }
 
+.cme-vertical-strike-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  padding: 0.12em 0.1em;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.cme-vertical-strike-template::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -0.08em;
+  bottom: -0.08em;
+  width: 0.065em;
+  min-width: 1px;
+  background: currentColor;
+  border-radius: 999px;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+.cme-crosshair-strike-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  padding: 0.12em 0.1em;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.cme-crosshair-strike-template::before,
+.cme-crosshair-strike-template::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.cme-crosshair-strike-template::before {
+  left: 50%;
+  top: -0.10em;
+  bottom: -0.10em;
+  width: 0.065em;
+  min-width: 1px;
+  transform: translateX(-50%);
+}
+
+.cme-crosshair-strike-template::after {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 0.065em;
+  min-height: 1px;
+  transform: translateY(-50%);
+}
+/* Dynamic Cancel / Strikeout Templates */
+.cme-cancel-template,
+.cme-bcancel-template,
+.cme-xcancel-template {
+  display: inline-block;
+  position: relative;
+  line-height: 1;
+  padding: 0 0.1em;
+}
+
+.cme-cancel-template::after,
+.cme-bcancel-template::after,
+.cme-xcancel-template::after,
+.cme-xcancel-template::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.cme-cancel-template::after {
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='100' x2='100' y2='0' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='100' x2='100' y2='0' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+}
+
+.cme-bcancel-template::after {
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='0' x2='100' y2='100' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='0' x2='100' y2='100' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+}
+
+.cme-xcancel-template::after {
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='100' x2='100' y2='0' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='100' x2='100' y2='0' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+}
+
+.cme-xcancel-template::before {
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='0' x2='100' y2='100' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'%3E%3Cline x1='0' y1='0' x2='100' y2='100' stroke='white' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+}
+
 `;
 
 function installMathFieldShadowStyles(mathfield) {
@@ -589,8 +1011,9 @@ function createPreviewMathField(latex, tone = "dark") {
   const mf = document.createElement("math-field");
   scheduleMathFieldShadowStyles(mf);
   const isLightTone = tone === "light";
-  const textColor = isLightTone ? "#22343d" : "#f4f4fb";
-  const accentColor = isLightTone ? "#556e7b" : "#d8b4fe";
+  const isChemistry = /\\ce\{/.test(latex);
+  const textColor = isLightTone ? "#000000" : "#ffffff";
+  const accentColor = isLightTone ? "#000000" : "#ffffff";
   const displayLatex = renderEmptyMathPlaceholders(latex);
 
   mf.setAttribute("read-only", "");
@@ -838,7 +1261,7 @@ function typesetMathML(container) {
 
 export default function QuestionPreview({ value = "", className = "", tone = "dark" }) {
   const containerRef = useRef(null);
-  const previewColor = tone === "light" ? "#22343d" : "#f2f2f8";
+  const previewColor = tone === "light" ? "#000000" : "#ffffff";
 
   useEffect(() => {
     const el = containerRef.current;

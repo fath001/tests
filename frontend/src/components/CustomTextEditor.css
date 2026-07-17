@@ -111,10 +111,10 @@
   --primary-color: #ffffff;
   --caret-color: #ffffff;
   --smart-fence-color: #ffffff;
-  --placeholder-color: #ffffff;
+  --placeholder-color: #666666;
   --latex-color: #ffffff;
-  --correct-color: #ffffff;
-  --incorrect-color: #ffffff;
+  --correct-color: #2e7d32;
+  --incorrect-color: #c62828;
   color: #ffffff;
 }
 
