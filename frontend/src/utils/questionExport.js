@@ -290,6 +290,30 @@ function nodeToSpreadsheetText(node) {
     return latex ? ` \u200E${latexToSpreadsheetText(latex)}\u200E ` : node.textContent || "";
   }
 
+  if (tag === "TABLE") {
+    const trs = Array.from(node.querySelectorAll("tr"));
+    if (trs.length === 0) return "";
+    const rowsText = trs.map((tr) => {
+      const cells = Array.from(tr.querySelectorAll("th, td"));
+      const cellTexts = cells.map((cell) => {
+        const cellContent = Array.from(cell.childNodes).map(nodeToSpreadsheetText).join("");
+        return cellContent.replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
+      });
+      return cellTexts.join("\t");
+    });
+    return "\n" + rowsText.join("\n") + "\n";
+  }
+
+  if (tag === "SUP") {
+    const text = Array.from(node.childNodes).map(nodeToSpreadsheetText).join("");
+    return mapScript(text, superscriptMap);
+  }
+
+  if (tag === "SUB") {
+    const text = Array.from(node.childNodes).map(nodeToSpreadsheetText).join("");
+    return mapScript(text, subscriptMap);
+  }
+
   if (tag === "BR") {
     return "\n";
   }
@@ -327,7 +351,6 @@ export function questionHtmlToSpreadsheetText(html = "") {
     .join("")
     .replace(/[ \t]+\n/g, "\n")
     .replace(/\n{3,}/g, "\n\n")
-    .replace(/[ \t]{2,}/g, " ")
     .trim();
 
   return sanitizeForSpreadsheet(result);
@@ -1091,6 +1114,30 @@ function nodeToUnicodeMath(node) {
     return latex ? ` \u200E${latexToUnicodeMath(latex)}\u200E ` : node.textContent || "";
   }
 
+  if (tag === "TABLE") {
+    const trs = Array.from(node.querySelectorAll("tr"));
+    if (trs.length === 0) return "";
+    const rowsText = trs.map((tr) => {
+      const cells = Array.from(tr.querySelectorAll("th, td"));
+      const cellTexts = cells.map((cell) => {
+        const cellContent = Array.from(cell.childNodes).map(nodeToUnicodeMath).join("");
+        return cellContent.replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
+      });
+      return cellTexts.join("\t");
+    });
+    return "\n" + rowsText.join("\n") + "\n";
+  }
+
+  if (tag === "SUP") {
+    const text = Array.from(node.childNodes).map(nodeToUnicodeMath).join("");
+    return toSuperscript(text);
+  }
+
+  if (tag === "SUB") {
+    const text = Array.from(node.childNodes).map(nodeToUnicodeMath).join("");
+    return toSubscript(text);
+  }
+
   if (tag === "BR") {
     return "\n";
   }
@@ -1127,7 +1174,6 @@ export function questionHtmlToUnicodeMath(html = "") {
     .join("")
     .replace(/[ \t]+\n/g, "\n")
     .replace(/\n{3,}/g, "\n\n")
-    .replace(/[ \t]{2,}/g, " ")
     .trim();
 
   return sanitizeForSpreadsheet(result);
@@ -1140,5 +1186,96 @@ function questionHtmlFragmentToUnicodeMath(html = "") {
   return Array.from(template.content.childNodes)
     .map(nodeToUnicodeMath)
     .join("");
+}
+
+export function extractTablesFromHtml(html = "") {
+  if (!html || typeof html !== "string") return [];
+  const template = document.createElement("template");
+  template.innerHTML = html;
+  const tables = Array.from(template.content.querySelectorAll("table"));
+
+  return tables.map((table) => {
+    const trs = Array.from(table.querySelectorAll("tr"));
+    const grid = trs.map((tr) => {
+      const cells = Array.from(tr.querySelectorAll("th, td"));
+      return cells.map((cell) => {
+        const isHeader = cell.tagName.toUpperCase() === "TH" || !!cell.closest("thead");
+        const text = questionHtmlFragmentToUnicodeMath(cell.innerHTML)
+          .replace(/[\r\n]+/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+        const align = cell.style.textAlign || cell.getAttribute("align") || (isHeader ? "center" : "left");
+        const bold = isHeader || cell.querySelector("b, strong") !== null;
+        return { text, isHeader, bold, align };
+      });
+    });
+
+    return {
+      rowCount: grid.length,
+      colCount: grid.reduce((max, r) => Math.max(max, r.length), 0),
+      grid,
+      rows: grid.map((row) => row.map((cell) => cell.text)),
+    };
+  });
+}
+
+export function extractQuestionBlocks(html = "") {
+  if (!html || typeof html !== "string") return [];
+  const template = document.createElement("template");
+  template.innerHTML = html;
+  const blocks = [];
+
+  Array.from(template.content.childNodes).forEach((node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.textContent.trim();
+      if (text) {
+        if (blocks.length > 0 && blocks[blocks.length - 1].type === "text") {
+          blocks[blocks.length - 1].text += " " + text;
+        } else {
+          blocks.push({ type: "text", text });
+        }
+      }
+      return;
+    }
+
+    if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+    const tag = node.nodeName.toUpperCase();
+    if (tag === "TABLE") {
+      const trs = Array.from(node.querySelectorAll("tr"));
+      const grid = trs.map((tr) => {
+        const cells = Array.from(tr.querySelectorAll("th, td"));
+        return cells.map((cell) => {
+          const isHeader = cell.tagName.toUpperCase() === "TH" || !!cell.closest("thead");
+          const text = questionHtmlFragmentToUnicodeMath(cell.innerHTML)
+            .replace(/[\r\n]+/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+          const align = cell.style.textAlign || cell.getAttribute("align") || (isHeader ? "center" : "left");
+          const bold = isHeader || cell.querySelector("b, strong") !== null;
+          return { text, isHeader, bold, align };
+        });
+      });
+
+      blocks.push({
+        type: "table",
+        grid,
+        rows: grid.map((row) => row.map((cell) => cell.text)),
+        rowCount: grid.length,
+        colCount: grid.reduce((max, r) => Math.max(max, r.length), 0),
+      });
+    } else {
+      const text = questionHtmlFragmentToUnicodeMath(node.outerHTML || node.textContent || "").trim();
+      if (text) {
+        if (blocks.length > 0 && blocks[blocks.length - 1].type === "text") {
+          blocks[blocks.length - 1].text += "\n" + text;
+        } else {
+          blocks.push({ type: "text", text });
+        }
+      }
+    }
+  });
+
+  return blocks;
 }
 

@@ -6,7 +6,13 @@ import "math-chem-ckeditor/dist/style.css";
 import Navbar from "../../components/Navbar";
 
 import API from "../../services/api";
-import { questionHtmlToSpreadsheetText, latexToUnicodeMath, questionHtmlToUnicodeMath } from "../../utils/questionExport";
+import {
+  questionHtmlToSpreadsheetText,
+  latexToUnicodeMath,
+  questionHtmlToUnicodeMath,
+  extractQuestionBlocks,
+  extractTablesFromHtml,
+} from "../../utils/questionExport";
 
 export default function CreateQuestion() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -157,6 +163,10 @@ export default function CreateQuestion() {
         questionType === "true_false"
           ? { A: "True", B: "False" }
           : options;
+
+      const blocks = extractQuestionBlocks(question);
+      const tables = extractTablesFromHtml(question);
+
       await API.post(
         "/questions/export-to-sheets",
         {
@@ -167,6 +177,8 @@ export default function CreateQuestion() {
           questionType,
           options: payloadOptions,
           correctAnswer,
+          blocks,
+          tables,
         },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -198,6 +210,9 @@ export default function CreateQuestion() {
         convertedOptions[key] = latexToUnicodeMath(val);
       }
 
+      const blocks = extractQuestionBlocks(question);
+      const tables = extractTablesFromHtml(question);
+
       await API.post(
         "/questions/export-to-sheets",
         {
@@ -208,6 +223,8 @@ export default function CreateQuestion() {
           questionType,
           options: convertedOptions,
           correctAnswer,
+          blocks,
+          tables,
         },
         { headers: { Authorization: `Bearer ${token}` } },
       );
