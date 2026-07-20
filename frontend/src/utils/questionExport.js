@@ -241,8 +241,12 @@ export function latexToSpreadsheetText(latex = "") {
     .replace(/\\sigma/g, "σ")
     .replace(/\\phi/g, "φ")
     .replace(/\\omega/g, "ω")
+    .replace(/\\\{/g, "\uE001")
+    .replace(/\\\}/g, "\uE002")
     .replace(/\\[a-zA-Z]+\*?/g, "")
     .replace(/[{}]/g, "")
+    .replace(/\uE001/g, "{")
+    .replace(/\uE002/g, "}")
     .replace(/\s+/g, " ")
     .trim();
 }
